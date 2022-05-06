@@ -40,7 +40,7 @@ author:
   bio       :  🐝ｃ𝕣єΔ𝓉ｉή𝓖 ｓＯⓤŇ𝐃 ⓐⒹשέ𝓝Ŧ𝕦ＲⒺｓ ί几 Ƥ𝓗ㄚ𝔾ｉтⒶＬ ⒶⓃᗪ 𝐒Ｕ𝐁𝔱𝕝𝕖 𝓌Ỗ𝐫𝕃ᗪᔕ 🐝
   email     : marco.colasso@gmail.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
-  twitter   : https://twitter.com/maar___34 # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
+  twitter   : maar___34 # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
   weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
   googleplus: # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
   telegram  : # "user_name" the last part of your profile url, e.g. https://t.me/user_name
@@ -48,7 +48,7 @@ author:
   zhihu     : # "user_name" the last part of your profile url, e.g. https://www.zhihu.com/people/user_name
   douban    : # "user_name" the last part of your profile url, e.g. https://www.douban.com/people/user_name
   linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
-  github    : https://github.com/maar34 # "user_name" the last part of your profile url, e.g. https://github.com/user_name
+  github    : maar34 # "user_name" the last part of your profile url, e.g. https://github.com/user_name
   npm       : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
 
 
@@ -73,7 +73,7 @@ paths:
 excerpt_separator: <!--more-->
 
 ## license
-license: MIT # "CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC-BY-ND-4.0"
+license: # "CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC-BY-ND-4.0"
 
 ## TOC
 toc:
@@ -87,7 +87,7 @@ mathjax: # false (default), true
 mathjax_autoNumber: # false (default), true
 
 ## Mermaid
-mermaid: true # false (default), true
+mermaid: true# false (default), true
 
 ## Chart
 chart: # false (default), true
@@ -95,7 +95,7 @@ chart: # false (default), true
 
 ## => Paginate
 ##############################
-paginate: 8
+paginate: 4
 paginate_path: /page:num # don't change this unless for special need
 
 
@@ -172,8 +172,8 @@ analytics:
 
   ## Google Analytics
   google:
-    tracking_id : # Google Analytics id for the site
-    anonymize_ip: false # Anonymize IP tracking for Analytics
+    tracking_id : G-1T4MNE8JWF # Google Analytics id for the site
+    anonymize_ip: true # Anonymize IP tracking for Analytics
 
 
 ## => Build
