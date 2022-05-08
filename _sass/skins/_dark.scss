@@ -5,28 +5,28 @@
 ///
 
 // main colors
-$main-color-1:     #ff9500;
-$text-color-1:     rgba(#fff, .8);
+$main-color-1:     #F90402;
+$text-color-1:     rgba(#662D91, .8);
 
 $main-color-2:     #ff006a;
-$text-color-2:     rgba(#fff, .8);
+$text-color-2:     rgba(rgb(132, 132, 132), .8);
 
-$main-color-3:     #202020;
-$text-color-3:     rgba(#fff, .8);
+$main-color-3:     rgba(#000000, .34);
+$text-color-3:     rgba(#00F2F1, .8);
 
 $main-color-theme-light: rgba(#000, .8);
-$main-color-theme-dark:  rgba(#fff, .8);
+$main-color-theme-dark:  rgba(rgb(124, 124, 124), .8);
 
 // page background
-$background-color: #121212;
+$background-color: #090CF8;
 
 // text colors
 $text-color-theme-light-d: #000;
 $text-color-theme-light:   #222;
 $text-color-theme-light-l: #888;
 
-$text-color-theme-dark-d:  rgba(#fff, .8);
-$text-color-theme-dark:    rgba(#fff, .7);
+$text-color-theme-dark-d:  rgba(#00F2F1, .8);
+$text-color-theme-dark:    rgba(#ffffff, .9);
 $text-color-theme-dark-l:  rgba(#fff, .5);
 
 $text-color-d:     $text-color-theme-dark-d;

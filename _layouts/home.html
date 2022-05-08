@@ -1,5 +1,5 @@
 ---
-layout: articles
+layout: article
 titles:
   # @start locale config
   en      : &EN       Home
@@ -28,7 +28,7 @@ show_title: false
 articles:
   data_source: paginator.posts
   article_type: BlogPosting
-  show_cover: false
+  show_cover: true
   show_excerpt: true
   show_readmore: true
   show_info: true
@@ -36,8 +36,21 @@ articles:
 <div class="layout--home">
   {%- include paginator.html -%}
 </div>
+
+<div class="hero hero--dark" style='background-image: url("https://drive.google.com/file/d/1neQOO7Gl12igC2jFfBrhU4crwdP0UN3J/view?usp=sharing");'>
+  <div class="hero__content">
+    <h1>
+      
+   WelcomE To a vintage NeW WorlD. Slow down to enter a place where space-time bends and things can get weird, gravity is 2.93 slower than earth. 
+
+
+</h1>
+  </div>
+</div>
+
 <script>
   {%- include scripts/home.js -%}
+
 </script>
 
 {{ content }}
