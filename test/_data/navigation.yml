@@ -50,3 +50,14 @@ header:
       tr      : &TR       Hakkında
       # @end locale config
     url: /about.html
+
+  - titles:
+      # @start locale config
+      en      : &EN       planet-info
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+
+      # @end locale config
+    url: /planet-info.html
