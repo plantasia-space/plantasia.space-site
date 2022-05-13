@@ -2,7 +2,7 @@
 layout: article
 titles:
   # @start locale config
-  en      : &EN       world-data
+  en      : &EN       DJ set + Live set = Hybrid set 
   en-GB   : *EN
   en-US   : *EN
   en-CA   : *EN
@@ -12,37 +12,23 @@ titles:
 key: world-information
 ---
 
-welcome to Maar world.
-{:.success}
+Imagine a set fused with the soundtrack of a film.  
 
-<div class="hero hero--dark" style='background-image: url("/maarWorld.jpg");'>
-  <div class="hero__content">
-    <h3>🧜🏽</h3>
-  </div>
-</div>
+4 adventures, 4 cardinal points to navigate, Air, Water, Fire and Earth, 
+The DJ's or Hybrid Set can be composed of one or several of these elements representing different musical moods ranging from ambient, downtempo to deep house, always adapting to the note of the moment, the energy of the place. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
+CONTACT / BOOKINGS
 
-circumbinary planet, P-type, semi-major axis: 0.699±0.003 AU
+Gabriel Bernardoni
+<aventuresonores@headbrothers.com>
++34 655863362
 
-|           | System parameters  |
-|-----------------------------|-----------|
-| Right ascension             | 19 41 11  |
-| Declination                 | +46 55 13 |
-| Distance [parsec]           | 1189      |
-| Distance [lightyears]       | 3878      |
-| Number of stars in system   | 2         |
-| Number of planets in system | 3         |
-| Number of moons in system | 4         |
+  **Performance:** Dj or  Hybrid set. 
+  
+  **Genre:** Union of world genres.
+  Artist using: Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
 
-The discovery was made with a space based telescope (0.95 m Kepler Telescope).
+EPK: 
 
+<iframe src="https://drive.google.com/file/d/1RfDsGbky-v4JLPhXEvzvLp_C9b5EptzV/preview" width="640" height="480" allow="autoplay"></iframe>
 
-| Mass [Mjup]           | 0.06+0.08−0.04    |
-|-----------------------|-------------------|
-| Mass [Mearth]         | 19+24−12          |
-| Radius [Rjup]         | 0.63+0.06−0.04    |
-| Radius [Rearth]       | 7.0+0.7−0.5       |
-| Orbital period [days] | 187.37+0.07−0.05  |
-| Semi-major axis [AU]  | 0.699±0.003       |
-| Eccentricity          | 0.024+0.025−0.017 |
-| Discovery year        | 2019              |

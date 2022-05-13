@@ -1,48 +1,80 @@
 ---
 layout: article
+show_title: false
+
 titles:
   # @start locale config
-  en      : &EN       world-data
+  en      : &EN       earth-landings
   en-GB   : *EN
   en-US   : *EN
   en-CA   : *EN
   en-AU   : *EN
 
   # @end locale config
-key: world-information
+key: last events
+
 ---
 
-welcome to Maar world.
-{:.success}
+## Sonic Events
 
-<div class="hero hero--dark" style='background-image: url("/maarWorld.jpg");'>
-  <div class="hero__content">
-    <h3>🧜🏽</h3>
-  </div>
-</div>
+<a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the 4 elements</a> 
+
+- 24 / 04 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 
+- 20 / 04 / 2022  - Piso 24 -  With Emma Lohan - 📍 Palma de Mallorca, Spain
+- 26 / 02 / 2022  - Pulpismo 04 -  Espacio Pulpo - With Hamid, Halbert, Todo📍 Palma de Mallorca Spain
+
+<a href="https://youtu.be/GYhV2qAPZ6w" rel="Trappist Live" target="_blank">TRAPPIST - 01 LIVE AV Head Brothers</a> 
+
+- 16 / 11 / 2019  - Pulse - Frecuencias - 1st Int. Summit of Electronic Music and Digital Art - 📍 Montevideo, Uruguay
+- 01 / 12 / 2019 Ábalos - 📍 Montevideo Uruguay
+- 18 / 12 / 2019 El Hangar - 📍 Buenos Aires Argentina
+
+<html><a href="https://youtu.be/geiH3eAzo2c" rel="Exoplanetas Hybrid" target="_blank">TRAPPIST - 01 HYBRID SET - Exoplanetas + Head Brothers</a>
+</html>
+
+  - 16/3/19 📍 Sauce de Portezuelo, Uruguay - 
+  - 05/01/19 📍 La pedrera, Uruguay
+  - 31/3/18 📍 Paysandú,   Uruguay
+  - 22/7/17 📍 Montevideo, Uruguay 
+  - 15/7/17 📍 Montevideo, Uruguay
+  - 28/4/17 📍 Montevideo, Uruguay
+  - 8/12/17 📍 Montevideo, Uruguay
+  - 21/7/18 📍 Villa serrana SERRANA, MINAS Uruguay
+
+<a href="https://youtu.be/VfqNGsa1rz" rel="Exoplanetas Hybrid" target="_blank">🙏🏽🙏🏽🙏🏽</a>
+
+- Immersive experiences for the closing FING Ingeniería Demuestra. Head Brothers + MEDIALAB  📍 Montevideo, Uruguay
+  - <a href="https://youtu.be/oqCx9AirINA" rel="2018" target="_blank">2018</a>
+  - <a href="https://www.youtube.com/watch?v=HSOOaRpHp4s" rel="2017" target="_blank">2017</a>
+  - <a href="https://youtu.be/m_ALtO6uhE0" rel="2016" target="_blank">2016</a>
+  - <a href="https://www.youtube.com/watch?v=w-FEgGAZaLY" rel="Exoplanetas Hybrid" target="_blank">2015</a>
+
+- 05/08/2017 <a href="https://vimeo.com/235986660" rel="IBM Watson" target="_blank">Watson Says. Head Brothers + IBM</a> 
+  - Music producer for Watson Says, an audiovisual experience that explores the capabilities of cognitive computing which are directly related to the way people generate knowledge, think and work. 📍 Montevideo, Uruguay
+
+- <a href="https://vimeo.com/135519258" rel="Luminiscencia" target="_blank">Luminiscencia, </a> Matias Romero Balado, Sebastián Segarra, Head Brothers. 
+  - 16/06/2016 📍 Pestana Palace, Lisbon, Portugal. 
+  - 16/09/2016 📍 Sala Camacuá, Montevideo, Uruguay. 
 
 
-circumbinary planet, P-type, semi-major axis: 0.699±0.003 AU
+- Tembey Concierto Audiovisual. Head Brothers
+    - 06/16 2nd Festival of Audio and Acoustic Centroamerica, 📍 San José de Costa Rica.
+    - 10/2014 International Seminar on Hyper / Text Narratives NHT, 📍 UdelaR, Montevideo
+    -  4/9/14  LabLT, laboratory of cross-language languages. 📍 Montevideo, Uruguay
+    -23/9/14 INAE, Equinox Art and Science Festival, Montevideo, 📍 Uruguay. 
+    - 9/9/14 <a href="https://vimeo.com/110938519" rel="Cruces Sonoros" target="_blank">Cruces Sonoros</a> .
+    Museo de Arte Contemporáneo de la Universidad de Chile. 📍 Santiago de chile.
 
-|           | System parameters  |
-|-----------------------------|-----------|
-| Right ascension             | 19 41 11  |
-| Declination                 | +46 55 13 |
-| Distance [parsec]           | 1189      |
-| Distance [lightyears]       | 3878      |
-| Number of stars in system   | 2         |
-| Number of planets in system | 3         |
-| Number of moons in system | 4         |
+-8/9/12   - <a href="http://www.truthandliesmusic.com/projects/2014/3/23/ox5wi8hue9l4p659afj4789efsoxxm" rel="VJ Set for Gilles Peterson" target="_blank">VJ Set curated by Gilles Peterson</a> .  World Event of Young Artists Opening Party.  📍 Nottingham-Inglaterra.
+- <a href="https://www.youtube.com/watch?v=OcP2sSbR5H4" rel="Because" target="_blank">Because</a>
+  - 10/12 WEYA, Nottingham Contemporany, 📍 Nottingham, England.
+  - 12/11/11 TSONAMI Festival of sound art, Palacio Cousiño, 📍 Valparaiso, Chile.
 
-The discovery was made with a space based telescope (0.95 m Kepler Telescope).
+- Sound and experience design for the Uruguay Pavilion Venice Architecture Biennale. Head Brothers 📍 Venice, Italy 
+  - <a href="http://headbrothers.com/prison-to-prison" rel="2018" target="_blank">2018</a>
+  - <a href="https://www.proximamente.uy/" rel="2021" target="_blank">2021</a> 
 
 
-| Mass [Mjup]           | 0.06+0.08−0.04    |
-|-----------------------|-------------------|
-| Mass [Mearth]         | 19+24−12          |
-| Radius [Rjup]         | 0.63+0.06−0.04    |
-| Radius [Rearth]       | 7.0+0.7−0.5       |
-| Orbital period [days] | 187.37+0.07−0.05  |
-| Semi-major axis [AU]  | 0.699±0.003       |
-| Eccentricity          | 0.024+0.025−0.017 |
-| Discovery year        | 2019              |
+  ![branch](/img/branch.png)
+
+  

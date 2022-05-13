@@ -1,18 +1,8 @@
 header:
-  - titles:
-      # @start locale config
-      en      : &EN       🧪 𝕄⍺⍺𝓇-Lab
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      # @end locale config
-    url: /lab.html
-
 
   - titles:
       # @start locale config
-      en      : &EN      🛰  Data
+      en      : &EN      🛰  Hybrid-Sets
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -51,3 +41,12 @@ header:
       # @end locale config
     url: /about.html
 
+#  - titles:
+      # @start locale config
+#      en      : &EN       🧪 𝕄⍺⍺𝓇-Lab
+#      en-GB   : *EN
+#      en-US   : *EN
+#      en-CA   : *EN
+#      en-AU   : *EN
+#      # @end locale config
+#    url: /lab.html
