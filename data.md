@@ -28,7 +28,7 @@ Gabriel Bernardoni
   **Genre:** Union of world genres.
   Artist using: Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
 
-EPK: 
+<a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
 
 <iframe src="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/preview" width="100%" height="720" allow="autoplay"></iframe>
 
