@@ -24,3 +24,30 @@ Marco Colasso Soca, aka Maar, is a sound artist who works on transdisciplinary c
   </div>
 </div>
 
+<div class="hero hero--dark" style='height: 500px; background-image: url("/img/maar-sun.png");'>
+  <div class="hero__content">
+    <h3></h3>
+    <p></p>
+  </div>
+</div>
+
+<div class="hero hero--dark" style='height: 500px; background-image: url("/img/maar-8.jpg");'>
+  <div class="hero__content">
+    <h3></h3>
+    <p></p>
+  </div>
+</div>
+
+<div class="hero hero--dark" style='height: 500px; background-image: url("/img/maar-1.jpg");'>
+  <div class="hero__content">
+    <h3></h3>
+    <p></p>
+  </div>
+</div>
+
+<div class="hero hero--dark" style='height: 1024px; background-image: url("/img/maar-32.jpg");'>
+  <div class="hero__content">
+    <h3></h3>
+    <p></p>
+  </div>
+</div>
