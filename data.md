@@ -1,5 +1,6 @@
 ---
 layout: article
+show_title: false
 titles:
   # @start locale config
   en      : &EN       DJ set + Live set = Hybrid set 
@@ -9,12 +10,13 @@ titles:
   en-AU   : *EN
 
   # @end locale config
-key: world-information
+key: hybrid-set-information
 ---
+# Hybrid set
 
-Imagine a set fused with the soundtrack of a film.  
+Imagine a live or dj set hybridised with a movie soundtrack.   
 
-4 adventures, 4 cardinal points to navigate, Air, Water, Fire and Earth, 
+4 cardinal points to navigate, Air, Water, Fire and Earth, 
 The DJ's or Hybrid Set can be composed of one or several of these elements representing different musical moods ranging from ambient, downtempo to deep house, always adapting to the note of the moment, the energy of the place. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
 CONTACT / BOOKINGS
@@ -31,4 +33,3 @@ Gabriel Bernardoni
 <a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
 
 <iframe src="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/preview" width="100%" height="720" allow="autoplay"></iframe>
-
