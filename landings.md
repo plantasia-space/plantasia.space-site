@@ -17,7 +17,7 @@ key: last events
 # Earth landings
 ### Sonic events on planet earth
 
-<a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the 4 elements</a> 
+<a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
 
 - 24 / 04 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 
 - 20 / 04 / 2022  - Piso 24 -  With Emma Lohan - 📍 Palma de Mallorca, Spain
