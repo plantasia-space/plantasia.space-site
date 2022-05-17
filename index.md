@@ -45,13 +45,3 @@ The discovery was made with a space based telescope (0.95 m **Kepler Telescope**
 | Eccentricity          | 0.024+0.025−0.017 |
 | Discovery year        | 2019              |
 
-
-![Image](/img/SmallStellatedDodecahedronMosaic.jpg){:.circle.border.shadow} 
->Divine Proportion was the last published work of Pacioli. A former pupil of Piero della Francesca, Pacioli asked Leonardo da Vinci to draw the diagrams for his book. Here, a small stellated dodecahedron that appears on the floor of St. Mark's Basilica, Venice, Italy. 
-
-![Image](/img/kepler-polygons.jpg){:.circle.border.shadow} 
->Knowledge and emotion has their common root in amazement about the world. Kepler believed that regular polygons held the secret of the origin of the cosmos. 
-
-![Image](/img/ether.jpg){:.circle.border.shadow} 
->This anonymous 17th century engraving shows cherubs playing in the sky with astronomical instruments and a dodecahedron, symbolising Aristotle’s fifth element, ether. 
-
