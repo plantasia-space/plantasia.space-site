@@ -21,13 +21,11 @@ The DJ's or Hybrid Set can be composed of one or several of these elements repre
 
 CONTACT / BOOKINGS
 
-Gabriel Bernardoni
-<aventuresonores@headbrothers.com>
-+34 655863362
+<world.maar@gmail.com>
 
   **Performance:** Dj or  Hybrid set. 
   
-  **Genre:** Union of world genres.
+  **Genres:** Free Electro / Union of world genres.
   Artist using: Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
 
 <a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
