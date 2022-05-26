@@ -21,7 +21,7 @@ The DJ's or Hybrid Set can be composed of one or several of these elements repre
 
 CONTACT / BOOKINGS
 
-<world.maar@gmail.com>
+<aventuresonores@headbrothers.com>
 
   **Performance:** Dj or  Hybrid set. 
   
