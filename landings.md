@@ -19,6 +19,7 @@ key: last events
 
 <a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
 
+- 11 / 06 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 
 - 24 / 04 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 
 - 20 / 04 / 2022  - Piso 24 -  With Emma Lohan - 📍 Palma de Mallorca, Spain
 - 26 / 02 / 2022  - Pulpismo 04 -  Espacio Pulpo - With Hamid, Halbert, Todd📍 Palma de Mallorca Spain
