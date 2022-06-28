@@ -14,7 +14,7 @@ titles:
 key: world-information
 ---
 
-# Skylight One
+# Skylight.3
 
 Third of three compositions made with Limbic Sound engine and the four elements. 
 
@@ -23,3 +23,6 @@ Mastered in I/O Studios by Nicolas Panzl and Diego Rey, Montevideo Uruguay.
 
 
 Thanks for purchasing this composition, hope you enjoy it. 
+
+![Image](https://ipfs.io/ipfs/QmdRbrfgtxCXPw6BBNj8Ksta2fhxQLYQJdF6usMGaGXPLx?filename=SL.3.Artboard.png){:.border.rounded.shadow}
+
