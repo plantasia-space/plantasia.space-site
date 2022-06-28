@@ -19,10 +19,11 @@ key: world-information
 First of three compositions made with Limbic Sound engine and the four elements. 
 
 The interactive generative music software and compositions were made by Maar during landings in New York, Montreal, Paysandú and Montevideo between 2018 and 2020.
-Mastered in I/O Studios by Nicolas Panzl and Diego Rey, Montevideo Uruguay.
 
+- Mastered in I/O Studios by Nicolas Panzl and Diego Rey, Montevideo Uruguay.
+- Artwork - VRglitch + Maar
 
 Thanks for purchasing this composition, hope you enjoy it. 
 
 
-![Image](https://ipfs.io/ipfs/QmTq3TzDDdjScrT13EoEu2YrDxj19uStJha2JRtwgoGjAz?filename=SL.1.Artboard.png){:.border.rounded.shadow}
+![Image](/img/SL.1.Artboard.png){:.border.rounded.shadow}
