@@ -16,9 +16,7 @@ key: world-information
 
 # Skylight.2
 
-Second of three compositions made with Limbic Sound engine and the four elements. 
-
-Interactive generative music software and compositions were made by Maar during landings in New York, Montreal, Paysandú and Montevideo between 2018 and 2020.
+Soundscapes from the East of Maar World. Air creatures singing, landing into the surface of the exoplanet. 
 
 - Master: <a href="https://www.facebook.com/IO-Estudios-256499521035781/" rel="I/O Studios" target="_blank">I/O Studios</a>  by Nicolas Panzl and Diego Rey, Montevideo Uruguay.
 - Artwork: <a href="http://vrglit.ch/" rel="vrglitch" target="_blank">vrglitch</a> + Maar
