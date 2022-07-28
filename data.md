@@ -23,7 +23,7 @@ CONTACT / BOOKINGS
 
 world.maar[at]gmail.com
 
-  **Performance:** Dj or  Hybrid set. 
+  **Performance:** Dj Hybrid or Live set. 
   
   **Genres:** Free Electro / Union of world genres.
   Artist using: Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
