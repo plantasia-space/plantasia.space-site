@@ -17,7 +17,7 @@ key: last events
 # Earth landings
 ### Sonic events on planet earth
 
-<a href="/data.html " rel="Maar World" target="_blank"> Genesis - Hybrid Set</a> 
+<a href="/data.html " rel="Maar World" target="_blank"> Hybrid Set - Maar World Genesis</a> 
 
 - 02 / 07 / 2022  - La cueva de ArteArtesania - 📍 Soller  Spain 
 
