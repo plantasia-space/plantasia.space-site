@@ -21,7 +21,7 @@ The DJ's or Hybrid Set can be composed of one or several of these elements repre
 
 CONTACT / BOOKINGS
 
-<aventuresonores@headbrothers.com>
+world.maar[at]gmail.com
 
   **Performance:** Dj or  Hybrid set. 
   
@@ -30,4 +30,4 @@ CONTACT / BOOKINGS
 
 <a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
 
-<iframe src="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/preview" width="100%" height="720" allow="autoplay"></iframe>
+<iframe src="https://drive.google.com/file/d/1SCrB9n8f4zorRA2fksg0NQzz-lM62nMZ/preview" width="640" height="480" allow="autoplay"></iframe>
