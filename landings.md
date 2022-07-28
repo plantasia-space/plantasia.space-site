@@ -17,6 +17,10 @@ key: last events
 # Earth landings
 ### Sonic events on planet earth
 
+<a href="/data.html " rel="Maar World" target="_blank"> Genesis - Hybrid Set</a> 
+
+- 02 / 07 / 2022  - La cueva de ArteArtesania - 📍 Soller  Spain 
+
 <a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
 
 - 11 / 06 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 
