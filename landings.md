@@ -19,8 +19,8 @@ key: last events
 
 <a href="/data.html " rel="Maar World" target="_blank"> Maar World era </a> 
 
-- 04 / 09 / 2022  - Maar y Daiana Romero - Live - 📍 Berlin  Germany 
-- 03 / 09 / 2022  - Maar World Live AV Set - Chilean Conexion Festival in Monopol Berlin - 📍 Berlin  Germany 
+- 04 / 09 / 2022  - Maar y Daiana Romero - Live - Feeding freedom Festival in Prinzengarten 📍 Berlin  Germany 
+- 03 / 09 / 2022  - Maar World Live AV Set - Chilean Conexion Festival in Monopol - 📍 Berlin  Germany 
 
 - 02 / 07 / 2022  - Maar World Genesis - La cueva de ArteArtesania - 📍 Soller  Spain 
 
