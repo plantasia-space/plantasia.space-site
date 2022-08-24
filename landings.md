@@ -17,11 +17,10 @@ key: last events
 # Earth landings
 ### Sonic events on planet earth
 
-<a href="/data.html " rel="Maar World" target="_blank"> Maar World era </a> 
+<a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a> 
 
 - 04 / 09 / 2022  - Maar y Daiana Romero - Live - Feeding freedom Festival in Prinzengarten 📍 Berlin  Germany 
 - 03 / 09 / 2022  - Maar World Live AV Set - Chilean Conexion Festival in Monopol - 📍 Berlin  Germany 
-
 - 02 / 07 / 2022  - Maar World Genesis - La cueva de ArteArtesania - 📍 Soller  Spain 
 
 <a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
