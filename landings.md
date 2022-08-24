@@ -17,9 +17,12 @@ key: last events
 # Earth landings
 ### Sonic events on planet earth
 
-<a href="/data.html " rel="Maar World" target="_blank"> Hybrid Set - Maar World Genesis</a> 
+<a href="/data.html " rel="Maar World" target="_blank"> Maar World era </a> 
 
-- 02 / 07 / 2022  - La cueva de ArteArtesania - 📍 Soller  Spain 
+- 04 / 09 / 2022  - Maar y Daiana Romero - Live - 📍 Berlin  Germany 
+- 03 / 09 / 2022  - Maar World Live AV Set - Chilean Conexion Festival in Monopol Berlin - 📍 Berlin  Germany 
+
+- 02 / 07 / 2022  - Maar World Genesis - La cueva de ArteArtesania - 📍 Soller  Spain 
 
 <a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
 
@@ -30,15 +33,15 @@ key: last events
 
 <a href="https://youtu.be/GYhV2qAPZ6w" rel="Trappist Live" target="_blank">TRAPPIST - 01 LIVE AV Head Brothers</a> 
 
-- 16 / 11 / 2019  - Pulse - Frecuencias - 1st Int. Summit of Electronic Music and Digital Art - 📍 Montevideo, Uruguay
-- 01 / 12 / 2019 Ábalos - 📍 Montevideo Uruguay
 - 18 / 12 / 2019 El Hangar - 📍 Buenos Aires Argentina
+- 01 / 12 / 2019 Ábalos - 📍 Montevideo Uruguay
+- 16 / 11 / 2019  - Pulse - Frecuencias - 1st Int. Summit of Electronic Music and Digital Art - 📍 Montevideo, Uruguay
 
 <html><a href="https://youtu.be/geiH3eAzo2c" rel="Exoplanetas Hybrid" target="_blank">TRAPPIST - 01 HYBRID SET - Exoplanetas + Head Brothers</a>
 </html>
 
   - 16/3/19 📍 Sauce de Portezuelo, Uruguay - 
-  - 05/01/19 📍 La pedrera, Uruguay
+  - 05/01/19 📍 La Pedrera, Uruguay
   - 31/3/18 📍 Paysandú,   Uruguay
   - 22/7/17 📍 Montevideo, Uruguay 
   - 15/7/17 📍 Montevideo, Uruguay
