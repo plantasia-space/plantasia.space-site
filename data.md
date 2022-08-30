@@ -16,7 +16,7 @@ key: hybrid-set-information
 
 Imagine a live or dj set hybridised with a movie soundtrack.   
 
-4 cardinal points to navigate, Air, Water, Fire and Earth, 
+4 cardinal points to navigate, Air, Water, Fire and Earth. 
 The DJ's, Hybrid, live Set can be composed of one or several of these elements representing different musical moods ranging from ambient, downtempo to deep house, always adapting to the note of the moment, the energy of the place. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
 CONTACT / BOOKINGS
