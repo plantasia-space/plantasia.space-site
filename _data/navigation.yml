@@ -2,7 +2,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      🛰  Hybrid-Sets
+      en      : &EN      🛰  Live-Sets
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
