@@ -20,7 +20,7 @@ I'm playing different sets depending on the occasion. I can offer:
   - Hybrid Set (Live+DJ)
   - Dj Sets 
   
-From forty minutes to for hours experiences in format of sonic or audiovisual journeys around cocepts like the classical elements, or expeditions to different solar systems, exoplanets and stars.
+From thirty minutes to for hours experiences in format of sonic or audiovisual journeys around concepts like the classical elements, or expeditions to different solar systems, exoplanets and stars.
 
 Each concept is represented under different musical moods ranging from ambient, downtempo to deep house, always adapting to the note of the moment. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
@@ -31,7 +31,7 @@ world.maar[at]gmail.com
   **Performance:** Live AV, Live, Hybrid, Dj set. 
   
   **Genres:** Free Electro / Union of world genres.
-  Artist using: Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
+  **Artist using:** Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
   Live AV is with custom Max Software and Synths. 
 
 <a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
