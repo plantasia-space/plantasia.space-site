@@ -20,9 +20,9 @@ I'm playing different sets depending on the occasion. I can offer:
   - Hybrid Set (Live+DJ)
   - Dj Sets 
   
-From thirty minutes to four hours experiences in format of sonic or audiovisual journeys around concepts like the classical elements, or expeditions to different solar systems, exoplanets and stars.
+From thirty minutes to four hours experiences in the format of sonic or audiovisual journeys around concepts like the classical elements, or expeditions to different solar systems, exoplanets, and stars.
 
-Each concept is represented under different musical moods ranging from ambient, downtempo to deep house, techno, always adapting to the note of the moment. The soundscapes and voices are elements that bring a singular narrative to each experience. 
+Each concept is represented under different musical moods ranging from ambient, and downtempo to deep house, and techno, always adapting to the note of the moment. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
 CONTACT / BOOKINGS
 
