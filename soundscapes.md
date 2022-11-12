@@ -13,18 +13,24 @@ titles:
   # @end locale config
 key: world-information
 ---
-# Hybrid Set 
 
-<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1332451228&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/castello" title="𝕄𝕒𝕒𝓇 - Castello:I - Hybrid Set - 7:12:2021" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Castello:I - Hybrid Set - 7:12:2021</a></div>
+# Ensayo (Live)
 
-`#Techno`{:.success} `#MinimalTechno`{:.success} `#Experimental`{:.success}`#Poetry`{:.success}
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1381597849&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/castelloii-live-set-11112022" title="𝕄𝕒𝕒𝓇 - Castello:II - Live Set - 11:11:2022" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Castello:II - Live Set - 11:11:2022</a></div>
 
+`#Techno`{:.success} `#Soundscape`{:.success} `#Experimental`{:.success}`#Poetry`{:.success}
 
 # Live Set 
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1293787315&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/eclipses-lunares-live" title="𝕄𝕒𝕒𝓇 - Eclipses Lunares - Live" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Eclipses Lunares - Live</a></div>
 
 `#Electronica`{:.success} `#Candombe`{:.success} `#Downtempo`{:.success} `#SpokenVoice`{:.success} `#Soundscapes`{:.success}
+
+# Hybrid Set 
+
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1332451228&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/castello" title="𝕄𝕒𝕒𝓇 - Castello:I - Hybrid Set - 7:12:2021" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Castello:I - Hybrid Set - 7:12:2021</a></div>
+
+`#Techno`{:.success} `#MinimalTechno`{:.success} `#Experimental`{:.success}`#Poetry`{:.success}
 
 # Radio Transmissions 
 
