@@ -19,7 +19,7 @@ key: last events
 
 <a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a> 
 
-- 08 / 12 / 2022  - Maar - Bycicle Dj Set - Musimovil Luna Llena 📍 Montevideo Uruguay 
+- 08 / 12 / 2022  - Maar - Bicycle Dj Set - Musimovil Luna Llena 📍 Montevideo Uruguay 
 - 01 / 12 / 2022  - Maar - Dj Set - Avant Garten 📍 Buenos Aires  Argentina 
 - 27 / 11 / 2022  - Maquina Grillo y Maar - Live - Absynth Multiespacio  📍 Mendoza  Argentina 
 - 26 / 11 / 2022  - Maar - Hybrid Set - Alles Ist Gut - Cultural Aurora  📍 Mendoza  Argentina 
