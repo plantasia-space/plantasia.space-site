@@ -15,7 +15,7 @@ key: welcome-world-information-
 <h1>   
 </h1>
 <h2>
-Entangled creations at the intersection of physical and digital worlds. 
+Designing novel tools for musical co-creation with a common goal: give humans and planet earth a safe environment to self-heal. 
 </h2>
 
 **WelcomE to my new old 𝛚Ⓞ尺♩ᵈ. I invite you to listen and play with my music:** <br>
@@ -32,8 +32,7 @@ Entangled creations at the intersection of physical and digital worlds.
 
 <a href="https://play.maar.world/?g=8&d=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
 
-A multiverse of entangled sonic worlds able to proliferate in the intersection digital and physical worlds, an imaginary born in the conjunction of scientific discoveries and the democratization of music and sound creation. Maar world is a proof of concept for a new era of aural creations in a creator-owned creative economy. 
-
+Entangled creations born at the intersection of the physical and digital worlds, an imaginary that crosses the borders of scientific discoveries, technological development and artistic creation. Maar world is a proof of concept for a new era of aural creations in a creator-owned creative economy. 
 
 Circumbinary planet, P-type, semi-major axis: 0.699±0.003 AU. 
 The discovery was made with a space based telescope (0.95 m **Kepler Telescope**).
