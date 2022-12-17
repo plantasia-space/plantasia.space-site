@@ -14,7 +14,7 @@ key: page-about
 
 # About 
 
-Marco Colasso Soca, aka Maar, is a sound artist who works on transdisciplinary creations at the intersection of art, science and technology. After studying Sound Design and Engineering in Montevideo and Santiago de Chile, Maar has collaborated with the sound and interaction design on many experiences including large-scale installations in America and Europe. Some highlights are the 2021 AI and Music S+T+ARTS Festival Hackathon award, sound design of the Uruguayan Pavilion at the Venice Architecture Biennale 2021 and 2018 and the Uruguayan and Chilean Pavilion at the Milan Expo 2015, also lead developer in the artist-run initiatives <a href="http://headbrothers.com" rel="Head Brothers Home Page" target="_blank">Head Brothers</a>, <a href="http://headbrothers.com/exoplanetas" rel="Exoplanetas Page" target="_blank">Exoplanetas</a> and Aventures Sonores. For more than a decade, Maar has been assembling a unique archive of soundscapes, poetry, testimonies, native South American chants, radio signals, and a selection of eclectic music to create experiences that connect people and cultures through sound.
+My name is Maar, I am a sound artist and engineer who works on transdisciplinary creations at the intersection of art, science, and technology. After studying Sound Design and Engineering in Montevideo and Santiago de Chile, I collaborated with sound and interaction design on many experiences including large-scale installations in America and Europe. Some highlights are the 2021 AI and Music S+T+ARTS Festival Hackathon award, the sound design of the Uruguayan Pavilion at the Venice Architecture Biennale 2021 and 2018 and the Uruguayan and Chilean Pavilion at the Milan Expo 2015, I was also lead developer in the artist-run initiatives <a href="http://headbrothers.com" rel="Head Brothers Home Page" target="_blank">Head Brothers</a>, <a href="http://headbrothers.com/exoplanetas" rel="Exoplanetas Page" target="_blank">Exoplanetas</a> and Aventures Sonores. For more than a decade, I have been assembling a unique archive of soundscapes, poetry, testimonies, native South American chants, radio signals, and a selection of eclectic music to create experiences that connect people and cultures through sound.
 
 
 ![Image](/img/maar-earth.jpg){:.border.rounded.shadow}
@@ -27,7 +27,7 @@ Marco Colasso Soca, aka Maar, is a sound artist who works on transdisciplinary c
 
 ![Image](/img/maar-8.jpg){:.border.rounded.shadow}
 
->The Suns, the Moons, the mountains, the hills, the stones, the caves, the clouds, the rain, the seas, the rivers, the lagoons, the flora and the fauna are also part of Maar ritual soundscapes. 
+>The Suns, the Moons, the mountains, the hills, the stones, the caves, the clouds, the rain, the seas, the rivers, the lagoons, the flora and the fauna are also part of my ritual soundscapes. 
 
 ![Image](/img/maar-1.jpg){:.border.rounded.shadow}
 
