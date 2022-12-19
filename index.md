@@ -22,7 +22,7 @@ Designing novel tools for musical co-creation.
 *Name: Rabbit Hole*<br>
 *Author: Maar*<br>
 *Release: 16/12/2022*<br>
-*Letter: Neo's phone message to the Machines.*<br>
+*Message: Neo's phone message to the Machines.*<br>
 *Song: 1 of 3.*<br>
 
 Please unmute your device and press play button. 
@@ -33,7 +33,6 @@ Please unmute your device and press play button.
 
 <a href="https://play.maar.world/?g=8&d=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
 
-`Goal: Give humans and planet earth a safe environment to self-heal.`{:.success} 
 
 Entangled creations born at the intersection of the physical and digital worlds, an imaginary that crosses the borders of scientific discoveries, technological development and artistic creation. Maar world is a proof of concept for a new era of aural creations in a creator-owned creative economy. 
 
@@ -61,3 +60,4 @@ The discovery was made with a space based telescope (0.95 m **Kepler Telescope**
 | Eccentricity          | 0.024+0.025−0.017 |
 | Discovery year        | 2019              |
 
+`Give humans and planet earth a safe environment to self-heal.`{:.success} 
