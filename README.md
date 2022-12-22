@@ -7,7 +7,7 @@ Last measurments found an archaic substratum beyond rationality, in the pure exp
 ## Theme
 
 Web based on
-| [Home](https://tianqi.name/jekyll-TeXt-theme/test/) | Home page |
+| [TeXt](https://github.com/kitian616/jekyll-TeXt-theme) | Home page |
 
 ## License
 
