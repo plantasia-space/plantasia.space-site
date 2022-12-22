@@ -24,9 +24,10 @@ From thirty minutes to four hours experiences in the format of sonic or audiovis
 
 Each concept is represented under different musical moods ranging from ambient, and downtempo to deep house, and techno, always adapting to the note of the moment. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
-CONTACT / BOOKINGS
-
+CONTACT / BOOKINGS <br>
 world.maar[at]gmail.com
+
+<a href="https://drive.google.com/drive/folders/1kq9b4TAnvlZtHXH6MLB3IdEEe50tJTx2?usp=sharing" rel="EPK" target="_blank">PHOTOS EPK</a>
 
   **Performance:** Live AV, Live, Hybrid, Dj set. 
   
