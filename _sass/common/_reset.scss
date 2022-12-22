@@ -127,12 +127,14 @@ h5 {
 h6 {
   font-size: map-get($base, font-size-h6);
   color: $text-color-l;
+  font-family: 'Orbitron', sans-serif;
   @include media-breakpoint-down(md) {
     font-size: map-get($base, font-size-h6-sm);
   }
 }
-
+/* STYLE FOR THE LINKS INCLUDING MENU*/
 a {
+  font-family: 'Orbitron', sans-serif;
   font-weight: map-get($base, font-weight-bold);
   @include link-colors($main-color-1);
 }
