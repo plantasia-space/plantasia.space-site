@@ -14,9 +14,7 @@ key: welcome-world-information-
 ---
 <h1>   
 </h1>
-<h2>
-Designing novel tools for musical co-creation. 
-</h2>
+<h2>Interplanetary Music</h2>
 
 **WelcomE to my new old 𝛚Ⓞ尺♩ᵈ. I invite you to listen and play with my music:** <br>
 *Name: Rabbit Hole*<br>
@@ -25,7 +23,8 @@ Designing novel tools for musical co-creation.
 *Message: Neo's phone message to the Machines.*<br>
 *Song: 1 of 3.*<br>
 
-Please unmute your device and press play button. 
+Please <a href="https://support.apple.com/en-gb/HT208353" rel="unmute" target="_blank"> unmute</a> 
+your device and press PLAY ▶️ button. 
 
 <div class="container">
   <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&d=0&c=0" style="border: 0" ></iframe>
