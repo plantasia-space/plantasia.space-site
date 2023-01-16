@@ -12,7 +12,7 @@ titles:
   # @end locale config
 key: welcome-world-information-
 ---
-<h1>Interplanetary Music</h1>
+<h1>Entangled Worlds</h1>
 
 **WelcomE to my new old 𝛚Ⓞ尺♩ᵈ. I invite you to listen and play with my music:** <br>
 *Name: Rabbit Hole*<br>
