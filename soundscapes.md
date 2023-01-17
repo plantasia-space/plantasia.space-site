@@ -61,6 +61,11 @@ not understand. [Text - Pablo Montauban].
 
 # Realeases  
 
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5upTECL8cBpRNvJ23RW6fE?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/08TNPrx5qZTXWT47fXTT6O?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1006884346&color=%230013ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/aventuresonores" title="Aventures Sonores" target="_blank" style="color: #cccccc; text-decoration: none;">Aventures Sonores</a> · <a href="https://soundcloud.com/aventuresonores/sets/head-brothers-el-tiempo-v1" title="Head Brothers - El Tiempo" target="_blank" style="color: #cccccc; text-decoration: none;">Head Brothers - El Tiempo</a></div>
 
 
