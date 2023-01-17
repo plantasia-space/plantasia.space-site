@@ -14,12 +14,17 @@ key: welcome-world-information-
 ---
 <h1>Entangled Worlds</h1>
 
-**WelcomE to my new old 𝛚Ⓞ尺♩ᵈ. I invite you to listen and play with my music:** <br>
-*Name: Rabbit Hole*<br>
-*Author: Maar*<br>
-*Release: 16/12/2022*<br>
-*Message: Neo's phone message to the Machines.*<br>
-*Song: 1 of 3.*<br>
+Welcome to Entangled Worlds, an initiative that explores the intersection of digital and physical worlds through the development of intelligent music players and meta-musical instruments. 
+
+A worldbuilding project inspired by history, science fiction, visual arts, music making. A proof of concept for the development of new tools in a creator-owned economy. This may be the first of many entangled worlds. 
+
+| #    | MW:1                                 |
+|-------------|--------------------------------------|
+| *Name:*    | Rabbit Hole                          |
+| *Author:*   | Maar                                 |
+| *Release:*  | 25/12/2022                           |
+| *Comment:* | Neo's phone message to the Machines. |
+| *Song:*    | 1 of 3.                              |
 
 Please <a href="https://support.apple.com/en-gb/HT208353" rel="unmute" target="_blank"> unmute</a> 
 your device and press PLAY ▶️ button. 
@@ -31,11 +36,8 @@ your device and press PLAY ▶️ button.
 <a href="https://play.maar.world/?g=8&d=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
 
 
-Entangled creations born at the intersection of the physical and digital worlds, an imaginary that crosses the borders of scientific discoveries, technological development and artistic creation. Maar world is a proof of concept for a new era of aural creations in a creator-owned creative economy. 
-
 Circumbinary planet, P-type, semi-major axis: 0.699±0.003 AU. 
 The discovery was made with a space based telescope (0.95 m **Kepler Telescope**).
-
 
 
 |           | Solar System parameters  |
