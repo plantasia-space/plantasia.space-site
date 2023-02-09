@@ -12,11 +12,11 @@ titles:
   # @end locale config
 key: welcome-world-information-
 ---
-<h1>Entangled Worlds</h1>
+<h1>Maar World</h1>
 
-Welcome to Entangled Worlds, an initiative that explores the intersection of digital and physical worlds through the development of intelligent music players and meta-musical instruments. 
+Welcome to Maar World, an initiative that explores the intersection of digital and physical worlds through the development of intelligent music players and meta-musical instruments. 
 
-A worldbuilding project inspired by history, science fiction, visual arts, music making. A proof of concept for the development of new tools in a creator-owned economy. This may be the first of many entangled worlds. 
+A worldbuilding project inspired by history, science fiction, visual arts, music making. A proof of concept for the development of new tools in a creator-owned economy. This may be the first of many Entangled Worlds. 
 
 | #    | MW:1                                 |
 |-------------|--------------------------------------|
