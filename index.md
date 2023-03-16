@@ -28,10 +28,10 @@ Please <a href="https://support.apple.com/en-gb/HT208353" rel="unmute" target="_
 your device and press PLAY ▶️ button. 
 
 <div class="container">
-  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&d=0&c=0" style="border: 0" ></iframe>
+  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=0" style="border: 0" ></iframe>
 </div>
 
-<a href="https://play.maar.world/?g=8&d=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
+<a href="https://play.maar.world/?g=8&s=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
 
 
 Circumbinary planet, P-type, semi-major axis: 0.699±0.003 AU. 
