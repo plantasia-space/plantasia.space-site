@@ -1,18 +1,12 @@
-///
-// Skin: Dark
-// Author: Tian Qi
-// Email: kitian616@outlook.com
-///
-
 // main colors
-$main-color-1:     rgb(0, 255, 0);;
-$text-color-1:     rgba(#662D91, .8);
+$main-color-1:     #ff33cc;
+$text-color-1:     #33ffff;
 
 $main-color-2:     #ffffff;
-$text-color-2:     rgba(rgb(0, 0, 0), .8);
+$text-color-2:     rgba(rgb(234, 234, 234), .8);
 
 $main-color-3:     rgba(#000000, 1);
-$text-color-3:     rgb(0, 255, 0);
+$text-color-3:     #ffffff;
 
 $main-color-theme-light: rgba(#000, .8);
 $main-color-theme-dark:  rgba(rgb(234, 234, 234), .8);
@@ -20,12 +14,12 @@ $main-color-theme-dark:  rgba(rgb(234, 234, 234), .8);
 // page background
 $background-color: #000000;
 
-// text colors
-$text-color-theme-light-d: #000;
-$text-color-theme-light:   #222;
+// text colors 
+$text-color-theme-light-d: #33ffff;
+$text-color-theme-light:   #ffffff;
 $text-color-theme-light-l: #888;
 
-$text-color-theme-dark-d:  rgb(0, 255, 0);
+$text-color-theme-dark-d:  #ff33cc;
 $text-color-theme-dark:    rgba(#ffffffe6, .9);
 $text-color-theme-dark-l:  rgba(#939393e6, .9);
 
@@ -44,7 +38,7 @@ $footer-background: $main-color-3;
 
 // border and shadow colors
 $border-color:     mix(#fff, $background-color, 20%);
-$border-color-l:   mix(#fff, $background-color, 10%);
+$border-color-l:   mix(#ffffff, $background-color, 10%);
 $decorate-color:   rgba(#fff, .1);
 $mask-color:       rgba(#000, .9);
 $select-color:     rgba($main-color-1, .5);
