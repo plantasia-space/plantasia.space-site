@@ -12,7 +12,7 @@ card_description: In the midst of a raging storm at sea, the waves are a symphon
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
-player: https://play.maar.world/?g=334&s=1&c=3
+player: https://play.maar.world/?g=334&s=2&c=3
 titles:
   en      : &EN       Sky Sounds.3 Card III
 

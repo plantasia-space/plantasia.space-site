@@ -12,7 +12,7 @@ card_description: At the edge of a waterfall, the contrast between water and the
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
-player: https://play.maar.world/?g=334&s=1&c=4
+player: https://play.maar.world/?g=334&s=2&c=4
 titles:
   en      : &EN       Sky Sounds.3 Card IV
 
