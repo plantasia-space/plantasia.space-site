@@ -1,5 +1,5 @@
 ---
-layout: card
+layout: articles
 permalink: /DWE1406
 show_title: false
 header: false
@@ -20,3 +20,82 @@ key: skylight ent card
 noindex: true
 footer: false
 ---
+
+<div class="hero hero--dark" style='height: 233px; background-image: url("/img/433.1b.jpg");'>
+  <div class="hero__content">  
+  </div>
+</div>
+
+
+<br><br>
+
+<div class="item">
+  <div class="item__image">
+  <img class="image image--lg" src="{{ page.card_image}}" style="margin:0 auto; display:block;"/>
+  </div>
+  <div class="item__content">
+    <div class="item__header">
+      <div style="text-align: center;">
+        <h2 style="color: lawngreen;">{{ page.card_title }}:</h2>
+      </div>    
+    </div>
+    <div class="item__description">
+      <p>{{ page.card_description }}</p>
+    </div>
+  </div>
+</div>
+
+<br><br>
+
+<div style="text-align: center;">
+
+
+<h3 style="color: lawngreen;">SkySounds.1</h3><br>
+
+<a href="https://maar.world/EBT5599"	target="_blank"> 1-Water and earth soundscapes from the north. </a><br><br>
+<a href="https://maar.world/DJX9483"	target="_blank"> 2-Groundwater comes into contact with magma.  </a><br><br>
+<a href="https://maar.world/UMN2909"	target="_blank"> 3-Volcanic craters on the land result from volcanic activity. </a><br><br>
+<a href="https://maar.world/TMK694"	target="_blank"> 4-The voice of water is heard.  </a><br><br>
+<a href="https://maar.world/SVA679"	target="_blank"> 5-The voice of fire is heard. </a><br><br>
+<a href="https://maar.world/CRZ5922"	target="_blank"> 6-Viewing time from a different angle let you perceive global water cycles.</a><br><br>
+<a href="https://maar.world/TOP2071"	target="_blank"> 7-Circular precipitation, ice melt, and water flow. </a><br><br>
+<a href="https://maar.world/LAQ6106"	target="_blank"> 8-The acoustic coloration is caused by echoes, reverberations and due to effects related to climatic factors.</a><br><br>
+<a href="https://maar.world/KME3578"	target="_blank"> 9-Water transports heat and regulate climate. </a><br><br>
+<a href="https://maar.world/BCC4992"	target="_blank"> 10-Healthy soundscape prevents polarization. </a><br><br>
+<a href="https://maar.world/DVG9370"	target="_blank"> 11-All the resources are valuable. </a><br><br>
+
+<h3 style="color: lawngreen;">SkySounds.2</h3><br>
+
+<a href="https://maar.world/LYN4636"	target="_blank"> 12-Soundscapes from the East. </a><br><br>
+<a href="https://maar.world/ROH1693"	target="_blank"> 13-An appealing land for inter-species oral communication.  </a><br><br>
+<a href="https://maar.world/BZD8282"	target="_blank"> 14-Creatures from the sky singing and descending to the ground. </a><br><br>
+<a href="https://maar.world/AXP3732"	target="_blank"> 15-Strange birds can ride the wind in groups of six.  </a><br><br>
+<a href="https://maar.world/KXQ7964"	target="_blank"> 16-Rainforests are full of life. </a><br><br>
+<a href="https://maar.world/ZHQ9392"	target="_blank"> 17-Inside is the outside; explore the caves. </a><br><br>
+<a href="https://maar.world/ROK6739"  target="_blank"> 18-Explore the caverns and find features beyond their depths. </a><br><br>
+<a href="https://maar.world/ZPH9206"	target="_blank"> 19-Feet the tension in the clouds through touch. </a><br><br>
+<a href="https://maar.world/SIX7919"	target="_blank"> 20-The present exists eternally. </a><br><br>
+<a href="https://maar.world/VKS9121"	target="_blank"> 21-The sounds reaching your ear is analogous to the state of the physical environment </a><br><br>
+
+<h3 style="color: lawngreen;">SkySounds.3</h3><br>
+
+<a href="https://maar.world/PHR6198"	target="_blank"> 22-Electricity comes from the energy of the sun's. </a><br><br>
+<a href="https://maar.world/VHQ3300"	target="_blank"> 23-Soundscapes from the south.  </a><br><br>
+<a href="https://maar.world/IWG8041"	target="_blank"> 24-Life mainly develops in the air and under water. </a><br><br>
+<a href="https://maar.world/SHF4580"	target="_blank"> 25-The sea and the waves. </a><br><br>
+<a href="https://maar.world/QUP1235"	target="_blank"> 26-Contrast between water and the form taken by the movement of the water on the surface. </a><br><br>
+<a href="https://maar.world/CXX8705"	target="_blank"> 27-A shining mirror. </a><br><br>
+<a href="https://maar.world/IBM5970"	target="_blank"> 28-Species capable of perceiving the future existence.  </a><br><br>
+<a href="https://maar.world/BQA976"	target="_blank"> 29-Species see behind their eyes. </a><br><br>
+<a href="https://maar.world/YAC2340"	target="_blank"> 30-Near-opposites attract. </a><br><br>
+<a href="https://maar.world/XEW6454"	target="_blank"> 31-The voices fit in relation to all other natural sounds, in terms of frequency and rhythm. </a><br><br>
+<a href="https://maar.world/BWN1651"	target="_blank"> 32-Efforts to preserve aquatic species are supported by a worldwide system. </a><br><br>
+<a href="https://maar.world/NTH7336"	target="_blank"> 33-The aquifer is estimated at about 34 000 km¹¹. </a><br><br>
+  </div>
+
+
+<div class="hero hero--dark" style='height: 233px; background-image: url("/img/433.2.jpg");'>
+  <div class="hero__content">  
+  </div>
+</div>
+
