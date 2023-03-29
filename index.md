@@ -29,7 +29,7 @@ your device and press PLAY ▶️ button.
 
 <div class="container">
   <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=0" style="border: 0" ></iframe>
-</div>
+</div> 
 
 <a href="https://play.maar.world/?g=8&s=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
 
