@@ -2,7 +2,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      🛰  Live-Sets
+      en      : &EN      Live-Sets
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -12,7 +12,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      🗺  Earth-Landings
+      en      : &EN      Earth-Landings
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -22,7 +22,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      🪗  Soundscapes
+      en      : &EN      Soundscapes
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -32,7 +32,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN       🌈 About
+      en      : &EN      About
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
