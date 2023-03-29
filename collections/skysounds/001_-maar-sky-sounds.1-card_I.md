@@ -1,6 +1,5 @@
 ---
 layout: card
-permalink: /play.maar.world/EBT5599
 show_title: false
 header: false
 
