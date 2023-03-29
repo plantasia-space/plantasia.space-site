@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /IWG8041
 show_title: false
 header: false
 

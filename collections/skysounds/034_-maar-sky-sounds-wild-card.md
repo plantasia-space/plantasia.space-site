@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /DWE1406
 show_title: false
 header: false
 

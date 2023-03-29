@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /PHR6198
 show_title: false
 header: false
 

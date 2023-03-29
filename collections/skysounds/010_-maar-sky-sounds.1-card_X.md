@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /BCC4992
 show_title: false
 header: false
 

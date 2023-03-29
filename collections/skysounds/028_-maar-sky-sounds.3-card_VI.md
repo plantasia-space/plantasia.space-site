@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /IBM5970
 show_title: false
 header: false
 

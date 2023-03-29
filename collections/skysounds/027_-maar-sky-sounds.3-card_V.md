@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /CXX8705
 show_title: false
 header: false
 

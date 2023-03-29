@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /SHF4580
 show_title: false
 header: false
 

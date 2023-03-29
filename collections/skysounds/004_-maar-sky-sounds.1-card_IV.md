@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /TMK694
 show_title: false
 header: false
 

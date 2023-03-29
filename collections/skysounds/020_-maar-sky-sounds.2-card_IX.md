@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /SIX7919
 show_title: false
 header: false
 

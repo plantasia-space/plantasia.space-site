@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /ZHQ9392
 show_title: false
 header: false
 

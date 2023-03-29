@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /QUP1235
 show_title: false
 header: false
 

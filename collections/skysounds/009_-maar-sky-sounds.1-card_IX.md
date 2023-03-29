@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /KME3578
 show_title: false
 header: false
 

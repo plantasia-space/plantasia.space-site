@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /LYN4636
 show_title: false
 header: false
 

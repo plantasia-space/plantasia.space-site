@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /SVA679
 show_title: false
 header: false
 

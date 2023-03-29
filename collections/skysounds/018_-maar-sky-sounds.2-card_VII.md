@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /ROK6739
 show_title: false
 header: false
 

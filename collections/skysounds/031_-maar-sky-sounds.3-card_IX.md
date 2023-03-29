@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /XEW6454
 show_title: false
 header: false
 

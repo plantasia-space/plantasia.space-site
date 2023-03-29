@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /ROH1693
 show_title: false
 header: false
 

@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /VKS9121
 show_title: false
 header: false
 

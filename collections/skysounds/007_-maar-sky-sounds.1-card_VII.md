@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /TOP2071
 show_title: false
 header: false
 

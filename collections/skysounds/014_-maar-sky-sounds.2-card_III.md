@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /BZD8282
 show_title: false
 header: false
 

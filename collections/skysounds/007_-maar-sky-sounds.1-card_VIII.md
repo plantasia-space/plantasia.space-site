@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /LAQ6106
 show_title: false
 header: false
 

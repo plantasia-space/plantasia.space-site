@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /DVG9370
 show_title: false
 header: false
 

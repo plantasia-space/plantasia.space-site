@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: /BWN1651
 show_title: false
 header: false
 
