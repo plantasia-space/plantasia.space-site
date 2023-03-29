@@ -1,5 +1,6 @@
 ---
 layout: card
+permalink: play.maar.world/DJX9483
 show_title: false
 header: false
 
