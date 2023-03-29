@@ -2,6 +2,7 @@
 layout: card
 show_title: false
 header: false
+permalink: /UMN2909
 
 cover: https://www.dropbox.com/s/padgzp4ai4ydh3o/Thumb_SkySounds_1_3.jpg?raw=1
 suit_title: SkySounds.1
