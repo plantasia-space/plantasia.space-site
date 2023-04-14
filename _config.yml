@@ -54,7 +54,7 @@ author:
 
 ## => GitHub Repository (if the site is hosted by GitHub)
 ##############################
-repository: maar34/maar.world
+repository: maar34/maar.world-site
 repository_tree: main
 
 
@@ -64,7 +64,6 @@ paths:
   root    : # title link url, "/" (default)
   home    : # home layout url, "/" (default)
   archive : # "/archive.html" (default)
-
   rss     : # "/feed.xml" (default)
 
 
@@ -201,17 +200,19 @@ exclude:
   - /test
   - /vendor
 
-collections_dir: docs
+collections_dir: collections
 collections:
-  docs:
+  genesis:
     output: true
-  sample_page:
+  lab:
     output: true
-  sample_articles:
+  pages:
     output: true
-  sample_languages:
+  skysounds:
     output: true
-    
+
+# each time you add a folder, then need to add collections output true and name
+
 defaults:
   - scope:
       path: ""
@@ -222,9 +223,21 @@ defaults:
       license: true
       aside:
         toc: true
-      show_edit_on_github: true
+      show_edit_on_github: false
       show_subscribe: true
       pageview: true
+  ## lab
+  - scope:
+      path: ""
+      type: lab
+    values:
+      nav_key: samples
+  - scope:
+      path: ""
+      type: genesis
+    values:
+      nav_key: samples
+      show_date: false
 
 
 ## => Plugins
