@@ -12,7 +12,7 @@ titles:
   # @end locale config
 key: welcome-world-information
 ---
-
+♥️
 A worldbuilding project inspired by history, science fiction, visual arts, music making. A proof of concept for the development of new tools in a creator-owned economy. This may be the first of many Entangled Worlds. 
 
 | #    | MW:1                                 |
