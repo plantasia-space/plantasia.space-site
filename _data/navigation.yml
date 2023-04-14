@@ -8,7 +8,7 @@ header:
       en-CA   : *EN
       en-AU   : *EN
       # @end locale config
-    url: /data.html
+    url: /live
 
   - titles:
       # @start locale config
@@ -18,7 +18,7 @@ header:
       en-CA   : *EN
       en-AU   : *EN
       # @end locale config
-    url: /landings.html
+    url: /landings
 
   - titles:
       # @start locale config
@@ -28,7 +28,7 @@ header:
       en-CA   : *EN
       en-AU   : *EN
       # @end locale config
-    url: /soundscapes.html
+    url: /soundscapes
 
   - titles:
       # @start locale config
@@ -39,11 +39,11 @@ header:
       en-AU   : *EN
 
       # @end locale config
-    url: /about.html
+    url: /about
 
 #  - titles:
       # @start locale config
-#      en      : &EN       🧪 𝕄⍺⍺𝓇-Lab
+#      en      : &EN        Lab
 #      en-GB   : *EN
 #      en-US   : *EN
 #      en-CA   : *EN
