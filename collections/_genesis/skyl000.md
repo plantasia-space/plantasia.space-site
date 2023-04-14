@@ -1,5 +1,6 @@
 ---
 layout: article
+permalink: /skyl000
 show_title: false
 
 titles:
@@ -14,9 +15,9 @@ titles:
 key: world-information
 ---
 
-# Skylight.1
+# Skylight.3
 
-Soundscapes from the north of Maar World, recorded when groundwater comes into contact with magma. 
+Soundscapes from the south of Maar World. Storms and underwater life recordings. 
 
 - Master: <a href="https://www.facebook.com/IO-Estudios-256499521035781/" rel="I/O Studios" target="_blank">I/O Studios</a>  by Nicolas Panzl and Diego Rey, Montevideo Uruguay.
 - Artwork: <a href="http://vrglit.ch/" rel="vrglitch" target="_blank">vrglitch</a> + Maar
@@ -26,8 +27,9 @@ Soundscapes from the north of Maar World, recorded when groundwater comes into c
 
 Thanks for purchasing this composition, hope you enjoy it. 
 
-<a href="https://www.dropbox.com/s/kcshhpb9sv8xcsp/01%20Skylight.1.mp3?dl=0" rel="mp3" target="_blank">mp3</a> <br>
+<a href="https://www.dropbox.com/s/ozs99n3qzi432er/03%20Skylight.3.mp3?dl=0" rel="mp3" target="_blank">mp3</a> <br>
 
-<a href="https://www.dropbox.com/s/jm32r10gcsokoxa/Skylight.1.wav?dl=0" rel="wav" target="_blank">uncompressed wav</a> <br>
-
-![Image](/img/SL.1.Artboard.png){:.border.rounded.shadow}
+<a href="https://www.dropbox.com/s/ohkhaaqnic6p047/Skylight.3.wav?dl=0" rel="wav" target="_blank">uncompressed wav</a> <br>
+<br>
+ 
+![Image](/img/SL.3.Artboard.png){:.border.rounded.shadow}

@@ -1,5 +1,6 @@
 ---
 layout: article
+permalink: /about
 show_title: false
 titles:
   # @start locale config

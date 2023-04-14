@@ -1,5 +1,6 @@
 ---
 layout: article
+permalink: /rthw00
 show_title: false
 
 titles:

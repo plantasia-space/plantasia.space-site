@@ -1,5 +1,6 @@
 ---
 layout: article
+permalink: /revx000
 show_title: false
 
 titles:

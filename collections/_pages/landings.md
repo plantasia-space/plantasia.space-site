@@ -1,7 +1,7 @@
 ---
 layout: article
 show_title: false
-
+permalink: /landings
 titles:
   # @start locale config
   en      : &EN       Earth-landings

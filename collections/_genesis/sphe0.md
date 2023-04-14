@@ -1,5 +1,6 @@
 ---
 layout: article
+permalink: /sphe0
 show_title: false
 
 titles:

@@ -1,7 +1,7 @@
 ---
 layout: article
+permalink: /skyl0
 show_title: false
-
 titles:
   # @start locale config
   en      : &EN       sl1
@@ -14,9 +14,9 @@ titles:
 key: world-information
 ---
 
-# Skylight.2
+# Skylight.1
 
-Soundscapes from the East of Maar World. Air creatures singing, landing into the surface of the exoplanet. 
+Soundscapes from the north of Maar World, recorded when groundwater comes into contact with magma. 
 
 - Master: <a href="https://www.facebook.com/IO-Estudios-256499521035781/" rel="I/O Studios" target="_blank">I/O Studios</a>  by Nicolas Panzl and Diego Rey, Montevideo Uruguay.
 - Artwork: <a href="http://vrglit.ch/" rel="vrglitch" target="_blank">vrglitch</a> + Maar
@@ -24,12 +24,10 @@ Soundscapes from the East of Maar World. Air creatures singing, landing into the
 
 ### Download
 
-
 Thanks for purchasing this composition, hope you enjoy it. 
 
-<a href="https://www.dropbox.com/s/avos4w7arjnyo8i/02%20Skylight.2.mp3?dl=0" rel="mp3" target="_blank">mp3</a> <br>
+<a href="https://www.dropbox.com/s/kcshhpb9sv8xcsp/01%20Skylight.1.mp3?dl=0" rel="mp3" target="_blank">mp3</a> <br>
 
-<a href="https://www.dropbox.com/s/csxilvusxti7rjg/Skylight.2.wav?dl=0" rel="wav" target="_blank">uncompressed wav</a> <br>
+<a href="https://www.dropbox.com/s/jm32r10gcsokoxa/Skylight.1.wav?dl=0" rel="wav" target="_blank">uncompressed wav</a> <br>
 
-![Image](/img/SL.2.Artboard.png){:.border.rounded.shadow}
-
+![Image](/img/SL.1.Artboard.png){:.border.rounded.shadow}
