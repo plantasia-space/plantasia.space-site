@@ -10,7 +10,7 @@ header:
 
 article_header:
   actions:
-    - text: <i class="far fa-envelope" style="color:#32ffff;"></i> Join the Exploration 
+    - text: <i class="far fa-envelope" style="color:#32ffff;"></i> Join the Adventure 
       type: error
       url: /subscribe
 #    - text: Shop now
