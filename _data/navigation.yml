@@ -2,7 +2,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      Live-Sets
+      en      : &EN     <i class="fas fa-hand-holding-heart" style="color:#33ffff;"></i> Live-Sets
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -12,7 +12,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      Earth-Landings
+      en      : &EN     <i class="fas fa-globe-americas" style="color:#1fffff;"></i> Earth-Landings
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -22,7 +22,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      Soundscapes
+      en      : &EN      <i class="fas fa-tree" style="color:#1fffff;"></i> Soundscapes
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -32,7 +32,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      About
+      en      : &EN      <i class="fas fa-rainbow" style="color:#1fffff;"></i> About
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -41,12 +41,12 @@ header:
       # @end locale config
     url: /about
 
-#  - titles:
+  #- titles:
       # @start locale config
-#      en      : &EN        Lab
+ #     en      : &EN        <i class="fas fa-flask" style="color:#32ffff;"></i> Lab
 #      en-GB   : *EN
 #      en-US   : *EN
 #      en-CA   : *EN
 #      en-AU   : *EN
 #      # @end locale config
-#    url: /lab.html
+ #   url: /lab.html
