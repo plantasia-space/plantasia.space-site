@@ -1,0 +1,54 @@
+---
+title: Hola ENT Players 3-3
+layout: article
+permalink: /lab/hw3-es.html
+cover: https://dl.dropboxusercontent.com/s/jvrnu440mhxrbr2/3-ent-player-red.jpg?raw=1
+tags: EW
+---
+
+Inspirada en Tacuabé con su instrumento musical y la librería de instrumentos de Shika Shika, abre el Lab de Maar World, un terreno abierto para la exploración de nuevos formatos de creación y difusión sonora, una bitácora de experimentos de todos los tiempos unidos por la escucha cómo leitmotif.
+
+### Gracias 
+Mi gratitud eterna a mi familia, por su apoyo incondicional. A Head Brothers, Queguay y Exoplanetas por tantas experiencias, por su talento, amistad, y dedicación compartida. A los "Ángeles" Gabriel, por las aventuras vividas. 
+
+### Codigo 
+
+Este proyecto utiliza p5.js y está publicado bajo la licencia MIT.
+<a href="https://github.com/maar34/ENT-cards-player" rel="Maar World Player" target="_blank"> CODIGO P5.js </a> 
+
+10.Flauta Flor Azteca
+{:.success}
+
+<div class="container">
+  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=12" style="border: 0" ></iframe>
+</div>
+
+<a href="https://play.maar.world/?g=8&s=0&c=12 " rel="Maar World Player" target="_blank"> Play full screen</a> 
+
+11.Flauta Poliglobular Maya
+{:.success}
+
+<div class="container">
+  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=13" style="border: 0" ></iframe>
+</div>
+
+<a href="https://play.maar.world/?g=8&s=0&c=13 " rel="Maar World Player" target="_blank"> Play full screen</a> 
+
+12.Antara Nazca
+{:.success}
+
+<div class="container">
+  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=14" style="border: 0" ></iframe>
+</div>
+
+<a href="https://play.maar.world/?g=8&s=0&c=14 " rel="Maar World Player" target="_blank"> Play full screen</a> 
+
+13.Silbato de la Muerte Azteca
+{:.success}
+
+<div class="container">
+  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=15" style="border: 0" ></iframe>
+</div>
+
+<a href="https://play.maar.world/?g=8&s=0&c=15 " rel="Maar World Player" target="_blank"> Play full screen</a> 
+
