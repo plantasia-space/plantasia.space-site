@@ -2,8 +2,7 @@
 layout: articles
 title: Lab
 show_title: true
-excerpt: >
-    🧪🧫🔔
+excerpt: "Step into a time lab. <br> A public bitacora to share new and old creations." 
 show_date: false
 permalink: /lab
 key: lab
@@ -23,6 +22,6 @@ article_header:
   height: 66vh
   type: overlay
   background_image:
-    src: /img/maar-18.jpg
+    src: /img/lab/genesis-lab.jpg
 
 ---
