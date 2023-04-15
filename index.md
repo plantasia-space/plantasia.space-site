@@ -1,59 +1,128 @@
 ---
-layout: article
-show_title: false
-titles:
-  # @start locale config
-  en      : &EN       Welcome to Maar world.
-  en-GB   : *EN
-  en-US   : *EN
-  en-CA   : *EN
-  en-AU   : *EN
+layout: landing
+title: "MAAR WORLD"
+excerpt: "Step into the worldbuilding project of Maar,  a circumbinary exoplanet discovered using the Kepler Telescope and recreated with Art and AI."
+permalink: /index.html
 
-  # @end locale config
-key: welcome-world-information
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgba(255, 0, 222, 1), rgba(255, 0, 0, .5),)'
+
+article_header:
+  actions:
+    - text: <i class="far fa-envelope" style="color:#32ffff;"></i> Join the Exploration 
+      type: error
+      url: /documentation.html
+#    - text: Shop now
+#      type: info
+#      url: /cards.html
+      
+  height: 100vh
+  theme: ocean
+  background_color: '#203028' 
+  background_image:
+  #  gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
+    src: /img/landing/433-mw-index.gif
+data:
+  sections:
+    - title: "ENT:  <br>  Developing a new paradigm for Music Distribution,  <br> Making, and Listening"
+      excerpt: "Think about multidimensional sounding objects that exist both physically and on the blockchain, <br> serving as portals to unique sound adventures."
+      actions:
+      - text: <i class="fas fa-hourglass-half" style="color:#32ffff;"></i> Soon
+        type: outline-theme-dark
+       # url: https://play.maar.world/?g=333&s=0&c=0
+      theme: dark
+      background_image:
+      gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
+      src: /img/landing/2_3_ent.jpeg
+      image:
+        src: /img/landing/ent.png
+        is_row: true
+        full_width: true
+        style: "max-width: 1000px;"
+
+    - title: ReDistribution
+      children:
+        - title: '34% Regeneration <i class="fas fa-arrow-down"></i>'
+          image:
+            src: /img/landing/mother-earth.png
+            url: /img/landing/mother-earth.png
+            style: "max-width: 200px; max-height: 200px"
+            is_row: true
+        - title: '33% Artists <i class="fas fa-arrow-down"></i>'
+          image:
+            src: /img/landing/artists-community.jpg
+            style: "max-width: 200px; max-height: 200px"
+            is_row: true
+        - title: '33% Development <i class="fas fa-arrow-down"></i>'
+          image:
+            src: /img/landing/development-new-technologies.jpg
+            style: "max-width: 200px; max-height: 200px"
+            is_row: true
+
+        
+      background_color: "#000000"
+    - title:  "Soundscapes: <br> Experience live, hybrid, DJ sets, and releases."
+      excerpt: Visit Alpha Centaury, Trappist-1, and other Sound Adventures. You will be able to gain exclusive access to explore my archive of soundscapes, poetry, testimonies, and music from diverse cultures of mother earth.  
+      actions:
+        - text: <i class="fab fa-soundcloud" style="color:#32ffff;"></i> Soundcloud
+          url: https://soundcloud.com/maarworld
+        - text: <i class="far fa-play-circle" style="color:#32ffff;"></i> Start Listening
+          url: /soundscapes
+          type: error
+      image:
+        src: /img/landing/maar-world-banner-ovni.jpg
+        is_row: true
+        full_width: true
+        style: "max-width: 1000px;"
+    - title: "The Lab: Enter Experimentation Zone"
+      theme: dark
+      excerpt: is an invitation to step into a timeless space of exploration, where old and new projects are shared. It is a place where the creation of a new generation of ENT players is documented, with a focus on empowering sound listeners and makers.
+      actions:
+        - text: '<i class="fab fa-github" style="color:#32ffff;"></i> GitHub'
+          type: outline-theme-dark
+          url: https://github.com/maar34/EntangledWorlds-Web-Player
+        - text: '  <i class="fas fa-flask" style="color:#32ffff;"></i> Open Soon'
+          type: error
+      ##    Enter the Lab
+      ##    url: /lab
+      background_color: "#663399"
+
+    - title:  "Earth Landings"
+      excerpt:  "Keep track of past and upcoming events with my Earth Landings calendar. <br> From concerts to festivals to art exhibitions."
+
+      actions:
+        - text: <i class="fas fa-calendar-day" style="color:#32ffff;"></i> View Calendar
+        # Enter the Lab
+          url: /landings
+      image:
+        src: /img/maar-earth.jpg
+        is_row: true
+        full_width: true
+        style: "max-width: 1000px;"
+    - title: <i class="fas fa-spider" style="color:#1effff;"></i> WABJAM
+      excerpt: Web, old english webb, "woven fabric, woven work, tapestry, from Proto-Germanic WABJAM.
+
+      children:
+        - title: Contact
+          excerpt: Contact me on Linkedn network.
+          actions:
+            - text: <i class="fas fa-spider" style="color:#1effff;"></i> Net
+              url: https://www.linkedin.com/in/marco-colasso-soca/
+        - title: A diary of Entangled Memories
+          excerpt: Connect me on Instagram to see behind the scenes.
+          actions:
+            - text: <i class="fab fa-wpexplorer" style="color:#32ffff;"></i> Go
+              url: https://www.instagram.com/maar___world/
+        - title: "The Sound Explorer: Get to Know Me and My Sonic Adventures"
+          excerpt: Discover the story behind my journey and my sources of inspiration.
+          actions:
+            - text: <i class="far fa-heart" style="color:#ff2600;"></i> About
+              url: /about
+    - title: Thank You
+
+
+      
+
 ---
 
-A worldbuilding project inspired by history, science fiction, visual arts, music making. A proof of concept for the development of new tools in a creator-owned economy. This may be the first of many Entangled Worlds. 
-
-| #    | MW:1                                 |
-|-------------|--------------------------------------|
-| *Name:*    | Rabbit Hole                          |
-| *Author:*   | Maar                                 |
-| *Release:*  | 25/12/2022                           |
-| *Comment:* | Neo's phone message to the Machines. |
-| *Song:*    | 1 of 3.                              |
-
-Please <a href="https://support.apple.com/en-gb/HT208353" rel="unmute" target="_blank"> unmute</a> 
-your device and press PLAY ▶️ button. 
-
-<div class="container">
-  <iframe class="responsive-iframe" src="https://play.maar.world/?g=8&s=0&c=0" style="border: 0" ></iframe>
-</div> 
-
-<a href="https://play.maar.world/?g=8&s=0&c=0 " rel="Maar World Player" target="_blank"> Play full screen</a> 
-
-
-Circumbinary planet, P-type, semi-major axis: 0.699±0.003 AU. 
-The discovery was made with a space based telescope (0.95 m **Kepler Telescope**).
-
-
-|           | Solar System parameters  |
-|-----------------------------|-----------|
-| Right ascension             | 19 41 11  |
-| Declination                 | +46 55 13 |
-| Distance [parsec]           | 1189      |
-| Distance [lightyears]       | 3878      |
-| Number of stars in system   | 2         |
-| Number of planets in system | 3         |
-| Number of moons in system | 4         |
-|-----------------------|-------------------|
-| Mass [Mjup]           | 0.06+0.08−0.04    |
-| Mass [Mearth]         | 19+24−12          |
-| Radius [Rjup]         | 0.63+0.06−0.04    |
-| Radius [Rearth]       | 7.0+0.7−0.5       |
-| Orbital period [days] | 187.37+0.07−0.05  |
-| Semi-major axis [AU]  | 0.699±0.003       |
-| Eccentricity          | 0.024+0.025−0.017 |
-| Discovery year        | 2019              |
-
-`Give humans and planet earth a safe environment to self-heal.`{:.success} 
