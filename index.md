@@ -12,7 +12,7 @@ article_header:
   actions:
     - text: <i class="far fa-envelope" style="color:#32ffff;"></i> Join the Exploration 
       type: error
-      url: /documentation.html
+      url: /subscribe
 #    - text: Shop now
 #      type: info
 #      url: /cards.html
@@ -81,7 +81,7 @@ data:
       actions:
         - text: '<i class="fab fa-github" style="color:#32ffff;"></i> GitHub'
           type: outline-theme-dark
-          url: https://github.com/maar34/EntangledWorlds-Web-Player
+          url: https://github.com/maar34
         - text: '  <i class="fas fa-flask" style="color:#32ffff;"></i> Open Soon'
           type: error
       ##    Enter the Lab
