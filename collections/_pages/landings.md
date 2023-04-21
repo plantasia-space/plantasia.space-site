@@ -14,7 +14,7 @@ titles:
 key: last events
 
 ---
-# <i class="fas fa-globe-americas" style="color:#1fffff;"></i> Landings
+# <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> travel_explore </span> Landings
 ### Sonic events on planet earth
 
 <a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a> 

@@ -13,7 +13,9 @@ titles:
   # @end locale config
 key: live-set-information
 ---
-# <i class="fas fa-hand-holding-heart" style="color:#33ffff;"></i> Live Hybrid and DJ sets
+
+
+# <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> speaker_group </span> Live Hybrid and DJ sets
 
 I'm playing different sets depending on the occasion. I can offer: 
   - Live Audiovisual Set 

@@ -1,8 +1,8 @@
 ---
 layout: articles
 title: Subscribe
-show_title: true
-excerpt: Stay in the loop
+show_title: false
+excerpt: <span </span>
 show_date: false
 permalink: /subscribe
 key: lab
@@ -12,7 +12,7 @@ header:
  # background: 'linear-gradient(135deg, rgb(0, 255, 0), rgb(139, 34, 139, .1))'
 
 article_header:
-  height: 66vh
+  height: 50%
   type: overlay
   background_image:
     src: /img/lab/genesis-lab.jpg
@@ -22,7 +22,7 @@ article_header:
 <!-- Begin Mailchimp Signup Form -->
 <link href="//cdn-images.mailchimp.com/embedcode/classic-071822.css" rel="stylesheet" type="text/css">
 <style type="text/css">
-	#mc_embed_signup{background:#000000; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+	#mc_embed_signup{background:#000000; clear:left; font:14px Helvetica,Arial,sans-serif;  width:90%;}
 	/* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
 	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
     #mc_embed_signup input[type="email"] {

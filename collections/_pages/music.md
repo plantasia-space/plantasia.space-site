@@ -13,7 +13,7 @@ titles:
 key: Music
 
 ---
-# <i class="fas fa-tree" style="color:#1fffff;"></i> Music & Soundscapes
+# <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> nature_people </span> Music & Soundscapes
 ## Live Set 
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1381597849&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/castelloii-live-set-11112022" title="𝕄𝕒𝕒𝓇 - Castello:II - Live Set - 11:11:2022" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Castello:II - Live Set - 11:11:2022</a></div>
