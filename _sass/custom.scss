@@ -24,7 +24,16 @@
     margin: 0 auto;
   }
   
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 300,
+    'GRAD' 200,
+    'opsz' 40;
+    color: #33ffff;
+    font-weight: bold;
+    vertical-align: bottom;
+  }
   
-
 
 /* end custom scss snippet */

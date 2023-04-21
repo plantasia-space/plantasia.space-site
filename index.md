@@ -10,7 +10,7 @@ header:
 
 article_header:
   actions:
-    - text: <i class="far fa-envelope" style="color:#32ffff;"></i> Join the Adventure 
+    - text: <span class="material-symbols-outlined">mail</span> Join the Adventure 
       type: error
       url: /subscribe
 #    - text: Shop now
@@ -28,7 +28,7 @@ data:
     - title: "ENT:  <br>  Developing a new paradigm for Music Distribution,  <br> Making, and Listening"
       excerpt: "Think about multidimensional sounding objects that exist both physically and on the blockchain, <br> serving as portals to unique sound adventures."
       actions:
-      - text: <i class="fas fa-hourglass-half" style="color:#32ffff;"></i> Soon
+      - text: <span class="material-symbols-outlined"> hourglass_empty </span> Soon
         type: outline-theme-dark
        # url: https://play.maar.world/?g=333&s=0&c=0
       theme: dark
@@ -65,9 +65,9 @@ data:
     - title:  "Soundscapes: <br> Experience live, hybrid, DJ sets, and releases."
       excerpt: Visit Alpha Centaury, Trappist-1, and other Sound Adventures. You will be able to gain exclusive access to explore my archive of soundscapes, poetry, testimonies, and music from diverse cultures of mother earth.  
       actions:
-        - text: <i class="fab fa-soundcloud" style="color:#32ffff;"></i> Soundcloud
+        - text: <span class="material-symbols-outlined">cloud </span> Soundcloud
           url: https://soundcloud.com/maarworld
-        - text: <i class="far fa-play-circle" style="color:#32ffff;"></i> Start Listening
+        - text: <span class="material-symbols-outlined">sound_sampler</span> Start Listening
           url: /soundscapes
           type: error
       image:
@@ -79,10 +79,10 @@ data:
       theme: dark
       excerpt: is an invitation to step into a timeless space of exploration, where old and new projects are shared. It is a place where the creation of a new generation of ENT players is documented, with a focus on empowering sound listeners and makers.
       actions:
-        - text: '<i class="fab fa-github" style="color:#32ffff;"></i> GitHub'
+        - text: '<span class="material-symbols-outlined">terminal</span> GitHub'
           type: outline-theme-dark
           url: https://github.com/maar34
-        - text: '  <i class="fas fa-flask" style="color:#32ffff;"></i> Open Soon'
+        - text: ' <span class="material-symbols-outlined">labs</span> Open Soon'
           type: error
       ##    Enter the Lab
       ##    url: /lab
@@ -92,7 +92,7 @@ data:
       excerpt:  "Keep track of past and upcoming events with my Earth Landings calendar. <br> From concerts to festivals to art exhibitions."
 
       actions:
-        - text: <i class="fas fa-calendar-day" style="color:#32ffff;"></i> View Calendar
+        - text: <span class="material-symbols-outlined">event</span> View Calendar
         # Enter the Lab
           url: /landings
       image:
@@ -100,24 +100,24 @@ data:
         is_row: true
         full_width: true
         style: "max-width: 1000px;"
-    - title: <i class="far fa-heart" style="color:#ff2600;"></i> WABJAM
+    - title: <span class="material-symbols-outlined">diversity_2</span> WABJAM
       excerpt: Web, old english webb, "woven fabric, woven work, tapestry, from Proto-Germanic WABJAM. <br> Meaning "spider's web" is first recorded early 13c.
 
       children:
         - title: Contact
           excerpt: Contact me on Linkedn network.
           actions:
-            - text: <i class="fas fa-spider" style="color:#1effff;"></i> Net
+            - text: <span class="material-symbols-outlined">hub</span></i> Net
               url: https://www.linkedin.com/in/marco-colasso-soca/
         - title: A diary of Entangled Memories
           excerpt: Connect me on Instagram to see behind the scenes.
           actions:
-            - text: <i class="fas fa-spider" style="color:#1effff;"></i>  Go
+            - text: <span class="material-symbols-outlined">hub</span></i>  Go
               url: https://www.instagram.com/maar___world/
         - title: "The Sound Explorer: Get to Know Me and My Sonic Adventures"
           excerpt: Discover the story behind my journey and my sources of inspiration.
           actions:
-            - text: <i class="fas fa-spider" style="color:#1effff;"></i> About
+            - text: <span class="material-symbols-outlined">looks</span> About
               url: /about
     - title: 🙏🏽 Thank You
 

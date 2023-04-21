@@ -2,7 +2,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN     <i class="fas fa-hand-holding-heart" style="color:#33ffff;"></i> Sets
+      en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Sets
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -12,7 +12,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN     <i class="fas fa-globe-americas" style="color:#1fffff;"></i> Landings
+      en      : &EN     <span class="material-symbols-outlined">travel_explore</span> Landings
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -22,7 +22,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      <i class="fas fa-tree" style="color:#1fffff;"></i> Music
+      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Music
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
@@ -33,7 +33,7 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      <i class="fas fa-rainbow" style="color:#1fffff;"></i> About
+      en      : &EN     <span class="material-symbols-outlined">looks</span> About
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
