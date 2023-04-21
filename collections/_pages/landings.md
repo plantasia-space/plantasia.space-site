@@ -14,7 +14,7 @@ titles:
 key: last events
 
 ---
-# Earth landings
+# <i class="fas fa-globe-americas" style="color:#1fffff;"></i> Landings
 ### Sonic events on planet earth
 
 <a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a> 

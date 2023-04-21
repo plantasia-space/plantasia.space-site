@@ -1,20 +1,20 @@
 ---
 layout: article
 show_title: false
-permalink: /soundscapes
+permalink: /music
 titles:
   # @start locale config
-  en      : &EN       Soundscapes
+  en      : &EN       Music
   en-GB   : *EN
   en-US   : *EN
   en-CA   : *EN
   en-AU   : *EN
-
   # @end locale config
-key: world-information
----
+key: Music
 
-# Live Set 
+---
+# <i class="fas fa-tree" style="color:#1fffff;"></i> Music & Soundscapes
+## Live Set 
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1381597849&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/castelloii-live-set-11112022" title="𝕄𝕒𝕒𝓇 - Castello:II - Live Set - 11:11:2022" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Castello:II - Live Set - 11:11:2022</a></div>
 
@@ -24,13 +24,13 @@ key: world-information
 
 `#Electronica`{:.success} `#Candombe`{:.success} `#Downtempo`{:.success} `#SpokenVoice`{:.success} `#Soundscapes`{:.success}
 
-# Hybrid Set 
+## Hybrid Set 
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1332451228&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/castello" title="𝕄𝕒𝕒𝓇 - Castello:I - Hybrid Set - 7:12:2021" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Castello:I - Hybrid Set - 7:12:2021</a></div>
 
 `#Techno`{:.success} `#MinimalTechno`{:.success} `#Experimental`{:.success}`#Poetry`{:.success}
 
-# Radio Transmissions 
+## Radio Transmissions 
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/978035005&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄⍺⍺𝓇.𝛚Ⓞ尺♩ᵈ</a> · <a href="https://soundcloud.com/maarworld/avatar-la-leyenda-de-aang-aire-aventures-sonores-3112021" title="𝕄𝕒𝕒𝓇 - Avatar - La Leyenda De Aang - Aire  -𝘗𝘰𝘥𝘤𝘢𝘴𝘵 - 31:1:2021" target="_blank" style="color: #cccccc; text-decoration: none;">𝕄𝕒𝕒𝓇 - Avatar - La Leyenda De Aang - Aire  -𝘗𝘰𝘥𝘤𝘢𝘴𝘵 - 31:1:2021</a></div>
 `#Electronica`{:.success} `#Organic`{:.success} `#Downtempo`{:.success} `#Deephouse`{:.success}
@@ -59,7 +59,7 @@ not understand. [Text - Pablo Montauban].
 
 
 
-# Realeases  
+## Realeases  
 
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5upTECL8cBpRNvJ23RW6fE?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
@@ -69,7 +69,7 @@ not understand. [Text - Pablo Montauban].
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1006884346&color=%230013ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/aventuresonores" title="Aventures Sonores" target="_blank" style="color: #cccccc; text-decoration: none;">Aventures Sonores</a> · <a href="https://soundcloud.com/aventuresonores/sets/head-brothers-el-tiempo-v1" title="Head Brothers - El Tiempo" target="_blank" style="color: #cccccc; text-decoration: none;">Head Brothers - El Tiempo</a></div>
 
 
-# Colaborations> Record producer
+## Colaborations> Record producer
 
 
 <iframe width="100%" height="315" src="https://www.youtube.com/embed/FzVPe0FwaTY?start=1408" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

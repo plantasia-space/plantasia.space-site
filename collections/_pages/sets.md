@@ -1,7 +1,7 @@
 ---
 layout: article
 show_title: false
-permalink: /live
+permalink: /sets
 titles:
   # @start locale config
   en      : &EN       DJ set + Live set = Hybrid set 
@@ -13,7 +13,7 @@ titles:
   # @end locale config
 key: live-set-information
 ---
-# Live Hybrid and DJ set
+# <i class="fas fa-hand-holding-heart" style="color:#33ffff;"></i> Live Hybrid and DJ sets
 
 I'm playing different sets depending on the occasion. I can offer: 
   - Live Audiovisual Set 

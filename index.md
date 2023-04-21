@@ -100,8 +100,8 @@ data:
         is_row: true
         full_width: true
         style: "max-width: 1000px;"
-    - title: <i class="fas fa-spider" style="color:#1effff;"></i> WABJAM
-      excerpt: Web, old english webb, "woven fabric, woven work, tapestry, from Proto-Germanic WABJAM.
+    - title: <i class="far fa-heart" style="color:#ff2600;"></i> WABJAM
+      excerpt: Web, old english webb, "woven fabric, woven work, tapestry, from Proto-Germanic WABJAM. <br> Meaning "spider's web" is first recorded early 13c.
 
       children:
         - title: Contact
@@ -112,14 +112,14 @@ data:
         - title: A diary of Entangled Memories
           excerpt: Connect me on Instagram to see behind the scenes.
           actions:
-            - text: <i class="fab fa-wpexplorer" style="color:#32ffff;"></i> Go
+            - text: <i class="fas fa-spider" style="color:#1effff;"></i>  Go
               url: https://www.instagram.com/maar___world/
         - title: "The Sound Explorer: Get to Know Me and My Sonic Adventures"
           excerpt: Discover the story behind my journey and my sources of inspiration.
           actions:
-            - text: <i class="far fa-heart" style="color:#ff2600;"></i> About
+            - text: <i class="fas fa-spider" style="color:#1effff;"></i> About
               url: /about
-    - title: Thank You
+    - title: 🙏🏽 Thank You
 
 
       
