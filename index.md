@@ -62,13 +62,13 @@ data:
 
         
       background_color: "#000000"
-    - title:  "Soundscapes: <br> Experience live, hybrid, DJ sets, and releases."
+    - title:  "Music: <br> Experience live, hybrid, DJ sets, and releases."
       excerpt: Visit Alpha Centaury, Trappist-1, and other Sound Adventures. You will be able to gain exclusive access to explore my archive of soundscapes, poetry, testimonies, and music from diverse cultures of mother earth.  
       actions:
         - text: <span class="material-symbols-outlined">cloud </span> Soundcloud
           url: https://soundcloud.com/maarworld
         - text: <span class="material-symbols-outlined">sound_sampler</span> Start Listening
-          url: /soundscapes
+          url: /music
           type: error
       image:
         src: /img/landing/maar-world-banner-ovni.jpg
