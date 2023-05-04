@@ -46,17 +46,19 @@ data:
         - title: '34% Regeneration <i class="fas fa-arrow-down"></i>'
           image:
             src: /img/landing/mother-earth.png
-            url: /img/landing/mother-earth.png
+            url: https://collect.maar.world/docs/ent-worlds/redistribution.html#34-regeneration
             style: "max-width: 200px; max-height: 200px"
             is_row: true
         - title: '33% Artists <i class="fas fa-arrow-down"></i>'
           image:
             src: /img/landing/artists-community.jpg
+            url: https://collect.maar.world/docs/ent-worlds/redistribution.html#33-artists
             style: "max-width: 200px; max-height: 200px"
             is_row: true
         - title: '33% Development <i class="fas fa-arrow-down"></i>'
           image:
             src: /img/landing/development-new-technologies.jpg
+            url: https://collect.maar.world/docs/ent-worlds/redistribution.html#33-development
             style: "max-width: 200px; max-height: 200px"
             is_row: true
 
