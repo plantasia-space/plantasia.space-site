@@ -13,6 +13,7 @@ ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
 player: https://play.maar.world/?g=334&s=0&c=7
+player2: https://play.maar.world/?g=335&s=0&c=7
 titles:
   en      : &EN       Sky Sounds.1 Card VII
 

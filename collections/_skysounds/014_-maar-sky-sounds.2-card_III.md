@@ -13,6 +13,7 @@ ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
 player: https://play.maar.world/?g=334&s=1&c=3
+player2: https://play.maar.world/?g=335&s=1&c=3
 titles:
   en      : &EN       Sky Sounds.2 Card III
 
