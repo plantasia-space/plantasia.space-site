@@ -2,6 +2,16 @@ header:
 
   - titles:
       # @start locale config
+      en      : &EN     <span class="material-symbols-outlined">category</span> Collect
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      # @end locale config
+    url: https://collect.maar.world
+
+  - titles:
+      # @start locale config
       en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Sets
       en-GB   : *EN
       en-US   : *EN

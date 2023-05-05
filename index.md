@@ -3,6 +3,7 @@ layout: landing
 title: "MAAR WORLD"
 excerpt: "Step into the worldbuilding project of Maar,  a circumbinary exoplanet discovered using the Kepler Telescope and recreated with Art and AI."
 permalink: /index.html
+full_width: false
 
 header:
   theme: dark
