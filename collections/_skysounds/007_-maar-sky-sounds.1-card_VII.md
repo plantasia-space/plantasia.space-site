@@ -12,6 +12,8 @@ card_description: Under the glow of the fiery suns, all the states of water, whe
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/rdjhq4nuiiqo2hu/Skysounds-1-VII.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/l8vruhb17t0itfp/007_-maar-sky-sounds.1-card_VII.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=7
 player2: https://play.maar.world/?g=335&s=0&c=7
 titles:

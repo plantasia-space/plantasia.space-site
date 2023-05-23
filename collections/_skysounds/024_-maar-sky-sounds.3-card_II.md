@@ -12,6 +12,8 @@ card_description: In the south, life thrives in the vast expanse of the sky and 
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/75mua0w7ocdzruf/Skysounds-3-II.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/0h0wu809sck6g57/024_-maar-sky-sounds.3-card_II.wav?raw=1
 player: https://play.maar.world/?g=334&s=2&c=3
 player2: https://play.maar.world/?g=335&s=2&c=3
 titles:

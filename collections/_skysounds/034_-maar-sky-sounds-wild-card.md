@@ -12,6 +12,8 @@ card_description: The world of Maar is a place of wonder and secrets, where the 
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: 
+download2:  
 snip_player: 
 titles:
   en      : &EN       Sky Sounds WildCard 
@@ -99,3 +101,22 @@ footer: false
   </div>
 </div>
 
+
+
+
+
+<div class="hero hero--dark" style="height: 233px;">
+  <div class="hero__content" style="display: flex; justify-content: center; align-items: center;">
+    <a href="https://dl.dropboxusercontent.com/s/wuspumq20nie54q/SkySounds.1.wav?raw=1" class="button button--error">
+      <span class="material-symbols-outlined">Download</span> Sky-Sounds.1
+    </a>
+    <span style="margin: 0 10px;"></span> <!-- Adjust the value as per your preference -->
+    <a href="https://dl.dropboxusercontent.com/s/2e3d9z4b5mc0u9s/SkySounds.2.wav?raw=1" class="button button--error">
+      <span class="material-symbols-outlined">Download</span> Sky-Sounds.2
+    </a>
+       <span style="margin: 0 10px;"></span> <!-- Adjust the value as per your preference -->
+    <a href="https://dl.dropboxusercontent.com/s/gekbu45br6radwj/SkySounds.3.wav?raw=1" class="button button--error">
+      <span class="material-symbols-outlined">Download</span> Sky-Sounds.3
+    </a>
+  </div>
+</div>

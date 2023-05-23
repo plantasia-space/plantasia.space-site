@@ -12,6 +12,8 @@ card_description: The voice of fire is heard in the world, it speaks in the tong
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/rdlzvcf63dt3nos/Skysounds-1-V.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/qbbnu7p78lfny90/005_-maar-sky-sounds.1-card_V.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=5
 player2: https://play.maar.world/?g=335&s=0&c=5
 titles:

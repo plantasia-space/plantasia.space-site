@@ -12,6 +12,8 @@ card_description: High up in the clouds, strange birds can be seen riding the wi
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/2k0d94c2f9bsfki/Skysounds-2-IV.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/fvu6x29gdyi5a61/015_-maar-sky-sounds.2-card_IV.wav?raw=1
 player: https://play.maar.world/?g=334&s=1&c=4
 player2: https://play.maar.world/?g=335&s=1&c=4
 titles:

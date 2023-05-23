@@ -12,6 +12,8 @@ card_description: Electricity is not just a source of power, but a manifestation
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/g2sr0hrjd4ze6mf/Skysounds-2-XI.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/l1x3qz287gs94kd/022_-maar-sky-sounds.2-card_XI.wav?raw=1
 player: https://play.maar.world/?g=334&s=1&c=11
 player2: https://play.maar.world/?g=335&s=1&c=11
 titles:

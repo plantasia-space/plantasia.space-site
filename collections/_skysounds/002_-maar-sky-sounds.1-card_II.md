@@ -12,6 +12,8 @@ card_description: Beneath the towering mountains, when groundwater comes into co
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/mkntnqnpi3kw9de/Skysounds-1-II.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/smdc9tmtr2ueku7/002_-maar-sky-sounds.1-card_II.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=2
 player2: https://play.maar.world/?g=335&s=0&c=2
 titles:

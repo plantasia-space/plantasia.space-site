@@ -12,6 +12,8 @@ card_description: There exists a species with the extraordinary ability to perce
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/qdtb390070h9dsh/Skysounds-3-VII.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/fft1ivnurox687b/029_-maar-sky-sounds.3-card_VII.wav?raw=1
 player: https://play.maar.world/?g=334&s=2&c=7
 player2: https://play.maar.world/?g=335&s=2&c=7
 titles:

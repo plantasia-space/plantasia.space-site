@@ -12,6 +12,8 @@ card_description: In the depths of the underground caverns, the acoustic colorat
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/vhg23iy3z84brjd/Skysounds-1-VIII.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/qb2jovlb64wbuxs/008_-maar-sky-sounds.1-card_VIII.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=8
 player2: https://play.maar.world/?g=335&s=0&c=8
 titles:

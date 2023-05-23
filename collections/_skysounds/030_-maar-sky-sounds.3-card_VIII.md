@@ -12,6 +12,8 @@ card_description: Forces of attraction and repulsion are not always what they se
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/fbtn2hm3to6yyh0/Skysounds-3-VIII.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/og2ekrz6wasr35a/030_-maar-sky-sounds.3-card_VIII.wav?raw=1
 player: https://play.maar.world/?g=334&s=2&c=8
 player2: https://play.maar.world/?g=335&s=2&c=8
 titles:

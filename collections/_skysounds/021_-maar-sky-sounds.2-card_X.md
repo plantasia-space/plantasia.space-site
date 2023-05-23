@@ -12,6 +12,8 @@ card_description: The connection between sound and the physical environment is u
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/34g5cz08nkli08f/Skysounds-2-X.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/4ufpy229vduo5mn/021_-maar-sky-sounds.2-card_X.wav?raw=1
 player: https://play.maar.world/?g=334&s=1&c=10
 player2: https://play.maar.world/?g=335&s=1&c=10
 titles:

@@ -12,6 +12,8 @@ card_description: In the East, intricate dance rituals are used to share emotion
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/grdze0hv4a7c8h9/Skysounds-2-II.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/qikessotragwces/013_-maar-sky-sounds.2-card_II.wav?raw=1
 player: https://play.maar.world/?g=334&s=1&c=2
 player2: https://play.maar.world/?g=335&s=1&c=2
 titles:

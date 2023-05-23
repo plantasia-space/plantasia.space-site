@@ -12,6 +12,8 @@ card_description: The aquifer in the south is estimated to be approximately 34,0
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/k6wr3ha2siqb0al/Skysounds-3-XI.wav?raw=1
+download2: https://dl.dropboxusercontent.com/s/r1iks6lz589gu90/033_-maar-sky-sounds.3-card_XI.wav?raw=1
 player: https://play.maar.world/?g=334&s=2&c=11
 player2: https://play.maar.world/?g=335&s=2&c=11
 titles:

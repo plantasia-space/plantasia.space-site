@@ -12,6 +12,8 @@ card_description: Rainforests pulse with life, a symphony of creatures singing a
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/3vumx0257pxjjwu/Skysounds-2-V.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/fbj6l9fv8pwzjur/016_-maar-sky-sounds.2-card_V.wav?raw=1
 player: https://play.maar.world/?g=334&s=1&c=5
 player2: https://play.maar.world/?g=335&s=1&c=5
 titles:

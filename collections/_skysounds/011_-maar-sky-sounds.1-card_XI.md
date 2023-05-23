@@ -12,6 +12,8 @@ card_description: Beneath the roots of the ancient, towering trees, the inhabita
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/vx4gzp6o93yghak/Skysounds-1-XI.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/a5npi0birs2no3n/011_-maar-sky-sounds.1-card_XI.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=11
 player2: https://play.maar.world/?g=335&s=0&c=11
 titles:

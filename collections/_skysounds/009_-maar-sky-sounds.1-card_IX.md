@@ -13,6 +13,8 @@ card_description: In the midst of a fertile, rolling farmland, the portals betwe
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/pdb6uzs87bk0iwp/Skysounds-1-IX.wav?raw=1
+download2:  https://dl.dropboxusercontent.com/s/qj1bvmhqq82ixdu/009_-maar-sky-sounds.1-card_IX.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=9
 player2: https://play.maar.world/?g=335&s=0&c=9
 titles:

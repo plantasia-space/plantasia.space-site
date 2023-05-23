@@ -12,6 +12,8 @@ card_description: Recognizing the intrinsic link between the well-being of aquat
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
+download: https://dl.dropboxusercontent.com/s/6gii643d1t04ud6/Skysounds-3-X.wav?raw=1
+download2: https://dl.dropboxusercontent.com/s/084sw6mcmagtt80/032_-maar-sky-sounds.3-card_X.wav?raw=1
 player: https://play.maar.world/?g=334&s=2&c=10
 player2: https://play.maar.world/?g=335&s=2&c=10
 titles:
