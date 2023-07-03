@@ -1,6 +1,7 @@
 ---
 layout: none
 ---
+
 <!DOCTYPE html>
 {%- include snippets/get-lang.html -%}
 <html lang="{{ __return }}">
@@ -13,6 +14,7 @@ layout: none
       {%- include scripts/lib/lazyload.js -%}
     </script>
     {%- include scripts/variables.html -%}
+    {%- include scripts/cookie-consent.html -%} <!-- Include the cookie consent code -->
   </head>
   <body>
     <div class="root" data-is-touch="false">
