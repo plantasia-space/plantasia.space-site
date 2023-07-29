@@ -1,6 +1,9 @@
 
 .card {
-  max-width: 18rem;
+  max-width: 10rem;
+  text-align: center; /* Center the text inside the card */
+  margin: 10px;
+  padding: 20px;
   border-radius: map-get($base, border-radius);
   @include box-shadow();
   @include transition(box-shadow map-get($animation, duration) map-get($animation, timing-function));
@@ -26,6 +29,8 @@
 
 .card__header, .card__header > a {
   @include link-colors($text-color-d, $main-color-1);
+  text-align: center; /* Center the text inside the card */
+
 }
 
 .card__image {
@@ -100,4 +105,15 @@
     padding-top: 0;
     padding-left: 0;
   }
+}
+.cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 80%; /* Set the maximum width to 80% of the screen width */
+  margin: 0 auto; /* Center the container horizontally */
+  text-align: center; /* Center the text inside the card */
+
+
 }
