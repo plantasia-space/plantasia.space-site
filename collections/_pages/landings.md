@@ -17,8 +17,12 @@ key: last events
 # <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> travel_explore </span> Landings
 ### Sonic events on planet earth
 
-<a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a> 
-
+<a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a>
+- 30 / 07 / 2023  - Maar - Radio Launch - 📍 Berlin Germany 
+- 10 / 06 / 2022  - Maquina Grillo y Maar - Live   📍 Montevideo Uruguay 
+- 24 / 05 / 2023  - Maar - Sky Sounds Launch - Magma Futura 📍 Montevideo Uruguay 
+- 05 / 01 / 2023  - Maar - Dj Set - Serendipia 📍 Cabo Polonio  Uruguay 
+- 04 / 01 / 2023  - Maar - Dj Set - Serendipia 📍 Cabo Polonio  Uruguay 
 - 08 / 12 / 2022  - Maar - Bicycle Dj Set - Musimovil Luna Llena 📍 Montevideo Uruguay 
 - 01 / 12 / 2022  - Maar - Dj Set - Avant Garten 📍 Buenos Aires  Argentina 
 - 27 / 11 / 2022  - Maquina Grillo y Maar - Live - Absynth Multiespacio  📍 Mendoza  Argentina 
