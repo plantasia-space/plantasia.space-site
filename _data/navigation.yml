@@ -41,6 +41,18 @@ header:
     
     url: /music
 
+
+  - titles:
+      # @start locale config
+      en      : &EN        <span class="material-symbols-outlined">radio</span>  Radio
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      # @end locale config
+    url: /radio.html
+
+
   - titles:
       # @start locale config
       en      : &EN     <span class="material-symbols-outlined">looks</span> About
@@ -52,6 +64,7 @@ header:
       # @end locale config
     url: /about
 
+
   #- titles:
       # @start locale config
  #     en      : &EN        <i class="fas fa-flask" style="color:#32ffff;"></i> Lab
@@ -61,3 +74,4 @@ header:
 #      en-AU   : *EN
 #      # @end locale config
  #   url: /lab.html
+

@@ -11,9 +11,9 @@ header:
 
 article_header:
   actions:
-    - text: <span class="material-symbols-outlined">mail</span> Join the Adventure 
+    - text: <span class="material-symbols-outlined">radio</span> Play with the Radio 
       type: error
-      url: /subscribe
+      url: /radio
 #    - text: Shop now
 #      type: info
 #      url: /cards.html
