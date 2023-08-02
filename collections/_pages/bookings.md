@@ -1,7 +1,7 @@
 ---
 layout: article
 show_title: false
-permalink: /sets
+permalink: /bookings
 titles:
   # @start locale config
   en      : &EN       DJ set + Live set = Hybrid set 

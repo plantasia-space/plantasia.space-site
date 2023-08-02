@@ -12,13 +12,13 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Sets
+      en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Bookings
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
       en-AU   : *EN
       # @end locale config
-    url: /sets
+    url: /bookings
 
   - titles:
       # @start locale config
