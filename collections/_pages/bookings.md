@@ -14,8 +14,24 @@ titles:
 key: live-set-information
 ---
 
+# <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> speaker_group </span> Bookings
 
-# <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> speaker_group </span> Live Hybrid and DJ sets
+world.maar[at]gmail.com
+
+<a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
+
+<iframe src="https://drive.google.com/file/d/1jYLmK1p2S-q435y85yNqyc8tfZtN1LNZ/preview" width="100%" height="480" allow="autoplay"></iframe>
+
+
+<a href="https://drive.google.com/drive/folders/1kq9b4TAnvlZtHXH6MLB3IdEEe50tJTx2?usp=sharing" rel="EPK" target="_blank">PHOTOS EPK</a>
+
+  **Performance:** Live AV, Live, Hybrid, Dj set. 
+  
+  **Genres:** Free Electro / Union of world genres.
+  **Artist using:** Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
+  Live AV is with custom Max Software and Synths. 
+
+<h3>  Live Hybrid and DJ sets </h3>
 
 I'm playing different sets depending on the occasion. I can offer: 
   - Live Audiovisual Set 
@@ -27,19 +43,3 @@ From thirty minutes to four hours experiences in the format of sonic or audiovis
 
 Each concept is represented under different musical moods ranging from ambient, and downtempo to deep house, and techno, always adapting to the note of the moment. The soundscapes and voices are elements that bring a singular narrative to each experience. 
 
-<h3>CONTACT / BOOKINGS </h3>
-
-<br>
-world.maar[at]gmail.com
-
-<a href="https://drive.google.com/drive/folders/1kq9b4TAnvlZtHXH6MLB3IdEEe50tJTx2?usp=sharing" rel="EPK" target="_blank">PHOTOS EPK</a>
-
-  **Performance:** Live AV, Live, Hybrid, Dj set. 
-  
-  **Genres:** Free Electro / Union of world genres.
-  **Artist using:** Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Rekordbox.
-  Live AV is with custom Max Software and Synths. 
-
-<a href="https://drive.google.com/file/d/1XWfNCR8_is6SOeWxxoN1SO6SQl1-gTIk/view" rel="EPK" target="_blank">EPK:</a>
-
-<iframe src="https://drive.google.com/file/d/1jYLmK1p2S-q435y85yNqyc8tfZtN1LNZ/preview" width="100%" height="480" allow="autoplay"></iframe>
