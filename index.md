@@ -1,7 +1,7 @@
 ---
 layout: landing
 title: "MAAR WORLD"
-excerpt: "Step into the worldbuilding project of Maar,  a circumbinary exoplanet discovered using the Kepler Telescope and recreated with Art and AI."
+excerpt: "A record label 3.0: ENTangled releases, immersive music-making and listening, from a sustainable to a regenerative music era. "
 permalink: /index.html
 full_width: false
 
@@ -66,7 +66,7 @@ data:
         
       background_color: "#000000"
     - title:  "Music: <br> Experience live, hybrid, DJ sets, and releases."
-      excerpt: Visit Alpha Centaury, Trappist-1, and other Sound Adventures. You will be able to gain exclusive access to explore my archive of soundscapes, poetry, testimonies, and music from diverse cultures of mother earth.  
+      excerpt: Visit Alpha Centaury, Trappist-1, and other Sound Adventures. You will be able to gain exclusive access to explore an archive of soundscapes, poetry, testimonies, and music from diverse cultures of mother earth.  
       actions:
         - text: <span class="material-symbols-outlined">cloud </span> Soundcloud
           url: https://soundcloud.com/maarworld
@@ -80,7 +80,8 @@ data:
         style: "max-width: 1000px;"
     - title: "The Lab: Enter Experimentation Zone"
       theme: dark
-      excerpt: is an invitation to step into a timeless space of exploration, where old and new projects are shared. It is a place where the creation of a new generation of ENT players is documented, with a focus on empowering sound listeners and makers.
+      excerpt: An invitation to explore Maar World Lab, an evolving blog, sharing the concepts behind, see the evolution of the creative tools and sounds releases over time."
+
       actions:
         - text: '<span class="material-symbols-outlined">terminal</span> GitHub'
           type: outline-theme-dark
