@@ -80,7 +80,7 @@ data:
         style: "max-width: 1000px;"
     - title: "The Lab: Enter Experimentation Zone"
       theme: dark
-      excerpt: An invitation to explore Maar World Lab, an evolving blog, sharing the concepts behind, see the evolution of the creative tools and sounds releases over time."
+      excerpt: An invitation to explore Maar World Lab, an evolving blog, sharing the concepts behind, see the evolution of the creative tools and sounds releases over time.
 
       actions:
         - text: '<span class="material-symbols-outlined">terminal</span> GitHub'
