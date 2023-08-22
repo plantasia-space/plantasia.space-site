@@ -7,63 +7,10 @@ header:
       en-US   : *EN
       en-CA   : *EN
       en-AU   : *EN
+      es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
+      es-LA   : *ES
       # @end locale config
     url: https://collect.maar.world
-
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Bookings
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      # @end locale config
-    url: /bookings
-
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">travel_explore</span> Landings
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      # @end locale config
-    url: /landings
-
-  - titles:
-      # @start locale config
-      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Music
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      # @end locale config
-    
-    url: /music
-
-
-  - titles:
-      # @start locale config
-      en      : &EN        <span class="material-symbols-outlined">radio</span>  Radio
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      # @end locale config
-    url: /radio.html
-
-
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">looks</span> About
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-
-      # @end locale config
-    url: /about
-
 
   #- titles:
       # @start locale config
@@ -72,6 +19,71 @@ header:
 #      en-US   : *EN
 #      en-CA   : *EN
 #      en-AU   : *EN
+#      es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
+#      es-LA   : *ES
 #      # @end locale config
  #   url: /lab.html
+
+  - titles:
+      # @start locale config
+      en      : &EN        <span class="material-symbols-outlined">radio</span>  Radio
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      es-ES   : &ES   <span class="material-symbols-outlined">radio</span>  Radio
+      es-LA   : *ES
+      # @end locale config
+    url: /radio.html
+
+  - titles:
+      # @start locale config
+      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Music
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      es-ES   : &ES   <span class="material-symbols-outlined">nature_people</span> Música
+      es-LA   : *ES
+      # @end locale config
+    
+    url: /music
+
+  - titles:
+      # @start locale config
+      en      : &EN     <span class="material-symbols-outlined">travel_explore</span> Landings
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      es-ES   : &ES   <span class="material-symbols-outlined">travel_explore</span> Aterrizajes
+      es-LA   : *ES
+      # @end locale config
+    url: /landings
+
+
+  - titles:
+      # @start locale config
+      en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Bookings
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      es-ES   : &ES   <span class="material-symbols-outlined">speaker_group</span> Bookings
+      es-LA   : *ES
+      # @end locale config
+    url: /bookings
+
+  - titles:
+      # @start locale config
+      en      : &EN     <span class="material-symbols-outlined">looks</span> About
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      es-ES   : &ES   <span class="material-symbols-outlined">looks</span> ¿Quiénes somos?
+      es-LA   : *ES
+      # @end locale config
+    url: /about
+
 

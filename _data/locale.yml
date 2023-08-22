@@ -30,6 +30,35 @@ en-CA:
 en-AU:
   <<: *EN
 
+ ## => Español
+########################
+es: &ES
+  SUBSCRIBE               : "Subscribirse"
+  READMORE                : "Leer Más"
+  SEARCH                  : "Buscar"
+  CANCEL                  : "Cancelar"
+  VIEWS                   : "Ver"
+  LAST_UPDATED            : "Ultima actualización"
+  PREVIOUS                : "Anterior"
+  NEXT                    : "Siguiente"
+  ARTICLE_DATE_FORMAT     : "%d %b, %Y"
+  ARTICLE_LIST_DATE_FORMAT: "%d %b"
+  STATISTICS              : "[POST_COUNT] articles, [PAGE_COUNT] pages."
+  LICENSE_ANNOUNCE        : "Este trabajo está autorizado bajo una licencia [LICENSE]."
+  POST_ON_GITHUB          : "Editar en Github"
+  FOLLOW_ME               : "Sigueme en [NAME]."
+  FOLLOW_US               : "Siguenos en [NAME]."
+  EMAIL_ME                : "Enviar un Email."
+  EMAIL_US                : "Enviarnos un Email"
+  COPYRIGHT_DATES         : "2023"
+  DONATE                  : "Donar en [NAME]."
+
+es-ES:
+  <<: *ES
+es-LA:
+  <<: *ES
+
+
 ## => Simplified Chinese
 ########################
 zh-Hans: &ZH_HANS
@@ -111,39 +140,7 @@ ko: &KO
 ko-KR:
   <<: *KO
 
-## => French
-########################
-fr: &FR
-  SUBSCRIBE               : "S'abonner"
-  READMORE                : "Plus"
-  SEARCH                  : "Recherche"
-  CANCEL                  : "Annuler"
-  VIEWS                   : "vues"
-  LAST_UPDATED            : "Dernière modification"
-  PREVIOUS                : "PRÉCÉDENT"
-  NEXT                    : "SUIVANT"
-  ARTICLE_DATE_FORMAT     : "%d %b, %Y"
-  ARTICLE_LIST_DATE_FORMAT: "%d %b"
-  STATISTICS              : "[POST_COUNT] articles, [PAGE_COUNT] pages."
-  LICENSE_ANNOUNCE        : "Ce travail est sous licence [LICENSE]."
-  POST_ON_GITHUB          : "Modifier sur Github"
-  FOLLOW_ME               : "Suivez-moi sur [NAME]."
-  FOLLOW_US               : "Suivez-nous sur [NAME]."
-  EMAIL_ME                : "Envoyez-moi un courriel."
-  EMAIL_US                : "Envoyez-nous un courriel"
-  COPYRIGHT_DATES         : "2021"
-  DONATE                  : "Faites un don de [NAME]."
 
-fr-BE:
-  <<: *FR
-fr-CA:
-  <<: *FR
-fr-CH:
-  <<: *FR
-fr-FR:
-  <<: *FR
-fr-LU:
-  <<: *FR
 ## => Turkish
 ########################
 tr: &TR

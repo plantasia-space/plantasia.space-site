@@ -2,9 +2,9 @@
 layout: articles
 title: Lab
 show_title: true
-excerpt: "Step into a time lab. <br> A public bitacora to share new and old creations." 
+excerpt: "Time lab. <br> Un blog para compartir nuevas y viejas creaciones." 
 show_date: false
-permalink: /lab
+permalink: /es/lab
 key: lab
 cover: /img/lab.png
 articles:
@@ -28,5 +28,3 @@ article_header:
 
 
 
-
-### <span class="material-symbols-middle"> earthquake </span>
