@@ -5,7 +5,7 @@ show_date: false
 permalink: /radio
 titles:
   # @start locale config
-  en      : &EN       Music
+  en      : &EN       Radio
   en-GB   : *EN
   en-US   : *EN
   en-CA   : *EN
@@ -39,12 +39,14 @@ key: Radio
 </div>
 </div>
 
-
-
 <div class="hero hero--dark" style='height: 233px; background-image: url("img/radio/radio-banner.gif");'>
   <div class="hero__content">  
   </div>
 </div>
+
+  <div class="container">
+    <iframe id="chat-iframe" src="http://172.20.10.8:3000" class="responsive-chat-iframe" style="border: 0"></iframe>
+  </div>
 
 
 <div class="hero hero--center hero--dark"  style= 'height: 512px; background-image: url("img/radio/cards-back-collect.png");'>
