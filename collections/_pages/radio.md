@@ -14,6 +14,16 @@ titles:
 key: Radio
 
 ---
+<header>
+
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+  new Crate({
+    server: '1143586336352243803',
+    channel: '1143587469963567194'
+  })
+</script>
+</header>
+
 # <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> radio </span> Radio
 
 <div class="hero hero--dark" style='height: 200px; background-image: url("/img/433.1b.jpg");'>
@@ -44,10 +54,6 @@ key: Radio
   </div>
 </div>
 
-  <div class="container">
-    <iframe id="chat-iframe" src="http://172.20.10.8:3000" class="responsive-chat-iframe" style="border: 0"></iframe>
-  </div>
-
 
 <div class="hero hero--center hero--dark"  style= 'height: 512px; background-image: url("img/radio/cards-back-collect.png");'>
     <div class="hero__content">
@@ -55,6 +61,7 @@ key: Radio
         <p><a href="https://maarworld.gumroad.com" target="_blank">ENT Cards for Interplanetary Players.</a></p>
     </div>
 </div>
+
 
 
 <div class="cards-container">
