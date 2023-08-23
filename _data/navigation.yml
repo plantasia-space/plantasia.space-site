@@ -14,12 +14,12 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN        <i class="fas fa-flask" style="color:#32ffff;"></i> Lab
+      en      : &EN        <span class="material-symbols-outlined">science</span> Lab
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
       en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
+      es-ES   : &ES   <span class="material-symbols-outlined">science</span> Lab
       es-LA   : *ES
       # @end locale config
     url: /lab.html
