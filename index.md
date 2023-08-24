@@ -86,10 +86,10 @@ data:
         - text: '<span class="material-symbols-outlined">terminal</span> GitHub'
           type: outline-theme-dark
           url: https://github.com/maar34
-        - text: ' <span class="material-symbols-outlined">labs</span> Open Soon'
+        - text: ' <span class="material-symbols-outlined">labs</span> Enter the Lab'
           type: error
-      ##    Enter the Lab
-      ##    url: /lab
+    
+          url: /lab.html
       background_color: "#663399"
 
     - title:  "Earth Landings"
@@ -98,7 +98,7 @@ data:
       actions:
         - text: <span class="material-symbols-outlined">event</span> View Calendar
         # Enter the Lab
-          url: /landings
+          url: /landings.html
       image:
         src: /img/maar-earth.jpg
         is_row: true

@@ -47,7 +47,7 @@ header:
       es-LA   : *ES
       # @end locale config
     
-    url: /music
+    url: /music.html
 
   - titles:
       # @start locale config
@@ -59,7 +59,7 @@ header:
       es-ES   : &ES   <span class="material-symbols-outlined">travel_explore</span> Aterrizajes
       es-LA   : *ES
       # @end locale config
-    url: /landings
+    url: /landings.html
 
 
   - titles:
@@ -72,7 +72,7 @@ header:
       es-ES   : &ES   <span class="material-symbols-outlined">speaker_group</span> Bookings
       es-LA   : *ES
       # @end locale config
-    url: /bookings
+    url: /bookings.html
 
   - titles:
       # @start locale config
@@ -84,6 +84,6 @@ header:
       es-ES   : &ES   <span class="material-symbols-outlined">looks</span> ¿Quiénes somos?
       es-LA   : *ES
       # @end locale config
-    url: /about
+    url: /about.html
 
 
