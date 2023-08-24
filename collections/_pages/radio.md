@@ -34,7 +34,7 @@ key: Radio
 <div class="hero hero--center" style="background-color: #000000;">
   <div class="hero__content">
     <h3>{{ page.suit_title}}</h3>
-  <p style="font-size: 70%;"> Press PLAY ▶️. Desktop recommended. <br> Interactivity is currently not working well on mobile devices</p>
+  <p style="font-size: 70%;"> Press PLAY ▶️. Desktop recommended. <br> For Apple limitations radio interactivity is not working on iphone devices and Safari</p>
   </div>
 </div>
 
