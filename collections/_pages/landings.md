@@ -17,7 +17,7 @@ key: last events
 # <span class="material-symbols-outlined" style="font-size: 48px; vertical-align: middle;"> travel_explore </span> Landings
 ### Sonic events on planet earth
 
-<a href="/data.html " rel="Maar World" target="_blank"> Entangled Worlds</a>
+<a href="https://collect.maar.world/docs/ent-worlds.html " rel="Maar World" target="_blank"> ENT Worlds</a>
 - 30 / 07 / 2023  - Maar - Radio Launch - 📍 Berlin Germany 
 - 10 / 06 / 2022  - Maquina Grillo y Maar - Live   📍 Montevideo Uruguay 
 - 24 / 05 / 2023  - Maar - Sky Sounds Launch - Magma Futura 📍 Montevideo Uruguay 
@@ -32,7 +32,7 @@ key: last events
 - 03 / 09 / 2022  - Maar World Live AV Set - Chilean Conexion Festival in Monopol - 📍 Berlin  Germany 
 - 02 / 07 / 2022  - Maar World Genesis - La cueva de ArteArtesania - 📍 Soller  Spain 
 
-<a href="/data.html " rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
+<a href="https://www.instagram.com/aventuresonores/" rel="Trappist Live" target="_blank">Hybrid Set - Aventures Sonores and the classical elements</a> 
 
 - 11 / 06 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 
 - 24 / 04 / 2022  - Patiki Beach - 📍 Port de Soller  Spain 

@@ -21,7 +21,7 @@ highlight_theme: tomorrow-night-blue # "default" (default), "tomorrow", "tomorro
 url     : https://maar.world # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : # does not include hostname
 title   :  MAAR WORLD
-description: Marco Colasso Soca AKA Maar personal blog and world wide web site. WelcomE To mY vintage NeW WorlD. Slow down to enter a place where space-time bends and things can get weird, gravity is 2.94 slower than earth, don't be afraid. # this means to ignore newlines until "Language & timezone"
+description: Record label 3.0- ENTangled releases, immersive music-making and listening, from a sustainable to a regenerative music era. # this means to ignore newlines until "Language & timezone"
 
 
 ## => Language and Timezone
@@ -37,7 +37,7 @@ author:
   name      : Maar
   url       : www.maar.world
   avatar    :  # path or url of avatar image (square)
-  bio       :  🌬🌎 Entangled Worlds ❤️‍🔥🐬
+  bio       :  🌬🌎 "Building a record label 3.0- ENTangled releases, immersive music-making and listening, from a sustainable to a regenerative music era" ❤️‍🔥🐬
   email     : world.maar@gmail.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   : Maar___World # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
@@ -63,7 +63,7 @@ repository_tree: main
 paths:
   root    : # title link url, "/" (default)
   home    : # home layout url, "/" (default)
-  archive : # "/archive.html" (default)
+  archive : /lab.html # "/archive.html" (default)
   rss     : # "/feed.xml" (default)
 
 
@@ -231,7 +231,8 @@ defaults:
       path: ""
       type: lab
     values:
-      nav_key: samples
+      nav_key: lab
+
   - scope:
       path: ""
       type: genesis

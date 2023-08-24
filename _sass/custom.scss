@@ -38,6 +38,20 @@
   height: 100%;
   margin: auto;
 }
+
+.responsive-chat-iframe {
+  position: absolute;
+  top: 0%;
+  left: 0;
+  right: 0;
+  bottom: 0; /* Set bottom to 0 for full height */
+  width: 100%; /* Set width to 100% to fill the container's width */
+  height: 100%;
+  margin: auto;
+  display: flex;
+
+}
+
   /* Add media queries to adjust the container and iframe dimensions /* 4:3 Aspect Ratio (3 divided by 4 = 0.75)  */
   /*
 
