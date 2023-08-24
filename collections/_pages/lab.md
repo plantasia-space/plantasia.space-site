@@ -25,9 +25,12 @@ header:
 A public bitacora to share new and old creations. A blog where we share exciting things we're working on.
 Keep track of how ideas change over time and relate, kind of like watching a plant grow from a tiny seed to a big, beautiful tree. 
 
+Filter posts in:
 <br>
 
 <a class="button button--outline-error button--rounded" href="/lab.html?tag=EN">English</a> <a class="button button--outline-error button--rounded" href="/lab.html?tag=ES">Spanish</a>
 
 <br>
+
+
 
