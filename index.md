@@ -29,9 +29,9 @@ data:
     - title: "ENT:  <br>  Developing a new paradigm for Music Distribution,  <br> Making, and Listening"
       excerpt: "Think about multidimensional sounding objects that exist both physically and on the blockchain, <br> serving as portals to unique sound adventures."
       actions:
-      - text: <span class="material-symbols-outlined"> hourglass_empty </span> Soon
+      - text: <span class="material-symbols-outlined"> category </span> Collect
         type: outline-theme-dark
-       # url: https://play.maar.world/?g=333&s=0&c=0
+        url: https://collect.maar.world
       theme: dark
       background_image:
       gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
