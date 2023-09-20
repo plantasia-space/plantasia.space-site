@@ -1,7 +1,7 @@
 ---
 layout: landing
 title: "MAAR WORLD"
-excerpt: "A record label 3.0: ENTangled releases, immersive music-making and listening, from a sustainable to a regenerative music era. "
+excerpt: "Connect with a record label 3.0 from the Cygnus constellation, specializing in ENTangled releases, immersive music-making and listening, advancing towards a regenerative music era."
 permalink: /index.html
 full_width: false
 
