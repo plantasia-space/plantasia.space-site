@@ -57,7 +57,8 @@ key: Radio
 
 <div class="hero hero--center" style="background-color: #000000;">
   <div class="hero__content">
-<iframe src="https://s1.ssl-stream.com/public/maar_world_radio/embed?theme=light" frameborder="0" allowtransparency="true" style="width: 80%; min-height: 150px; border: 0;"></iframe>
+<iframe src="https://s1.ssl-stream.com/public/maar_world_radio/embed?theme=dark" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe>
+
 </div>
 </div>
 
