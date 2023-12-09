@@ -49,9 +49,16 @@ key: Radio
 </div>
 </div>
 
+
 <div class="hero hero--dark" style='height: 233px; background-image: url("img/radio/radio-banner.gif");'>
   <div class="hero__content">  
   </div>
+</div>
+
+<div class="hero hero--center" style="background-color: #000000;">
+  <div class="hero__content">
+<iframe src="https://s1.ssl-stream.com/public/maar_world_radio/embed?theme=light" frameborder="0" allowtransparency="true" style="width: 80%; min-height: 150px; border: 0;"></iframe>
+</div>
 </div>
 
 
