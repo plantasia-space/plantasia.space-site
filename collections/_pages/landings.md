@@ -18,7 +18,13 @@ key: last events
 ### Sonic events on planet earth
 
 <a href="https://collect.maar.world/docs/ent-worlds.html " rel="Maar World" target="_blank"> ENT Worlds</a>
-- 30 / 07 / 2023  - Maar - Radio Launch - 📍 Berlin Germany 
+
+- 17 / 12 / 2023  - Maar - Radio EP05 Recording - 📍 Espacio Pulpo, Mallorca Spain 
+- 29 / 10 / 2023  - Maar - Radio Streaming EP04 📍 MW-Berlin Germany 
+- 06 / 10 / 2023  - Music x Web3 - Past Present Future 📍 Factory Berlin Germany 
+- 24 / 09 / 2023  - Maar - Radio Streaming EP03 📍 MW-Berlin Germany 
+- 27 / 08 / 2023  - Maar - Radio Streaming EP02  📍 MW-Lab Berlin Germany 
+- 30 / 07 / 2023  - Maar - Radio Streaming EP01 Launch  📍 Lab Berlin Germany 
 - 10 / 06 / 2022  - Maquina Grillo y Maar - Live   📍 Montevideo Uruguay 
 - 24 / 05 / 2023  - Maar - Sky Sounds Launch - Magma Futura 📍 Montevideo Uruguay 
 - 05 / 01 / 2023  - Maar - Dj Set - Serendipia 📍 Cabo Polonio  Uruguay 
