@@ -24,8 +24,7 @@ article_header:
 
 <a href="https://drive.google.com/file/d/1tkrdTaOrdsDZt93cX088U7J1p89lM8kU/view?usp=sharing" rel="resume" target="_blank">DOWNLOAD RESUME </a> <br>
 
-<iframe src="https://drive.google.com/file/d/1tkrdTaOrdsDZt93cX088U7J1p89lM8kU/preview" width="100%" height="640" allow="autoplay"></iframe>
-
+<iframe src="https://drive.google.com/file/d/1toBANfXmXCl7Dd8KSVElkuoeMwDqOvRW/preview" width="640" height="480" allow="autoplay"></iframe>
 
 <br>
 
