@@ -31,12 +31,25 @@
       bottom: 4px;
     }
   }
+
+  #flat-link {
+  font-family: inherit; /* Use the font from the parent element */
+  font-size: inherit; /* Use the font size from the parent element */
+  text-decoration: underline; /* Optional: to make it look like a link */
+  color: inherit; /* Use the text color from the parent element */
+  background: none; /* Remove background styling */
+  border: none; /* Remove border styling */
+  padding: 0; /* Remove padding */
+  text-decoration: underline !important;
+  vertical-align: middle;                
+  display: inline;                           
+  line-height: normal;        
+}
 </style>
 
-
 <div id="cookie-notice">
-  <span>Please, find out <a href="https://collect.maar.world/privacy" class="btn btn-primary btn-sm">more info</a> about how we use cookies </span><br>
-  <a id="cookie-notice-accept" class="btn btn-primary btn-sm"> OK :)</a>
+  <span>Please, find out<a href="https://collect.maar.world/privacy" class="btn btn-primary btn-sm" id="flat-link">more info</a> about how we use cookies </span><br>
+  <a id="cookie-notice-accept" class="btn btn-primary btn-sm"> OK 💌</a>
 </div>
 
 <script>
@@ -74,6 +87,5 @@
   document.getElementById('cookie-notice-accept').addEventListener("click", function () {
     createCookie('cookie-notice-dismissed', 'true', 31);
     document.getElementById('cookie-notice').style.display = 'none';
-    location.reload();
   });
 </script>
