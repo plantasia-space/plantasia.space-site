@@ -1,7 +1,8 @@
 ---
 layout: landing
-title: "MAAR WORLD"
-excerpt: "Connect with a record label 3.0 from the Cygnus constellation, specializing in ENTangled releases, immersive music-making and listening, advancing towards a regenerative music era."
+title: Play music cards with exoplanets 💌
+excerpt: >
+    Relax and enhance your creativity by remixing music to the rhythm of real exoplanets.
 permalink: /index.html
 full_width: false
 
@@ -11,9 +12,9 @@ header:
 
 article_header:
   actions:
-    - text: <span class="material-symbols-outlined">radio</span> Play with the Radio 
+    - text: <span class="material-symbols-outlined">category</span> Collect! 
       type: error
-      url: /radio
+      url: https://collect.maar.world
 #    - text: Shop now
 #      type: info
 #      url: /cards.html
@@ -23,11 +24,11 @@ article_header:
   background_color: '#203028' 
   background_image:
   #  gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
-    src: /img/landing/433-mw-index.gif
+    src: /img/landing/mw-cover-1qt-24.jpeg
 data:
   sections:
-    - title: "ENT:  <br>  Developing a new paradigm for Music Distribution,  <br> Making, and Listening"
-      excerpt: "Think about multidimensional sounding objects that exist both physically and on the blockchain, <br> serving as portals to unique sound adventures."
+    - title: Start Collecting cards to build your unique sound adventures.
+      excerpt: Select your favourite card from $7, or get a a package of 3 random cards envelope for $17,67, and 7 random cards envelope for $33,33 
       actions:
       - text: <span class="material-symbols-outlined"> category </span> Collect
         type: outline-theme-dark
@@ -37,7 +38,7 @@ data:
       gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
       src: /img/landing/2_3_ent.jpeg
       image:
-        src: /img/landing/ent.png
+        src: /img/landing/mw2-1qt-24.jpeg
         is_row: true
         full_width: true
         style: "max-width: 1000px;"
@@ -123,7 +124,7 @@ data:
           actions:
             - text: <span class="material-symbols-outlined">looks</span> About
               url: /about
-    - title: 🙏🏽 Thank You
+    - title: 🙏🏽 thank YoU
 
 
       
