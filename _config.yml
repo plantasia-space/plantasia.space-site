@@ -210,6 +210,8 @@ collections:
     output: true
   skysounds:
     output: true
+  stoney_way:
+    output: true
 
 # each time you add a folder, then need to add collections output true and name
 
