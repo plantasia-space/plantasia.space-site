@@ -73,11 +73,6 @@ not understand. [Text - Pablo Montauban].
 
 ## Realeases  
 
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5upTECL8cBpRNvJ23RW6fE?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/08TNPrx5qZTXWT47fXTT6O?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1006884346&color=%230013ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/aventuresonores" title="Aventures Sonores" target="_blank" style="color: #cccccc; text-decoration: none;">Aventures Sonores</a> · <a href="https://soundcloud.com/aventuresonores/sets/head-brothers-el-tiempo-v1" title="Head Brothers - El Tiempo" target="_blank" style="color: #cccccc; text-decoration: none;">Head Brothers - El Tiempo</a></div>
 
 
@@ -86,10 +81,6 @@ not understand. [Text - Pablo Montauban].
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1605423195&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/maarworld" title="Maar World" target="_blank" style="color: #cccccc; text-decoration: none;">Maar World</a> · <a href="https://soundcloud.com/maarworld/raza-mama-soul-maar-remix-2008" title="Raza - Mama Soul ( Maar Remix 2008)free download" target="_blank" style="color: #cccccc; text-decoration: none;">Raza - Mama Soul ( Maar Remix 2008)free download</a></div>
 
 `#soul`{:.success} `#r&b`{:.success} `#latin`{:.success}`#experimental`{:.success}
-
-
-<iframe width="100%" height="315" src="https://www.youtube.com/embed/FzVPe0FwaTY?start=1408" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 
 <iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=2654219033/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://acuifero.bandcamp.com/album/acu-fero-guaran">Acuífero Guaraní by Acuífero</a></iframe>
 
