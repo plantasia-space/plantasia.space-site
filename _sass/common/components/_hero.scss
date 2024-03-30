@@ -28,7 +28,7 @@
     h6 { font-size: map-get($base, font-size-h6-sm); }
     p  { font-size: map-get($base, font-size); }
   }
-  position: relative;
+  background-size: cover;
 
 }
 
@@ -68,3 +68,4 @@
     }
   }
 }
+
