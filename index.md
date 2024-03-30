@@ -23,19 +23,19 @@ data:
       children:
         - title: 'Explore a new musical dimension <i class="fas fa-arrow-down"></i>'
           image:
-            src: /img/landing/2_collect.png
+            src: /img/landing/2_collect.jpeg
             url: https://collect.maar.world/
             style: "max-width: 200px; max-height: 200px"
             is_row: true
         - title: 'Listen music & sets <i class="fas fa-arrow-down"></i>'
           image:
-            src: /img/landing/5_music.png
+            src: /img/landing/5_music.jpeg
             url: /music
             style: "max-width: 200px; max-height: 200px"
             is_row: true
         - title: 'Learn about the creative process <i class="fas fa-arrow-down"></i>'
           image:
-            src: /img/landing/1_lab.png
+            src: /img/landing/1_lab.jpeg
             url: /lab
             style: "max-width: 200px; max-height: 200px"
             is_row: true
@@ -43,19 +43,19 @@ data:
       children:
         - title: 'Interact with the radio <i class="fas fa-arrow-down"></i>'
           image:
-            src: /img/landing/4_radio.png
+            src: /img/landing/4_radio.jpeg
             url: /radio
             style: "max-width: 200px; max-height: 200px"
             is_row: true
         - title: 'Book a live show <i class="fas fa-arrow-down"></i>'
           image:
-            src: /img/landing/6_bookings.png
+            src: /img/landing/6_bookings.jpeg
             url: /bookings
             style: "max-width: 200px; max-height: 200px"
             is_row: true
         - title: 'Dates and tours  <i class="fas fa-arrow-down"></i>'
           image:
-            src: /img/landing/3_landing.png
+            src: /img/landing/3_landing.jpeg
             url: /landings
             style: "max-width: 200px; max-height: 200px"
             is_row: true
@@ -64,7 +64,7 @@ data:
 
     - title:
       image:
-        src: /img/landing/about.jpg
+        src: /img/landing/7_about.jpeg
         url: /about
         is_row: true
         full_width: true
