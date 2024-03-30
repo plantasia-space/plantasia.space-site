@@ -11,6 +11,9 @@
   @if $level == 2 {
     box-shadow: 0 8px 16px rgba($color, .23), 0 2px 6px rgba($color, .08), 0 12px 24px rgba($color, .02);
   }
+  @if $level == 3 {
+    box-shadow: 0 8px 16px rgba(rgb(51, 255, 255), .9), 0 2px 6px rgba(rgb(51, 255, 255), .5), 0 12px 24px rgb(51, 255, 255);
+  }
 }
 
 .box-shadow-1 {
@@ -19,4 +22,7 @@
 
 .box-shadow-2 {
   @include box-shadow(2);
+}
+.box-shadow-3 {
+  @include box-shadow(3);
 }

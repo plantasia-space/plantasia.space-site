@@ -28,7 +28,7 @@
     h6 { font-size: map-get($base, font-size-h6-sm); }
     p  { font-size: map-get($base, font-size); }
   }
-  background-size: cover;
+  position: relative;
 
 }
 

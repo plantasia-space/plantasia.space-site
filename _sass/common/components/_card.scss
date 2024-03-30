@@ -1,11 +1,10 @@
 
 .card {
-  max-width: 10rem;
-  text-align: center; /* Center the text inside the card */
-  margin: 10px;
-  padding: 20px;
+  max-width: 100rem;
   border-radius: map-get($base, border-radius);
-  @include box-shadow();
+  @include box-shadow(3);
+  @include box-shadow(3);
+
   @include transition(box-shadow map-get($animation, duration) map-get($animation, timing-function));
   & > :first-child {
     border-top-left-radius: map-get($base, border-radius);
@@ -15,12 +14,20 @@
     border-bottom-right-radius: map-get($base, border-radius);
     border-bottom-left-radius: map-get($base, border-radius);
   }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%; /* Full width to ensure centering context */
+  margin: 0 auto;
 }
 
 .cell {
   & > .card {
     max-width: unset;
   }
+  
 }
 
 .card__content {
@@ -29,11 +36,11 @@
 
 .card__header, .card__header > a {
   @include link-colors($text-color-d, $main-color-1);
-  text-align: center; /* Center the text inside the card */
-
+  text-align: center;
 }
 
 .card__image {
+  
   position: relative;
   width: 100%;
   & > img {
@@ -108,12 +115,10 @@
 }
 .cards-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-  max-width: 80%; /* Set the maximum width to 80% of the screen width */
-  margin: 0 auto; /* Center the container horizontally */
-  text-align: center; /* Center the text inside the card */
-
-
+  width: 100%; /* Full width to ensure centering context */
+  margin: 0 auto;
 }
