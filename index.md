@@ -11,7 +11,7 @@ header:
   background: 'linear-gradient(135deg, rgba(255, 0, 222, 1), rgba(255, 0, 0, .5),)'
 
 article_header:
-  height: 30vh
+  height: 50vh
   theme: ocean
   background_color: '#203028' 
   background_image:
@@ -19,26 +19,66 @@ article_header:
     src: /img/landing/433-mw-index.gif
 ---
 
-
 <div class="p-4"></div>
-<div class="padding: ($spacer * 2);"></div>
+<div class="padding: ($spacer * 6);"></div>
 
-<div class="cards-container">
-  <div class="grid grid--p-3">
-    <!-- First Item -->
-    <div class="cell cell--12 cell--lg-4 content">
+
+<div class="hero hero--center hero--dark hero-example--linear-gradient">
+  <div class="hero__content">
+    <h3></h3>
+    <p>Each section offers a window into a different facet of our mission to reactivate auditory consciousness and connect cultures through sound.</p>
+  </div>
+</div>
+
+
+
+  <div class="cell cell--12">
       <a href="https://collect.maar.world/">
         <div class="card card--clickable">
           <div class="card__image">
             <img class="image" src="/img/landing/2_collect.jpeg"/>
           </div>
           <div class="card__content">
-            <p>Play Cards With Exoplanets</p>
+            <p>Play Music Cards With Exoplanets</p>
+          </div>
+        </div>
+      </a>
+</div>
+
+
+<div class="p-4"></div>
+<div class="padding: ($spacer * 2);"></div>
+
+
+<div class="cards-container">
+  <div class="grid grid--p-3">
+    <!-- First Item -->
+    <div class="cell cell--12 cell--lg-4 content">
+            <a href="/radio">
+        <div class="card card--clickable">
+          <div class="card__image">
+            <img class="image" src="/img/landing/4_radio.jpeg"/>
+          </div>
+          <div class="card__content">
+            <p>Interact with the radio</p>
           </div>
         </div>
       </a>
     </div>
     <!-- Second Item -->
+    <div class="cell cell--12 cell--lg-4 content">
+          <a href="/lab">
+        <div class="card card--clickable">
+          <div class="card__image">
+            <img class="image" src="/img/landing/1_lab.jpeg"/>
+          </div>
+          <div class="card__content">
+            <p>Explore the creative process</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <!-- Third Item -->
     <div class="cell cell--12 cell--lg-4 content">
       <a href="/music">
         <div class="card card--clickable">
@@ -51,35 +91,9 @@ article_header:
         </div>
       </a>
     </div>
-    <!-- Third Item -->
-    <div class="cell cell--12 cell--lg-4 content">
-      <a href="/lab">
-        <div class="card card--clickable">
-          <div class="card__image">
-            <img class="image" src="/img/landing/1_lab.jpeg"/>
-          </div>
-          <div class="card__content">
-            <p>Explore the creative process</p>
-          </div>
-        </div>
-      </a>
-    </div>
     <!-- Fourth Item -->
     <div class="cell cell--12 cell--lg-4 content">
-      <a href="/radio">
-        <div class="card card--clickable">
-          <div class="card__image">
-            <img class="image" src="/img/landing/4_radio.jpeg"/>
-          </div>
-          <div class="card__content">
-            <p>Interact with the radio</p>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- Fifth Item -->
-    <div class="cell cell--12 cell--lg-4 content">
-      <a href="/bookings">
+          <a href="/bookings">
         <div class="card card--clickable">
           <div class="card__image">
             <img class="image" src="/img/landing/6_bookings.jpeg"/>
@@ -90,9 +104,9 @@ article_header:
         </div>
       </a>
     </div>
-    <!-- Sixth Item -->
+    <!-- Fifth Item -->
     <div class="cell cell--12 cell--lg-4 content">
-      <a href="/landings">
+            <a href="/landings">
         <div class="card card--clickable">
           <div class="card__image">
             <img class="image" src="/img/landing/3_landing.jpeg"/>
@@ -103,14 +117,8 @@ article_header:
         </div>
       </a>
     </div>
-  </div>
-</div>
-
-<div class="p-4"></div>
-<div class="padding: ($spacer * 2);"></div>
-
-  <div class="cell cell--12">
-
+    <!-- Sixth Item -->
+    <div class="cell cell--12 cell--lg-4 content">
       <a href="/bookings">
         <div class="card card--clickable">
           <div class="card__image">
@@ -121,26 +129,13 @@ article_header:
           </div>
         </div>
       </a>
-</div>
-
-<div class="hero hero--center hero--dark hero-example--linear-gradient">
-  <div class="hero__content">
-    <h3></h3>
-    <p>Each section offers a window into a different facet of our mission to reactivate auditory consciousness and connect cultures through sound.</p>
+    </div>
   </div>
 </div>
 
+<div class="p-4"></div>
+<div class="padding: (10 * 2);"></div>
 
-
-<div class="hero">
-  <div class="hero__content">
-    <video controls autoplay muted loop>
-      <source src="/img/915bb7e3-9897-48ae-95eb-2cdba659d8c1.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <!-- Your existing content here -->
-  </div>
-</div>
 
 
 <div class="form-container">

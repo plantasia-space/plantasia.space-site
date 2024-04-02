@@ -1,27 +1,31 @@
-
 .card {
   max-width: 100rem;
   border-radius: map-get($base, border-radius);
   @include box-shadow(3);
-  @include box-shadow(3);
+  // Set a simple white border
+  border: 1px solid white;
 
   @include transition(box-shadow map-get($animation, duration) map-get($animation, timing-function));
+
   & > :first-child {
     border-top-left-radius: map-get($base, border-radius);
     border-top-right-radius: map-get($base, border-radius);
   }
+
   & > :last-child {
     border-bottom-right-radius: map-get($base, border-radius);
     border-bottom-left-radius: map-get($base, border-radius);
   }
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 100%; /* Full width to ensure centering context */
+  width: 100%; // Full width to ensure centering context
   margin: 0 auto;
 }
+
 
 .cell {
   & > .card {
@@ -87,19 +91,38 @@
     background: rgba(#fff, .4);
   }
 }
-
 .card--clickable {
   cursor: pointer;
-  @include hover() {
-    @include box-shadow(2);
-    .card__image {
-      & > img {
-        height: inherit;
-      }
+  text-align: center; // Centers text inside the flex container
+
+  color: white; // This sets the text color to white for text within the card
+
+  // Targeting links specifically to ensure they are also white
+  a {
+    color: white; // Ensures links are white
+    &:hover, &:focus {
+      color: white; // Keeps links white even when hovered or focused
     }
   }
+
+  // Default state without shadow
+  @include box-shadow(0);
+
+  // Define the transition for smooth effect on hover
   @include transition(map-get($clickable, transition));
+
+  &:hover {
+    // Apply shadow on hover
+    @include box-shadow(3);
+  }
+  
+  .card__image {
+    & > img {
+      height: inherit;
+    }
+  }
 }
+
 
 .card--flat {
   @include box-shadow(0);
