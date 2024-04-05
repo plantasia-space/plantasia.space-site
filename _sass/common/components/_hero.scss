@@ -3,6 +3,7 @@
   @include flexbox();
   @include flex-direction(column);
   @include justify-content(center);
+  
   h1 { font-size: map-get($base, font-size-h1-xl); }
   h2 { font-size: map-get($base, font-size-h2-xl); }
   h3 { font-size: map-get($base, font-size-h3-xl); }
@@ -28,12 +29,17 @@
     h6 { font-size: map-get($base, font-size-h6-sm); }
     p  { font-size: map-get($base, font-size); }
   }
+  max-width: 99%;
+  max-height: 99%;
+  margin: auto; // This centers the element within its container if it's a block-level element
   background-size: cover;
 
 }
 
 .hero--center {
   text-align: center;
+
+
   .menu {
     @extend .menu--center;
   }
@@ -45,6 +51,31 @@
 
 .hero--dark {
   @extend .text--dark;
+}
+.hero--bordered {
+  @include flexbox();
+  @include flex-direction(column);
+  @include justify-content(center);
+  border: 1px solid white; // Adds a white border
+  background-size: cover;
+  background-position: 50% 50%;
+  text-align: center;
+  border-radius: 8px;
+
+  // You can include the responsive font sizing as in the original .hero
+  h1 { font-size: map-get($base, font-size-h1-xl); }
+  h2 { font-size: map-get($base, font-size-h2-xl); }
+  // ...and so on for h3, h4, h5, h6, p with their respective font sizes
+  
+  // Include media queries if you want to maintain the responsive behavior
+  @include media-breakpoint-down(lg) {
+    // Adjust font sizes for lg breakpoint
+    // ...
+  }
+  @include media-breakpoint-down(md) {
+    // Adjust font sizes for md breakpoint
+    // ...
+  }
 }
 
 .hero__content {
@@ -68,4 +99,3 @@
     }
   }
 }
-

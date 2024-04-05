@@ -19,18 +19,17 @@ article_header:
     src: /img/landing/433-mw-index.gif
 ---
 
-<div class="p-4"></div>
-<div class="padding: ($spacer * 6);"></div>
+<div class="p-5"></div>
 
 
-<div class="hero hero--center hero--dark hero-example--linear-gradient">
+<div class="hero hero--center hero--bordered hero-example--linear-gradient">
   <div class="hero__content">
     <h3></h3>
-    <p>Each section offers a window into a different facet of our mission to reactivate auditory consciousness and connect cultures through sound.</p>
+    <p class="white">We explore the invisible threads that unite humanity, beyond borders and differences.</p>
   </div>
 </div>
 
-
+<div class="p-5"></div>
 
   <div class="cell cell--12">
       <a href="https://collect.maar.world/">
@@ -46,8 +45,8 @@ article_header:
 </div>
 
 
-<div class="p-4"></div>
-<div class="padding: ($spacer * 2);"></div>
+<div class="p-5"></div>
+
 
 
 <div class="cards-container">
@@ -133,8 +132,8 @@ article_header:
   </div>
 </div>
 
-<div class="p-4"></div>
-<div class="padding: (10 * 2);"></div>
+<div class="p-5"></div>
+<div class="p-5"></div>
 
 
 
@@ -162,3 +161,5 @@ article_header:
     <button type="submit">Send</button>
   </form>
 </div>
+
+<div class="p-5"></div>

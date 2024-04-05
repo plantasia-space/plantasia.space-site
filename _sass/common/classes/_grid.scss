@@ -5,6 +5,20 @@ $grid-columns: 12;
 }
 .cell {
   min-width: 0;
+
+}
+// Define a specific bordered cell style
+.cell--bordered {
+  border: 1px solid white; // Adds a 1px white border specifically for bordered cells
+  border-radius: 8px;
+  position: relative; /* Or absolute, depending on your layout needs */
+  z-index: 10; /* Any number higher than the z-index of elements you want it above */
+
+}
+
+.content {
+  width: 100%; /* Ensures content takes up the full width of its container */
+  /* Other styling as needed */
 }
 
 @mixin make-cell($columns) {
