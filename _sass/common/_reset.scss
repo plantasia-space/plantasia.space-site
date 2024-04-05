@@ -135,7 +135,7 @@ h6 {
 }
 /* STYLE FOR THE LINKS INCLUDING MENU*/
 a {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Consolas', sans-serif;
   font-weight: map-get($base, font-weight-bold);
   @include link-colors($main-color-1);
 }

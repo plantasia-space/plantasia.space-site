@@ -1,11 +1,20 @@
 .swiper {
   position: relative;
   @include overflow(hidden);
+
+    // Adding a frame
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    background-color: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgb(255, 255, 255);; // Example: a solid, dark border
+    border-radius: map-get($base, border-radius);
+    padding: 10px; // Space between the border and the swiper content
+    box-sizing: border-box; // Ensures padding and border are included in the total width and height
+  
 }
 
 .swiper__wrapper, .swiper__slide {
   width: 100%;
-  height: 100%;
+  height: auto; // Adjust height to auto to accommodate image and text content
 }
 
 .swiper__wrapper {
@@ -18,31 +27,78 @@
 
 .swiper__slide {
   @include flex-shrink(0);
+  display: flex;
+  flex-direction: column; // Stack elements vertically
+  align-items: center; // Center-align the items horizontally
+  text-align: center; // Center-align the text
+  padding: 20px; // Add padding for spacing around the content
+
   & > img {
     max-width: 100%;
+    height: auto; // Ensure image scales correctly
+    margin-bottom: 20px; // Space between the image and the text content
+  }
+
+  .text-content {
+    width: 80%; // Limit the width of the text content
+    h2 { font-size: map-get($base, font-size-h2-xl); }
+    p  { font-size: map-get($base, font-size-xl); }
+
+    @include media-breakpoint-down(lg) {
+      h2 { font-size: map-get($base, font-size-h2-lg); }
+      p  { font-size: map-get($base, font-size-lg); }
+    }
+
+    @include media-breakpoint-down(md) {
+      h2 { font-size: map-get($base, font-size-h2-sm); }
+      p  { font-size: map-get($base, font-size); }
+    }
   }
 }
 
+
 .swiper__button {
   position: absolute;
-  top: 50%;
-  @extend .button, .button--circle;
-  @include transform(translate(0, -50%));
-  @include clickable($text-color-d, rgba($main-color-3, .4));
+  top: 40%;
+  z-index: 10; // Ensure buttons are above all other content
+  transform: translateY(-50%);
+  border: none; // Remove if you have borders
+  width: 48px; // Increase button size
+  height: 48px; // Increase button size
+  background-color: rgba(0, 0, 0, 1); // Make buttons slightly transparent
+  color: #33ffff; // Button icon color
+  font-size: 32px; // Increase icon size
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 32px; // Circular buttons
+  cursor: pointer;
+  transition: background-color 0.8s ease; // Smooth transition for hover effect
+
+  &:hover {
+    background-color: rgba(248, 248, 248, 0.8); // Darken button on hover for better visibility
+  }
+
+  // Use FontAwesome icons or similar for your buttons
+  &:before {
+    content: ""; // Use before pseudo-element for icons if using FontAwesome
+    // Adjust content property according to the specific icons you choose
+  }
 }
 
-.swiper--light .swiper__button {
-  @include clickable($text-color-theme-light, rgba($main-color-theme-dark, .4));
-}
-
-.swiper--dark .swiper__button {
-  @include clickable($text-color-theme-dark, rgba($main-color-theme-light, .4));
-}
 
 .swiper__button--prev {
-  left: 10px;
+  left: 20px; // Increase distance from the edge for better visibility
+
+  &:before {
+    content: "<"; // FontAwesome left arrow icon
+  }
 }
 
 .swiper__button--next {
-  right: 10px;
+  right: 20px; // Increase distance from the edge for better visibility
+
+  &:before {
+    content: ">"; // FontAwesome right arrow icon
+  }
 }

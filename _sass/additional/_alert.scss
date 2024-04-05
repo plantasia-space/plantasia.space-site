@@ -5,7 +5,13 @@
     border: 1px solid $green;
     border-radius: map-get($base, border-radius);
   }
-
+  p.white {
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    background-color: rgba(255, 255,255, 0.01); // Very light white background, ensure this is the intended effect
+    border: 1px solid rgb(255,255,255); // Solid white border
+    border-radius: map-get($base, 'border-radius'); // Ensure 'border-radius' is quoted if it's a key in the $base map
+    text-align: center;
+  }
   p.info {
     padding: map-get($spacers, 2) map-get($spacers, 3);
     background-color: rgba($blue, .1);
