@@ -2,7 +2,7 @@
 layout: landing
 title:  Maar World
 excerpt: >
-    A Recordlabel from the Cygnus Constellation
+    Records from the Cygnus Constellation
 permalink: /index.html
 full_width: false
 
