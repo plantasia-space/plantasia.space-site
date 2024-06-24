@@ -27,11 +27,12 @@ world.maar[at]gmail.com
 <a href="https://drive.google.com/drive/folders/1kq9b4TAnvlZtHXH6MLB3IdEEe50tJTx2?usp=sharing" rel="EPK" target="_blank">PHOTOS EPK</a>
 
   **Performance:** Live AV, Live, Hybrid, Dj set. 
-  
-  **Genres:** Regenerative Music / Union of world genres / You choose the genre, I choose the style :) 
+<br>  
+  **Genres:** Regenerative Music / Union of world genres / You choose the genre, I choose the style :)
+<br>
   **Artist using:** Sensors, controllers, synths, and computer with custom Max Software, Ableton Live, and Traktor.
   Live AV is with custom Max Software and Synths. 
-
+<br>
 <h3>  Hybrid ( Live+DJ) sets </h3>
 
 
