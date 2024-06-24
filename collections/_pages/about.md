@@ -19,6 +19,11 @@ key: page-about
 
   <h4>Connecting artists and listeners with novel tools for future music co-creation.</h4>
 
+ <div style="text-align: center;">
+    <img src="/img/about/mw-logo-transparent.png" alt="Image" style="border-radius: 50%; border: 1px solid #000; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); max-width: 100%;">
+  </div>
+  <br>
+
   <p>Maar World is a record label for a new era of music listening and making. Currently developing new formats for music distribution of independent artists, merging physical and digital releases, music making and listening. Maar World strikes a balance between stakeholders, promoting sustainability and equitable revenue distribution. The project aims to safeguard wildlife, ensure fair recognition for artists, and facilitate a natural and intuitive approach to sound listening creation in order to reactivate auditory consciousness.</p>
 
 
@@ -34,7 +39,7 @@ key: page-about
   <br>
 
   <q> When we manage to free ourselves from the dominance of the visual-analytical world and replace it with intuition and sensation, we begin to rediscover the true tuning of the world and the exquisite harmony of all its voices. 
-  We will find the center.Then the whole body will become an ear and all sounds will come to you, the known and the unknown, the sweet, the sad and the urgent. 
+  We will find the center. Then the whole body will become an ear and all sounds will come to you, the known and the unknown, the sweet, the sad and the urgent. 
   When my body lies in bed white and blue at night, all sounds come to me from their own chord, unhurried, strangely mixed, the slightly tonal and the soft creaks of the mountains. 
   At that moment, to hear is to be on high alert... and I hear songs in front of me... when I go beyond "to the country that loves silence". </q>
 
