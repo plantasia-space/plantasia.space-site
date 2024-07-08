@@ -14,30 +14,6 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN        <span class="material-symbols-outlined">science</span> Lab
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">science</span> Lab
-      es-LA   : *ES
-      # @end locale config
-    url: /lab.html
-
-  - titles:
-      # @start locale config
-      en      : &EN        <span class="material-symbols-outlined">radio</span>  Radio
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">radio</span>  Radio
-      es-LA   : *ES
-      # @end locale config
-    url: /radio.html
-
-  - titles:
-      # @start locale config
       en      : &EN      <span class="material-symbols-outlined">nature_people</span> Music
       en-GB   : *EN
       en-US   : *EN
@@ -48,42 +24,4 @@ header:
       # @end locale config
     
     url: /music.html
-
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">travel_explore</span> Landings
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">travel_explore</span> Aterrizajes
-      es-LA   : *ES
-      # @end locale config
-    url: /landings.html
-
-
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">speaker_group</span> Bookings
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">speaker_group</span> Bookings
-      es-LA   : *ES
-      # @end locale config
-    url: /bookings.html
-
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">looks</span> About
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">looks</span> ¿Quiénes somos?
-      es-LA   : *ES
-      # @end locale config
-    url: /about.html
-
 
