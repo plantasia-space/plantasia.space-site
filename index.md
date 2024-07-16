@@ -50,8 +50,8 @@ article_header:
 
 
 <div class="form-container">
-  <h3>Contact us</h3>
-  <p>Collaborate with us, or simply learn more about our vision and projects.</p>
+  <h3>Contact me</h3>
+  <p>Curious about something? Let me know by filling out the form.</p>
   
   <form
     action="https://formspree.io/f/mqkrdkde"
