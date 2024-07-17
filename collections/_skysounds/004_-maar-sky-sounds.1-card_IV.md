@@ -15,7 +15,7 @@ digital_link: https://opensea.io
 download: https://dl.dropboxusercontent.com/s/mxnv43pplrr4n83/Skysounds-1-IV.wav?raw=1
 download2:  https://dl.dropboxusercontent.com/s/jqt9j2v3dq2n6fv/004_-maar-sky-sounds.1-card_IV.wav?raw=1
 player: https://play.maar.world/?g=334&s=0&c=4
-player2: https://play.maar.world/?g=334&s=0&c=4
+player2: https://play.maar.world/?g=335&s=0&c=4
 titles:
   en      : &EN       Sky Sounds.1 Card IV
 
