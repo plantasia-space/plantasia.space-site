@@ -212,6 +212,8 @@ collections:
     output: true
   stoney_way:
     output: true
+  ent_worlds:
+    output: true
 
 # each time you add a folder, then need to add collections output true and name
 
@@ -234,7 +236,12 @@ defaults:
       type: lab
     values:
       nav_key: lab
-
+  ## ent_worlds
+  - scope:
+      path: ""
+      type: ent_worlds
+    values:
+      nav_key: ew
   - scope:
       path: ""
       type: genesis
