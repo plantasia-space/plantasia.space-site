@@ -17,12 +17,12 @@ key: IP
 <div class="p-5"></div>
 <div class="p-5"></div>
 <div class="p-5"></div>
+
 <div class="form-container">
     <h3>Create a new Interplanetary Player</h3>
     <p>Fill the form with details about the exoplanet and your artistic representation.</p>
 
     <form id="articleForm" class="contact-form">
-
         <label for="sciName">Scientific Exoplanet Name:</label>
         <select id="sciName" name="sciName" required onchange="updateDetails()">
             <option value="">Please select an exoplanet</option>
@@ -73,7 +73,7 @@ key: IP
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch exoplanet data
-    fetch('http://media.maar.world:3001/metadata/exoplanet/66ab800ea02d327c9e5671e6')
+    fetch('http://media.maar.world:3001/api/fetchExoplanetData')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -81,20 +81,32 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
+            console.log('Fetched exoplanet data:', data); // Debugging log
+
             const selectElement = document.getElementById('sciName');
-            Object.entries(data).forEach(([key, exoplanet]) => {
-                if (exoplanet.artName === "null") {
+            // Clear existing options
+            selectElement.innerHTML = '<option value="">Please select an exoplanet</option>';
+
+            // Log the data structure to understand it
+            console.log('Data structure:', data[0]);
+
+            // Add new options
+            for (const key in data[0]) {
+                if (data[0].hasOwnProperty(key)) {
+                    const exoplanet = data[0][key];
                     const option = document.createElement('option');
-                    option.value = key;  // Use key as the value
-                    option.textContent = exoplanet.sciName;
+                    option.value = exoplanet.sciName; // Use sciName as value
+                    option.textContent = exoplanet.sciName; // Display sciName as text
                     selectElement.appendChild(option);
                 }
-            });
+            }
+
+            console.log('Exoplanet selector options added');
         })
         .catch(error => console.error('Error loading or parsing the JSON data:', error));
 
     // Fetch sound engine data
-    fetch('http://media.maar.world:3001/metadata/sonicEngines.json')
+    fetch('http://media.maar.world:3001/api/fetchSonicEngineData')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -109,6 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.textContent = engineName;
                 selectElement.appendChild(option);
             });
+
+            console.log('Sound engine selector options added');
         })
         .catch(error => console.error('Error loading or parsing the sound engines JSON data:', error));
 });
@@ -116,11 +130,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateDetails() {
     const ipId = document.getElementById('sciName').value;
     const detailsDiv = document.getElementById('exoplanetDetails');
-    
+
     if (ipId === "") {
         detailsDiv.style.display = 'none';
     } else {
-        fetch('http://media.maar.world:3001/metadata/exoplanet/66ab800ea02d327c9e5671e6')
+        fetch('http://media.maar.world:3001/api/fetchExoplanetData')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -128,15 +142,31 @@ function updateDetails() {
                 return response.json();
             })
             .then(data => {
-                const exoplanet = data[ipId];
+                console.log('Fetched exoplanet details:', data); // Debugging log
+
+                // Handle nested data structure
+                const exoplanets = data[0]; // Assuming data[0] contains the array of exoplanets
+
+                // Find the exoplanet object with the matching sciName
+                let exoplanet;
+                for (const key in exoplanets) {
+                    if (exoplanets[key].sciName === ipId) {
+                        exoplanet = exoplanets[key];
+                        break;
+                    }
+                }
+
                 if (exoplanet) {
-                    document.getElementById('ipId').textContent = ipId;
+                    document.getElementById('ipId').textContent = exoplanet.sciName;
                     document.getElementById('ra_decimal').textContent = exoplanet.ra_decimal;
                     document.getElementById('dec_decimal').textContent = exoplanet.dec_decimal;
-                    document.getElementById('period').textContent = exoplanet.period;
+                    document.getElementById('period').textContent = exoplanet.period || 'N/A';
                     document.getElementById('radius').textContent = exoplanet.radius;
-                    document.getElementById('discoveryyear').textContent = exoplanet.discoveryyear;
+                    document.getElementById('discoveryyear').textContent = exoplanet.discoveryyear || 'N/A';
                     detailsDiv.style.display = 'block';
+                } else {
+                    console.log('No exoplanet found with the given ID');
+                    detailsDiv.style.display = 'none';
                 }
             })
             .catch(error => console.error('Error processing JSON data:', error));
@@ -151,8 +181,13 @@ function updateSoundEngineDetails() {
         document.getElementById('yTag').textContent = 'N/A';
         document.getElementById('zTag').textContent = 'N/A';
     } else {
-        fetch('http://media.maar.world:3001/metadata/sonicEngines.json')
-            .then(response => response.json())
+        fetch('http://media.maar.world:3001/api/fetchSonicEngineData')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 const soundEngine = data[selectedEngine];
                 if (soundEngine) {
@@ -165,133 +200,41 @@ function updateSoundEngineDetails() {
                     document.getElementById('zTag').textContent = 'N/A';
                 }
             })
-            .catch(error => console.error('Error processing sound engines JSON data:', error));
+            .catch(error => console.error('Error fetching sound engine details:', error));
     }
 }
 
 document.getElementById('articleForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Build the JSON payload
-    const jsonPayload = {
-        ipId: document.getElementById('ipId').textContent,
-        artName: document.getElementById('artName').value,
-        sciName: document.getElementById('sciName').selectedOptions[0].textContent,
-        ra_decimal: document.getElementById('ra_decimal').textContent,
-        dec_decimal: document.getElementById('dec_decimal').textContent,
-        period: document.getElementById('period').textContent,
-        radius: document.getElementById('radius').textContent,
-        discoveryyear: document.getElementById('discoveryyear').textContent,
-        description: document.getElementById('exoplanetDescription').value,
-        credits: document.getElementById('credits').value,
-        soundEngine: null,
-        sonification: [{
-            regen1: null,
-            regen2: null,
-            regen3: null,
-            regen4: null,
-            regen5: null,
-            regen6: null,
-            regen7: null,
-        }],
-        ddd: [{
-            dddArtistName: document.getElementById('3dArtistName').value,
-            textureURL: document.getElementById('uploadTexture').files[0] ? URL.createObjectURL(document.getElementById('uploadTexture').files[0]) : null,
-            objURL: document.getElementById('uploadObj').files[0] ? URL.createObjectURL(document.getElementById('uploadObj').files[0]) : null
-        }],
-        ipPlayback: [{
-            playCount: null,
-            playDuration: null,
-            recDuration: null,
-            xKnob: null,
-            yKnob: null,
-            zKnob: null,
-            regenButton: null,
-            playButton: null,
-            pauseButton: null
-        }],
-        ipSocial: [{
-            likes: null,
-            dislikes: null,
-            rating: null,
-            shares: null,
-            comments: ""
-        }]
-    };
+    const formData = new FormData();
+    formData.append('ipId', document.getElementById('ipId').textContent);
+    formData.append('artName', document.getElementById('artName').value);
+    formData.append('sciName', document.getElementById('sciName').selectedOptions[0].textContent);
+    formData.append('ra_decimal', document.getElementById('ra_decimal').textContent);
+    formData.append('dec_decimal', document.getElementById('dec_decimal').textContent);
+    formData.append('period', document.getElementById('period').textContent);
+    formData.append('radius', document.getElementById('radius').textContent);
+    formData.append('discoveryyear', document.getElementById('discoveryyear').textContent);
+    formData.append('description', document.getElementById('exoplanetDescription').value);
+    formData.append('credits', document.getElementById('credits').value);
+    formData.append('soundEngine', document.getElementById('soundEngine').value);
+    formData.append('uploadObj', document.getElementById('uploadObj').files[0]);
+    formData.append('uploadTexture', document.getElementById('uploadTexture').files[0]);
+    formData.append('3dArtistName', document.getElementById('3dArtistName').value);
 
-    const selectedEngine = document.getElementById('soundEngine').value;
-    if (selectedEngine !== "") {
-        fetch('http://media.maar.world:3001/metadata/sonicEngines.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const soundEngine = data[selectedEngine];
-                if (soundEngine) {
-                    jsonPayload.soundEngine = soundEngine.engine;
-                    jsonPayload.sonification[0].regen1 = soundEngine.regen1 || null;
-                    jsonPayload.sonification[0].regen2 = soundEngine.regen2 || null;
-                    jsonPayload.sonification[0].regen3 = soundEngine.regen3 || null;
-                    jsonPayload.sonification[0].regen4 = soundEngine.regen4 || null;
-                    jsonPayload.sonification[0].regen5 = soundEngine.regen5 || null;
-                    jsonPayload.sonification[0].regen6 = soundEngine.regen6 || null;
-                    jsonPayload.sonification[0].regen7 = soundEngine.regen7 || null;
-                }
-                logAndSubmitJsonPayload(jsonPayload);
-            })
-            .catch(error => console.error('Error processing sound engines JSON data:', error));
-    } else {
-        logAndSubmitJsonPayload(jsonPayload);
-    }
-});
-
-function logAndSubmitJsonPayload(jsonPayload) {
-    // Log the JSON payload
-    console.log(JSON.stringify(jsonPayload, null, 2));
-
-    // Define the API endpoint
-    const apiEndpoint = "http://media.maar.world:3001/api/config";
-
-    // Submit the JSON payload
-    fetch(apiEndpoint, {
+    fetch('http://media.maar.world:3001/api/configIntPlayer', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonPayload)
+        body: formData
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
         alert('Article submitted successfully!');
-
-        // Update the artName in the exoplanet data
-        fetch(`http://media.maar.world:3001/metadata/exoplanet/66ab800ea02d327c9e5671e6/${jsonPayload.ipId}/artName`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ artName: jsonPayload.artName })
-        })
-        .then(updateResponse => {
-            if (!updateResponse.ok) {
-                throw new Error('Failed to update exoplanet artName');
-            }
-            console.log('Exoplanet artName updated successfully');
-        })
-        .catch(error => console.error('Error updating exoplanet artName:', error));
     })
     .catch((error) => {
         console.error('Error:', error);
         alert('Failed to submit article');
     });
-}
+});
 </script>
