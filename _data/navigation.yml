@@ -1,28 +1,14 @@
-header:
+##header:
 
-  - titles:
-      # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">category</span> Collect
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
-      es-LA   : *ES
+##  - titles:
+##      # @start locale config
+##      en      : &EN     <span class="material-symbols-outlined">category</span> Collect
+##      en-GB   : *EN
+##      en-US   : *EN
+##      en-CA   : *EN
+##      en-AU   : *EN
+##      es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
+##      es-LA   : *ES
       # @end locale config
-    url: https://collect.maar.world
-
-  - titles:
-      # @start locale config
-      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Music
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">nature_people</span> Música
-      es-LA   : *ES
-      # @end locale config
-    
-    url: /music.html
-
+##    url: https://collect.maar.world
 
