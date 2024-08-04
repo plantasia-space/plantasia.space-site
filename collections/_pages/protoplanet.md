@@ -114,13 +114,20 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
+            console.log('Fetched sound engine data:', data); // Debugging log
             const selectElement = document.getElementById('soundEngine');
-            Object.keys(data).forEach(engineName => {
-                const option = document.createElement('option');
-                option.value = engineName;
-                option.textContent = engineName;
-                selectElement.appendChild(option);
-            });
+            // Clear existing options
+            selectElement.innerHTML = '<option value="">Please select a sound engine</option>';
+
+            // Add new options, filtering out the '_id' key
+            for (const engineKey in data[0]) {
+                if (data[0].hasOwnProperty(engineKey) && engineKey !== '_id') {
+                    const option = document.createElement('option');
+                    option.value = engineKey; // Use the key as value
+                    option.textContent = engineKey; // Display engine name as text
+                    selectElement.appendChild(option);
+                }
+            }
 
             console.log('Sound engine selector options added');
         })
@@ -189,7 +196,7 @@ function updateSoundEngineDetails() {
                 return response.json();
             })
             .then(data => {
-                const soundEngine = data[selectedEngine];
+                const soundEngine = data[0][selectedEngine];
                 if (soundEngine) {
                     document.getElementById('xTag').textContent = soundEngine.xTag || 'N/A';
                     document.getElementById('yTag').textContent = soundEngine.yTag || 'N/A';
