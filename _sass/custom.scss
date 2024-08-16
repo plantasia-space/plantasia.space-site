@@ -73,6 +73,7 @@
 
 .contact-form input[type="email"],
 .contact-form input[type="text"],
+.contact-form input[type="date"], /* Added date to the existing input styles */
 .contact-form textarea,
 .contact-form select { // Added select to the existing styles for input and textarea
   width: 100%;
