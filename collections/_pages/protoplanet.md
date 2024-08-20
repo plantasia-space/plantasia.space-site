@@ -185,7 +185,7 @@ document.getElementById('articleForm').addEventListener('submit', function(event
     fileFormData.append('uploadObj', document.getElementById('uploadObj').files[0]);
     fileFormData.append('uploadTexture', document.getElementById('uploadTexture').files[0]);
 
-    fetch('http://media.maar.world:3001/api/uploadFiles', {
+    fetch('http://media.maar.world:3001/api/uploadModelFiles', {
         method: 'POST',
         body: fileFormData
     })
