@@ -204,6 +204,8 @@ collections_dir: collections
 collections:
   genesis:
     output: true
+  forms:
+    output: true
   lab:
     output: true
   pages:

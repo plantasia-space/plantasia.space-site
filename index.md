@@ -1,6 +1,6 @@
 ---
 layout: landing
-title:  Maar World
+title: Maar World
 excerpt: >
     Records from the Cygnus Constellation
 permalink: /index.html
@@ -21,7 +21,6 @@ article_header:
 
 <div class="p-5"></div>
 
-
 <div class="hero hero--center hero--bordered hero-example--linear-gradient">
   <div class="hero__content">
     <h3></h3>
@@ -31,23 +30,28 @@ article_header:
 
 <div class="p-5"></div>
 
-  <div class="cell cell--12">
-      <a href="https://collect.maar.world/">
-        <div class="card card--clickable">
-          <div class="card__image">
-            <img class="image" src="/img/landing/2_collect.jpeg"/>
-          </div>
-          <div class="card__content">
-            <p>Play Music Cards With Exoplanets</p>
-          </div>
-        </div>
-      </a>
+<div class="cell cell--12">
+  <a href="https://collect.maar.world/">
+    <div class="card card--clickable">
+      <div class="card__image">
+        <img class="image" src="/img/landing/2_collect.jpeg"/>
+      </div>
+      <div class="card__content">
+        <p>Play Music Cards With Exoplanets</p>
+      </div>
+    </div>
+  </a>
 </div>
 
 <div class="p-5"></div>
 <div class="p-5"></div>
 
+<!-- Add the login/logout link -->
+<div class="auth-container">
+  <a id="auth-link" href="javascript:void(0);" class="auth-button"></a>
+</div>
 
+<div class="p-5"></div>
 
 <div class="form-container">
   <h3>Contact me</h3>
@@ -75,3 +79,4 @@ article_header:
 </div>
 
 <div class="p-5"></div>
+
