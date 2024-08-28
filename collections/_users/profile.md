@@ -15,101 +15,111 @@ key: xPlorer
 <div class="p-5"></div>
 
 <div class="form-container">
+    <div class="button-container">
+        <div class="back-button-container">
+            <a href="/voyage" title="Voyage">
+                <button id="backButton" class="btn button--outline-primary button--circle">
+                    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                </button>
+            </a>
+        </div>
+        <div class="edit-button-container">
+            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile">
+                <span class="material-symbols-outlined">edit</span> 
+            </button>
+        </div>
+    </div>
+
     <h3>xPlorer Profile</h3>
-<div class="p-2"></div>
-
-<div id="profileView">
-    <!-- Profile Image Display -->
-    <div id="profileImagePreviewContainer">
-        <img id="profileImagePreview" src="" alt="Profile Image">
-    </div>
-    <!-- Edit Button -->
-    <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile">
-        <span class="material-symbols-outlined">edit</span> 
-    </button>
     <div class="p-2"></div>
-    <!-- Displayed Profile Information -->
-    <p><strong>Username:</strong> <span id="displayUsername"></span></p>
-    <p><strong>Email:</strong> <span id="displayEmail"></span></p>
-    <p><strong>Gender Identity:</strong> <span id="displayGenderIdentity"></span></p>
-    <p id="customGenderDisplay" style="display: none;"><strong>Custom Gender Identity:</strong> <span id="displayCustomGenderIdentity"></span></p>
-    <p><strong>Pronouns:</strong> <span id="displayPronouns"></span></p>
-    <p id="otherPronounsDisplay" style="display: none;"><strong>Other Pronouns:</strong> <span id="displayOtherPronouns"></span></p>
-    <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
-    <p><strong>Role:</strong> <span id="displayRole"></span></p> <!-- Added role display -->
 
-</div>
+    <div id="profileView">
+        <!-- Profile Image Display -->
+        <div id="profileImagePreviewContainer">
+            <img id="profileImagePreview" src="" alt="Profile Image">
+        </div>
 
-<form id="profileForm" class="contact-form" style="display: none;">
-    <!-- Profile Image Upload -->
-    <label for="profileImage">Profile Image:</label>
-    <div id="profileImagePreviewContainer">
-        <img id="profileImagePreviewForm" src="" alt="Profile Image">
+        <div class="p-2"></div>
+        <!-- Displayed Profile Information -->
+        <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+        <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+        <p><strong>Gender Identity:</strong> <span id="displayGenderIdentity"></span></p>
+        <p id="customGenderDisplay" style="display: none;"><strong>Custom Gender Identity:</strong> <span id="displayCustomGenderIdentity"></span></p>
+        <p><strong>Pronouns:</strong> <span id="displayPronouns"></span></p>
+        <p id="otherPronounsDisplay" style="display: none;"><strong>Other Pronouns:</strong> <span id="displayOtherPronouns"></span></p>
+        <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+        <p><strong>Role:</strong> <span id="displayRole"></span></p> <!-- Added role display -->
     </div>
-    <input type="file" id="profileImage" name="profileImage" accept=".jpg, .jpeg, .png"><br><br>
 
-<!-- Username -->
-<label for="username">Username:</label>
-<input type="text" id="username" name="username" required><br><br>
+    <form id="profileForm" class="contact-form" style="display: none;">
+        <!-- Profile Image Upload -->
+        <label for="profileImage">Profile Image:</label>
+        <div id="profileImagePreviewContainer">
+            <img id="profileImagePreviewForm" src="" alt="Profile Image">
+        </div>
+        <input type="file" id="profileImage" name="profileImage" accept=".jpg, .jpeg, .png"><br><br>
 
-<!-- Email (Read-Only) -->
-<label for="email">Email:</label>
-<input type="email" id="email" name="email" readonly><br><br>
+        <!-- Username -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
 
-<!-- Phone -->
-<label for="phone">Phone:</label>
-<input type="tel" id="phone" name="phone"><br><br>
+        <!-- Email (Read-Only) -->
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" readonly><br><br>
 
-<!-- Gender Identity -->
-<label for="genderIdentity">Gender Identity:</label>
-<select id="genderIdentity" name="genderIdentity" required>
-    <option value="Prefer not to reply">Prefer not to reply</option>
-    <option value="Woman">Woman</option>
-    <option value="Man">Man</option>
-    <option value="Trans woman">Trans woman</option>
-    <option value="Trans man">Trans man</option>
-    <option value="Non-Binary">Non-Binary</option>
-    <option value="Not Listed">Not Listed</option>
-</select><br><br>
+        <!-- Phone -->
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone"><br><br>
 
-<!-- Custom Gender Identity (Shown when "Not Listed" is selected) -->
-<label for="customGenderIdentity" id="customGenderLabel" style="display: none;">Please specify:</label>
-<input type="text" id="customGenderIdentity" name="customGenderIdentity" style="display: none;"><br><br>
+        <!-- Gender Identity -->
+        <label for="genderIdentity">Gender Identity:</label>
+        <select id="genderIdentity" name="genderIdentity" required>
+            <option value="Prefer not to reply">Prefer not to reply</option>
+            <option value="Woman">Woman</option>
+            <option value="Man">Man</option>
+            <option value="Trans woman">Trans woman</option>
+            <option value="Trans man">Trans man</option>
+            <option value="Non-Binary">Non-Binary</option>
+            <option value="Not Listed">Not Listed</option>
+        </select><br>
 
-<!-- Pronouns -->
-<label for="pronouns">Pronouns:</label>
-<select id="pronouns" name="pronouns" required>
-    <option value="She/Her">She/Her</option>
-    <option value="He/Him">He/Him</option>
-    <option value="They/Them">They/Them</option>
-    <option value="Ze/Hir">Ze/Hir</option>
-    <option value="Ze/Zir">Ze/Zir</option>
-    <option value="Prefer not to say">Prefer not to say</option>
-    <option value="Other">Other</option>
-</select><br><br>
+        <!-- Custom Gender Identity (Shown when "Not Listed" is selected) -->
+        <label for="customGenderIdentity" id="customGenderLabel" style="display: none;">Please specify:</label>
+        <input type="text" id="customGenderIdentity" name="customGenderIdentity" style="display: none;"><br><br>
 
-<!-- Custom Pronouns (Shown when "Other" is selected) -->
-<label for="otherPronouns" id="otherPronounsLabel" style="display: none;">Please specify:</label>
-<input type="text" id="otherPronouns" name="otherPronouns" style="display: none;"><br><br>
+        <!-- Pronouns -->
+        <label for="pronouns">Pronouns:</label>
+        <select id="pronouns" name="pronouns" required>
+            <option value="She/Her">She/Her</option>
+            <option value="He/Him">He/Him</option>
+            <option value="They/Them">They/Them</option>
+            <option value="Ze/Hir">Ze/Hir</option>
+            <option value="Ze/Zir">Ze/Zir</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <!-- Custom Pronouns (Shown when "Other" is selected) -->
+        <label for="otherPronouns" id="otherPronounsLabel" style="display: none;">Please specify:</label>
+        <input type="text" id="otherPronouns" name="otherPronouns" style="display: none;"><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit"><span class="material-symbols-outlined">check_circle</span> Update Profile</button>
+        <div class="p-2"></div>
 
 
+        <!-- Cancel Button -->
+        <button type="button" id="cancelButton" class="btn btn-secondary"><span class="material-symbols-outlined">cancel</span> Cancel</button>
+        <div class="p-2"></div>
 
-<button type="submit"><span class="material-symbols-outlined">check_circle</span> Update Profile</button>
-<div class="p-2"></div>
+        <!-- Progress Bar -->
+        <div class="progress-bar" style="width: 100%; background-color: lightgray;">
+            <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
+        </div>
 
-<button type="button" id="cancelButton" class="btn btn-secondary"><span class="material-symbols-outlined">cancel</span> Cancel</button>
-<div class="p-5"></div>
-
-
-
-<!-- Progress Bar -->
-<div class="progress-bar" style="width: 100%; background-color: lightgray;">
-    <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
-</div>
-
-<!-- Message Display -->
-<p id="messageDisplay" style="text-align: center;"></p>
-</form>
+        <!-- Message Display -->
+        <p id="messageDisplay" style="text-align: center;"></p>
+    </form>
 </div>
 
 <script>
@@ -154,18 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('pronouns').value = data.pronouns || '';
 
             // Show/hide custom gender identity field
-            if (data.genderIdentity === 'Not Listed') {
-                document.getElementById('customGenderLabel').style.display = 'block';
-                document.getElementById('customGenderIdentity').style.display = 'block';
-                document.getElementById('customGenderIdentity').value = data.customGenderIdentity || '';
-            }
+            toggleCustomGender(); // Ensure the correct display of the custom gender field
+            toggleOtherPronouns(); // Ensure the correct display of the other pronouns field
 
-            // Show/hide other pronouns field
-            if (data.pronouns === 'Other') {
-                document.getElementById('otherPronounsLabel').style.display = 'block';
-                document.getElementById('otherPronouns').style.display = 'block';
-                document.getElementById('otherPronouns').value = data.otherPronouns || '';
-            }
+            // Trigger the functions on page load to ensure correct display if pre-selected
+            toggleCustomGender();
+            toggleOtherPronouns();
         })
         .catch(error => console.error('Error fetching user data:', error));
 
@@ -203,6 +207,36 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(file);
         }
     });
+
+    // Function to show/hide custom gender identity field based on selection
+    function toggleCustomGender() {
+        const genderIdentityField = document.getElementById('genderIdentity');
+        if (genderIdentityField.value === 'Not Listed') {
+            document.getElementById('customGenderLabel').style.display = 'block';
+            document.getElementById('customGenderIdentity').style.display = 'block';
+        } else {
+            document.getElementById('customGenderLabel').style.display = 'none';
+            document.getElementById('customGenderIdentity').style.display = 'none';
+            document.getElementById('customGenderIdentity').value = ''; // Clear the field if hidden
+        }
+    }
+
+    // Function to show/hide other pronouns field based on selection
+    function toggleOtherPronouns() {
+        const pronounsField = document.getElementById('pronouns');
+        if (pronounsField.value === 'Other') {
+            document.getElementById('otherPronounsLabel').style.display = 'block';
+            document.getElementById('otherPronouns').style.display = 'block';
+        } else {
+            document.getElementById('otherPronounsLabel').style.display = 'none';
+            document.getElementById('otherPronouns').style.display = 'none';
+            document.getElementById('otherPronouns').value = ''; // Clear the field if hidden
+        }
+    }
+
+    // Attach event listeners for change events
+    document.getElementById('genderIdentity').addEventListener('change', toggleCustomGender);
+    document.getElementById('pronouns').addEventListener('change', toggleOtherPronouns);
 
     document.getElementById('profileForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -282,5 +316,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
-
 </script>

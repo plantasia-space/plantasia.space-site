@@ -179,16 +179,26 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 
 $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 
-#editButton {
-  padding: 16px; // Increase padding for a larger button
-  font-size: 24px; // Increase font size for larger text
-  border-radius: 50%; // Ensures it remains circular
-  width: $button-size; // Set the width using the fixed size
-  height: $button-size; // Set the height equal to the width to make it circular
-
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust this if you need spacing below the buttons */
 }
 
+.back-button-container,
+.edit-button-container {
+  display: inline-block;
+}
+
+#backButton, #editButton {
+  width: $button-size; /* Adjust the size as needed */
+  height: $button-size; /* Ensure both buttons are the same size */
+  padding: 0; /* Ensure padding doesn't affect the size */
+  border-radius: 50%; /* Ensures the button remains circular */
+}
+
+#backButton .material-symbols-outlined,
 #editButton .material-symbols-outlined {
-  font-size: $button-size*.5; // Increase icon size (adjust as needed)
+  font-size: $button-size*.5; /* Adjust to ensure the icons are the same size */
 }
-

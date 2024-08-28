@@ -13,9 +13,11 @@ key: IP
 ---
 
 <div id="voyage-content">
-    <h1>Thanks for logging in, Bon voyage xPlorer...</h1>
+    <h1>Bon voyage xPlorer...</h1>
     <p id="user-info"></p> <!-- Placeholder for user role and email -->
-    <p><a href="/voyage/profile">Go to your profile</a></p> <!-- Link to profile page -->
+    <p><a href="/voyage/profile"><span class="material-symbols-outlined">
+account_circle
+</span> Go to your profile</a></p> <!-- Link to profile page -->
 
 </div>
 
