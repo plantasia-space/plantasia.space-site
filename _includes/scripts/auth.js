@@ -15,6 +15,7 @@ async function loginUser(email) {
         const magicToken = await magic.user.getIdToken();
         console.log('Obtained magicToken:', magicToken); // Debug the received token
         localStorage.setItem('magicToken', magicToken);
+        localStorage.setItem('userId', data.user.id);  // Store userId
         console.log('magicToken stored in localStorage:', localStorage.getItem('magicToken')); // Verify storage
         window.location.href = '/voyage';
     } catch (error) {
@@ -43,6 +44,7 @@ async function logoutUser() {
     try {
         await magic.user.logout();
         localStorage.removeItem('magicToken');
+        localStorage.removeItem('userId');
         localStorage.removeItem('userRole');
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userName');

@@ -80,12 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Storing additional user data in localStorage
             localStorage.setItem('jwtToken', data.token);
+            localStorage.setItem('userId', data.user.id);  // Store userId
             localStorage.setItem('userRole', data.user.role);
             localStorage.setItem('userEmail', data.user.email);
             localStorage.setItem('userName', data.user.username);
 
             console.log('Stored JWT token in localStorage:', localStorage.getItem('jwtToken'));
             console.log('Stored userRole in localStorage:', localStorage.getItem('userRole'));
+            console.log('Stored userId in localStorage:', localStorage.getItem('userId'));
             console.log('Stored userEmail in localStorage:', localStorage.getItem('userEmail'));
             console.log('Stored userName in localStorage:', localStorage.getItem('userName'));
 

@@ -16,18 +16,34 @@ key: xPlorer
 
 <div class="form-container">
     <h3>User Profile</h3>
-    <p>Edit your profile information below.</p>
+    <p id="editMessage">View and edit your profile information below.</p>
 
-
-
-        <!-- Profile Image Preview -->
+    <div id="profileView">
+        <!-- Profile Image Display -->
         <div id="profileImagePreviewContainer" style="width: 256px; height: 256px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center;">
-            <img id="profileImagePreview" src="" alt="Profile Image Preview" style="max-width: 100%; max-height: 100%; display: none;">
-        </div><br><br>
+            <img id="profileImagePreview" src="" alt="Profile Image" style="max-width: 100%; max-height: 100%; display: none;">
+        </div><br>
+
+        <!-- Displayed Profile Information -->
+        <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+        <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+        <p><strong>Gender Identity:</strong> <span id="displayGenderIdentity"></span></p>
+        <p id="customGenderDisplay" style="display: none;"><strong>Custom Gender Identity:</strong> <span id="displayCustomGenderIdentity"></span></p>
+        <p><strong>Pronouns:</strong> <span id="displayPronouns"></span></p>
+        <p id="otherPronounsDisplay" style="display: none;"><strong>Other Pronouns:</strong> <span id="displayOtherPronouns"></span></p>
+        <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+
+        <!-- Edit Button -->
+        <button id="editButton" class="btn btn-primary">
+            <span class="material-symbols-outlined">edit</span> Edit Profile
+        </button>
+    </div>
+
+    <form id="profileForm" class="contact-form" style="display: none;">
         <!-- Profile Image Upload -->
         <label for="profileImage">Profile Image:</label>
         <input type="file" id="profileImage" name="profileImage" accept=".jpg, .jpeg, .png"><br><br>
-    <form id="profileForm" class="contact-form">
+
         <!-- Username -->
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
@@ -35,6 +51,10 @@ key: xPlorer
         <!-- Email (Read-Only) -->
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" readonly><br><br>
+
+        <!-- Phone -->
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone"><br><br>
 
         <!-- Gender Identity -->
         <label for="genderIdentity">Gender Identity:</label>
@@ -68,12 +88,6 @@ key: xPlorer
         <label for="otherPronouns" id="otherPronounsLabel" style="display: none;">Please specify:</label>
         <input type="text" id="otherPronouns" name="otherPronouns" style="display: none;"><br><br>
 
-        <!-- Phone -->
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone"><br><br>
-
-
-
         <!-- Submit Button -->
         <button type="submit">Update Profile</button>
     </form>
@@ -88,38 +102,43 @@ key: xPlorer
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const email = localStorage.getItem('userEmail');
-    if (!email) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
         alert('No logged-in user found. Please log in first.');
         window.location.href = '/login';
         return;
     }
 
-    // Fetch user data based on the email
-    fetch(`http://media.maar.world:3001/api/getUserProfile?email=${email}`)
+    // Fetch user data based on the userId
+    fetch(`http://media.maar.world:3001/api/getUserProfile?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('username').value = data.username;
-            document.getElementById('email').value = data.email;
-            document.getElementById('genderIdentity').value = data.genderIdentity;
-            if (data.genderIdentity === 'Not Listed') {
-                document.getElementById('customGenderIdentity').value = data.customGenderIdentity;
-                document.getElementById('customGenderLabel').style.display = 'block';
-                document.getElementById('customGenderIdentity').style.display = 'block';
-            }
-            document.getElementById('pronouns').value = data.pronouns;
-            if (data.pronouns === 'Other') {
-                document.getElementById('otherPronouns').value = data.otherPronouns;
-                document.getElementById('otherPronounsLabel').style.display = 'block';
-                document.getElementById('otherPronouns').style.display = 'block';
-            }
-            document.getElementById('phone').value = data.phone;
+            // Populate display fields
+            document.getElementById('displayUsername').innerText = data.username;
+            document.getElementById('displayEmail').innerText = data.email;
+            document.getElementById('displayGenderIdentity').innerText = data.genderIdentity || 'Not provided';
+            document.getElementById('displayPronouns').innerText = data.pronouns || 'Not provided';
+            document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
             if (data.profileImage) {
                 document.getElementById('profileImagePreview').src = data.profileImage;
                 document.getElementById('profileImagePreview').style.display = 'block';
             }
+
+            // Populate form fields (hidden until edit mode)
+            document.getElementById('username').value = data.username || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('phone').value = data.phone || '';
+            document.getElementById('genderIdentity').value = data.genderIdentity || '';
+            document.getElementById('pronouns').value = data.pronouns || '';
         })
         .catch(error => console.error('Error fetching user data:', error));
+
+
+    // Toggle edit mode
+    document.getElementById('editButton').addEventListener('click', function() {
+        document.getElementById('profileView').style.display = 'none';
+        document.getElementById('profileForm').style.display = 'block';
+    });
 
     document.getElementById('genderIdentity').addEventListener('change', function() {
         if (this.value === 'Not Listed') {
@@ -141,46 +160,58 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('profileForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+document.getElementById('profileForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-        const formData = new FormData();
-        formData.append('username', document.getElementById('username').value);
-        formData.append('email', document.getElementById('email').value);
-        formData.append('genderIdentity', document.getElementById('genderIdentity').value);
-        if (document.getElementById('genderIdentity').value === 'Not Listed') {
-            formData.append('customGenderIdentity', document.getElementById('customGenderIdentity').value);
-        }
-        formData.append('pronouns', document.getElementById('pronouns').value);
-        if (document.getElementById('pronouns').value === 'Other') {
-            formData.append('otherPronouns', document.getElementById('otherPronouns').value);
-        }
-        formData.append('phone', document.getElementById('phone').value);
-        if (document.getElementById('profileImage').files[0]) {
-            formData.append('profileImage', document.getElementById('profileImage').files[0]);
-        }
+    const username = document.getElementById('username').value.trim();
+    if (username === '') {
+        alert('Username cannot be empty');
+        return;
+    }
+    
+    const userId = localStorage.getItem('userId');
+    console.log('Retrieved userId:', userId); // Debugging
 
-        document.getElementById('loadingMessage').style.display = 'block';
+    const formData = new FormData();
+    formData.append('userId', userId); // Ensure userId is included
+    formData.append('email', document.getElementById('email').value);
+    formData.append('username', document.getElementById('username').value);
+    formData.append('genderIdentity', document.getElementById('genderIdentity').value);
+    if (document.getElementById('genderIdentity').value === 'Not Listed') {
+        formData.append('customGenderIdentity', document.getElementById('customGenderIdentity').value);
+    }
+    formData.append('pronouns', document.getElementById('pronouns').value);
+    if (document.getElementById('pronouns').value === 'Other') {
+        formData.append('otherPronouns', document.getElementById('otherPronouns').value);
+    }
+    formData.append('phone', document.getElementById('phone').value);
+    if (document.getElementById('profileImage').files[0]) {
+        formData.append('profileImage', document.getElementById('profileImage').files[0]);
+    }
 
-        fetch('http://media.maar.world:3001/api/updateUserProfile', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loadingMessage').style.display = 'none';
-            if (data.success) {
-                alert('Profile updated successfully!');
-                window.location.reload();
-            } else {
-                alert('Failed to update profile: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error updating profile:', error);
-            document.getElementById('loadingMessage').style.display = 'none';
-            alert('An error occurred while updating your profile.');
-        });
+    // Debugging: Log the FormData content
+    for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
+
+    fetch('http://media.maar.world:3001/api/updateUserProfile', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Profile updated successfully!');
+            window.location.reload();
+        } else {
+            alert('Failed to update profile: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+        alert('An error occurred while updating your profile.');
     });
+});
+
 });
 </script>
