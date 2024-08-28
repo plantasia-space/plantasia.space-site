@@ -19,15 +19,17 @@ key: IP
 <div class="p-5"></div>
 
 <div class="form-container">
-    <h3>Create a new Interplanetary Player</h3>
-    <p>Fill the form with details about the exoplanet and your artistic representation.</p>
+    <h3>Create a New Interplanetary Player</h3>
+    <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
     <form id="articleForm" class="contact-form">
-        <label for="sciName">Scientific Exoplanet Name:</label>
+        <!-- Scientific Exoplanet Name -->
+        <label for="sciName">Which scientific exoplanet are you representing?</label>
         <select id="sciName" name="sciName" required onchange="updateDetails()">
             <option value="">Please select an exoplanet</option>
         </select><br><br>
 
+        <!-- Exoplanet Details -->
         <div id="exoplanetDetails" style="display:none;">
             <p><strong>IP ID:</strong> <span id="ipId"></span></p> 
             <p><strong>Right Ascension (Decimal):</strong> <span id="ra_decimal"></span></p>
@@ -36,35 +38,42 @@ key: IP
             <p><strong>Radius [R earth]:</strong> <span id="radius"></span></p>
             <p><strong>Discovery Year:</strong> <span id="discoveryyear"></span></p>
             <p style="display: none;"><strong>Position URL:</strong> <a id="posURL" href="#" target="_blank">View Location</a></p>
-        </div>
+        </div><br><br>
 
-        <label for="soundEngine">Select a Sonic Engine:</label>
+        <!-- Sonic Engine Selection -->
+        <label for="soundEngine">Which sonic engine would you like to use as the default for your Interplanetary Player?</label>
         <select id="soundEngine" name="soundEngine" required onchange="updateSoundEngineDetails()">
             <option value="">Please select a sound engine</option>
-        </select>
+        </select><br><br>
+
         <div id="soundEngineDetails">
             <p><strong>X Tag:</strong> <span id="xTag"></span></p>
             <p><strong>Y Tag:</strong> <span id="yTag"></span></p>
             <p><strong>Z Tag:</strong> <span id="zTag"></span></p>
         </div><br>
 
-        <!-- Add regenState toggle button -->
-        <label for="regenState">Regen State:</label>
+        <!-- Regen State -->
+        <label for="regenState">Would you like to enable the Regen State?</label>
         <input type="checkbox" id="regenState" name="regenState"><br><br>
 
-        <label for="artName">Choose an Artistic Exoplanet Name:</label>
+        <!-- Artistic Exoplanet Name -->
+        <label for="artName">What artistic name would you like to give this Interplanetary Player?</label>
         <input type="text" id="artName" name="artName" required><br><br>
 
-        <label for="uploadObj">Upload 3D Model (OBJ):</label>
+        <!-- 3D Model Upload -->
+        <label for="uploadObj">Please upload the 3D model (OBJ format):</label>
         <input type="file" id="uploadObj" name="uploadObj" accept=".obj" required><br><br>
 
-        <label for="uploadTexture">Upload Texture:</label>
+        <!-- Texture Upload -->
+        <label for="uploadTexture">Please upload the texture file (any image format):</label>
         <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*" required><br><br>
 
-        <label for="dddArtistName">3D Artist Name:</label>
+        <!-- 3D Artist Name -->
+        <label for="dddArtistName">Who is the 3D artist for this creation?</label>
         <input type="text" id="dddArtistName" name="dddArtistName" required><br><br>
 
-        <label for="genderIdentity">3D Artist Gender Identity:</label>
+        <!-- Gender Identity -->
+        <label for="genderIdentity">How do they identify?</label>
         <select id="genderIdentity" name="genderIdentity" required>
             <option value="Prefer not to reply">Prefer not to reply</option>
             <option value="Woman">Woman</option>
@@ -73,26 +82,28 @@ key: IP
             <option value="Trans man">Trans man</option>
             <option value="Non-Binary">Non-Binary</option>
             <option value="Not Listed">Not Listed</option>
-        </select>
+        </select><br><br>
+
         <input type="text" id="customGenderIdentity" name="customGenderIdentity" placeholder="Please specify" style="display: none;"><br><br>
 
-        <label for="exoplanetDescription">Describe topology, life, and or story of the exoplanet in 500 characters:</label>
+        <!-- Exoplanet Description -->
+        <label for="exoplanetDescription">Can you describe the topology, life, or story of this exoplanet in 500 characters?</label>
         <textarea id="exoplanetDescription" name="exoplanetDescription" required rows="4" maxlength="500" style="width: 100%;"></textarea><br><br>
 
-        <label for="credits">Credits:</label>
+        <!-- Credits -->
+        <label for="credits">Who should be credited for this work?</label>
         <input type="text" id="credits" name="credits" required><br><br>
 
+        <!-- Submit Button -->
         <button type="submit">Next</button>
 
         <!-- Progress Bar -->
         <div class="progress-bar">
             <div id="progress"></div>
-        </div>
+        </div><br>
 
         <!-- Status Messages -->
         <div id="statusMessage" class="status-message" style="display: none;"></div>
-
-
     </form>
 </div>
 

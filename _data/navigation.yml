@@ -1,5 +1,4 @@
 header:
-
   - titles:
       # @start locale config
       en      : &EN     <span class="material-symbols-outlined">category</span> Collect
@@ -22,7 +21,15 @@ header:
       es-ES   : &ES   <span class="material-symbols-outlined">nature_people</span> Música
       es-LA   : *ES
       # @end locale config
-    
     url: /music.html
 
-
+  # Placeholder for login/logout button
+  - titles:
+      en      : &EN      <span id="auth-link"></span>
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      es-ES   : &ES      <span id="auth-link"></span>
+      es-LA   : *ES
+    url: javascript:void(0); # This will be dynamically replaced by JavaScript

@@ -20,8 +20,48 @@ layout: none
     <div class="root" data-is-touch="false">
       {{ content }}
     </div>
+
+    <!-- Include the common scripts -->
     <script>
       {%- include scripts/common.js -%}
     </script>
+
+    <!-- Include the authentication script -->
+    <script>
+      {%- include scripts/auth.js -%}
+    </script>
+
+    <!-- Add script to update the authentication link based on login state -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const authLink = document.getElementById('auth-link');
+          console.log('Auth link element:', authLink); // Debugging
+      
+          function updateAuthLink() {
+            const magicToken = localStorage.getItem('magicToken');
+            //console.log('Retrieved magicToken from localStorage:', magicToken); // Debugging
+      
+            if (authLink) {
+              if (magicToken) {
+                // Use the logout label with an onclick event that calls the logoutUser function
+                authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+                authLink.parentElement.onclick = logoutUser; // Make sure logoutUser is defined
+                authLink.parentElement.href = 'javascript:void(0);'; // Prevent default link behavior
+              } else {
+                // Use the login label and direct the user to the login page
+                authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
+                authLink.parentElement.href = '/login';
+                authLink.parentElement.onclick = null; // Clear any previously set onclick handlers
+              }
+            } else {
+              console.error('Auth link element not found');
+            }
+          }
+      
+          updateAuthLink(); // Initialize the authentication link on load
+        });
+      </script>
+      
+      
   </body>
 </html>

@@ -216,7 +216,8 @@ collections:
     output: true
   ent_worlds:
     output: true
-
+  users:
+    output: true
 # each time you add a folder, then need to add collections output true and name
 
 defaults:
