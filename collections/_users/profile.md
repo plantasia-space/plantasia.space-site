@@ -92,7 +92,6 @@ key: xPlorer
         <button type="submit">Update Profile</button>
         <!-- Cancel Button -->
         <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
-
     </form>
 
     <div id="loadingMessage" style="display: none; text-align: center;">
@@ -121,11 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Populate display fields
             document.getElementById('displayUsername').innerText = data.username;
             document.getElementById('displayEmail').innerText = data.email;
-            document.getElementById('displayGenderIdentity').innerText = data.userInfo?.genderIdentity || 'Not provided';
-            document.getElementById('displayPronouns').innerText = data.userInfo?.pronouns || 'Not provided';
+            document.getElementById('displayGenderIdentity').innerText = data.genderIdentity || 'Not provided';
+            document.getElementById('displayPronouns').innerText = data.pronouns || 'Not provided';
             document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
             if (data.profileImage) {
-                document.getElementById('profileImagePreview').src = data.profileImage;
+                document.getElementById('profileImagePreview').src = `https://media.maar.world${data.profileImage}`;
                 document.getElementById('profileImagePreview').style.display = 'block';
             }
 
@@ -133,24 +132,38 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('username').value = data.username || '';
             document.getElementById('email').value = data.email || '';
             document.getElementById('phone').value = data.phone || '';
-            document.getElementById('genderIdentity').value = data.userInfo?.genderIdentity || '';
-            document.getElementById('pronouns').value = data.userInfo?.pronouns || '';
+            document.getElementById('genderIdentity').value = data.genderIdentity || '';
+            document.getElementById('pronouns').value = data.pronouns || '';
+
+            // Show/hide custom gender identity field
+            if (data.genderIdentity === 'Not Listed') {
+                document.getElementById('customGenderLabel').style.display = 'block';
+                document.getElementById('customGenderIdentity').style.display = 'block';
+                document.getElementById('customGenderIdentity').value = data.customGenderIdentity || '';
+            }
+
+            // Show/hide other pronouns field
+            if (data.pronouns === 'Other') {
+                document.getElementById('otherPronounsLabel').style.display = 'block';
+                document.getElementById('otherPronouns').style.display = 'block';
+                document.getElementById('otherPronouns').value = data.otherPronouns || '';
+            }
         })
         .catch(error => console.error('Error fetching user data:', error));
-
 
     // Toggle edit mode
     document.getElementById('editButton').addEventListener('click', function() {
         document.getElementById('profileView').style.display = 'none';
         document.getElementById('profileForm').style.display = 'block';
     });
-        // Cancel submission
 
+    // Cancel button functionality
     document.getElementById('cancelButton').addEventListener('click', function() {
         document.getElementById('profileForm').style.display = 'none';
         document.getElementById('profileView').style.display = 'block';
     });
 
+    // Show/hide custom gender identity field based on selection
     document.getElementById('genderIdentity').addEventListener('change', function() {
         if (this.value === 'Not Listed') {
             document.getElementById('customGenderLabel').style.display = 'block';
@@ -161,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Show/hide other pronouns field based on selection
     document.getElementById('pronouns').addEventListener('change', function() {
         if (this.value === 'Other') {
             document.getElementById('otherPronounsLabel').style.display = 'block';
@@ -171,58 +185,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-document.getElementById('profileForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    const username = document.getElementById('username').value.trim();
-    if (username === '') {
-        alert('Username cannot be empty');
-        return;
-    }
-    
-    const userId = localStorage.getItem('userId');
-    console.log('Retrieved userId:', userId); // Debugging
-
-    const formData = new FormData();
-    formData.append('userId', userId); // Ensure userId is included
-    formData.append('email', document.getElementById('email').value);
-    formData.append('username', document.getElementById('username').value);
-    formData.append('genderIdentity', document.getElementById('genderIdentity').value);
-    if (document.getElementById('genderIdentity').value === 'Not Listed') {
-        formData.append('customGenderIdentity', document.getElementById('customGenderIdentity').value);
-    }
-    formData.append('pronouns', document.getElementById('pronouns').value);
-    if (document.getElementById('pronouns').value === 'Other') {
-        formData.append('otherPronouns', document.getElementById('otherPronouns').value);
-    }
-    formData.append('phone', document.getElementById('phone').value);
-    if (document.getElementById('profileImage').files[0]) {
-        formData.append('profileImage', document.getElementById('profileImage').files[0]);
-    }
-
-    // Debugging: Log the FormData content
-    for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
-
-    fetch('http://media.maar.world:3001/api/updateUserProfile', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Profile updated successfully!');
-            window.location.reload();
-        } else {
-            alert('Failed to update profile: ' + data.message);
+        const username = document.getElementById('username').value.trim();
+        if (username === '') {
+            alert('Username cannot be empty');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error updating profile:', error);
-        alert('An error occurred while updating your profile.');
-    });
-});
 
+        const userId = localStorage.getItem('userId');
+        console.log('Retrieved userId:', userId); // Debugging
+
+        const formData = new FormData();
+        formData.append('userId', userId); // Ensure userId is included
+        formData.append('email', document.getElementById('email').value);
+        formData.append('username', document.getElementById('username').value);
+        formData.append('genderIdentity', document.getElementById('genderIdentity').value);
+        if (document.getElementById('genderIdentity').value === 'Not Listed') {
+            formData.append('customGenderIdentity', document.getElementById('customGenderIdentity').value);
+        }
+        formData.append('pronouns', document.getElementById('pronouns').value);
+        if (document.getElementById('pronouns').value === 'Other') {
+            formData.append('otherPronouns', document.getElementById('otherPronouns').value);
+        }
+        formData.append('phone', document.getElementById('phone').value);
+        if (document.getElementById('profileImage').files[0]) {
+            formData.append('profileImage', document.getElementById('profileImage').files[0]);
+        }
+
+        // Debugging: Log the FormData content
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+        fetch('http://media.maar.world:3001/api/updateUserProfile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Profile updated successfully!');
+                window.location.reload();
+            } else {
+                alert('Failed to update profile: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating profile:', error);
+            alert('An error occurred while updating your profile.');
+        });
+    });
 });
 </script>
