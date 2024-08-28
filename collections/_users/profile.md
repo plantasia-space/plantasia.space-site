@@ -90,6 +90,9 @@ key: xPlorer
 
         <!-- Submit Button -->
         <button type="submit">Update Profile</button>
+        <!-- Cancel Button -->
+        <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+
     </form>
 
     <div id="loadingMessage" style="display: none; text-align: center;">
@@ -113,11 +116,13 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch(`http://media.maar.world:3001/api/getUserProfile?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
+            console.log('Received user data:', data); // Log the received data for inspection
+
             // Populate display fields
             document.getElementById('displayUsername').innerText = data.username;
             document.getElementById('displayEmail').innerText = data.email;
-            document.getElementById('displayGenderIdentity').innerText = data.genderIdentity || 'Not provided';
-            document.getElementById('displayPronouns').innerText = data.pronouns || 'Not provided';
+            document.getElementById('displayGenderIdentity').innerText = data.userInfo?.genderIdentity || 'Not provided';
+            document.getElementById('displayPronouns').innerText = data.userInfo?.pronouns || 'Not provided';
             document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
             if (data.profileImage) {
                 document.getElementById('profileImagePreview').src = data.profileImage;
@@ -128,8 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('username').value = data.username || '';
             document.getElementById('email').value = data.email || '';
             document.getElementById('phone').value = data.phone || '';
-            document.getElementById('genderIdentity').value = data.genderIdentity || '';
-            document.getElementById('pronouns').value = data.pronouns || '';
+            document.getElementById('genderIdentity').value = data.userInfo?.genderIdentity || '';
+            document.getElementById('pronouns').value = data.userInfo?.pronouns || '';
         })
         .catch(error => console.error('Error fetching user data:', error));
 
@@ -138,6 +143,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('editButton').addEventListener('click', function() {
         document.getElementById('profileView').style.display = 'none';
         document.getElementById('profileForm').style.display = 'block';
+    });
+        // Cancel submission
+
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        document.getElementById('profileForm').style.display = 'none';
+        document.getElementById('profileView').style.display = 'block';
     });
 
     document.getElementById('genderIdentity').addEventListener('change', function() {
