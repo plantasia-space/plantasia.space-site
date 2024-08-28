@@ -25,6 +25,7 @@ key: IP
     <div id="localStorageContent"></div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/magic-sdk@latest/dist/magic.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -44,7 +45,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            console.log('Preparing to send fetch request');
+            // Store the Magic token in localStorage for consistent use across the app
+            localStorage.setItem('magicToken', magicToken);
+            console.log('Stored magicToken in localStorage:', localStorage.getItem('magicToken'));
+
             const response = await fetch('http://media.maar.world:3001/api/login', {
                 method: 'POST',
                 headers: {
@@ -74,12 +78,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('No token in response data');
             }
 
+            // Storing additional user data in localStorage
             localStorage.setItem('jwtToken', data.token);
             localStorage.setItem('userRole', data.user.role);
             localStorage.setItem('userEmail', data.user.email);
             localStorage.setItem('userName', data.user.username);
 
-           // window.location.href = '/voyage';
+            console.log('Stored JWT token in localStorage:', localStorage.getItem('jwtToken'));
+            console.log('Stored userRole in localStorage:', localStorage.getItem('userRole'));
+            console.log('Stored userEmail in localStorage:', localStorage.getItem('userEmail'));
+            console.log('Stored userName in localStorage:', localStorage.getItem('userName'));
+
+            window.location.href = '/voyage';
 
         } catch (error) {
             console.error("Login failed:", error);

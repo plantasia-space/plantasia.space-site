@@ -8,7 +8,6 @@ if (typeof Magic === 'undefined') {
     window.magic = window.magic || new Magic('pk_live_C8C6E40CF7E226B5');
 }
 
-
 // Function to handle user login
 async function loginUser(email) {
     try {
@@ -23,7 +22,6 @@ async function loginUser(email) {
         alert("Login failed: " + error.message);
     }
 }
-
 
 // Function to check if user is logged in and redirect if not
 async function checkUser() {

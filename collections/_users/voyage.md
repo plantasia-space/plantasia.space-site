@@ -22,7 +22,8 @@ key: IP
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const jwtToken = localStorage.getItem('jwtToken');
-    
+    console.log('Retrieved JWT token from localStorage:', jwtToken);
+
     if (!jwtToken) {
         console.log('No JWT token found, redirecting to login.');
         window.location.href = '/login';
@@ -31,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const userRole = localStorage.getItem('userRole');
     const userName = localStorage.getItem('userName');
+    
+    console.log('Retrieved userRole from localStorage:', userRole);
+    console.log('Retrieved userName from localStorage:', userName);
 
     if (userRole && userName) {
         // Display user info without showing JWT token publicly

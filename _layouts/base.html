@@ -32,36 +32,53 @@ layout: none
     </script>
 
     <!-- Add script to update the authentication link based on login state -->
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const authLink = document.getElementById('auth-link');
-          console.log('Auth link element:', authLink); // Debugging
-      
-          function updateAuthLink() {
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded and parsed');
+        
+        const authLink = document.getElementById('auth-link');
+        console.log('Auth link element:', authLink);
+    
+        function updateAuthLink() {
+            console.log('updateAuthLink function called');
+            
             const magicToken = localStorage.getItem('magicToken');
-            //console.log('Retrieved magicToken from localStorage:', magicToken); // Debugging
-      
+            console.log('Retrieved magicToken from localStorage:', magicToken);
+    
             if (authLink) {
-              if (magicToken) {
-                // Use the logout label with an onclick event that calls the logoutUser function
-                authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
-                authLink.parentElement.onclick = logoutUser; // Make sure logoutUser is defined
-                authLink.parentElement.href = 'javascript:void(0);'; // Prevent default link behavior
-              } else {
-                // Use the login label and direct the user to the login page
-                authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-                authLink.parentElement.href = '/login';
-                authLink.parentElement.onclick = null; // Clear any previously set onclick handlers
-              }
+                if (magicToken) {
+                    console.log('User is logged in. Updating auth link to Logout');
+                    
+                    authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+                    authLink.parentElement.onclick = function(event) {
+                        event.preventDefault(); // Prevent default link behavior
+                        logoutUser(); // Call logout function
+                        console.log('Logout function called');
+                    };
+                    authLink.parentElement.href = 'javascript:void(0);';
+                } else {
+                    console.log('User is not logged in. Updating auth link to Login');
+                    
+                    authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
+                    authLink.parentElement.href = '/login';
+                    authLink.parentElement.onclick = null; // Clear any previously set onclick handlers
+                }
             } else {
-              console.error('Auth link element not found');
+                console.error('Auth link element not found in the DOM');
             }
-          }
-      
-          updateAuthLink(); // Initialize the authentication link on load
+        }
+    
+        updateAuthLink(); // Initialize the authentication link on load
+        console.log('Initial updateAuthLink function executed');
+    
+        // Update the link if login state changes in another tab
+        window.addEventListener('storage', function() {
+            console.log('Storage event detected. Re-running updateAuthLink');
+            updateAuthLink();
         });
-      </script>
-      
-      
+    });
+    
+    </script>
+    
   </body>
 </html>
