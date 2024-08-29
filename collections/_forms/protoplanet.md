@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /proto
+permalink: /voyage/proto
 titles:
   # @start locale config
   en      : &EN       Protoplanets

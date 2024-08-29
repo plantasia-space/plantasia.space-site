@@ -15,9 +15,14 @@ key: IP
 <div id="voyage-content">
     <h1>Bon voyage xPlorer...</h1>
     <p id="user-info"></p> <!-- Placeholder for user role and email -->
-    <p><a href="/voyage/profile"><span class="material-symbols-outlined">
-account_circle
-</span> Go to your profile</a></p> <!-- Link to profile page -->
+
+    <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
+
+    <p><a href="/voyage/proto"><span class="material-symbols-outlined">
+globe</span> Create or edit a new Interplanetary Player</a></p> 
+
+    <p><a href="/voyage/track-release"><span class="material-symbols-outlined">
+diversity_1</span> Release a new track</a></p> 
 
 </div>
 
