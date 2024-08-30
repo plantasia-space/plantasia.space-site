@@ -43,7 +43,20 @@ key: xPlorer
         <!-- Displayed Profile Information -->
         <p><strong>Display Name:</strong> <span id="displayDisplayName"></span></p>
         <p><strong>Username:</strong> <span id="displayUsername"></span></p>
-        <p><strong>Profile URL:</strong> maar.world/xplorer/<span id="displayProfileURL"></span></p>
+
+
+        <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+        <p><strong>Profile URL:</strong> 
+        <a id="profileUrl" href="#">maar.world/xplorer/?username=<span id="displayUsernameForUrl"></span></a>
+        <button id="copyButton" class="btn button--outline-primary button--circle" title="Copy URL">
+            <span class="material-symbols-outlined">content_copy</span>
+        </button>
+        </p>
+        <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+
+
+
+
         <p><strong>Email:</strong> <span id="displayEmail"></span></p>
         <p><strong>Gender Identity:</strong> <span id="displayGenderIdentity"></span></p>
         <p id="customGenderDisplay" style="display: none;"><strong>Custom Gender Identity:</strong> <span id="displayCustomGenderIdentity"></span></p>
@@ -64,38 +77,24 @@ key: xPlorer
             <span id="separator2" style="display:none;"> | </span> <!-- Hide separator by default -->
             <span id="customLink3Display"></span>
         </div>
-
         </p>
     </div>
 
     <form id="profileForm" class="contact-form" style="display: none;">
         <!-- Profile Image Upload -->
-        <label for="profileImage">Profile Image:</label>
+        <label for="profileImage">Choose your Profile Image:</label>
         <div id="profileImagePreviewContainer">
             <img id="profileImagePreviewForm" src="" alt="Profile Image">
         </div>
         <input type="file" id="profileImage" name="profileImage" accept=".jpg, .jpeg, .png"><br><br>
 
         <!-- Display Name -->
-
         <strong><label for="displayName">Display Name:</label></strong>
         <input type="text" id="displayName" name="displayName" required><br><br>
-
 
         <!-- Username -->
         <strong><label for="username">Username:</label></strong>
         <input type="text" id="username" name="username" required><br><br>
-
-        <!-- Profile URL -->
-
-        <strong><label for="profileURL">Profile URL:</label></strong>
-        <span>maar.world/xplorer/</span>
-        <input type="text" id="profileURL" name="profileURL" pattern="[a-zA-Z0-9]+" required><br><br>
-
-
-        <!-- Email (Read-Only) -->
-        <strong><label for="email">Email:</label></strong>
-        <input type="email" id="email" name="email" readonly><br><br>
 
         <!-- Phone -->
         <strong><label for="phone">Phone:</label></strong>
@@ -135,13 +134,13 @@ key: xPlorer
 
         <!-- New Editable Fields -->
         <strong><label for="city">City:</label></strong>
-        <input type="text" id="city" name="city" ><br><br>
+        <input type="text" id="city" name="city"><br><br>
 
         <strong><label for="country">Country:</label></strong>
-        <input type="text" id="country" name="country" ><br><br>
+        <input type="text" id="country" name="country"><br><br>
 
         <strong><label for="bio">Bio: (200 characters max)</label></strong>
-        <textarea id="bio" name="bio" maxlength="200" ></textarea><br><br>
+        <textarea id="bio" name="bio" maxlength="200"></textarea><br><br>
 
         <strong><label for="customLinks">Custom Links (Up to 3):</label></strong>
         <input type="url" id="customLink1" name="customLink1"><br><br>
@@ -186,13 +185,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Populate display fields
             document.getElementById('displayUsername').innerText = data.username;
+            document.getElementById('displayUsernameForUrl').innerText = data.username;
+            const profileUrl = `https://maar.world/xplorer/?username=${data.username}`;
+            document.getElementById('profileUrl').href = profileUrl;
             document.getElementById('displayEmail').innerText = data.email;
             document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
             document.getElementById('displayRole').innerText = data.role || 'Not provided';
 
             // Populate form fields (hidden until edit mode)
             document.getElementById('username').value = data.username || ''; // Username for edit view
-            document.getElementById('email').value = data.email || ''; // Email for edit view
             document.getElementById('phone').value = data.phone || ''; // Phone for edit view
 
             // Handle custom gender identity if "Not Listed"
@@ -224,25 +225,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // New fields
-
-            // Ensure displayName is populated correctly, even with emojis
             const displayName = data.displayName || '';
             document.getElementById('displayName').value = displayName; // Edit mode
             document.getElementById('displayDisplayName').innerText = displayName; // View mode
 
-            // Extract the part after "maar.world/xplorer/" for profileURL
-            const profileURLPrefix = "maar.world/xplorer/";
-            let profileURL = data.profileURL || '';
-
-            if (profileURL.startsWith(profileURLPrefix)) {
-                profileURL = profileURL.substring(profileURLPrefix.length);
-            }
-
-            // Populate the profileURL in both view and edit modes
-            document.getElementById('profileURL').value = profileURL || ''; // Edit mode
-            document.getElementById('displayProfileURL').innerText = profileURL || 'Not provided'; // View mode
-
-            // City and Country
             const city = data.city || '';
             document.getElementById('city').value = city; // Edit mode
             document.getElementById('displayCity').innerText = city; // View mode
@@ -251,12 +237,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('country').value = country; // Edit mode
             document.getElementById('displayCountry').innerText = country; // View mode
 
-            // Bio
             const bio = data.bio || '';
             document.getElementById('bio').value = bio; // Edit mode
             document.getElementById('displayBio').innerText = bio; // View mode
 
-            // Custom Links
             const customLinks = data.customLinks || [];
             document.getElementById('customLink1').value = customLinks[0] || ''; // Edit mode
             document.getElementById('customLink1Display').innerHTML = customLinks[0] ? `<a href="${customLinks[0]}" target="_blank">${customLinks[0]}</a>` : ''; // View mode
@@ -276,6 +260,17 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleOtherPronouns();
         })
         .catch(error => console.error('Error fetching user data:', error));
+
+    // Copy URL to clipboard functionality
+    document.getElementById('copyButton').addEventListener('click', function() {
+        const profileUrl = document.getElementById('profileUrl').href;
+        const tempInput = document.createElement('input');
+        tempInput.value = profileUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+    });
 
     // Toggle edit mode or cancel edit if already in edit mode
     document.getElementById('editButton').addEventListener('click', function() {
@@ -367,11 +362,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const userId = localStorage.getItem('userId');
-        console.log('Retrieved userId:', userId); // Debugging
 
         const formData = new FormData();
         formData.append('userId', userId);
-        formData.append('email', document.getElementById('email').value);
         formData.append('username', document.getElementById('username').value);
         formData.append('genderIdentity', document.getElementById('genderIdentity').value);
         if (document.getElementById('genderIdentity').value === 'Not Listed') {
@@ -388,7 +381,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // New fields
         formData.append('displayName', document.getElementById('displayName').value.trim());
-        formData.append('profileURL', 'maar.world/xplorer/' + document.getElementById('profileURL').value.trim());
         formData.append('city', document.getElementById('city').value.trim());
         formData.append('country', document.getElementById('country').value.trim());
         formData.append('bio', document.getElementById('bio').value.trim());
