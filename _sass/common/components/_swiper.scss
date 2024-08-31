@@ -5,8 +5,6 @@
     // Adding a frame
     padding: map-get($spacers, 2) map-get($spacers, 3);
     background-color: rgba(255, 255, 255, 0.01);
-    border: 1px solid rgb(255, 255, 255);; // Example: a solid, dark border
-    border-radius: map-get($base, border-radius);
     padding: 10px; // Space between the border and the swiper content
     box-sizing: border-box; // Ensures padding and border are included in the total width and height
   
