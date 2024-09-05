@@ -1,15 +1,15 @@
 ---
 title: "Subscripción Interplanetary Players Orchestra (ES)"
 layout: article
+show_title: false
 permalink: /lab/es/ip-orchestra-subscription
 cover: https://dl.dropboxusercontent.com/s/9vdaaxsmuzklbp3/1-ent-player-yellow.jpg?raw=1
 tags: IP ES
 lang: es
 
 ---
-### 🐚 Formulario de subscripción. 🧬
 
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSepFldT7NYzimfygmqnaqOJbxWTKSbNcnhjTcl0b8y5HLVkqQ/viewform?embedded=true" width="641" height="1949" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSepFldT7NYzimfygmqnaqOJbxWTKSbNcnhjTcl0b8y5HLVkqQ/viewform?embedded=true" width="100%" height="3140" frameborder="2" marginheight="0" marginwidth="0">Loading…</iframe>
 
 <div class="logo-grid">
     <img src="https://www.dropbox.com/scl/fi/nh8l7j56uidh2cdd4uut4/MMAT-BLANCO-2024.png?rlkey=jgmdll83abavbv06hnzn934jv&raw=1" alt="Logo MMAT">
