@@ -81,9 +81,10 @@ In our creation lab, we will implement a research process designed to form an en
 
 
 ### Schedule
-September 11, 2024: Workshop Day 1. <br>
-September 12, 2024: Workshop Day 2. <br>
-September 13, 2024: Concert <br>
+September 11, 2024: Workshop Day 1. 10:00am - 1:00pm <br>
+September 12, 2024: Workshop Day 2. 10:00am - 1:00pm <br>
+September 13, 2024: Workshop Day 3. 10:00am - 11:00am + Setup <br>
+## Concert September 13 7:00pm 
 
 All events will be held at the Universidad de las Artes, Guayaquil.
 

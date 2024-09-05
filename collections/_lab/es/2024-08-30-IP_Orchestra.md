@@ -81,9 +81,10 @@ En nuestro laboratorio de creación implementaremos un proceso de investigación
 
 
 ### Programación
-11 de septiembre 2024: Dia 1 de taller. <br>
-12 de septiembre 2024: Día 2 de taller. <br>
-13 de septiembre 2024: Concierto <br>
+11 de septiembre 2024: Dia 1 de taller. 10:00am 01:00pm <br>
+12 de septiembre 2024: Día 2 de taller. 10:00am 01:00pm <br>
+13 de septiembre 2024: Día 3 de taller. 10:00am 11:00am + Montaje <br>
+## 13 de septiembre 2024 7:00pm Concierto 
 
 Todos los eventos se llevarán a cabo en la Universidad de las Artes, Guayaquil.
 
