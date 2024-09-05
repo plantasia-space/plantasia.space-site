@@ -1,20 +1,15 @@
 .article__content {
-  font-size: map-get($base, font-size-lg); // Aplica 1.25rem a todo el contenido del artículo
-  line-height: map-get($base, line-height-lg); // Mantén el line-height más amplio para mejor legibilidad
+  line-height: map-get($base, line-height-lg);
   word-wrap: break-word;
-
   @media print {
-    font-size: map-get($base, font-size); // Ajusta el tamaño de fuente para impresión (1rem)
-    line-height: map-get($base, line-height); // Ajusta el line-height para impresión
+    line-height: map-get($base, line-height);
   }
-
   @include block-elements() {
     margin: map-get($spacers, 3) 0;
     @media print {
       margin: map-get($spacers, 2) 0;
     }
   }
-
   @include heading-elements() {
     position: relative;
     margin-top: map-get($spacers, 4);
