@@ -7,7 +7,7 @@ tags: IP EN
 lang: en
 
 ---
-## 🐚 Perhaps the relationship between human beings is neither vertical nor horizontal, but orbital. 🧬
+### 🐚 Perhaps the relationship between human beings is neither vertical nor horizontal, but orbital. 🧬
 
 ### Invitation
 From the  <a href="https://www.uartes.edu.ec/sitio/">Universidad de las Artes in Guayaquil</a>, we are excited to present the <a href="/lab/en/ip-orchestra-design">Interplanetary Players Orchestra</a>, a workshop offering unique sensory experiences for musical co-creation. This event is designed to integrate disciplines such as sound arts, music, music production, theater, dance, cinema, literature, intercultural pedagogy, visual arts, and programming into a single vibrant, creative, and transdisciplinary space.
@@ -218,3 +218,12 @@ We would like to invite students and professionals from various disciplines to j
 </div>
 
 <div class="p-5"></div>
+
+
+<div class="logo-grid">
+    <img src="https://www.dropbox.com/scl/fi/nh8l7j56uidh2cdd4uut4/MMAT-BLANCO-2024.png?rlkey=jgmdll83abavbv06hnzn934jv&raw=1" alt="Logo MMAT">
+    <a href="https://www.uartes.edu.ec" target="_blank">
+        <img src="https://www.dropbox.com/scl/fi/h2x74tzmdz97nd871blek/LOGO-UARTES-BLANCO.png?rlkey=2qykue2qyo0zyt5ch4fkic7kd&st=01dslfp8&raw=1" alt="Logo UArtes">
+    </a>
+    <img src="/img/about/mw-logo-transparent.png" alt="Logo Interplanetary Orchestra">
+</div>

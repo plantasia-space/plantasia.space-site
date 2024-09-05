@@ -115,6 +115,24 @@
     vertical-align: bottom;
   }
   
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* Espaciado entre los logos */
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.logo-grid img {
+    width: 100%;
+    max-width: 200px; /* Ajusta el ancho máximo de cada logo si lo deseas */
+    height: auto; /* Mantiene la proporción del logo */
+    object-fit: contain; /* Asegura que los logos se ajusten bien a su espacio */
+}
+
+
 
 /* end custom scss snippet */
 

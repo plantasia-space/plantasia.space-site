@@ -7,8 +7,16 @@ tags: IP ES
 lang: es
 
 ---
-## 🐚 Formulario de subscripción. 🧬
+### 🐚 Formulario de subscripción. 🧬
 
 
 
 <img src="/img/ether.jpg" alt="Interplanetary Orchestra GIF">
+
+<div class="logo-grid">
+    <img src="https://www.dropbox.com/scl/fi/nh8l7j56uidh2cdd4uut4/MMAT-BLANCO-2024.png?rlkey=jgmdll83abavbv06hnzn934jv&raw=1" alt="Logo MMAT">
+    <a href="https://www.uartes.edu.ec" target="_blank">
+        <img src="https://www.dropbox.com/scl/fi/h2x74tzmdz97nd871blek/LOGO-UARTES-BLANCO.png?rlkey=2qykue2qyo0zyt5ch4fkic7kd&st=01dslfp8&raw=1" alt="Logo UArtes">
+    </a>
+    <img src="/img/about/mw-logo-transparent.png" alt="Logo Interplanetary Orchestra">
+</div>

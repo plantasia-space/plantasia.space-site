@@ -7,7 +7,7 @@ tags: IP EN
 lang: en
 
 ---
-## 🐚 Perhaps the relationship between human beings is neither vertical nor horizontal, but orbital. 🧬
+### 🐚 Perhaps the relationship between human beings is neither vertical nor horizontal, but orbital. 🧬
 
 <img src="/img/lab/Interplanetary-Orchestra.ENG.png" alt="Interplanetary Orchestra GIF">
 
@@ -57,3 +57,12 @@ The workshop will take place at the Universidad de las Artes in Guayaquil, as pa
 </div>
 
 <div class="p-5"></div>
+
+
+<div class="logo-grid">
+    <img src="https://www.dropbox.com/scl/fi/nh8l7j56uidh2cdd4uut4/MMAT-BLANCO-2024.png?rlkey=jgmdll83abavbv06hnzn934jv&raw=1" alt="Logo MMAT">
+    <a href="https://www.uartes.edu.ec" target="_blank">
+        <img src="https://www.dropbox.com/scl/fi/h2x74tzmdz97nd871blek/LOGO-UARTES-BLANCO.png?rlkey=2qykue2qyo0zyt5ch4fkic7kd&st=01dslfp8&raw=1" alt="Logo UArtes">
+    </a>
+    <img src="/img/about/mw-logo-transparent.png" alt="Logo Interplanetary Orchestra">
+</div>
