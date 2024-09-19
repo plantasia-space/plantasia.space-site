@@ -9,7 +9,11 @@ lang: en
 ---
 ### 🐚 Perhaps the relationship between human beings is neither vertical nor horizontal, but orbital. 🧬
 
+<div>{%- include extensions/youtube.html id='3FYGWpvH8Gs' -%}</div>
+
+
 <img src="/img/lab/Interplanetary-Orchestra.ENG.png" alt="Interplanetary Orchestra GIF">
+
 
 ### What?
 The "Interplanetary Players Orchestra" is a musical co-creation workshop that seeks to blend diferent artistic and scientific disciplines into a creative and transdisciplinary space. Over three days, participants will work together to co-create a meaningful experience using meta-instruments and the power of their imagination. The Interplanetary Players combine characteristics of traditional and contemporary instruments into a digital interface accessible from multiple devices. The experience will culminate in an exhibition showcasing the results of this collaborative process.
