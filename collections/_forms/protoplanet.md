@@ -14,11 +14,17 @@ titles:
 key: IP
 
 ---
-<div class="p-5"></div>
-<div class="p-5"></div>
-<div class="p-5"></div>
 
 <div class="form-container">
+    <div class="button-container">
+        <div class="back-button-container">
+            <a href="/voyage" title="Back to Voyage">
+                <button id="backButton" class="btn button--outline-primary button--circle">
+                    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                </button>
+            </a>
+        </div>
+         </div>
     <h3>Create a New Interplanetary Player</h3>
     <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
@@ -301,6 +307,9 @@ function submitForm() {
     fileFormData.append('ipId', ipId);
     fileFormData.append('uploadObj', document.getElementById('uploadObj').files[0]);
     fileFormData.append('uploadTexture', document.getElementById('uploadTexture').files[0]);
+        // Fetch the userId from localStorage
+    const userId = localStorage.getItem('userId');
+
 
     fetch('http://media.maar.world:3001/api/uploadModelFiles', {
         method: 'POST',
@@ -312,6 +321,8 @@ function submitForm() {
 
         // Now submit the rest of the form data
         const configData = {
+            ownerId: userId,
+            privacy: "private",
             ipId,
             artName: document.getElementById('artName').value,
             sciName: document.getElementById('sciName').selectedOptions[0].textContent.split(': ')[1], // Extract sciName

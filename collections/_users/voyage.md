@@ -24,6 +24,9 @@ globe</span> Create or edit a new Interplanetary Player</a></p>
     <p><a href="/voyage/track-release"><span class="material-symbols-outlined">
 diversity_1</span> Release a new track</a></p> 
 
+    <p><a href="/voyage/playlist"><span class="material-symbols-outlined">
+playlist_add_circle</span> Create a new playlist or album</a></p> 
+
 </div>
 
 <script>

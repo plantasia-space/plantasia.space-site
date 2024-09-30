@@ -15,6 +15,15 @@ key: IP
 <div class="p-5"></div>
 
 <div class="form-container">
+    <div class="button-container">
+        <div class="back-button-container">
+            <a href="/voyage" title="Back to Voyage">
+                <button id="backButton" class="btn button--outline-primary button--circle">
+                    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                </button>
+            </a>
+        </div>
+    </div>
     <h3>Track Release Form</h3>
     <p>Fill the form with details about your track.</p>
 
@@ -114,17 +123,6 @@ key: IP
             <option value="creative-commons">This work is licensed under CC BY-SA 4.0</option>
         </select><br><br>
 
-        <!-- License Information Display -->
-        <p>Regenerative Music Copy Nibble 1.0:</p>
-        <a href="https://4fqic5ajlayeqxfzzlq2pamrrqfwc2hthgaklvw3y3jrjtniikba.arweave.net/4WCBdAlYMEhcucrhp4GRjAthaPM5gKXW28bTFM2oQoI" target="_blank">
-            Read more about Regenerative Music Copy Nibble 1.0
-        </a><br><br>
-
-        <p>Creative Commons CC BY-SA 4.0:</p>
-        <a href="https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" target="_blank">
-            Read more about CC BY-SA 4.0
-        </a><br><br>
-
         <!-- Advanced -->
         <label for="enableDirectDownloads">Would you like to enable free direct downloads for this release?</label>
         <input type="checkbox" id="enableDirectDownloads" name="enableDirectDownloads"><br><br>
@@ -142,10 +140,21 @@ key: IP
             <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
         </div>
     </div>
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Fetch the userId from localStorage
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+        showToast('You must be logged in to release a track.', 'error');
+        window.location.href = '/login'; 
+        return;
+    }
+
     // Fetch exoplanet data and populate dropdown
     fetch('http://media.maar.world:3001/api/fetchExoplanetData')
         .then(response => response.json())
@@ -164,30 +173,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         })
-        .catch(error => console.error('Error loading or parsing the JSON data:', error));
+        .catch(error => showToast('Error loading exoplanet data.', 'error'));
 
-    const addArtistButton = document.getElementById('addArtistButton');
-    const artistsContainer = document.getElementById('artistsContainer');
-
-    // Update the visibility of the remove buttons
-    function updateRemoveButtons() {
-        const removeButtons = artistsContainer.querySelectorAll('.removeArtistButton');
-        removeButtons.forEach(button => {
-            button.style.display = removeButtons.length > 1 ? 'inline-block' : 'none';
-        });
-    }
-
-    // Load saved data from localStorage
-    loadFormData();
-
-    // Save data on input change
-    const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm textarea');
-    formElements.forEach(element => {
-        element.addEventListener('input', saveFormData);
+    // Handle image preview
+    document.getElementById('uploadCoverImage').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('coverImagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            const preview = document.getElementById('coverImagePreview');
+            preview.src = '';
+            preview.style.display = 'none';
+        }
     });
 
-    function saveFormData() {
+    // Add Artist button functionality
+    document.getElementById('addArtistButton').addEventListener('click', function() {
+        const artistEntry = document.createElement('div');
+        artistEntry.className = 'artistEntry';
+        artistEntry.innerHTML = `
+            <input type="text" name="artistNames[]" placeholder="Artist Name" required>
+            <select name="genderIdentities[]" class="genderIdentitySelect" required>
+                <option value="Prefer not to reply">Prefer not to reply</option>
+                <option value="Woman">Woman</option>
+                <option value="Man">Man</option>
+                <option value="Trans woman">Trans woman</option>
+                <option value="Trans man">Trans man</option>
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Not Listed">Not Listed</option>
+            </select>
+            <input type="text" name="customGenderIdentities[]" class="customGenderIdentityInput" placeholder="Please specify" style="display: none;">
+            <button type="button" class="removeArtistButton" style="display: inline-block;">Remove</button>
+        `;
+        document.getElementById('artistsContainer').appendChild(artistEntry);
+    });
+
+    // Remove artist functionality
+    document.getElementById('artistsContainer').addEventListener('click', function(event) {
+        if (event.target.classList.contains('removeArtistButton')) {
+            event.target.closest('.artistEntry').remove();
+        }
+    });
+
+    // Submit form
+    document.getElementById('articleForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
         const trackData = {
+            ownerId: userId,
+            
             exoplanet: document.getElementById('exoplanet').value,
             artists: collectArtists(),
             trackName: document.getElementById('trackName').value,
@@ -203,165 +243,13 @@ document.addEventListener('DOMContentLoaded', function() {
             enableDirectDownloads: document.getElementById('enableDirectDownloads').checked,
             confirmRights: document.getElementById('confirmRights').checked
         };
-        localStorage.setItem('trackReleaseFormData', JSON.stringify(trackData));
-    }
-
-    function collectArtists() {
-        const artistNames = Array.from(document.getElementsByName('artistNames[]')).map(input => input.value);
-        const genderIdentities = Array.from(document.getElementsByName('genderIdentities[]')).map((select, index) => {
-            const customInput = document.getElementsByName('customGenderIdentities[]')[index];
-            return select.value === 'Not Listed' ? customInput.value : select.value;
-        });
-
-        return artistNames.map((name, index) => ({
-            name: name,
-            genderIdentity: genderIdentities[index]
-        }));
-    }
-
-    function loadFormData() {
-        const savedData = JSON.parse(localStorage.getItem('trackReleaseFormData'));
-        if (savedData) {
-            document.getElementById('exoplanet').value = savedData.exoplanet;
-            savedData.artists.forEach((artist, index) => {
-                if (index > 0) addArtist(); // Add extra artist fields if necessary
-                document.getElementsByName('artistNames[]')[index].value = artist.name;
-                document.getElementsByName('genderIdentities[]')[index].value = artist.genderIdentity;
-                if (artist.genderIdentity === 'Not Listed') {
-                    document.getElementsByName('customGenderIdentities[]')[index].value = artist.genderIdentity;
-                    document.getElementsByName('customGenderIdentities[]')[index].style.display = 'inline-block';
-                }
-            });
-            document.getElementById('trackName').value = savedData.trackName;
-            document.getElementById('type').value = savedData.type;
-            document.getElementById('genre').value = savedData.genre;
-            document.getElementById('mood').value = savedData.mood;
-            document.getElementById('additionalTags').value = savedData.additionalTags;
-            document.getElementById('description').value = savedData.description;
-            document.getElementById('credits').value = savedData.credits;
-            document.getElementById('privacy').value = savedData.privacy;
-            document.getElementById('releaseDate').value = savedData.releaseDate;
-            document.getElementById('licence').value = savedData.licence;
-            document.getElementById('enableDirectDownloads').checked = savedData.enableDirectDownloads;
-            document.getElementById('confirmRights').checked = savedData.confirmRights;
-        }
-    }
-
-    function addArtist() {
-        const artistEntry = document.createElement('div');
-        artistEntry.className = 'artistEntry';
-        artistEntry.innerHTML = `
-            <input type="text" name="artistNames[]" placeholder="Artist Name" required>
-            <select name="genderIdentities[]" class="genderIdentitySelect" required>
-                <option value="Prefer not to reply">Prefer not to reply</option>
-                <option value="Woman">Woman</option>
-                <option value="Man">Man</option>
-                <option value="Trans woman">Trans woman</option>
-                <option value="Trans man">Trans man</option>
-                <option value="Non-Binary">Non-Binary</option>
-                <option value="Not Listed">Not Listed</option>
-            </select>
-            <input type="text" name="customGenderIdentities[]" class="customGenderIdentityInput" placeholder="Please specify" style="display: none;">
-            <button type="button" class="removeArtistButton" style="display: none;">Remove</button>
-        `;
-        document.getElementById('artistsContainer').appendChild(artistEntry);
-        updateRemoveButtons();
-    }
-
-    function updateRemoveButtons() {
-        const removeButtons = artistsContainer.querySelectorAll('.removeArtistButton');
-        removeButtons.forEach(button => {
-            button.style.display = removeButtons.length > 1 ? 'inline-block' : 'none';
-        });
-    }
-
-
-    // Add a new artist entry
-    addArtistButton.addEventListener('click', function() {
-        const artistEntry = document.createElement('div');
-        artistEntry.className = 'artistEntry';
-        artistEntry.innerHTML = `
-            <input type="text" name="artistNames[]" placeholder="Artist Name" required>
-            <select name="genderIdentities[]" class="genderIdentitySelect" required>
-                <option value="Prefer not to reply">Prefer not to reply</option>
-                <option value="Woman">Woman</option>
-                <option value="Man">Man</option>
-                <option value="Trans woman">Trans woman</option>
-                <option value="Trans man">Trans man</option>
-                <option value="Non-Binary">Non-Binary</option>
-                <option value="Not Listed">Not Listed</option>
-            </select>
-            <input type="text" name="customGenderIdentities[]" class="customGenderIdentityInput" placeholder="Please specify" style="display: none;">
-            <button type="button" class="removeArtistButton" style="display: none;">Remove</button>
-        `;
-        artistsContainer.appendChild(artistEntry);
-        updateRemoveButtons(); // Update remove buttons visibility after adding
-    });
-
-    // Handle dynamic elements
-    artistsContainer.addEventListener('change', function(event) {
-        if (event.target.classList.contains('genderIdentitySelect')) {
-            const customInput = event.target.closest('.artistEntry').querySelector('.customGenderIdentityInput');
-            customInput.style.display = event.target.value === 'Not Listed' ? 'inline-block' : 'none';
-        }
-    });
-
-    artistsContainer.addEventListener('click', function(event) {
-        if (event.target.classList.contains('removeArtistButton')) {
-            event.target.closest('.artistEntry').remove();
-            updateRemoveButtons(); // Update remove buttons visibility after removing
-        }
-    });
-
-    // Initialize the form with one artist entry by default
-    updateRemoveButtons();
-
-    document.getElementById('articleForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // Collect artist names and gender identities
-        const artistNames = Array.from(document.getElementsByName('artistNames[]')).map(input => input.value);
-        const genderIdentities = Array.from(document.getElementsByName('genderIdentities[]')).map((select, index) => {
-            const customInput = document.getElementsByName('customGenderIdentities[]')[index];
-            return select.value === 'Not Listed' ? customInput.value : select.value;
-        });
-
-        const artists = artistNames.map((name, index) => ({
-            name: name,
-            genderIdentity: genderIdentities[index]
-        }));
-
-        // Check if the rights confirmation checkbox is checked
-        const confirmRightsChecked = document.getElementById('confirmRights').checked;
-        if (!confirmRightsChecked) {
-            alert('You must confirm that you own the rights to all uploaded content.');
-            return; // Stop form submission
-        }
-        
-        const trackData = {
-            exoplanet: document.getElementById('exoplanet').value,
-            artists: artists,
-            trackName: document.getElementById('trackName').value,
-            type: document.getElementById('type').value,
-            genre: document.getElementById('genre').value,
-            mood: document.getElementById('mood').value,
-            additionalTags: document.getElementById('additionalTags').value,
-            description: document.getElementById('description').value,
-            credits: document.getElementById('credits').value,
-            privacy: document.getElementById('privacy').value,
-            releaseDate: document.getElementById('releaseDate').value,
-            licence: document.getElementById('licence').value,
-            enableDirectDownloads: document.getElementById('enableDirectDownloads').checked
-        };
-        console.log(trackData);
 
         // Disable form elements and show loading message
-        const loadingMessage = document.getElementById('loadingMessage');
         const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
         const submitButton = document.querySelector('#articleForm button[type="submit"]');
         formElements.forEach(element => element.disabled = true);
         submitButton.textContent = 'Submitting...';
-        loadingMessage.style.display = 'block';
+        document.getElementById('loadingMessage').style.display = 'block';
 
         // Send metadata as JSON
         fetch('http://media.maar.world:3001/api/submitTrackData', {
@@ -374,23 +262,23 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.trackId) {
-                // If track data is accepted, proceed with file upload
                 uploadFiles(data.trackId);
             } else {
-                console.error('Error submitting track data:', data);
-                showError('Failed to submit track data, please try again.');
+                showToast('Failed to submit track data, please try again.', 'error');
+                resetForm();
             }
         })
         .catch(error => {
-            console.error('Failed to submit track data:', error);
-            showError('Failed to submit track data, please try again.');
+            console.error('Error submitting track data:', error);
+            showToast('Failed to submit track data, please try again.', 'error');
+            resetForm();
         });
 
         function uploadFiles(trackId) {
             const formData = new FormData();
             formData.append('audioFileWAV', document.getElementById('uploadWAV').files[0]);
             formData.append('audioFileMP3', document.getElementById('uploadMP3').files[0]);
-            formData.append('coverImage', document.getElementById('uploadCoverImage').files[0]); // Add cover image to the upload
+            formData.append('coverImage', document.getElementById('uploadCoverImage').files[0]);
 
             const xhr = new XMLHttpRequest();
             xhr.open('POST', `http://media.maar.world:3001/api/uploadTrackFiles/${trackId}`, true);
@@ -404,55 +292,73 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             xhr.onload = function() {
-                loadingMessage.style.display = 'none';
-                formElements.forEach(element => element.disabled = false); // Re-enable the form elements
-                submitButton.textContent = 'Submit'; // Reset the submit button text
+                document.getElementById('loadingMessage').style.display = 'none';
+                formElements.forEach(element => element.disabled = false); // Re-enable form elements
+                submitButton.textContent = 'Submit';
 
                 if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    console.log('Files uploaded successfully:', response);
-                    document.getElementById('articleForm').reset();  // Reset form fields
-                    showSuccess('Track released successfully!');
-                    document.getElementById('coverImagePreview').src = '';  // Reset image preview
+                    showToast('Track released successfully!', 'success');
+                    document.getElementById('articleForm').reset();
                     document.getElementById('coverImagePreview').style.display = 'none';
+                    localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
+                    window.location.href = '/voyage'; 
+                    return;
                 } else {
-                    console.error('Error uploading files:', xhr.responseText);
-                    showError('Failed to upload files.');
+                    showToast('Failed to upload files.', 'error');
                 }
             };
 
             xhr.onerror = function() {
-                loadingMessage.style.display = 'none';
-                formElements.forEach(element => element.disabled = false); // Re-enable the form elements
-                submitButton.textContent = 'Submit'; // Reset the submit button text
-                console.error('Error during upload:', xhr.responseText);
-                showError('Failed to upload files.');
+                document.getElementById('loadingMessage').style.display = 'none';
+                formElements.forEach(element => element.disabled = false); // Re-enable form elements
+                submitButton.textContent = 'Submit';
+                showToast('Failed to upload files.', 'error');
             };
 
             xhr.send(formData);
         }
 
-        function showError(message) {
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = message;
-            errorMessage.style.color = 'red';
-            document.querySelector('.form-container').appendChild(errorMessage);
+        function resetForm() {
             formElements.forEach(element => element.disabled = false);
             submitButton.textContent = 'Submit';
-            loadingMessage.style.display = 'none';
+            document.getElementById('loadingMessage').style.display = 'none';
         }
 
-        function showSuccess(message) {
-            const successMessage = document.createElement('p');
-            successMessage.textContent = message;
-            successMessage.style.color = 'green';
-            document.querySelector('.form-container').appendChild(successMessage);
-            formElements.forEach(element => element.disabled = false);
-            submitButton.textContent = 'Submit';
-            loadingMessage.style.display = 'none';
+        function collectArtists() {
+            const artistNames = Array.from(document.getElementsByName('artistNames[]')).map(input => input.value);
+            const genderIdentities = Array.from(document.getElementsByName('genderIdentities[]')).map((select, index) => {
+                const customInput = document.getElementsByName('customGenderIdentities[]')[index];
+                return select.value === 'Not Listed' ? customInput.value : select.value;
+            });
+            return artistNames.map((name, index) => ({
+                name: name,
+                genderIdentity: genderIdentities[index]
+            }));
         }
-            // If form submission is successful, clear localStorage
-            localStorage.removeItem('trackReleaseFormData');    
     });
+
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.classList.add('toast');
+        if (type === 'success') {
+            toast.classList.add('success');
+        } else if (type === 'error') {
+            toast.classList.add('error');
+        }
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 3000);
+    }
 });
 </script>

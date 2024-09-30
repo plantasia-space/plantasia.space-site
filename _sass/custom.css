@@ -1,11 +1,10 @@
 /* start custom scss snippet */
-
 /* Original container */
 .container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  padding-top: 100%; 
+  padding-top: 100%;
 }
 
 /* Original iframe */
@@ -49,7 +48,6 @@
   height: 100%;
   margin: auto;
   display: flex;
-
 }
 
 .form-container {
@@ -72,11 +70,11 @@
   text-align: left; /* Ensures form labels are aligned to the left for readability */
 }
 
-.contact-form input[type="email"],
-.contact-form input[type="text"],
-.contact-form input[type="tel"], /* Add tel input here */
-.contact-form input[type="date"], /* Added date to the existing input styles */
-.contact-form input[type="url"], /* Added url to the existing styles */
+.contact-form input[type=email],
+.contact-form input[type=text],
+.contact-form input[type=tel],
+.contact-form input[type=date],
+.contact-form input[type=url],
 .contact-form textarea,
 .contact-form select { /* Added select to the existing styles for input and textarea */
   width: 100%;
@@ -102,9 +100,8 @@
 }
 
 .contact-form button[type=submit]:hover {
-  background-color: #33ffff00;
+  background-color: rgba(51, 255, 255, 0);
   color: rgb(255, 255, 255);
-
 }
 
 .contact-form button[type=button] {
@@ -125,11 +122,7 @@
 }
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 300,
-  'GRAD' 200,
-  'opsz' 40;
+  font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 200, "opsz" 40;
   color: #33ffff;
   font-weight: bold;
   vertical-align: bottom;
@@ -153,12 +146,10 @@
   margin-top: 20px;
 }
 
-$profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
-
 #profileImagePreviewContainer,
 #profileImagePreviewFormContainer {
-  width: $profile-w;
-  height: $profile-w;
+  width: 16rem;
+  height: 16rem;
   margin: 0 auto 20px auto; /* Center the container and add margin below */
   border: 1px solid #ff33cc;
   display: flex;
@@ -167,19 +158,17 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   border-radius: 50%; /* Makes the container circular */
   overflow: hidden; /* Ensures the image doesn't overflow out of the circle */
 }
+
 #profileImagePreview,
 #profileImagePreviewForm {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the container area without distortion */
+  -o-object-fit: cover;
+     object-fit: cover; /* Ensures the image covers the container area without distortion */
   /* Removed display: none; */
 }
 
 /* end custom scss snippet */
-
-
-$button-size: 4rem; // Define a fixed button size (you can adjust as needed)
-
 .button-container {
   display: flex;
   justify-content: space-between;
@@ -193,20 +182,18 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 }
 
 #backButton, #editButton {
-  width: $button-size; /* Adjust the size as needed */
-  height: $button-size; /* Ensure both buttons are the same size */
+  width: 4rem; /* Adjust the size as needed */
+  height: 4rem; /* Ensure both buttons are the same size */
   padding: 0; /* Ensure padding doesn't affect the size */
   border-radius: 50%; /* Ensures the button remains circular */
 }
 
 #backButton .material-symbols-outlined,
 #editButton .material-symbols-outlined {
-  font-size: $button-size*.5; /* Adjust to ensure the icons are the same size */
+  font-size: 2rem; /* Adjust to ensure the icons are the same size */
 }
 
-// Existing SCSS (for reference)
 /* ... your existing SCSS ... */
-
 /* Additional SCSS for Playlist Form */
 .playlist-item {
   border: 1px solid #ccc;
@@ -272,11 +259,13 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 .toast.error {
   background-color: #dc3545;
 }
+
 /* Updated Image Preview Container for Fixed Size */
 #playlistImagePreview,
 #playlistImagePreviewForm {
-    width: 480px;
-    height: 480px;
-    object-fit: cover;
-    border-radius: 0; // Remove border radius for square image
-}
+  width: 480px;
+  height: 480px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0;
+}/*# sourceMappingURL=custom.css.map */
