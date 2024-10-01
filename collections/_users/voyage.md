@@ -18,39 +18,34 @@ key: IP
 
     <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
 
-    <p><a href="/voyage/proto"><span class="material-symbols-outlined">
-globe</span> Create or edit a new Interplanetary Player</a></p> 
+    <p><a href="/voyage/proto"><span class="material-symbols-outlined">globe</span> Create or edit a new Interplanetary Player</a></p> 
 
-    <p><a href="/voyage/track-release"><span class="material-symbols-outlined">
-diversity_1</span> Release a new track</a></p> 
+    <p><a href="/voyage/track-release"><span class="material-symbols-outlined">diversity_1</span> Release a new track</a></p> 
 
-    <p><a href="/voyage/playlist"><span class="material-symbols-outlined">
-playlist_add_circle</span> Create a new playlist or album</a></p> 
+    <p><a href="/voyage/playlist"><span class="material-symbols-outlined">playlist_add_circle</span> Create a new playlist or album</a></p> 
 
+    <h2>Your Released Tracks:</h2>
+    <ul id="tracks-list"></ul> <!-- Placeholder for the tracks list -->
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const jwtToken = localStorage.getItem('jwtToken');
-    console.log('Retrieved JWT token from localStorage:', jwtToken);
-
-    if (!jwtToken) {
-        console.log('No JWT token found, redirecting to login.');
-        window.location.href = '/login';
-        return;
-    }
-
+document.addEventListener('DOMContentLoaded', async function() {
     const userRole = localStorage.getItem('userRole');
     const userName = localStorage.getItem('userName');
-    
+    const userId = localStorage.getItem('userId');  // Assuming userId is stored in localStorage
+
     console.log('Retrieved userRole from localStorage:', userRole);
     console.log('Retrieved userName from localStorage:', userName);
+    console.log('Retrieved userId from localStorage:', userId);
 
-    if (userRole && userName) {
-        // Display user info without showing JWT token publicly
+    if (userRole && userName && userId) {
+        // Display user info
         displayUserInfo(userRole, userName);
+
+        // Fetch user profile and track data
+        await fetchUserTracks(userId);
     } else {
-        // If user data is not available, potentially log out or handle accordingly
+        // If user data is not available, redirect to login
         console.error('User data not found, redirecting to login.');
         window.location.href = '/login';
     }
@@ -64,4 +59,52 @@ function displayUserInfo(userRole, userName) {
         <strong>User Name:</strong> ${userName}
     `;
 }
+
+// Function to fetch all user tracks
+async function fetchUserTracks(userId) {
+    try {
+        // Fetch the user's tracks data
+        const response = await fetch(`http://media.maar.world:3001/api/user/${userId}/tracks`);
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch user tracks');
+        }
+
+        const data = await response.json();
+        const tracks = data.tracks; // Array of track objects with details
+
+        console.log('Tracks Owned:', tracks);
+
+        // Display tracks on the page
+        displayTracks(tracks);
+    } catch (error) {
+        console.error('Error fetching user tracks:', error);
+    }
+}
+
+// Function to display tracks on the page
+// Function to display tracks on the page
+function displayTracks(tracks) {
+    const tracksListElement = document.getElementById('tracks-list');
+
+    if (!tracks || tracks.length === 0) {
+        tracksListElement.innerHTML = '<li>No tracks found.</li>';
+        return;
+    }
+
+    tracks.forEach(track => {
+        // Assuming track.artistNames is an array of objects, where each object has a `name` field
+        const artistNames = track.artistNames.map(artist => artist.name).join(', ');
+
+        const trackElement = document.createElement('li');
+        trackElement.innerHTML = `
+            <strong>Artist Name:</strong> ${artistNames}<br>
+            <strong>Song Name:</strong> ${track.trackName}<br>
+            <strong>Privacy:</strong> ${track.privacy}<br>
+            <strong>Release Date:</strong> ${new Date(track.releaseDate).toLocaleDateString()}
+        `;
+        tracksListElement.appendChild(trackElement);
+    });
+}
+
 </script>

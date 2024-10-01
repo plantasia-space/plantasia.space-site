@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    fetch(`http://media.maar.world:3001/api/getPublicProfile?username=${username}`)
+    fetch(`http://media.maar.world:3001/api/profile?username=${username}`)
         .then(response => response.json())
         .then(data => {
             if (!data || data.error) {

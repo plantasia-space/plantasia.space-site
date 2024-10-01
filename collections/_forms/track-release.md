@@ -34,6 +34,18 @@ key: IP
             <option value="">Please select an exoplanet</option>
         </select><br><br>
 
+        <!-- Sonic Engine Selection -->
+        <label for="soundEngine">Which sonic engine would you like to use as the default for your Interplanetary Player?</label>
+        <select id="soundEngine" name="soundEngine" required onchange="updateSoundEngineDetails()">
+            <option value="">Please select a sound engine</option>
+        </select><br><br>
+
+        <div id="soundEngineDetails">
+            <p><strong>X Tag:</strong> <span id="xTag"></span></p>
+            <p><strong>Y Tag:</strong> <span id="yTag"></span></p>
+            <p><strong>Z Tag:</strong> <span id="zTag"></span></p>
+        </div><br>
+
         <!-- Cover Image Upload -->
         <label for="uploadCoverImage">Could you please upload the cover image for your release? (Best Size: 800x800 pixels, Max: 2MB, JPG or PNG):</label>
         <input type="file" id="uploadCoverImage" name="coverImage" accept=".jpg, .jpeg, .png" required><br><br>
@@ -174,6 +186,31 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         })
         .catch(error => showToast('Error loading exoplanet data.', 'error'));
+
+    // Fetch sound engine data
+    fetch('http://media.maar.world:3001/api/fetchSonicEngineData')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Sonic Engine data:', data);
+
+            soundEngineData = data[0]; // Adjust based on actual API response structure
+            populateSoundEngineDropdown();
+        })
+        .catch(error => console.error('Error loading or parsing the sound engine data:', error));
+
+function populateSoundEngineDropdown() {
+    const selectElement = document.getElementById('soundEngine');
+    selectElement.innerHTML = '<option value="">Please select a sound engine</option>';
+
+    // Assuming `soundEngineData` is an array, iterate over each engine
+    soundEngineData.forEach((engine, index) => {
+        const option = document.createElement('option');
+        option.value = index;  // Use index or an ID to track selected engine
+        option.textContent = `Sonic Engine ${index.toString().padStart(3, '0')}`;  // Display engine index
+
+        selectElement.appendChild(option);
+    });
+}
 
     // Handle image preview
     document.getElementById('uploadCoverImage').addEventListener('change', function(event) {
@@ -336,6 +373,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }));
         }
     });
+
+function updateSoundEngineDetails() {
+    const selectedEngineIndex = document.getElementById('soundEngine').value;
+
+    if (selectedEngineIndex === "") {
+        // Reset the fields if no engine is selected
+        document.getElementById('xTag').textContent = 'N/A';
+        document.getElementById('yTag').textContent = 'N/A';
+        document.getElementById('zTag').textContent = 'N/A';
+    } else {
+        // Access the correct engine object using the selected index
+        const soundEngine = soundEngineData[selectedEngineIndex];
+
+        if (soundEngine) {
+            document.getElementById('xTag').textContent = soundEngine.xTag || 'N/A';
+            document.getElementById('yTag').textContent = soundEngine.yTag || 'N/A';
+            document.getElementById('zTag').textContent = soundEngine.zTag || 'N/A';
+        } else {
+            // Fallback in case something goes wrong
+            document.getElementById('xTag').textContent = 'N/A';
+            document.getElementById('yTag').textContent = 'N/A';
+            document.getElementById('zTag').textContent = 'N/A';
+        }
+    }
+}
+
 
     function showToast(message, type = 'success') {
         const toastContainer = document.getElementById('toastContainer');

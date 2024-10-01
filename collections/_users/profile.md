@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let originalProfileImage = '';
 
     // Fetch user data based on the userId
-    fetch(`http://media.maar.world:3001/api/getUserProfile?userId=${userId}`)
+    fetch(`http://media.maar.world:3001/api/profile?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
             console.log('Received user data:', data);
