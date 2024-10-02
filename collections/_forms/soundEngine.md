@@ -11,6 +11,7 @@ titles:
   en-AU: *EN
 key: IP
 ---
+
 <!-- Sound Engine Form Container -->
 <div class="form-container">
     <div class="button-container">
@@ -34,117 +35,135 @@ key: IP
 
     <!-- View Mode -->
     <div id="soundEngineView">
+        <div id="soundEngineImagePreviewContainer">
+            <img id="soundEngineImagePreview" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
+        </div>
         <p><strong>Developer Username:</strong> <span id="displayDeveloperUsername"></span></p>
         <p><strong>Sound Engine Name:</strong> <span id="displaySoundEngineName"></span></p>
         <p><strong>Color 1:</strong> <span id="displayColor1"></span></p>
         <p><strong>Color 2:</strong> <span id="displayColor2"></span></p>
-        <p><strong>Sonification Button:</strong> <span id="displaySonificationButton"></span></p>
+        <p><strong>Sonification Button:</strong> <span id="displaysonificationState"></span></p>
+        <p><strong>Availability:</strong> <span id="displayAvailability"></span></p>
         <p><strong>Credits:</strong> <span id="displayCredits"></span></p>
     </div>
 
     <!-- Edit/Create Mode -->
-    <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
+        <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
+        <!-- Sound Engine Image Upload -->
+        
+        <label for="soundEngineImage">Upload Sound Engine Image<span style="color: red;">*</span>:</label>
+        <div id="soundEngineImagePreviewContainer">
+            <img id="soundEngineImagePreviewForm" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
+        </div>
+        <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png" required><br><br>
+
         <label for="developerUsername">Developer Username<span style="color: red;">*</span>:</label>
         <input type="text" id="developerUsername" name="developerUsername" required><br><br>
 
         <label for="soundEngineName">Sound Engine Name<span style="color: red;">*</span>:</label>
         <input type="text" id="soundEngineName" name="soundEngineName" required><br><br>
 
-        <!-- Sound Engine Image Upload -->
-        <label for="soundEngineImage">Upload Sound Engine Image<span style="color: red;">*</span>:</label>
-        <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png" required><br><br>
-
         <!-- Sound Engine JSON Upload -->
         <label for="soundEngineFile">Upload Sound Engine JSON File<span style="color: red;">*</span>:</label>
         <input type="file" id="soundEngineFile" name="soundEngineFile" accept=".json" required><br><br>
 
         <!-- Color 1 Picker -->
-        <label for="color1">Color 1 (RGBA)<span style="color: red;">*</span>:</label>
-        <input type="color" id="color1Picker" name="color1Picker" value="#ffff00" required>
-        <input type="range" id="alpha1Picker" name="alpha1Picker" min="0" max="1" step="0.01" value="1" required>
-        <label for="alpha1Picker">Alpha 1: <span id="alpha1Value">1</span></label>
-        <input type="hidden" id="color1" name="color1"><br><br>
+        <div id="color1Section" style="border: 5px solid rgba(255, 255, 255, 1); padding: 10px; margin-bottom: 10px;">
+            <label for="color1">Color 1 (RGBA)<span style="color: red;">*</span>:</label>
+            <input type="color" id="color1Picker" name="color1Picker" value="#ff33cc" required>
+            <input type="range" id="alpha1Picker" name="alpha1Picker" min="0" max="1" step="0.01" value="1" required>
+            <label for="alpha1Picker">Alpha 1: <span id="alpha1Value">1</span></label>
+            <input type="hidden" id="color1" name="color1">
+        </div>
 
         <!-- Color 2 Picker -->
-        <label for="color2">Color 2 (RGBA)<span style="color: red;">*</span>:</label>
-        <input type="color" id="color2Picker" name="color2Picker" value="#333333" required>
-        <input type="range" id="alpha2Picker" name="alpha2Picker" min="0" max="1" step="0.01" value="1" required>
-        <label for="alpha2Picker">Alpha 2: <span id="alpha2Value">1</span></label>
-        <input type="hidden" id="color2" name="color2"><br><br>
+        <div id="color2Section" style="border: 5px solid rgba(255, 255, 255, 1); padding: 10px; margin-bottom: 10px;">
+            <label for="color2">Color 2 (RGBA)<span style="color: red;">*</span>:</label>
+            <input type="color" id="color2Picker" name="color2Picker" value="#33ffff" required>
+            <input type="range" id="alpha2Picker" name="alpha2Picker" min="0" max="1" step="0.01" value="1" required>
+            <label for="alpha2Picker">Alpha 2: <span id="alpha2Value">1</span></label>
+            <input type="hidden" id="color2" name="color2">
+        </div>
+        <br><br>
 
+        <!-- X Parameter (Speed) -->
+        <div style="margin-right: 20px;">
+            <div style="flex: 2;">
+                <label for="xParamLabel">X Parameter Label<span style="color: red;">*</span>:</label>
+                <input type="text" id="xParamLabel" name="xParamLabel" value="Speed" required>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="xParamMin">Min:</label>
+                    <input type="number" id="xParamMin" name="xParamMin" value="-100" style="color: black;" required>
+                </div>
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="xParamMax">Max:</label>
+                    <input type="number" id="xParamMax" name="xParamMax" value="100" style="color: black;" required>
+                </div>
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="xParamInit">Initial:</label>
+                    <input type="number" id="xParamInit" name="xParamInit" value="1" style="color: black;" required>
+                </div>
+            </div>
+        </div><br><br>
 
-<!-- X Parameter (Speed) -->
-<div style="margin-right: 20px;">
-    <div style="flex: 2;">
-        <label for="xParamLabel">X Parameter Label<span style="color: red;">*</span>:</label>
-        <input type="text" id="xParamLabel" name="xParamLabel" value="Speed" required>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="xParamMin">Min:</label>
-            <input type="number" id="xParamMin" name="xParamMin" value="-100" style="color: black;" required>
-        </div>
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="xParamMax">Max:</label>
-            <input type="number" id="xParamMax" name="xParamMax" value="100" style="color: black;" required>
-        </div>
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="xParamInit">Initial:</label>
-            <input type="number" id="xParamInit" name="xParamInit" value="1" style="color: black;" required>
-        </div>
-    </div>
-</div><br><br>
+        <!-- Y Parameter (Tremolo) -->
+        <div style="margin-right: 20px;">
+            <div style="flex: 2;">
+                <label for="yParamLabel">Y Parameter Label<span style="color: red;">*</span>:</label>
+                <input type="text" id="yParamLabel" name="yParamLabel" value="Tremolo" required>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="yParamMin">Min:</label>
+                    <input type="number" id="yParamMin" name="yParamMin" value="-100" style="color: black;" required>
+                </div>
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="yParamMax">Max:</label>
+                    <input type="number" id="yParamMax" name="yParamMax" value="100" style="color: black;" required>
+                </div>
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="yParamInit">Initial:</label>
+                    <input type="number" id="yParamInit" name="yParamInit" value="0" style="color: black;" required>
+                </div>
+            </div>
+        </div><br><br>
 
-<!-- Y Parameter (Tremolo) -->
-<div style="margin-right: 20px;">
-    <div style="flex: 2;">
-        <label for="yParamLabel">Y Parameter Label<span style="color: red;">*</span>:</label>
-        <input type="text" id="yParamLabel" name="yParamLabel" value="Tremolo" required>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="yParamMin">Min:</label>
-            <input type="number" id="yParamMin" name="yParamMin" value="-100" style="color: black;" required>
-        </div>
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="yParamMax">Max:</label>
-            <input type="number" id="yParamMax" name="yParamMax" value="100" style="color: black;" required>
-        </div>
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="yParamInit">Initial:</label>
-            <input type="number" id="yParamInit" name="yParamInit" value="0" style="color: black;" required>
-        </div>
-    </div>
-</div><br><br>
+        <!-- Z Parameter (SpaceReverb) -->
+        <div style="margin-right: 20px;">
+            <div style="flex: 2;">
+                <label for="zParamLabel">Z Parameter Label<span style="color: red;">*</span>:</label>
+                <input type="text" id="zParamLabel" name="zParamLabel" value="SpaceReverb" required>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="zParamMin">Min:</label>
+                    <input type="number" id="zParamMin" name="zParamMin" value="-100" style="color: black;" required>
+                </div>
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="zParamMax">Max:</label>
+                    <input type="number" id="zParamMax" name="zParamMax" value="100" style="color: black;" required>
+                </div>
+                <div style="flex: 1; margin-left: 0px;">
+                    <label for="zParamInit">Initial:</label>
+                    <input type="number" id="zParamInit" name="zParamInit" value="0" style="color: black;" required>
+                </div>
+            </div>
+        </div><br><br>
 
-<!-- Z Parameter (SpaceReverb) -->
-<div style="margin-right: 20px;">
-    <div style="flex: 2;">
-        <label for="zParamLabel">Z Parameter Label<span style="color: red;">*</span>:</label>
-        <input type="text" id="zParamLabel" name="zParamLabel" value="SpaceReverb" required>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="zParamMin">Min:</label>
-            <input type="number" id="zParamMin" name="zParamMin" value="-100" style="color: black;" required>
-        </div>
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="zParamMax">Max:</label>
-            <input type="number" id="zParamMax" name="zParamMax" value="100" style="color: black;" required>
-        </div>
-        <div style="flex: 1; margin-left: 0px;">
-            <label for="zParamInit">Initial:</label>
-            <input type="number" id="zParamInit" name="zParamInit" value="0" style="color: black;" required>
-        </div>
-    </div>
-</div><br><br>
-
-        <label for="sonificationButton">Sonification Button:</label>
-        <select id="sonificationButton" name="sonificationButton" required>
+        <label for="sonificationState">Sonification Button:</label>
+        <select id="sonificationState" name="sonificationState" required>
             <option value="false">Disabled</option>
             <option value="true">Enabled</option>
         </select><br><br>
 
+        <label for="Availability">Availability:</label>
+        <select id="availability" name="availability" required>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select><br><br>
+        
         <label for="credits">Credits:</label>
         <textarea id="credits" name="credits" rows="3" maxlength="500"></textarea><br><br>
 
@@ -180,10 +199,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.getElementById('backButton');
     const cancelButton = document.getElementById('cancelButton');
 
+    const soundEngineFileInput = document.getElementById('soundEngineFile'); // Add this line
+
+    const soundEngineImageInput = document.getElementById('soundEngineImage');
+    const soundEngineImagePreview = document.getElementById('soundEngineImagePreview');
+    const soundEngineImagePreviewForm = document.getElementById('soundEngineImagePreviewForm');
+
     const color1Picker = document.getElementById('color1Picker');
     const color2Picker = document.getElementById('color2Picker');
     const alpha1Picker = document.getElementById('alpha1Picker');
     const alpha2Picker = document.getElementById('alpha2Picker');
+    const color1Section = document.getElementById('color1Section');
+    const color2Section = document.getElementById('color2Section');
+
     const color1Input = document.getElementById('color1');
     const color2Input = document.getElementById('color2');
     const alpha1Value = document.getElementById('alpha1Value');
@@ -203,27 +231,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return `rgba(${r},${g},${b},${alpha})`;
     }
+    // Update the border color of the Color 1 section
+    function updateBorderColor() {
+        const rgbaColor = hexToRgba(color1Picker.value, alpha1Picker.value);
+        color1Section.style.borderColor = rgbaColor; // Change the border color based on the selected color and alpha
+        color1Input.value = rgbaColor; // Update the hidden input with the RGBA value
+        alpha1Value.innerText = alpha1Picker.value; // Display the alpha value
+    }
+    function updateBorderColor2() {
+        const rgbaColor = hexToRgba(color2Picker.value, alpha2Picker.value);
+        color2Section.style.borderColor = rgbaColor; // Change the border color based on the selected color and alpha
+        color2Input.value = rgbaColor; // Update the hidden input with the RGBA value
+        alpha2Value.innerText = alpha2Picker.value; // Display the alpha value
+    }
+    // Event listeners to trigger the border color update
+    color1Picker.addEventListener('input', updateBorderColor);
+    alpha1Picker.addEventListener('input', updateBorderColor);
+    color2Picker.addEventListener('input', updateBorderColor2);
+    alpha2Picker.addEventListener('input', updateBorderColor2);
 
-    // Update RGBA value based on color picker and alpha
-    color1Picker.addEventListener('change', function() {
-        color1Input.value = hexToRgba(color1Picker.value, alpha1Picker.value);
-    });
-    alpha1Picker.addEventListener('input', function() {
-        alpha1Value.innerText = alpha1Picker.value;
-        color1Input.value = hexToRgba(color1Picker.value, alpha1Picker.value);
-    });
+    // Initial call to set the border color on page load
+    updateBorderColor();
+    updateBorderColor2();
 
-    color2Picker.addEventListener('change', function() {
-        color2Input.value = hexToRgba(color2Picker.value, alpha2Picker.value);
-    });
-    alpha2Picker.addEventListener('input', function() {
-        alpha2Value.innerText = alpha2Picker.value;
-        color2Input.value = hexToRgba(color2Picker.value, alpha2Picker.value);
-    });
-
-    // Populate initial RGBA values
-    color1Input.value = hexToRgba(color1Picker.value, alpha1Picker.value);
-    color2Input.value = hexToRgba(color2Picker.value, alpha2Picker.value);
+    // Show the edit button during creation if no ID is available
+    if (!currentSoundEngineId || mode === 'create') {
+        editButton.style.display = 'block'; // Always show the edit button during creation
+    }
 
     if (mode === 'edit' && currentSoundEngineId) {
         isEditMode = true;
@@ -247,6 +281,8 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleViewMode(false);
         } else {
             soundEngineForm.reset();
+            soundEngineImagePreviewForm.src = '';
+            soundEngineImagePreviewForm.style.display = 'none';
             toggleViewMode(false);
         }
     });
@@ -255,61 +291,101 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/voyage';
     });
 
+    // Image preview functionality
+    soundEngineImageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                soundEngineImagePreviewForm.src = e.target.result;
+                soundEngineImagePreviewForm.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            soundEngineImagePreviewForm.src = '';
+            soundEngineImagePreviewForm.style.display = 'none';
+        }
+    });
+
     soundEngineForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const developerUsername = document.getElementById('developerUsername').value.trim();
         const soundEngineName = document.getElementById('soundEngineName').value.trim();
         const color1 = color1Input.value.trim();
         const color2 = color2Input.value.trim();
-        const sonificationButton = document.getElementById('sonificationButton').value;
+        const sonificationState = document.getElementById('sonificationState').value;
+        const availability = document.getElementById('availability').value;
+
         const credits = document.getElementById('credits').value.trim();
 
-        if (!developerUsername || !soundEngineName || !color1 || !color2 || !sonificationButton) {
+        if (!developerUsername || !soundEngineName || !color1 || !color2 || !sonificationState) {
             showToast('Please fill in all required fields.', 'error');
             return;
         }
 
-        const formData = new FormData();
-        formData.append('ownerId', userId);
-        formData.append('developerUsername', developerUsername);
-        formData.append('soundEngineName', soundEngineName);
-        formData.append('color1', color1);
-        formData.append('color2', color2);
-        formData.append('xParam', JSON.stringify({label: 'Speed', min: -100, max: 100, initValue: 1}));
-        formData.append('yParam', JSON.stringify({label: 'Tremolo', min: -100, max: 100, initValue: 0}));
-        formData.append('zParam', JSON.stringify({label: 'SpaceReverb', min: -100, max: 100, initValue: 0}));
-        formData.append('sonificationButton', sonificationButton);
-        formData.append('credits', credits);
+    const formData = new FormData();
+    formData.append('ownerId', userId);
+    formData.append('availability', availability);
+    formData.append('developerUsername', developerUsername);
+    formData.append('soundEngineName', soundEngineName);
+    formData.append('color1', color1);
+    formData.append('color2', color2);
+    formData.append('xParam', JSON.stringify({ label: 'Speed', min: -100, max: 100, initValue: 1 }));
+    formData.append('yParam', JSON.stringify({ label: 'Tremolo', min: -100, max: 100, initValue: 0 }));
+    formData.append('zParam', JSON.stringify({ label: 'SpaceReverb', min: -100, max: 100, initValue: 0 }));
+    formData.append('sonificationState', sonificationState);
+    formData.append('credits', credits);
 
-        let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
-        let method = 'POST';
-        if (isEditMode && currentSoundEngineId) {
-            apiEndpoint += `/${currentSoundEngineId}`;
-            method = 'PUT';
-        }
+        console.log('Selected availability:', availability);
 
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, apiEndpoint, true);
-        xhr.onload = function() {
-            if (xhr.status === 200 || xhr.status === 201) {
-                const response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    showToast(response.message || (isEditMode ? 'Sound Engine updated successfully!' : 'Sound Engine created successfully!'), 'success');
-                    if (isEditMode) {
-                        loadSoundEngineDetails(currentSoundEngineId);
-                        toggleViewMode(false);
-                    } else {
-                        window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${response.soundEngine._id}`;
-                    }
+    // Append file inputs
+    if (soundEngineImageInput.files[0]) {
+        formData.append('soundEngineImage', soundEngineImageInput.files[0]);
+    }
+    if (soundEngineFileInput.files[0]) {
+        formData.append('soundEngineFile', soundEngineFileInput.files[0]);
+    }
+    
+    //* DEGUB ////////////////////////////////////////////////////////
+
+    // Debugging logs
+    for (let pair of formData.entries()) {
+        console.log(`${pair[0]}:`, pair[1]); // Log formData contents
+    }
+    //* DEGUB ////////////////////////////////////////////////////////
+
+    let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
+    let method = 'POST';
+    if (isEditMode && currentSoundEngineId) {
+        apiEndpoint += `/${currentSoundEngineId}`;
+        method = 'PUT';
+    }
+
+    console.log(`Sending request to ${apiEndpoint} with method ${method}`);
+
+
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, apiEndpoint, true);
+    xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 201) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                showToast(response.message || (isEditMode ? 'Sound Engine updated successfully!' : 'Sound Engine created successfully!'), 'success');
+                if (isEditMode) {
+                    loadSoundEngineDetails(currentSoundEngineId);
+                    toggleViewMode(false);
                 } else {
-                    showToast(response.message || 'Failed to save sound engine.', 'error');
+                    window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${response.soundEngine._id}`;
                 }
             } else {
-                showToast('An error occurred while saving the sound engine.', 'error');
+                showToast(response.message || 'Failed to save sound engine.', 'error');
             }
-        };
-        xhr.send(formData);
-    });
+        } else {
+            showToast('An error occurred while saving the sound engine.', 'error');
+        }
+    };
+    xhr.send(formData);
+});
 
     function toggleViewMode(editMode) {
         if (editMode) {
@@ -321,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to load sound engine details
     function loadSoundEngineDetails(soundEngineId) {
         fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
             .then(response => response.json())
@@ -335,33 +412,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('Error fetching sound engine details:', error);
                 showToast('An error occurred while loading sound engine details.', 'error');
             });
     }
 
-    function populateViewMode(soundEngine) {
-        document.getElementById('displayDeveloperUsername').innerText = soundEngine.developerUsername;
-        document.getElementById('displaySoundEngineName').innerText = soundEngine.soundEngineName;
-        document.getElementById('displayColor1').innerText = soundEngine.color1;
-        document.getElementById('displayColor2').innerText = soundEngine.color2;
-        document.getElementById('displaySonificationButton').innerText = soundEngine.sonificationButton ? 'Enabled' : 'Disabled';
-        document.getElementById('displayCredits').innerText = soundEngine.credits || 'No credits provided.';
-    }
-
+    // Function to populate view mode with sound engine details
     function populateFormMode(soundEngine) {
         document.getElementById('developerUsername').value = soundEngine.developerUsername;
         document.getElementById('soundEngineName').value = soundEngine.soundEngineName;
-        color1Picker.value = soundEngine.color1;
-        color2Picker.value = soundEngine.color2;
-        document.getElementById('sonificationButton').value = soundEngine.sonificationButton;
+        document.getElementById('color1').value = soundEngine.color1;
+        document.getElementById('color2').value = soundEngine.color2;
+        document.getElementById('availability').value = soundEngine.availability;
+        document.getElementById('sonificationState').value = soundEngine.sonificationState;
         document.getElementById('credits').value = soundEngine.credits || '';
+    }
+
+    // Function to populate form fields for edit mode
+    function populateFormMode(soundEngine) {
+        document.getElementById('color1Picker').value = soundEngine.color1; // Assuming this is stored as hex color
+        document.getElementById('alpha1Picker').value = 1; // Assuming alpha defaults to 1
+        document.getElementById('color2Picker').value = soundEngine.color2;
+        document.getElementById('alpha2Picker').value = 1;
     }
 
     function showToast(message, type = 'success') {
         const toastContainer = document.getElementById('toastContainer');
         const toast = document.createElement('div');
+        const toastId = `toast_${Date.now()}`; // Unique ID for each toast
         toast.classList.add('toast');
+        toast.setAttribute('id', toastId); // Assign the unique ID
         if (type === 'success') {
             toast.classList.add('success');
         } else if (type === 'error') {
@@ -377,7 +456,10 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => {
-                toast.remove();
+                const toastElem = document.getElementById(toastId);
+                if (toastElem) {
+                    toastElem.remove(); // Ensure only the correct toast is removed
+                }
             }, 500);
         }, 3000);
     }
@@ -422,6 +504,5 @@ document.addEventListener('DOMContentLoaded', function() {
         maxInput.addEventListener('input', validateInitValue);
         initInput.addEventListener('input', validateInitValue);
     });
-
 });
 </script>

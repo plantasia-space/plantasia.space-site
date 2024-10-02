@@ -18,11 +18,14 @@ key: IP
 
     <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
 
+   <p><a href="/voyage/soundengine"><span class="material-symbols-outlined">noise_control_on</span> Create a new sound engine</a></p> 
+
     <p><a href="/voyage/proto"><span class="material-symbols-outlined">globe</span> Create or edit a new Interplanetary Player</a></p> 
 
     <p><a href="/voyage/track-release"><span class="material-symbols-outlined">diversity_1</span> Release a new track</a></p> 
 
     <p><a href="/voyage/playlist"><span class="material-symbols-outlined">playlist_add_circle</span> Create a new playlist or album</a></p> 
+
 
     <h2>Your Released Tracks:</h2>
     <ul id="tracks-list"></ul> <!-- Placeholder for the tracks list -->
