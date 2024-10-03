@@ -280,3 +280,7 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
     object-fit: cover;
     border-radius: 0; // Remove border radius for square image
 }
+
+input[type="number"] {
+  color: black; /* Set the text color to black */
+}

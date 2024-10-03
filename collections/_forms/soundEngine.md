@@ -48,24 +48,27 @@ key: IP
     </div>
 
     <!-- Edit/Create Mode -->
-        <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
+    <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Sound Engine Image Upload -->
-        
-        <label for="soundEngineImage">Upload Sound Engine Image<span style="color: red;">*</span>:</label>
+        <label for="soundEngineImage">Upload Sound Engine Image (Optional):</label>
         <div id="soundEngineImagePreviewContainer">
             <img id="soundEngineImagePreviewForm" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
+            <!-- Add a label showing the existing image path -->
+            <p id="existingImage" style="display: none;">Current Image: <a href="" target="_blank" id="existingImageLink">View</a></p>
         </div>
-        <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png" required><br><br>
+        <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png"><br><br>
 
+        <!-- Sound Engine JSON Upload -->
+        <label for="soundEngineFile">Upload Sound Engine JSON File (Optional):</label>
+        <p id="existingJsonFile" style="display: none;">Current JSON File: <a href="" target="_blank" id="existingJsonLink">Download</a></p>
+        <input type="file" id="soundEngineFile" name="soundEngineFile" accept=".json"><br><br>
+
+        <!-- Other input fields -->
         <label for="developerUsername">Developer Username<span style="color: red;">*</span>:</label>
         <input type="text" id="developerUsername" name="developerUsername" required><br><br>
 
         <label for="soundEngineName">Sound Engine Name<span style="color: red;">*</span>:</label>
         <input type="text" id="soundEngineName" name="soundEngineName" required><br><br>
-
-        <!-- Sound Engine JSON Upload -->
-        <label for="soundEngineFile">Upload Sound Engine JSON File<span style="color: red;">*</span>:</label>
-        <input type="file" id="soundEngineFile" name="soundEngineFile" accept=".json" required><br><br>
 
         <!-- Color 1 Picker -->
         <div id="color1Section" style="border: 5px solid rgba(255, 255, 255, 1); padding: 10px; margin-bottom: 10px;">
@@ -83,8 +86,7 @@ key: IP
             <input type="range" id="alpha2Picker" name="alpha2Picker" min="0" max="1" step="0.01" value="1" required>
             <label for="alpha2Picker">Alpha 2: <span id="alpha2Value">1</span></label>
             <input type="hidden" id="color2" name="color2">
-        </div>
-        <br><br>
+        </div><br><br>
 
         <!-- X Parameter (Speed) -->
         <div style="margin-right: 20px;">
@@ -93,17 +95,17 @@ key: IP
                 <input type="text" id="xParamLabel" name="xParamLabel" value="Speed" required>
             </div>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="xParamMin">Min:</label>
-                    <input type="number" id="xParamMin" name="xParamMin" value="-100" style="color: black;" required>
+                    <input type="number" id="xParamMin" name="xParamMin" value="-100" required>
                 </div>
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="xParamMax">Max:</label>
-                    <input type="number" id="xParamMax" name="xParamMax" value="100" style="color: black;" required>
+                    <input type="number" id="xParamMax" name="xParamMax" value="100" required>
                 </div>
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="xParamInit">Initial:</label>
-                    <input type="number" id="xParamInit" name="xParamInit" value="1" style="color: black;" required>
+                    <input type="number" id="xParamInit" name="xParamInit" value="1" required>
                 </div>
             </div>
         </div><br><br>
@@ -115,17 +117,17 @@ key: IP
                 <input type="text" id="yParamLabel" name="yParamLabel" value="Tremolo" required>
             </div>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="yParamMin">Min:</label>
-                    <input type="number" id="yParamMin" name="yParamMin" value="-100" style="color: black;" required>
+                    <input type="number" id="yParamMin" name="yParamMin" value="-100" required>
                 </div>
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="yParamMax">Max:</label>
-                    <input type="number" id="yParamMax" name="yParamMax" value="100" style="color: black;" required>
+                    <input type="number" id="yParamMax" name="yParamMax" value="100" required>
                 </div>
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="yParamInit">Initial:</label>
-                    <input type="number" id="yParamInit" name="yParamInit" value="0" style="color: black;" required>
+                    <input type="number" id="yParamInit" name="yParamInit" value="0" required>
                 </div>
             </div>
         </div><br><br>
@@ -137,17 +139,17 @@ key: IP
                 <input type="text" id="zParamLabel" name="zParamLabel" value="SpaceReverb" required>
             </div>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="zParamMin">Min:</label>
-                    <input type="number" id="zParamMin" name="zParamMin" value="-100" style="color: black;" required>
+                    <input type="number" id="zParamMin" name="zParamMin" value="-100" required>
                 </div>
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="zParamMax">Max:</label>
-                    <input type="number" id="zParamMax" name="zParamMax" value="100" style="color: black;" required>
+                    <input type="number" id="zParamMax" name="zParamMax" value="100" required>
                 </div>
-                <div style="flex: 1; margin-left: 0px;">
+                <div style="flex: 1;">
                     <label for="zParamInit">Initial:</label>
-                    <input type="number" id="zParamInit" name="zParamInit" value="0" style="color: black;" required>
+                    <input type="number" id="zParamInit" name="zParamInit" value="0" required>
                 </div>
             </div>
         </div><br><br>
@@ -170,6 +172,11 @@ key: IP
         <button type="submit">Save Sound Engine</button>
         <div class="p-2"></div>
 
+        <!-- Progress Bar -->
+        <div class="progress-bar" style="width: 100%; background-color: lightgray;">
+            <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
+        </div>
+        
         <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
         <div class="p-2"></div>
     </form>
@@ -199,8 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.getElementById('backButton');
     const cancelButton = document.getElementById('cancelButton');
 
-    const soundEngineFileInput = document.getElementById('soundEngineFile'); // Add this line
-
+    const soundEngineFileInput = document.getElementById('soundEngineFile');
     const soundEngineImageInput = document.getElementById('soundEngineImage');
     const soundEngineImagePreview = document.getElementById('soundEngineImagePreview');
     const soundEngineImagePreviewForm = document.getElementById('soundEngineImagePreviewForm');
@@ -231,44 +237,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return `rgba(${r},${g},${b},${alpha})`;
     }
+
     // Update the border color of the Color 1 section
     function updateBorderColor() {
         const rgbaColor = hexToRgba(color1Picker.value, alpha1Picker.value);
-        color1Section.style.borderColor = rgbaColor; // Change the border color based on the selected color and alpha
-        color1Input.value = rgbaColor; // Update the hidden input with the RGBA value
-        alpha1Value.innerText = alpha1Picker.value; // Display the alpha value
+        color1Section.style.borderColor = rgbaColor;
+        color1Input.value = rgbaColor;
+        alpha1Value.innerText = alpha1Picker.value;
     }
+
     function updateBorderColor2() {
         const rgbaColor = hexToRgba(color2Picker.value, alpha2Picker.value);
-        color2Section.style.borderColor = rgbaColor; // Change the border color based on the selected color and alpha
-        color2Input.value = rgbaColor; // Update the hidden input with the RGBA value
-        alpha2Value.innerText = alpha2Picker.value; // Display the alpha value
+        color2Section.style.borderColor = rgbaColor;
+        color2Input.value = rgbaColor;
+        alpha2Value.innerText = alpha2Picker.value;
     }
-    // Event listeners to trigger the border color update
+
+    // Event listeners for color pickers
     color1Picker.addEventListener('input', updateBorderColor);
     alpha1Picker.addEventListener('input', updateBorderColor);
     color2Picker.addEventListener('input', updateBorderColor2);
     alpha2Picker.addEventListener('input', updateBorderColor2);
 
-    // Initial call to set the border color on page load
+    // Initial call to set border color
     updateBorderColor();
     updateBorderColor2();
 
-    // Show the edit button during creation if no ID is available
+    // Handle mode logic and load sound engine details
     if (!currentSoundEngineId || mode === 'create') {
-        editButton.style.display = 'block'; // Always show the edit button during creation
-    }
-
-    if (mode === 'edit' && currentSoundEngineId) {
+        formTitle.innerText = 'Create a Sound Engine';
+        toggleViewMode(true);
+    } else if (mode === 'edit' && currentSoundEngineId) {
         isEditMode = true;
         formTitle.innerText = 'Edit Sound Engine';
         loadSoundEngineDetails(currentSoundEngineId);
     } else if (mode === 'soundEngine' && currentSoundEngineId) {
         formTitle.innerText = 'Sound Engine Details';
         loadSoundEngineDetails(currentSoundEngineId);
-    } else {
-        formTitle.innerText = 'Create a Sound Engine';
-        toggleViewMode(true);
     }
 
     editButton.addEventListener('click', function() {
@@ -307,21 +312,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    soundEngineForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const developerUsername = document.getElementById('developerUsername').value.trim();
-        const soundEngineName = document.getElementById('soundEngineName').value.trim();
-        const color1 = color1Input.value.trim();
-        const color2 = color2Input.value.trim();
-        const sonificationState = document.getElementById('sonificationState').value;
-        const availability = document.getElementById('availability').value;
+    // Function to handle form submission
+soundEngineForm.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-        const credits = document.getElementById('credits').value.trim();
+    const developerUsername = document.getElementById('developerUsername').value.trim();
+    const soundEngineName = document.getElementById('soundEngineName').value.trim();
+    const color1 = color1Input.value.trim();
+    const color2 = color2Input.value.trim();
+    const sonificationState = document.getElementById('sonificationState').value;
+    const availability = document.getElementById('availability').value;
+    const credits = document.getElementById('credits').value.trim();
 
-        if (!developerUsername || !soundEngineName || !color1 || !color2 || !sonificationState) {
-            showToast('Please fill in all required fields.', 'error');
-            return;
-        }
+    if (!developerUsername || !soundEngineName || !color1 || !color2 || !sonificationState) {
+        showToast('Please fill in all required fields.', 'error');
+        return;
+    }
 
     const formData = new FormData();
     formData.append('ownerId', userId);
@@ -336,36 +342,43 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('sonificationState', sonificationState);
     formData.append('credits', credits);
 
-        console.log('Selected availability:', availability);
-
-    // Append file inputs
-    if (soundEngineImageInput.files[0]) {
+    // If no new image is uploaded, include the existing image path
+    if (!soundEngineImageInput.files[0] && existingSoundEngine.soundEngineImage) {
+        formData.append('existingImagePath', existingSoundEngine.soundEngineImage);
+    } else if (soundEngineImageInput.files[0]) {
         formData.append('soundEngineImage', soundEngineImageInput.files[0]);
     }
-    if (soundEngineFileInput.files[0]) {
+
+    // If no new JSON file is uploaded, include the existing JSON file path
+    if (!soundEngineFileInput.files[0] && existingSoundEngine.soundEngineFile) {
+        formData.append('existingJsonFilePath', existingSoundEngine.soundEngineFile);
+    } else if (soundEngineFileInput.files[0]) {
         formData.append('soundEngineFile', soundEngineFileInput.files[0]);
     }
-    
-    //* DEGUB ////////////////////////////////////////////////////////
-
-    // Debugging logs
-    for (let pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]); // Log formData contents
-    }
-    //* DEGUB ////////////////////////////////////////////////////////
 
     let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
-    let method = 'POST';
+    let method = 'POST'; // Default method for creating a new sound engine
+
     if (isEditMode && currentSoundEngineId) {
         apiEndpoint += `/${currentSoundEngineId}`;
-        method = 'PUT';
+        method = 'PUT'; // Use PUT method for updating an existing sound engine
     }
 
-    console.log(`Sending request to ${apiEndpoint} with method ${method}`);
-
+    // Disable form inputs while submitting
+    disableFormInputs(true);
 
     const xhr = new XMLHttpRequest();
     xhr.open(method, apiEndpoint, true);
+
+    // Update progress bar during upload
+    xhr.upload.onprogress = function(event) {
+        if (event.lengthComputable) {
+            const percentComplete = (event.loaded / event.total) * 100;
+            document.getElementById('progress').style.width = percentComplete + '%';
+        }
+    };
+
+    // Handle response
     xhr.onload = function() {
         if (xhr.status === 200 || xhr.status === 201) {
             const response = JSON.parse(xhr.responseText);
@@ -383,10 +396,30 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             showToast('An error occurred while saving the sound engine.', 'error');
         }
+
+        // Re-enable form inputs after completion
+        disableFormInputs(false);
     };
+
+    // Handle upload error
+    xhr.onerror = function() {
+        showToast('An error occurred while uploading the sound engine.', 'error');
+        disableFormInputs(false);
+    };
+
     xhr.send(formData);
 });
 
+
+    // Function to disable or enable form inputs
+    function disableFormInputs(disable) {
+        const inputs = soundEngineForm.querySelectorAll('input, textarea, select, button');
+        inputs.forEach(input => {
+            input.disabled = disable;
+        });
+    }
+
+    // Toggle between view and edit modes
     function toggleViewMode(editMode) {
         if (editMode) {
             soundEngineView.style.display = 'none';
@@ -397,27 +430,68 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to load sound engine details
-    function loadSoundEngineDetails(soundEngineId) {
-        fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.soundEngine) {
-                    populateViewMode(data.soundEngine);
-                    populateFormMode(data.soundEngine);
-                    isOwner = data.canEdit;
-                    editButton.style.display = isOwner ? 'block' : 'none';
+let existingSoundEngine = null;  // Define existingSoundEngine at the top
+
+// Load sound engine details
+function loadSoundEngineDetails(soundEngineId) {
+    fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Received Sound Engine Data:', data);
+
+            if (data.success && data.soundEngine) {
+                existingSoundEngine = data.soundEngine; // Populate existingSoundEngine with the data
+                populateViewMode(data.soundEngine);
+                populateFormMode(data.soundEngine);
+
+                // Log the ownerId and userId for comparison
+                console.log('Logged-in userId:', userId);
+                console.log('Sound Engine ownerId:', data.soundEngine.ownerId._id);  // Access the _id field from ownerId
+
+                // Check if the logged-in user is the owner of the sound engine
+                isOwner = data.soundEngine.ownerId._id === userId;
+                console.log('Is user the owner? ', isOwner);
+
+                // Show the edit button only if the user is the owner
+                if (isOwner) {
+                    editButton.style.display = 'block';
                 } else {
-                    showToast(data.message || 'Failed to load sound engine details.', 'error');
+                    editButton.style.display = 'none';
                 }
-            })
-            .catch(error => {
-                showToast('An error occurred while loading sound engine details.', 'error');
-            });
+            } else {
+                showToast(data.message || 'Failed to load sound engine details.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('An error occurred while loading sound engine details:', error);
+            showToast('An error occurred while loading sound engine details.', 'error');
+        });
+}
+
+
+    // Populate view mode with sound engine details
+    function populateViewMode(soundEngine) {
+        document.getElementById('displayDeveloperUsername').innerText = soundEngine.developerUsername;
+        document.getElementById('displaySoundEngineName').innerText = soundEngine.soundEngineName;
+        document.getElementById('displayColor1').innerText = soundEngine.color1;
+        document.getElementById('displayColor2').innerText = soundEngine.color2;
+        document.getElementById('displaysonificationState').innerText = soundEngine.sonificationState ? 'Enabled' : 'Disabled';
+        document.getElementById('displayAvailability').innerText = soundEngine.availability;
+        document.getElementById('displayCredits').innerText = soundEngine.credits || 'No credits provided';
+
+        if (soundEngine.soundEngineImage) {
+            const imageURL = `https://media.maar.world${encodeURI(soundEngine.soundEngineImage)}`;
+            soundEngineImagePreview.src = imageURL;
+            soundEngineImagePreview.style.display = 'block';
+        } else {
+            soundEngineImagePreview.style.display = 'none';
+        }
     }
 
-    // Function to populate view mode with sound engine details
+    // Populate form fields for edit mode
     function populateFormMode(soundEngine) {
+        const baseUrl = 'https://media.maar.world';
+
         document.getElementById('developerUsername').value = soundEngine.developerUsername;
         document.getElementById('soundEngineName').value = soundEngine.soundEngineName;
         document.getElementById('color1').value = soundEngine.color1;
@@ -425,22 +499,65 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('availability').value = soundEngine.availability;
         document.getElementById('sonificationState').value = soundEngine.sonificationState;
         document.getElementById('credits').value = soundEngine.credits || '';
+
+        // Show existing image
+        if (soundEngine.soundEngineImage) {
+            const fullImageUrl = `${baseUrl}${soundEngine.soundEngineImage}`;
+            document.getElementById('existingImage').style.display = 'block';
+            document.getElementById('existingImageLink').href = fullImageUrl;
+            document.getElementById('existingImageLink').textContent = soundEngine.soundEngineImage.split('/').pop();
+            document.getElementById('soundEngineImagePreviewForm').src = fullImageUrl;
+            document.getElementById('soundEngineImagePreviewForm').style.display = 'block';
+        } else {
+            document.getElementById('soundEngineImagePreviewForm').style.display = 'none';
+        }
+
+        // Show existing JSON file
+        if (soundEngine.soundEngineFile) {
+            const fullJsonUrl = `${baseUrl}${soundEngine.soundEngineFile}`;
+            document.getElementById('existingJsonFile').style.display = 'block';
+            document.getElementById('existingJsonLink').href = fullJsonUrl;
+            document.getElementById('existingJsonLink').textContent = soundEngine.soundEngineFile.split('/').pop();
+        } else {
+            document.getElementById('existingJsonFile').style.display = 'none';
+        }
+
+        // Update the color pickers and alpha sliders based on stored RGBA values
+        const [color1R, color1G, color1B, color1A] = extractRGBAValues(soundEngine.color1);
+        const [color2R, color2G, color2B, color2A] = extractRGBAValues(soundEngine.color2);
+        
+        color1Picker.value = rgbToHex(color1R, color1G, color1B);
+        alpha1Picker.value = color1A;
+
+        color2Picker.value = rgbToHex(color2R, color2G, color2B);
+        alpha2Picker.value = color2A;
+        
+        updateBorderColor();
+        updateBorderColor2();
     }
 
-    // Function to populate form fields for edit mode
-    function populateFormMode(soundEngine) {
-        document.getElementById('color1Picker').value = soundEngine.color1; // Assuming this is stored as hex color
-        document.getElementById('alpha1Picker').value = 1; // Assuming alpha defaults to 1
-        document.getElementById('color2Picker').value = soundEngine.color2;
-        document.getElementById('alpha2Picker').value = 1;
+    // Helper to extract RGBA values from a string like "rgba(255, 51, 204, 0.5)"
+    function extractRGBAValues(rgbaString) {
+        const rgbaMatch = rgbaString.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*(\d*(?:\.\d+)?)?\)/);
+        if (rgbaMatch) {
+            const [, r, g, b, a = 1] = rgbaMatch;
+            return [parseInt(r), parseInt(g), parseInt(b), parseFloat(a)];
+        }
+        return [0, 0, 0, 1]; // default values if parsing fails
     }
 
+    // Helper to convert RGB values to hex
+    function rgbToHex(r, g, b) {
+        return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+    }
+
+    // Toast function for showing messages
     function showToast(message, type = 'success') {
         const toastContainer = document.getElementById('toastContainer');
         const toast = document.createElement('div');
-        const toastId = `toast_${Date.now()}`; // Unique ID for each toast
+        const toastId = `toast_${Date.now()}`;
         toast.classList.add('toast');
-        toast.setAttribute('id', toastId); // Assign the unique ID
+        toast.setAttribute('id', toastId);
         if (type === 'success') {
             toast.classList.add('success');
         } else if (type === 'error') {
@@ -458,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 const toastElem = document.getElementById(toastId);
                 if (toastElem) {
-                    toastElem.remove(); // Ensure only the correct toast is removed
+                    toastElem.remove();
                 }
             }, 500);
         }, 3000);
@@ -477,32 +594,27 @@ document.addEventListener('DOMContentLoaded', function() {
             let max = parseInt(maxInput.value, 10);
             let init = parseInt(initInput.value, 10);
 
-            // Clamp min and max to the valid range of -100 to 100
             if (min < -100) min = -100;
             if (min > 100) min = 100;
             if (max < -100) max = -100;
             if (max > 100) max = 100;
 
-            // Update the input fields with the clamped values
             minInput.value = min;
             maxInput.value = max;
 
-            // Allow inverted range by treating min and max dynamically
             const realMin = Math.min(min, max);
             const realMax = Math.max(min, max);
 
-            // Ensure the init value is within the real range (taking into account inversion)
             if (init < realMin) init = realMin;
             if (init > realMax) init = realMax;
 
-            // Set validated values back into the input fields
             initInput.value = init;
         };
 
-        // Add event listeners to validate the values when the user inputs data
         minInput.addEventListener('input', validateInitValue);
         maxInput.addEventListener('input', validateInitValue);
         initInput.addEventListener('input', validateInitValue);
     });
 });
 </script>
+
