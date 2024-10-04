@@ -12,37 +12,43 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Function to handle user login with email/password or magic link
 // At loginUser function (in auth.js):
-async function loginUser(email, password = null) {
+async function loginUser(email, password) {
     try {
-        let result;
-        if (password) {
-            // Email and password login
-            result = await supabase.auth.signInWithPassword({ email, password });
-        } else {
-            // Magic link login
-            result = await supabase.auth.signInWithOtp({ email });
-        }
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
 
-        if (result.error) {
-            throw result.error;
-        }
+        if (error) throw error;
 
-        const { session } = result.data;
+        const session = data.session;
 
         if (session) {
-            // Store the authentication token in localStorage
+            // Store the access token in localStorage
             localStorage.setItem('supabaseToken', session.access_token);
-
-            console.log('Stored supabaseToken:', session.access_token);
-            window.location.href = '/voyage';
+            console.log('Login successful:', session);
+            return session;
         } else {
-            console.log('Waiting for magic link confirmation...');
+            throw new Error('Login failed: No session returned.');
         }
     } catch (error) {
-        console.error('Login failed:', error);
-        alert('Login failed: ' + error.message);
+        console.error('Login error:', error);
+        throw error;
     }
 }
+
+// Function to handle sending password reset email
+async function forgotPassword(email) {
+    try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        if (error) throw error;
+        console.log('Password reset email sent to:', email);
+    } catch (error) {
+        console.error('Password reset error:', error);
+        throw error;
+    }
+}
+
 
 
 // Function to check if user is logged in and redirect if not
@@ -79,3 +85,4 @@ async function logoutUser() {
 window.loginUser = loginUser;
 window.logoutUser = logoutUser;
 window.checkUser = checkUser;
+window.forgotPassword = forgotPassword;
