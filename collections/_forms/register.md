@@ -17,25 +17,30 @@ key: IP
 <div class="form-container">
     <h3>Maar World Register</h3>
     <form id="registerForm" class="contact-form">
-        <input type="text" id="username" required placeholder="Enter your username" />
         <input type="email" id="email" required placeholder="Enter your email" />
         <input type="password" id="password" required placeholder="Enter your password" />
+        <input type="password" id="confirmPassword" required placeholder="Confirm your password" />
         <button type="submit">Register</button>
-        <button type="button" id="loginAccount" class="btn button--outline-primary button--circle">Are you already an xPlorer?</button>
-
+        <button type="button" id="loginAccount" class="btn button--outline-primary button--circle">Already an xPlorer?</button>
     </form>
 
-    <p><br>When registering, you agree that we may use your provided data for the registration and to send you notifications on our products and services. You can unsubscribe from notifications at any time in your settings. </p>
+    <!-- Server message displayed in red -->
+    <p id="message" style="color: red;"></p>
 
-    <p id="message"></p>
+    <!-- Smaller grey text for consent -->
+    <p style="color: grey; font-size: 0.9em;">
+        When registering, you agree that we may use your provided data for the registration and to send you notifications on our products. You can unsubscribe from notifications and delete your account at any time in your settings.
+    </p>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Supabase client (assumes SDK is already loaded globally)
+    // Initialize Supabase client (Assumes Supabase SDK is already loaded globally)
 
-    async function registerUser(username, email, password) {
+    // Function to register user
+    async function registerUser(email, password) {
         try {
+            // Sign up with Supabase using email and password
             const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
                 email,
                 password,
@@ -47,16 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const { data: profileData, error: profileError } = await supabase
-                .from('profiles')
-                .insert([{ id: signUpData.user.id, username }]);
-
-            if (profileError) {
-                console.error("Profile creation failed:", profileError.message);
-                document.getElementById('message').innerText = "Profile creation failed: " + profileError.message;
-                return;
-            }
-
             document.getElementById('message').innerText = "Registration successful! Please check your email to confirm your account.";
         } catch (error) {
             console.error("Registration failed:", error);
@@ -64,17 +59,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Handle form submission
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        const username = document.getElementById('username').value;
+        
+        // Get input values
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        registerUser(username, email, password);
-    });
-});
+        const confirmPassword = document.getElementById('confirmPassword').value;
 
-    // Redirect to the register page on button click
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            document.getElementById('message').innerText = "Passwords do not match!";
+            return;
+        }
+
+        // If passwords match, proceed with registration
+        registerUser(email, password);
+    });
+
+    // Redirect to login page when clicking the login button
     document.getElementById('loginAccount').addEventListener('click', function() {
         window.location.href = '/login';
     });
+});
 </script>
