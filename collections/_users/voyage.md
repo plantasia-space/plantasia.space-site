@@ -33,23 +33,33 @@ key: IP
 
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
-    const userRole = localStorage.getItem('userRole');
-    const userName = localStorage.getItem('userName');
-    const userId = localStorage.getItem('userId');  // Assuming userId is stored in localStorage
+    try {
+        const supabaseToken = localStorage.getItem('supabaseToken');
+        
+        if (!supabaseToken) {
+            console.error('No token found, redirecting to login.');
+            window.location.href = '/login';
+            return;
+        }
 
-    console.log('Retrieved userRole from localStorage:', userRole);
-    console.log('Retrieved userName from localStorage:', userName);
-    console.log('Retrieved userId from localStorage:', userId);
+        // Fetch user details using the token
+        const { data: { user }, error } = await supabase.auth.getUser(supabaseToken);
 
-    if (userRole && userName && userId) {
-        // Display user info
-        displayUserInfo(userRole, userName);
+        if (error || !user) {
+            console.error('Failed to fetch user details, redirecting to login.');
+            window.location.href = '/login';
+            return;
+        }
+
+        console.log('Retrieved user:', user);
+
+        // Display user info on the page
+        displayUserInfo(user.role || 'Listener', user.email);
 
         // Fetch user profile and track data
-        await fetchUserTracks(userId);
-    } else {
-        // If user data is not available, redirect to login
-        console.error('User data not found, redirecting to login.');
+        await fetchUserTracks(user.id);
+    } catch (error) {
+        console.error('Error fetching user details:', error);
         window.location.href = '/login';
     }
 });
@@ -62,6 +72,7 @@ function displayUserInfo(userRole, userName) {
         <strong>User Name:</strong> ${userName}
     `;
 }
+
 
 // Function to fetch all user tracks
 async function fetchUserTracks(userId) {

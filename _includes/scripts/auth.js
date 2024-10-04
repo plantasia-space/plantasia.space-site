@@ -1,60 +1,81 @@
 // _includes/scripts/auth.js
-// Ensure Magic SDK is initialized properly
-if (typeof Magic === 'undefined') {
-    console.error('Magic SDK failed to load.');
-    // Potentially redirect to an error page or inform the user
-} else {
-    console.log('Magic SDK loaded successfully.');
-    window.magic = window.magic || new Magic('pk_live_C8C6E40CF7E226B5');
-}
 
-// Function to handle user login
-async function loginUser(email) {
+// Import the createClient function from the Supabase package (make sure the Supabase JS library is loaded)
+const { createClient } = window.supabase; // Assuming 'supabase' is loaded globally via a script tag
+
+// Initialize Supabase Client
+const supabaseUrl = 'https://anahjzknhplcbhakwjdl.supabase.co'; 
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuYWhqemtuaHBsY2JoYWt3amRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3Mjg2ODYsImV4cCI6MjA0MzMwNDY4Nn0.67uic887BZfBkMv2VlrCYqxpvmjNFQK2SCVIsx1EY4o'; // Replace with your actual Supabase anon key
+
+// Initialize the Supabase client
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Function to handle user login with email/password or magic link
+// At loginUser function (in auth.js):
+async function loginUser(email, password = null) {
     try {
-        await magic.auth.loginWithMagicLink({ email });
-        const magicToken = await magic.user.getIdToken();
-        console.log('Obtained magicToken:', magicToken); // Debug the received token
-        localStorage.setItem('magicToken', magicToken);
-        localStorage.setItem('userId', data.user.id);  // Store userId
-        console.log('magicToken stored in localStorage:', localStorage.getItem('magicToken')); // Verify storage
-        window.location.href = '/voyage';
+        let result;
+        if (password) {
+            // Email and password login
+            result = await supabase.auth.signInWithPassword({ email, password });
+        } else {
+            // Magic link login
+            result = await supabase.auth.signInWithOtp({ email });
+        }
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        const { session } = result.data;
+
+        if (session) {
+            // Store the authentication token in localStorage
+            localStorage.setItem('supabaseToken', session.access_token);
+
+            console.log('Stored supabaseToken:', session.access_token);
+            window.location.href = '/voyage';
+        } else {
+            console.log('Waiting for magic link confirmation...');
+        }
     } catch (error) {
-        console.error("Login failed:", error);
-        alert("Login failed: " + error.message);
+        console.error('Login failed:', error);
+        alert('Login failed: ' + error.message);
     }
 }
+
 
 // Function to check if user is logged in and redirect if not
 async function checkUser() {
-    const magicToken = localStorage.getItem('magicToken');
-    if (magicToken && await magic.user.isLoggedIn()) {
-        try {
-            const userInfo = await magic.user.getInfo();
-            localStorage.setItem('userRole', userInfo.role || 'Listener');
-            return userInfo;
-        } catch (error) {
-            console.error('Error checking user info:', error);
-        }
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+        window.location.href = '/login';
+    } else {
+        const userInfo = data.user;
+        localStorage.setItem('userRole', userInfo.role || 'Listener');
+        return userInfo;
     }
-    window.location.href = '/login';
 }
 
 // Function to handle user logout
 async function logoutUser() {
     try {
-        await magic.user.logout();
-        localStorage.removeItem('magicToken');
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+
+        localStorage.removeItem('supabaseToken');
         localStorage.removeItem('userId');
         localStorage.removeItem('userRole');
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userName');
         window.location.href = '/login';
     } catch (error) {
-        console.error("Logout failed:", error);
+        console.error('Logout failed:', error);
     }
 }
 
-// Expose functions globally if needed, or manage exports differently based on your project structure
+// Expose functions globally if needed
 window.loginUser = loginUser;
 window.logoutUser = logoutUser;
 window.checkUser = checkUser;

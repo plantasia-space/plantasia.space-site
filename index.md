@@ -46,13 +46,6 @@ article_header:
 <div class="p-5"></div>
 <div class="p-5"></div>
 
-<!-- Add the login/logout link -->
-<div class="auth-container">
-  <a id="auth-link" href="javascript:void(0);" class="auth-button"></a>
-</div>
-
-<div class="p-5"></div>
-
 <div class="form-container">
   <h3>Contact me</h3>
   <p>Curious about something? Let me know by filling out the form.</p>

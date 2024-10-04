@@ -4,105 +4,63 @@ show_title: false
 show_date: false
 permalink: /login
 titles:
-  en: &EN login
+  en: &EN Login
   en-GB: *EN
   en-US: *EN
   en-CA: *EN
   en-AU: *EN
 key: IP
 ---
-<br>
-<br>
+
+<br><br>
 
 <div class="form-container">
     <h3>Maar World Login</h3>
     <form id="loginForm" class="contact-form">
         <input type="email" id="email" required placeholder="Enter your email" />
-        <button type="submit">Send</button>
+        <input type="password" id="password" required placeholder="Enter your password" />
+        <button type="submit">Login</button>
+        <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
     </form>
     <p id="message"></p>
-    <div id="serverResponse"></div>
-    <div id="localStorageContent"></div>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/magic-sdk@latest/dist/magic.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const magic = new Magic('pk_live_C8C6E40CF7E226B5'); // Ensure this is your actual key and it's kept secure
 
-    async function loginUser(email) {
+    // Ensure loginUser is initialized
+    if (typeof window.loginUser === 'undefined') {
+        console.error('loginUser function is not defined or initialized.');
+        document.getElementById('message').innerText = "Login functionality is unavailable at the moment.";
+        return;
+    }
+
+    // Function to handle login with email and password
+    async function loginUserHandler(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!email || !password) {
+            document.getElementById('message').innerText = "Please enter both email and password.";
+            return;
+        }
+
         try {
-            console.log('Sending Magic Link...');
-            await magic.auth.loginWithMagicLink({ email });
-
-            console.log('Attempting to retrieve Magic token...');
-            const magicToken = await magic.user.getIdToken();
-            console.log('Retrieved Magic Token:', magicToken);
-
-            if (!magicToken) {
-                document.getElementById('message').innerText = "Failed to retrieve Magic token. Please try again.";
-                return;
-            }
-
-            // Store the Magic token in localStorage for consistent use across the app
-            localStorage.setItem('magicToken', magicToken);
-            console.log('Stored magicToken in localStorage:', localStorage.getItem('magicToken'));
-
-            const response = await fetch('http://media.maar.world:3001/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': magicToken
-                },
-                body: JSON.stringify({ email })
-            });
-
-            console.log('Fetch request sent, waiting for response...');
-            console.log('Response status:', response.status);
-
-            const responseBody = await response.text(); // Retrieve the full response body as text
-            console.log('Full Response Body:', responseBody); // Print the full response body
-
-            if (!response.ok) {
-                const errorMessage = `Authentication failed: ${response.status} - ${response.statusText}`;
-                console.error(errorMessage);
-                document.getElementById('message').innerText = errorMessage;
-                return;
-            }
-
-            const data = JSON.parse(responseBody); // Parse the response body as JSON
-            console.log('Response data:', data);
-
-            if (!data.token) {
-                throw new Error('No token in response data');
-            }
-
-            // Storing additional user data in localStorage
-            localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('userId', data.user.id);  // Store userId
-            localStorage.setItem('userRole', data.user.role);
-            localStorage.setItem('userEmail', data.user.email);
-            localStorage.setItem('userName', data.user.username);
-
-            console.log('Stored JWT token in localStorage:', localStorage.getItem('jwtToken'));
-            console.log('Stored userRole in localStorage:', localStorage.getItem('userRole'));
-            console.log('Stored userId in localStorage:', localStorage.getItem('userId'));
-            console.log('Stored userEmail in localStorage:', localStorage.getItem('userEmail'));
-            console.log('Stored userName in localStorage:', localStorage.getItem('userName'));
-
-            window.location.href = '/voyage';
-
+            await window.loginUser(email, password); // Use the updated loginUser function
         } catch (error) {
-            console.error("Login failed:", error);
-            document.getElementById('message').innerText = "Login failed: " + error.message;
+            console.error('Login failed:', error);
+            document.getElementById('message').innerText = "Login failed. Please try again.";
         }
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const email = document.getElementById('email').value;
-        loginUser(email);
+    // Handle the form submission
+    document.getElementById('loginForm').addEventListener('submit', loginUserHandler);
+
+    // Redirect to the register page on button click
+    document.getElementById('createAccount').addEventListener('click', function() {
+        window.location.href = '/register';
     });
 });
 </script>

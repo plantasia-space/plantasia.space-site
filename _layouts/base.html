@@ -42,11 +42,11 @@ layout: none
         function updateAuthLink() {
             console.log('updateAuthLink function called');
             
-            const magicToken = localStorage.getItem('magicToken');
-            console.log('Retrieved magicToken from localStorage:', magicToken);
+            const supabaseToken = localStorage.getItem('supabaseToken');
+            console.log('Retrieved supabaseToken from localStorage:', supabaseToken);
     
             if (authLink) {
-                if (magicToken) {
+                if (supabaseToken) {
                     console.log('User is logged in. Updating auth link to Logout');
                     
                     authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
@@ -77,7 +77,6 @@ layout: none
             updateAuthLink();
         });
     });
-    
     </script>
     
   </body>
