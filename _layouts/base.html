@@ -30,54 +30,78 @@ layout: none
     <script>
       {%- include scripts/auth.js -%}
     </script>
+<!-- Add script to update the authentication link based on login state -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
+    
+    const authLink = document.getElementById('auth-link');
+    console.log('Auth link element:', authLink);
 
-    <!-- Add script to update the authentication link based on login state -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM fully loaded and parsed');
+    // Function to decode and check JWT expiration
+    function parseJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Check if token is expired
+    function isTokenExpired(token) {
+      const decodedToken = parseJwt(token);
+      if (!decodedToken || !decodedToken.exp) {
+        return true; // Token is invalid or expired
+      }
+      const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+      return decodedToken.exp < currentTime;
+    }
+
+    // Function to update the auth link
+    function updateAuthLink() {
+        console.log('updateAuthLink function called');
         
-        const authLink = document.getElementById('auth-link');
-        console.log('Auth link element:', authLink);
-    
-        function updateAuthLink() {
-            console.log('updateAuthLink function called');
-            
-            const supabaseToken = localStorage.getItem('supabaseToken');
-            console.log('Retrieved supabaseToken from localStorage:', supabaseToken);
-    
-            if (authLink) {
-                if (supabaseToken) {
-                    console.log('User is logged in. Updating auth link to Logout');
-                    
-                    authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
-                    authLink.parentElement.onclick = function(event) {
-                        event.preventDefault(); // Prevent default link behavior
-                        logoutUser(); // Call logout function
-                        console.log('Logout function called');
-                    };
-                    authLink.parentElement.href = 'javascript:void(0);';
-                } else {
-                    console.log('User is not logged in. Updating auth link to Login');
-                    
-                    authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-                    authLink.parentElement.href = '/login';
-                    authLink.parentElement.onclick = null; // Clear any previously set onclick handlers
-                }
+        const supabaseToken = localStorage.getItem('supabaseToken');
+        console.log('Retrieved supabaseToken from localStorage:', supabaseToken);
+
+        if (authLink) {
+            if (supabaseToken && !isTokenExpired(supabaseToken)) {
+                console.log('User is logged in. Updating auth link to Logout');
+                
+                authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+                authLink.parentElement.onclick = function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    logoutUser(); // Call logout function
+                    console.log('Logout function called');
+                };
+                authLink.parentElement.href = 'javascript:void(0);';
             } else {
-                console.error('Auth link element not found in the DOM');
+                console.log('User is not logged in or token is expired. Updating auth link to Login');
+                
+                authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
+                authLink.parentElement.href = '/login';
+                authLink.parentElement.onclick = null; // Clear any previously set onclick handlers
             }
+        } else {
+            console.error('Auth link element not found in the DOM');
         }
-    
-        updateAuthLink(); // Initialize the authentication link on load
-        console.log('Initial updateAuthLink function executed');
-    
-        // Update the link if login state changes in another tab
-        window.addEventListener('storage', function() {
-            console.log('Storage event detected. Re-running updateAuthLink');
-            updateAuthLink();
-        });
+    }
+
+    updateAuthLink(); // Initialize the authentication link on load
+    console.log('Initial updateAuthLink function executed');
+
+    // Update the link if login state changes in another tab
+    window.addEventListener('storage', function() {
+        console.log('Storage event detected. Re-running updateAuthLink');
+        updateAuthLink();
     });
-    </script>
-    
+  });
+</script>
+
   </body>
 </html>
