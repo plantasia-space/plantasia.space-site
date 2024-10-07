@@ -18,11 +18,15 @@ key: IP
     <h3 id="loginTitle">Maar World Login</h3>
 
     <!-- Login Form (shown if no recovery token is present) -->
-    <form id="loginForm" class="contact-form" style="display: none;">
-        <input type="email" id="email" required placeholder="Enter your email" />
-        <input type="password" id="password" required placeholder="Enter your password" />
-        <button type="submit">Login</button>
-        <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
+    <form id="loginForm" class="contact-form">
+    <input type="email" id="email" required placeholder="Enter your email" />
+    <input type="password" id="password" required placeholder="Enter your password" />
+    <label>
+        <input type="checkbox" id="rememberMe" /> Remember Me
+    </label>
+    <button type="submit">Login</button>
+    <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
+
     </form>
 
     <!-- Reset Password Form (shown if recovery token is present) -->

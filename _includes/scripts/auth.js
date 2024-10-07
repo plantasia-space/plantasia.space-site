@@ -3,7 +3,8 @@ const { createClient } = window.supabase; // Assuming 'supabase' is loaded globa
 
 // Initialize Supabase Client
 const supabaseUrl = 'https://anahjzknhplcbhakwjdl.supabase.co'; 
-const supabaseAnonKey = 'your-supabase-anon-key'; // Replace with your actual Supabase anon key
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuYWhqemtuaHBsY2JoYWt3amRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3Mjg2ODYsImV4cCI6MjA0MzMwNDY4Nn0.67uic887BZfBkMv2VlrCYqxpvmjNFQK2SCVIsx1EY4o'; // Replace with your actual Supabase anon key
+
 
 // Initialize the Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
