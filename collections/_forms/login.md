@@ -10,6 +10,8 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
+public: true
+
 ---
 
 <br><br>
@@ -19,14 +21,13 @@ key: IP
 
     <!-- Login Form (shown if no recovery token is present) -->
     <form id="loginForm" class="contact-form">
-    <input type="email" id="email" required placeholder="Enter your email" />
-    <input type="password" id="password" required placeholder="Enter your password" />
-    <label>
-        <input type="checkbox" id="rememberMe" /> Remember Me
-    </label>
-    <button type="submit">Login</button>
-    <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
-
+        <input type="email" id="email" required placeholder="Enter your email" />
+        <input type="password" id="password" required placeholder="Enter your password" />
+        <label>
+            <input type="checkbox" id="rememberMe" /> Remember Me
+        </label>
+        <button type="submit">Login</button>
+        <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
     </form>
 
     <!-- Reset Password Form (shown if recovery token is present) -->
@@ -44,17 +45,10 @@ key: IP
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
     const messageElement = document.getElementById('message');
     const loginForm = document.getElementById('loginForm');
     const resetPasswordForm = document.getElementById('resetPasswordForm');
     const loginTitle = document.getElementById('loginTitle');
-
-    // Ensure loginUser and forgotPassword functions are initialized
-    if (typeof window.loginUser === 'undefined' || typeof window.forgotPassword === 'undefined') {
-        messageElement.innerText = "Login functionality is unavailable at the moment.";
-        return;
-    }
 
     // Function to parse URL hash to get token
     function parseHash() {
@@ -77,12 +71,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // Call Supabase API to update the password using the access token
-            const { error } = await supabase.auth.updateUser({ password: newPassword });
-            if (error) throw error;
+            const response = await fetch('http://media.maar.world:3001/api/auth/reset-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ password: newPassword })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Password reset failed');
+            }
 
             messageElement.innerText = "Password reset successful! You can now log in with your new password.";
-            messageElement.style.color = 'green'; // Success message
+            messageElement.style.color = 'green';
             setTimeout(() => {
                 window.location.href = '/login';
             }, 1500);
@@ -96,36 +100,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const { accessToken, type } = parseHash();
 
     if (type === 'recovery' && accessToken) {
-        // If a reset token is found, show the reset password form
         loginForm.style.display = 'none';
         resetPasswordForm.style.display = 'block';
         loginTitle.textContent = 'Reset Your Password';
 
-        // Handle reset password form submission
         resetPasswordForm.addEventListener('submit', function(event) {
             event.preventDefault();
             handleResetPassword(accessToken);
         });
     } else {
-        // If no reset token, show the login form
         loginForm.style.display = 'block';
         resetPasswordForm.style.display = 'none';
     }
 
     // Function to handle login form submission
-    async function loginUserHandler(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-
-        if (!email || !password) {
-            messageElement.innerText = "Please enter both email and password.";
-            return;
-        }
-
+    async function loginUser(email, password) {
         try {
-            await window.loginUser(email, password);
+            const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Login failed');
+            }
+
+            const data = await response.json();
+            localStorage.setItem('token', data.token);  // Storing the JWT token as 'token'
             messageElement.innerText = "Login successful! Redirecting...";
             messageElement.style.color = 'green';
             setTimeout(() => {
@@ -138,7 +141,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle the login form submission
-    document.getElementById('loginForm').addEventListener('submit', loginUserHandler);
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        loginUser(email, password);
+    });
 
     // Redirect to the register page on button click
     document.getElementById('createAccount').addEventListener('click', function() {
@@ -155,7 +163,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            await window.forgotPassword(email);
+            const response = await fetch('http://media.maar.world:3001/api/auth/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Password reset failed');
+            }
+
             messageElement.innerText = "Password reset email sent! Please check your inbox.";
             messageElement.style.color = 'green';
         } catch (error) {

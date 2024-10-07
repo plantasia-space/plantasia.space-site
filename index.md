@@ -5,6 +5,7 @@ excerpt: >
     Records from the Cygnus Constellation
 permalink: /index.html
 full_width: false
+public: true
 
 header:
   theme: dark
@@ -17,6 +18,7 @@ article_header:
   background_image:
   #  gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
     src: /img/landing/433-mw-index.gif
+    
 ---
 
 <div class="p-5"></div>

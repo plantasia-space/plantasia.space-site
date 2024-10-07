@@ -10,6 +10,8 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: xPlorer
+public: true
+
 ---
 
 <div class="p-5"></div>

@@ -10,6 +10,8 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
+public: true
+
 ---
 
 <br><br>
@@ -34,53 +36,135 @@ key: IP
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Supabase client (Assumes Supabase SDK is already loaded globally)
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
 
-    // Function to register user
-    async function registerUser(email, password) {
-        try {
-            // Sign up with Supabase using email and password
-            const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-                email,
-                password,
-            });
+    const authLink = document.getElementById('auth-link');
+    const currentPage = window.location.pathname;
 
-            if (signUpError) {
-                console.error("Registration failed:", signUpError.message);
-                document.getElementById('message').innerText = "Registration failed: " + signUpError.message;
-                return;
-            }
+    // Function to handle logout
+    async function logoutUser() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found for logout.');
+        return;
+      }
 
-            document.getElementById('message').innerText = "Registration successful! Please check your email to confirm your account.";
-        } catch (error) {
-            console.error("Registration failed:", error);
-            document.getElementById('message').innerText = "Registration failed: " + error.message;
+      try {
+        const response = await fetch('http://media.maar.world:3001/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to log out');
         }
+
+        // Clear the token and redirect to login
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
     }
 
-    // Handle form submission
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        // Get input values
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+    // Check if a valid token exists
+    function checkAuth() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        console.log('User is logged in, showing logout link');
+        return true;
+      }
+      console.log('No valid token found');
+      return false;
+    }
 
-        // Check if passwords match
-        if (password !== confirmPassword) {
-            document.getElementById('message').innerText = "Passwords do not match!";
-            return;
+    // Update the auth link (login or logout)
+    function updateAuthLink() {
+      if (authLink) {
+        if (checkAuth()) {
+          authLink.innerHTML = 'Logout';
+          authLink.onclick = function (event) {
+            event.preventDefault();
+            logoutUser();
+          };
+        } else {
+          authLink.innerHTML = 'Login';
+          authLink.href = '/login';
+          authLink.onclick = null; // Ensure the onclick handler is cleared
         }
+      }
+    }
 
-        // If passwords match, proceed with registration
-        registerUser(email, password);
+    // Function to prevent infinite redirect loop to the login page
+    function checkUserSession() {
+      const token = localStorage.getItem('token');
+      console.log('Checking token in localStorage:', token);
+
+      // Exclude /register and /login pages from the session check
+      if (!token && currentPage !== '/login' && currentPage !== '/register') {
+        console.log('No valid session, redirecting to login...');
+        window.location.href = '/login';  // Redirect to login if no valid session
+      }
+    }
+
+    // Initialize the page with session and auth link checks
+    checkUserSession();  // Verify user session (but exclude register page)
+    updateAuthLink();    // Update auth link on load
+
+    // Handle storage changes (e.g., session updates in other tabs)
+    window.addEventListener('storage', function () {
+      console.log('Storage event detected, updating auth link');
+      updateAuthLink();
+    });
+
+    // Handle form submission for registration
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const messageElement = document.getElementById('message');
+
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        messageElement.innerText = "Passwords do not match!";
+        return;
+      }
+
+      // Proceed with registration
+      try {
+        const response = await fetch('http://media.maar.world:3001/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          messageElement.innerText = "Registration successful! Please check your email.";
+          messageElement.style.color = 'green';
+        } else {
+          messageElement.innerText = "Registration failed: " + (data.message || 'Unknown error');
+          messageElement.style.color = 'red';
+        }
+      } catch (error) {
+        messageElement.innerText = "Registration failed: " + error.message;
+        messageElement.style.color = 'red';
+      }
     });
 
     // Redirect to login page when clicking the login button
     document.getElementById('loginAccount').addEventListener('click', function() {
-        window.location.href = '/login';
+      window.location.href = '/login';
     });
-});
+  });
+
 </script>

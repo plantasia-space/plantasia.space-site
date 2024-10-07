@@ -10,6 +10,7 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
+public: false
 ---
 
 <div id="voyage-content">
@@ -18,14 +19,13 @@ key: IP
 
     <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
 
-   <p><a href="/voyage/soundengine"><span class="material-symbols-outlined">noise_control_on</span> Create a new sound engine</a></p> 
+    <p><a href="/voyage/soundengine"><span class="material-symbols-outlined">noise_control_on</span> Create a new sound engine</a></p> 
 
     <p><a href="/voyage/proto"><span class="material-symbols-outlined">globe</span> Create or edit a new Interplanetary Player</a></p> 
 
     <p><a href="/voyage/track-release"><span class="material-symbols-outlined">diversity_1</span> Release a new track</a></p> 
 
     <p><a href="/voyage/playlist"><span class="material-symbols-outlined">playlist_add_circle</span> Create a new playlist or album</a></p> 
-
 
     <h2>Your Released Tracks:</h2>
     <ul id="tracks-list"></ul> <!-- Placeholder for the tracks list -->
@@ -34,32 +34,48 @@ key: IP
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
     try {
-        const supabaseToken = localStorage.getItem('supabaseToken');
-        
-        if (!supabaseToken) {
+        // Retrieve token from localStorage
+        const token = localStorage.getItem('token');
+
+        if (!token) {
             console.error('No token found, redirecting to login.');
             window.location.href = '/login';
             return;
         }
 
-        // Fetch user details using the token
-        const { data: { user }, error } = await supabase.auth.getUser(supabaseToken);
+        // Send a request to the backend to verify the token and fetch user data
+        const response = await fetch('http://media.maar.world:3001/api/auth/check-session', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-        if (error || !user) {
-            console.error('Failed to fetch user details, redirecting to login.');
+        // Check if the response is valid
+        if (!response.ok) {
+            console.error('Session validation failed, redirecting to login.');
             window.location.href = '/login';
             return;
         }
 
-        console.log('Retrieved user:', user);
+        const { user } = await response.json();
 
-        // Display user info on the page
-        displayUserInfo(user.role || 'Listener', user.email);
+        if (!user) {
+            console.error('No user data found, redirecting to login.');
+            window.location.href = '/login';
+            return;
+        }
 
-        // Fetch user profile and track data
+        console.log('User is logged in:', user);
+
+        // Display user information on the page using username instead of email
+        displayUserInfo(user.role || 'Listener', user.username || user.email);
+
+        // Fetch user tracks
         await fetchUserTracks(user.id);
     } catch (error) {
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching user session:', error);
         window.location.href = '/login';
     }
 });
@@ -73,11 +89,9 @@ function displayUserInfo(userRole, userName) {
     `;
 }
 
-
 // Function to fetch all user tracks
 async function fetchUserTracks(userId) {
     try {
-        // Fetch the user's tracks data
         const response = await fetch(`http://media.maar.world:3001/api/user/${userId}/tracks`);
 
         if (!response.ok) {
@@ -85,18 +99,16 @@ async function fetchUserTracks(userId) {
         }
 
         const data = await response.json();
-        const tracks = data.tracks; // Array of track objects with details
+        const tracks = data.tracks;
 
         console.log('Tracks Owned:', tracks);
 
-        // Display tracks on the page
         displayTracks(tracks);
     } catch (error) {
         console.error('Error fetching user tracks:', error);
     }
 }
 
-// Function to display tracks on the page
 // Function to display tracks on the page
 function displayTracks(tracks) {
     const tracksListElement = document.getElementById('tracks-list');
@@ -107,7 +119,6 @@ function displayTracks(tracks) {
     }
 
     tracks.forEach(track => {
-        // Assuming track.artistNames is an array of objects, where each object has a `name` field
         const artistNames = track.artistNames.map(artist => artist.name).join(', ');
 
         const trackElement = document.createElement('li');
@@ -120,5 +131,4 @@ function displayTracks(tracks) {
         tracksListElement.appendChild(trackElement);
     });
 }
-
 </script>
