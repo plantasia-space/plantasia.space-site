@@ -4,116 +4,106 @@ show_title: false
 show_date: false
 permalink: /login
 titles:
-  en: &EN Login
-  en-GB: *EN
-  en-US: *EN
-  en-CA: *EN
-  en-AU: *EN
+en: &EN Login
+en-GB: *EN
+en-US: *EN
+en-CA: *EN
+en-AU: *EN
 key: IP
 public: true
-
 ---
 
 <br><br>
 
 <div class="form-container">
-    <h3 id="loginTitle">Maar World Login</h3>
+<h3 id="loginTitle">Maar World Login</h3>
 
-    <!-- Login Form (shown if no recovery token is present) -->
-    <form id="loginForm" class="contact-form">
-        <input type="email" id="email" required placeholder="Enter your email" />
-        <input type="password" id="password" required placeholder="Enter your password" />
-        <label>
-            <input type="checkbox" id="rememberMe" /> Remember Me
-        </label>
-        <button type="submit">Login</button>
-        <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
-    </form>
+<!-- Login Form (shown if no recovery token is present) -->
+<form id="loginForm" class="contact-form">
+    <input type="email" id="email" required placeholder="Enter your email" />
+    <input type="password" id="password" required placeholder="Enter your password" />
+    <label>
+        <input type="checkbox" id="rememberMe" /> Remember Me
+    </label>
+    <button type="submit">Login</button>
+    <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
+</form>
 
-    <!-- Reset Password Form (shown if recovery token is present) -->
-    <form id="resetPasswordForm" class="contact-form" style="display: none;">
-        <input type="password" id="newPassword" required placeholder="Enter your new password" />
-        <input type="password" id="confirmPassword" required placeholder="Confirm your new password" />
-        <button type="submit">Reset Password</button>
-    </form>
+<!-- Reset Password Form (shown if recovery token is present) -->
+<form id="resetPasswordForm" class="contact-form" style="display: none;">
+    <input type="password" id="newPassword" required placeholder="Enter your new password" />
+    <input type="password" id="confirmPassword" required placeholder="Confirm your new password" />
+    <button type="submit">Reset Password</button>
+</form>
 
-    <p id="message" style="color: red;"></p> <!-- For displaying server messages -->
+<p id="message" style="color: red;"></p> <!-- For displaying server messages -->
 
-    <!-- Forgot password link -->
-    <p><a href="#" id="forgotPasswordLink">Forgot your password?</a></p>
+<!-- Forgot password link -->
+<p><a href="#" id="forgotPasswordLink">Forgot your password?</a></p>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const messageElement = document.getElementById('message');
-    const loginForm = document.getElementById('loginForm');
     const resetPasswordForm = document.getElementById('resetPasswordForm');
+    const loginForm = document.getElementById('loginForm');
     const loginTitle = document.getElementById('loginTitle');
 
-    // Function to parse URL hash to get token
+    // Function to parse the URL hash and get the access token
     function parseHash() {
         const hash = window.location.hash.substring(1);  // Get everything after '#'
         const params = new URLSearchParams(hash);
         return {
-            accessToken: params.get('access_token'),
+            accessToken: params.get('access_token'),  // Get the access token from the URL
             type: params.get('type'),
         };
     }
 
-    // Function to handle reset password
-    async function handleResetPassword(accessToken) {
-        const newPassword = document.getElementById('newPassword').value.trim();
-        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    // Function to handle password reset with the backend
+// Function to handle the reset password flow with the proxy backend
+async function handleResetPassword(accessToken) {
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-        if (newPassword !== confirmPassword) {
-            messageElement.innerText = "Passwords do not match.";
-            return;
-        }
-
-        try {
-            const response = await fetch('http://media.maar.world:3001/api/auth/reset-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({ password: newPassword })
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || 'Password reset failed');
-            }
-
-            messageElement.innerText = "Password reset successful! You can now log in with your new password.";
-            messageElement.style.color = 'green';
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 1500);
-        } catch (error) {
-            console.error('Password reset failed:', error);
-            messageElement.innerText = "Password reset failed. Please try again.";
-        }
+    if (newPassword !== confirmPassword) {
+        messageElement.innerText = "Passwords do not match.";
+        return;
     }
 
-    // Check for password reset token in the URL
-    const { accessToken, type } = parseHash();
-
-    if (type === 'recovery' && accessToken) {
-        loginForm.style.display = 'none';
-        resetPasswordForm.style.display = 'block';
-        loginTitle.textContent = 'Reset Your Password';
-
-        resetPasswordForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            handleResetPassword(accessToken);
+    try {
+        // Send the accessToken and newPassword to the backend
+        const response = await fetch('http://media.maar.world:3001/api/auth/reset-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,  // Token from the URL
+                newPassword: newPassword,  // New password provided by the user
+            }),
         });
-    } else {
-        loginForm.style.display = 'block';
-        resetPasswordForm.style.display = 'none';
-    }
 
-    // Function to handle login form submission
+        // Check for response errors
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Password reset failed');
+        }
+
+        // Success message
+        messageElement.innerText = "Password reset successful! You can now log in with your new password.";
+        messageElement.style.color = 'green';
+        setTimeout(() => {
+            window.location.href = '/login';
+        }, 1500);
+    } catch (error) {
+        console.error('Password reset failed:', error);
+        // Display the exact error message from the server, including weak password messages
+        messageElement.innerText = error.message;
+        messageElement.style.color = 'red';
+    }
+}
+
+    // Function to handle login
     async function loginUser(email, password) {
         try {
             const response = await fetch('http://media.maar.world:3001/api/auth/login', {
@@ -121,14 +111,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
-
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || 'Login failed');
+                throw new Error(data.message || 'Login failed');
             }
-
             const data = await response.json();
-            localStorage.setItem('token', data.token);  // Storing the JWT token as 'token'
+            localStorage.setItem('token', data.token);  // Store JWT token as 'token'
             messageElement.innerText = "Login successful! Redirecting...";
             messageElement.style.color = 'green';
             setTimeout(() => {
@@ -137,28 +125,34 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Login failed:', error);
             messageElement.innerText = "Login failed. Please try again.";
+            messageElement.style.color = 'red';
         }
     }
 
-    // Handle the login form submission
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        loginUser(email, password);
-    });
+    // Setup login form event listener
+    function setupLoginForm() {
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            loginUser(email, password);
+        });
+    }
 
-    // Redirect to the register page on button click
-    document.getElementById('createAccount').addEventListener('click', function() {
-        window.location.href = '/register';
-    });
+    // Setup "Create account" button to redirect to registration
+    function setupCreateAccountButton() {
+        document.getElementById('createAccount').addEventListener('click', function() {
+            window.location.href = '/register';
+        });
+    }
 
-    // Handle forgot password link click
+    // Function to handle forgot password
     async function handleForgotPassword() {
         const email = document.getElementById('email').value.trim();
 
         if (!email) {
             messageElement.innerText = "Please enter your email to reset your password.";
+            messageElement.style.color = 'red';
             return;
         }
 
@@ -171,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || 'Password reset failed');
+                throw new Error(data.message || 'Password reset failed');
             }
 
             messageElement.innerText = "Password reset email sent! Please check your inbox.";
@@ -179,13 +173,47 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Password reset failed:', error);
             messageElement.innerText = "Password reset failed. Please try again.";
+            messageElement.style.color = 'red';
         }
     }
 
-    // Attach click event for "Forgot password?" link
-    document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
-        event.preventDefault();
-        handleForgotPassword();
-    });
+    // Setup forgot password link event
+    function setupForgotPasswordLink() {
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            handleForgotPassword();
+        });
+    }
+
+    // Initialize all form event handlers
+    function initializeForms() {
+        setupLoginForm();
+        setupCreateAccountButton();
+        setupForgotPasswordLink();
+    }
+
+    // Main function to control the page logic
+    function initializePage() {
+        const { accessToken, type } = parseHash();
+
+        if (type === 'recovery' && accessToken) {
+            loginForm.style.display = 'none';
+            resetPasswordForm.style.display = 'block';
+            loginTitle.textContent = 'Reset Your Password';
+
+            resetPasswordForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                handleResetPassword(accessToken);
+            });
+        } else {
+            loginForm.style.display = 'block';
+            resetPasswordForm.style.display = 'none';
+        }
+
+        initializeForms();
+    }
+
+    // Execute the main function when the DOM is fully loaded
+    initializePage();
 });
 </script>
