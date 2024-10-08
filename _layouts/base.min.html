@@ -51,13 +51,13 @@
         function updateAuthLink() {
           if (authLink) {
             if (checkAuth()) {
-              authLink.innerHTML = 'Logout';
+              authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
               authLink.onclick = function (event) {
                 event.preventDefault();
                 logoutUser();
               };
             } else {
-              authLink.innerHTML = 'Login';
+              authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
               authLink.href = '/login';
               authLink.onclick = null; // Ensure the onclick handler is cleared
             }
