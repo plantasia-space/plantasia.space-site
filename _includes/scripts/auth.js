@@ -1,31 +1,33 @@
 // Function to handle user login with email/password via backend proxy
 async function loginUser(email, password) {
-  try {
-      const response = await fetch('http://media.maar.world:3001/api/auth/login', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),  // Send login details in request body
-      });
+    try {
+        const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),  // Send login details in request body
+        });
 
-      if (!response.ok) {
-          throw new Error('Login failed');
-      }
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
 
-      const data = await response.json();
-      console.log('Login response:', data);
+        const data = await response.json();
+        console.log('Login response:', data);
 
-      // Store the JWT token in localStorage
-      localStorage.setItem('token', data.token);
+        // Store the JWT token and userId in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.user.id);  // Assuming `data.user` contains the user info
 
-      // Redirect or update UI to show login success
-      window.location.href = '/voyage';  // Redirect after successful login
-  } catch (error) {
-      console.error('Login error:', error);
-      document.getElementById('message').innerText = "Login failed. Please try again.";
-  }
+        // Redirect or update UI to show login success
+        window.location.href = '/voyage';  // Redirect after successful login
+    } catch (error) {
+        console.error('Login error:', error);
+        document.getElementById('message').innerText = "Login failed. Please try again.";
+    }
 }
+
 
 // Function to handle sending password reset email via backend proxy
 async function forgotPassword(email) {
@@ -62,29 +64,31 @@ function checkAuth() {
 
 // Function to handle user logout via backend proxy
 async function logoutUser() {
-  try {
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch('http://media.maar.world:3001/api/auth/logout', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,  // Pass token in headers
-          },
-      });
+    try {
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch('http://media.maar.world:3001/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,  // Pass token in headers
+            },
+        });
 
-      if (!response.ok) {
-          throw new Error('Logout failed');
-      }
+        if (!response.ok) {
+            throw new Error('Logout failed');
+        }
 
-      // Clear the token from localStorage
-      localStorage.removeItem('token');
-      
-      // Redirect to login page after logout
-      window.location.href = '/login';
-  } catch (error) {
-      console.error('Logout error:', error);
-  }
+        // Clear the token and userId from localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+
+        // Redirect to login page after logout
+        window.location.href = '/login';
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
 }
 
 // Expose functions globally if needed

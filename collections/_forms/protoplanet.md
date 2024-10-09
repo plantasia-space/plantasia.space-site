@@ -12,6 +12,7 @@ titles:
   en-AU   : *EN
   # @end locale config
 key: IP
+public: false
 
 ---
 

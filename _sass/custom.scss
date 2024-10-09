@@ -177,6 +177,27 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 }
 
 /* end custom scss snippet */
+$profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
+
+#soundEngineImagePreviewContainer,
+#soundEngineImagePreviewFormContainer {
+  width: $profile-w;
+  height: $profile-w;
+  margin: 0 auto 20px auto; /* Center the container and add margin below */
+  border: 1px solid #33ffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Makes the container circular */
+  overflow: hidden; /* Ensures the image doesn't overflow out of the circle */
+}
+
+#soundEngineImagePreview,
+#soundEngineImagePreviewForm {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container area without distortion */
+}
 
 
 $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
@@ -284,4 +305,158 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 
 input[type="number"] {
   color: black; /* Set the text color to black */
+}
+
+.user-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-list-item {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  justify-content: safe center; 
+  padding: 10px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+}
+
+.user-profile-pic img {
+  width: 60px; /* Set a fixed size for the image */
+  height: 60px;
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover;
+  margin-right: 15px; /* Add space between the image and the text */
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the text vertically */
+}
+
+.user-display-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.user-username {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.user-username a {
+  text-decoration: none;
+  color: #ccc;
+}
+
+.user-username a:hover {
+  text-decoration: underline;
+}
+
+
+/* ------------------ SOUND ENGINE ----------------------- */
+.soundEngine-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.soundEngine-list-item {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  justify-content: space-between; /* Space between the content and actions */
+  padding: 10px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+}
+
+.soundEngine-profile-pic img {
+  width: 60px; /* Set a fixed size for the image */
+  height: 60px;
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover;
+  margin-right: 15px; /* Add space between the image and the text */
+}
+
+.soundEngine-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the text vertically */
+  flex-grow: 1; /* Ensure details take up remaining space */
+}
+
+.soundEngine-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.soundEngine-availability {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.soundEngine-params {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.soundEngine-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.soundEngine-edit-button {
+  background-color: #ff5733; /* Bright color for the edit button */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.soundEngine-edit-button:hover {
+  background-color: #e04a29; /* Darker shade for hover */
+}
+
+
+
+
+.follow-button {
+    font-size: 12px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.parameter-inputs {
+  margin-bottom: 20px;
+}
+.param-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.param-range input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  width: 30%;
+}
+@media (max-width: 768px) {
+  .param-range input[type="number"] {
+      width: 100%;
+  }
 }

@@ -44,8 +44,6 @@ key: xPlorer
         <p><strong>Display Name:</strong> <span id="displayDisplayName"></span></p>
         <p><strong>Username:</strong> <span id="displayUsername"></span></p>
 
-
-        <p><strong>Username:</strong> <span id="displayUsername"></span></p>
         <p><strong>Profile URL:</strong> 
         <a id="profileUrl" href="#">maar.world/xplorer/?username=<span id="displayUsernameForUrl"></span></a>
         <button id="copyButton" class="btn button--outline-primary button--circle" title="Copy URL">
@@ -54,10 +52,6 @@ key: xPlorer
         </p>
         <p><strong>Email:</strong> <span id="displayEmail"></span></p>
 
-
-
-
-        <p><strong>Email:</strong> <span id="displayEmail"></span></p>
         <p><strong>Gender Identity:</strong> <span id="displayGenderIdentity"></span></p>
         <p id="customGenderDisplay" style="display: none;"><strong>Custom Gender Identity:</strong> <span id="displayCustomGenderIdentity"></span></p>
         <p><strong>Pronouns:</strong> <span id="displayPronouns"></span></p>
@@ -94,14 +88,18 @@ key: xPlorer
 
         <!-- Username -->
         <strong><label for="username">Username:</label></strong>
-        <input type="text" id="username" name="username" required><br><br>
-
+        <input type="text" id="username" name="username" required>
+        <small style="color: grey;">
+            Username can’t exceed 30 characters, must be lowercase, and can only contain letters, numbers, and periods.
+        </small>
+        <div id="usernameFeedback" style="color: red;"></div><br>
+        
         <!-- Phone -->
         <strong><label for="phone">Phone:</label></strong>
         <input type="tel" id="phone" name="phone"><br><br>
 
         <!-- Gender Identity -->
-        <strong><label for="genderIdentity">Gender Identity: </label></strong> This won’t be part of your public profile 
+        <strong><label for="genderIdentity">Gender Identity: </label></strong>         
         <select id="genderIdentity" name="genderIdentity" required>
             <option value="Prefer not to reply">Prefer not to reply</option>
             <option value="Woman">Woman</option>
@@ -111,7 +109,8 @@ key: xPlorer
             <option value="Non-Binary">Non-Binary</option>
             <option value="Not Listed">Not Listed</option>
         </select><br>
-
+        <small style="color: grey;">This won’t be part of your public profile</small>
+        
         <!-- Custom Gender Identity (Shown when "Not Listed" is selected) -->
         <strong><label for="customGenderIdentity" id="customGenderLabel" style="display: none;">Please specify:</label></strong>
         <input type="text" id="customGenderIdentity" name="customGenderIdentity" style="display: none;"><br><br>
@@ -168,20 +167,16 @@ key: xPlorer
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId');
-    if (!userId) {
-        document.getElementById('messageDisplay').innerText = 'No logged-in user found. Please log in first.';
-        document.getElementById('messageDisplay').style.color = 'red';
-        window.location.href = '/login';
-        return;
-    }
-
     let originalProfileImage = '';
+    let currentUsername = ''; // To store the current username
 
     // Fetch user data based on the userId
     fetch(`http://media.maar.world:3001/api/profile?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
             console.log('Received user data:', data);
+
+            currentUsername = data.username; // Store the current username
 
             // Populate display fields
             document.getElementById('displayUsername').innerText = data.username;
@@ -351,21 +346,58 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('genderIdentity').addEventListener('change', toggleCustomGender);
     document.getElementById('pronouns').addEventListener('change', toggleOtherPronouns);
 
-    document.getElementById('profileForm').addEventListener('submit', function(event) {
+    const usernameInput = document.getElementById('username');
+    const feedbackElement = document.getElementById('usernameFeedback');
+    const validUsername = /^[a-z0-9_-]{1,30}$/;
+
+    // Function to check if the username is valid and unique
+    async function checkUsername() {
+        let username = usernameInput.value.trim().toLowerCase();
+
+        // Validate username format
+        if (!validUsername.test(username)) {
+            feedbackElement.innerText = 'Invalid username format.';
+            feedbackElement.style.color = 'red';
+            return false;
+        }
+
+        // Skip uniqueness check if the username hasn't changed
+        if (username === currentUsername) {
+            feedbackElement.innerText = 'This is your current username.';
+            feedbackElement.style.color = 'green'; // Show success in green
+            return true;
+        }
+
+        // Check if the username is unique
+        const isUsernameUnique = await checkUsernameUniqueness(username);
+        if (!isUsernameUnique) {
+            feedbackElement.innerText = 'Username is already taken.';
+            feedbackElement.style.color = 'red';
+            return false;
+        }
+
+        feedbackElement.innerText = 'Username is available!';
+        feedbackElement.style.color = 'green'; // Show success in green
+        return true;
+    }
+
+
+    // Automatically check username uniqueness on input
+    usernameInput.addEventListener('input', checkUsername);
+
+    document.getElementById('profileForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
-        const username = document.getElementById('username').value.trim();
-        if (username === '') {
-            document.getElementById('messageDisplay').innerText = 'Username cannot be empty';
-            document.getElementById('messageDisplay').style.color = 'red';
-            return;
+        // Validate the username before submitting
+        const isUsernameValid = await checkUsername();
+        if (!isUsernameValid) {
+            return; // Stop form submission if the username is invalid or taken
         }
 
         const userId = localStorage.getItem('userId');
-
         const formData = new FormData();
         formData.append('userId', userId);
-        formData.append('username', document.getElementById('username').value);
+        formData.append('username', usernameInput.value.trim().toLowerCase());
         formData.append('genderIdentity', document.getElementById('genderIdentity').value);
         if (document.getElementById('genderIdentity').value === 'Not Listed') {
             formData.append('customGenderIdentity', document.getElementById('customGenderIdentity').value);
@@ -436,6 +468,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         xhr.send(formData);
     });
+
+    // Function to check if the username is unique
+    async function checkUsernameUniqueness(username) {
+        try {
+            const response = await fetch(`http://media.maar.world:3001/api/checkUsername?username=${username}`);
+            const data = await response.json();
+            return data.isUnique; // Assuming server returns { isUnique: true/false }
+        } catch (error) {
+            console.error('Error checking username uniqueness:', error);
+            return false;
+        }
+    }
 
 });
 </script>

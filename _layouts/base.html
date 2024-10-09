@@ -82,20 +82,25 @@ layout: none
     
         // Update the auth link (login or logout)
         function updateAuthLink() {
+          const authLink = document.getElementById('auth-link');
+          
           if (authLink) {
             if (checkAuth()) {
               authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+              authLink.href = 'javascript:void(0)'; // Keep the href for Logout as void
               authLink.onclick = function (event) {
                 event.preventDefault();
                 logoutUser();
               };
             } else {
+              // Ensure the user is always directed to /login if not authenticated
               authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-              authLink.href = '/login';
-              authLink.onclick = null; // Ensure the onclick handler is cleared
+              authLink.href = '/login'; // Set the correct login URL
+              authLink.onclick = null;  // Clear any previous onclick events to avoid conflicts
             }
           }
         }
+        
     
         // Function to handle session validation
         function checkUserSession() {

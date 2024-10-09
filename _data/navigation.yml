@@ -32,4 +32,4 @@ header:
       en-AU   : *EN
       es-ES   : &ES      <span id="auth-link"></span>
       es-LA   : *ES
-    url: javascript:void(0); # This will be dynamically replaced by JavaScript
+    url: /login 

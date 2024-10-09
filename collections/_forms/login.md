@@ -104,30 +104,40 @@ async function handleResetPassword(accessToken) {
 }
 
     // Function to handle login
-    async function loginUser(email, password) {
-        try {
-            const response = await fetch('http://media.maar.world:3001/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Login failed');
-            }
+async function loginUser(email, password) {
+    try {
+        const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (!response.ok) {
             const data = await response.json();
-            localStorage.setItem('token', data.token);  // Store JWT token as 'token'
-            messageElement.innerText = "Login successful! Redirecting...";
-            messageElement.style.color = 'green';
-            setTimeout(() => {
-                window.location.href = '/voyage';
-            }, 1500);
-        } catch (error) {
-            console.error('Login failed:', error);
-            messageElement.innerText = "Login failed. Please try again.";
-            messageElement.style.color = 'red';
+            throw new Error(data.message || 'Login failed');
         }
+
+        const data = await response.json();
+
+        // Store the JWT token and userId in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId);
+
+        console.log('User ID:', data.userId); // Debugging to verify if the userId is stored correctly
+
+        messageElement.innerText = "Login successful! Redirecting...";
+        messageElement.style.color = 'green';
+
+        // Redirect after successful login
+        setTimeout(() => {
+            window.location.href = '/voyage';
+        }, 1500);
+    } catch (error) {
+        console.error('Login failed:', error);
+        messageElement.innerText = "Login failed. Please try again.";
+        messageElement.style.color = 'red';
     }
+}
 
     // Setup login form event listener
     function setupLoginForm() {

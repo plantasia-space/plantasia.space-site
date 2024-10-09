@@ -10,6 +10,8 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
+public: false
+
 ---
 
 <!-- Sound Engine Form Container -->
@@ -47,16 +49,26 @@ key: IP
         <p><strong>Credits:</strong> <span id="displayCredits"></span></p>
     </div>
 
+    <!-- Engine Owner -->
+    <div id="engineOwnerContainer">
+        <h4>engineOwner (<span id="engineOwnerCount">0</span>)</h4>
+        <ul id="engineOwnerList"></ul>
+    </div>
+
+
+
     <!-- Edit/Create Mode -->
     <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Sound Engine Image Upload -->
-        <label for="soundEngineImage">Upload Sound Engine Image (Optional):</label>
         <div id="soundEngineImagePreviewContainer">
             <img id="soundEngineImagePreviewForm" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
-            <!-- Add a label showing the existing image path -->
-            <p id="existingImage" style="display: none;">Current Image: <a href="" target="_blank" id="existingImageLink">View</a></p>
         </div>
+        <!-- Add a label showing the existing image path outside the image container -->
+        <p id="existingImage" style="display: none;">
+            Current Image: <a href="" target="_blank" id="existingImageLink">View</a>
+        </p>
         <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png"><br><br>
+
 
         <!-- Sound Engine JSON Upload -->
         <label for="soundEngineFile">Upload Sound Engine JSON File (Optional):</label>
@@ -88,71 +100,36 @@ key: IP
             <input type="hidden" id="color2" name="color2">
         </div><br><br>
 
-        <!-- X Parameter (Speed) -->
-        <div style="margin-right: 20px;">
-            <div style="flex: 2;">
-                <label for="xParamLabel">X Parameter Label<span style="color: red;">*</span>:</label>
-                <input type="text" id="xParamLabel" name="xParamLabel" value="Speed" required>
+        <!-- Parameter Inputs (Responsive) -->
+        <div class="parameter-inputs">
+            <label for="xParamLabel">X Parameter Label<span style="color: red;">*</span>:</label>
+            <input type="text" id="xParamLabel" name="xParamLabel" value="Speed" required>
+            <div class="param-range">
+                <input type="number" id="xParamMin" name="xParamMin" value="-100" required placeholder="Min">
+                <input type="number" id="xParamMax" name="xParamMax" value="100" required placeholder="Max">
+                <input type="number" id="xParamInit" name="xParamInit" value="1" required placeholder="Initial">
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-                <div style="flex: 1;">
-                    <label for="xParamMin">Min:</label>
-                    <input type="number" id="xParamMin" name="xParamMin" value="-100" required>
-                </div>
-                <div style="flex: 1;">
-                    <label for="xParamMax">Max:</label>
-                    <input type="number" id="xParamMax" name="xParamMax" value="100" required>
-                </div>
-                <div style="flex: 1;">
-                    <label for="xParamInit">Initial:</label>
-                    <input type="number" id="xParamInit" name="xParamInit" value="1" required>
-                </div>
-            </div>
-        </div><br><br>
+        </div>
 
-        <!-- Y Parameter (Tremolo) -->
-        <div style="margin-right: 20px;">
-            <div style="flex: 2;">
-                <label for="yParamLabel">Y Parameter Label<span style="color: red;">*</span>:</label>
-                <input type="text" id="yParamLabel" name="yParamLabel" value="Tremolo" required>
+        <div class="parameter-inputs">
+            <label for="yParamLabel">Y Parameter Label<span style="color: red;">*</span>:</label>
+            <input type="text" id="yParamLabel" name="yParamLabel" value="Tremolo" required>
+            <div class="param-range">
+                <input type="number" id="yParamMin" name="yParamMin" value="-100" required placeholder="Min">
+                <input type="number" id="yParamMax" name="yParamMax" value="100" required placeholder="Max">
+                <input type="number" id="yParamInit" name="yParamInit" value="0" required placeholder="Initial">
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-                <div style="flex: 1;">
-                    <label for="yParamMin">Min:</label>
-                    <input type="number" id="yParamMin" name="yParamMin" value="-100" required>
-                </div>
-                <div style="flex: 1;">
-                    <label for="yParamMax">Max:</label>
-                    <input type="number" id="yParamMax" name="yParamMax" value="100" required>
-                </div>
-                <div style="flex: 1;">
-                    <label for="yParamInit">Initial:</label>
-                    <input type="number" id="yParamInit" name="yParamInit" value="0" required>
-                </div>
-            </div>
-        </div><br><br>
+        </div>
 
-        <!-- Z Parameter (SpaceReverb) -->
-        <div style="margin-right: 20px;">
-            <div style="flex: 2;">
-                <label for="zParamLabel">Z Parameter Label<span style="color: red;">*</span>:</label>
-                <input type="text" id="zParamLabel" name="zParamLabel" value="SpaceReverb" required>
+        <div class="parameter-inputs">
+            <label for="zParamLabel">Z Parameter Label<span style="color: red;">*</span>:</label>
+            <input type="text" id="zParamLabel" name="zParamLabel" value="SpaceReverb" required>
+            <div class="param-range">
+                <input type="number" id="zParamMin" name="zParamMin" value="-100" required placeholder="Min">
+                <input type="number" id="zParamMax" name="zParamMax" value="100" required placeholder="Max">
+                <input type="number" id="zParamInit" name="zParamInit" value="0" required placeholder="Initial">
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-right: 15px;">
-                <div style="flex: 1;">
-                    <label for="zParamMin">Min:</label>
-                    <input type="number" id="zParamMin" name="zParamMin" value="-100" required>
-                </div>
-                <div style="flex: 1;">
-                    <label for="zParamMax">Max:</label>
-                    <input type="number" id="zParamMax" name="zParamMax" value="100" required>
-                </div>
-                <div style="flex: 1;">
-                    <label for="zParamInit">Initial:</label>
-                    <input type="number" id="zParamInit" name="zParamInit" value="0" required>
-                </div>
-            </div>
-        </div><br><br>
+        </div><br><br>        
 
         <label for="sonificationState">Sonification Button:</label>
         <select id="sonificationState" name="sonificationState" required>
@@ -277,6 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     editButton.addEventListener('click', function() {
+        isEditMode = true; 
         toggleViewMode(true);
     });
 
@@ -284,11 +262,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isEditMode) {
             loadSoundEngineDetails(currentSoundEngineId);
             toggleViewMode(false);
+            isEditMode = false; 
         } else {
             soundEngineForm.reset();
             soundEngineImagePreviewForm.src = '';
             soundEngineImagePreviewForm.style.display = 'none';
             toggleViewMode(false);
+            isEditMode = false; 
         }
     });
 
@@ -313,103 +293,107 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Function to handle form submission
-soundEngineForm.addEventListener('submit', function(event) {
-    event.preventDefault();
+    soundEngineForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    const developerUsername = document.getElementById('developerUsername').value.trim();
-    const soundEngineName = document.getElementById('soundEngineName').value.trim();
-    const color1 = color1Input.value.trim();
-    const color2 = color2Input.value.trim();
-    const sonificationState = document.getElementById('sonificationState').value;
-    const availability = document.getElementById('availability').value;
-    const credits = document.getElementById('credits').value.trim();
+        // Disable the save button to prevent multiple submissions
+        const saveButton = soundEngineForm.querySelector('[type="submit"]');
+        saveButton.disabled = true;
 
-    if (!developerUsername || !soundEngineName || !color1 || !color2 || !sonificationState) {
-        showToast('Please fill in all required fields.', 'error');
-        return;
-    }
+        // Gather input values
+        const developerUsername = document.getElementById('developerUsername').value.trim();
+        const soundEngineName = document.getElementById('soundEngineName').value.trim();
+        const color1 = color1Input.value.trim();
+        const color2 = color2Input.value.trim();
+        const sonificationState = document.getElementById('sonificationState').value;
+        const availability = document.getElementById('availability').value;
+        const credits = document.getElementById('credits').value.trim();
 
-    const formData = new FormData();
-    formData.append('ownerId', userId);
-    formData.append('availability', availability);
-    formData.append('developerUsername', developerUsername);
-    formData.append('soundEngineName', soundEngineName);
-    formData.append('color1', color1);
-    formData.append('color2', color2);
-    formData.append('xParam', JSON.stringify({ label: 'Speed', min: -100, max: 100, initValue: 1 }));
-    formData.append('yParam', JSON.stringify({ label: 'Tremolo', min: -100, max: 100, initValue: 0 }));
-    formData.append('zParam', JSON.stringify({ label: 'SpaceReverb', min: -100, max: 100, initValue: 0 }));
-    formData.append('sonificationState', sonificationState);
-    formData.append('credits', credits);
-
-    // If no new image is uploaded, include the existing image path
-    if (!soundEngineImageInput.files[0] && existingSoundEngine.soundEngineImage) {
-        formData.append('existingImagePath', existingSoundEngine.soundEngineImage);
-    } else if (soundEngineImageInput.files[0]) {
-        formData.append('soundEngineImage', soundEngineImageInput.files[0]);
-    }
-
-    // If no new JSON file is uploaded, include the existing JSON file path
-    if (!soundEngineFileInput.files[0] && existingSoundEngine.soundEngineFile) {
-        formData.append('existingJsonFilePath', existingSoundEngine.soundEngineFile);
-    } else if (soundEngineFileInput.files[0]) {
-        formData.append('soundEngineFile', soundEngineFileInput.files[0]);
-    }
-
-    let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
-    let method = 'POST'; // Default method for creating a new sound engine
-
-    if (isEditMode && currentSoundEngineId) {
-        apiEndpoint += `/${currentSoundEngineId}`;
-        method = 'PUT'; // Use PUT method for updating an existing sound engine
-    }
-
-    // Disable form inputs while submitting
-    disableFormInputs(true);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, apiEndpoint, true);
-
-    // Update progress bar during upload
-    xhr.upload.onprogress = function(event) {
-        if (event.lengthComputable) {
-            const percentComplete = (event.loaded / event.total) * 100;
-            document.getElementById('progress').style.width = percentComplete + '%';
+        // Validate required fields
+        if (!developerUsername || !soundEngineName || !color1 || !color2 || sonificationState === '' || !userId) {
+            showToast('Please fill in all required fields.', 'error');
+            saveButton.disabled = false; // Re-enable the save button
+            return;
         }
-    };
 
-    // Handle response
-    xhr.onload = function() {
-        if (xhr.status === 200 || xhr.status === 201) {
-            const response = JSON.parse(xhr.responseText);
-            if (response.success) {
-                showToast(response.message || (isEditMode ? 'Sound Engine updated successfully!' : 'Sound Engine created successfully!'), 'success');
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('ownerId', userId);
+        formData.append('availability', availability);
+        formData.append('developerUsername', developerUsername);
+        formData.append('soundEngineName', soundEngineName);
+        formData.append('color1', color1);
+        formData.append('color2', color2);
+        formData.append('xParam', JSON.stringify({ label: 'Speed', min: -100, max: 100, initValue: 1 }));
+        formData.append('yParam', JSON.stringify({ label: 'Tremolo', min: -100, max: 100, initValue: 0 }));
+        formData.append('zParam', JSON.stringify({ label: 'SpaceReverb', min: -100, max: 100, initValue: 0 }));
+        formData.append('sonificationState', sonificationState);
+        formData.append('credits', credits);
+
+        // Handle image file: use the existing one if no new file is selected
+        const imageFile = soundEngineImageInput.files[0];
+        if (imageFile) {
+            formData.append('soundEngineImage', imageFile);
+        } else if (existingSoundEngine && existingSoundEngine.soundEngineImage) {
+            formData.append('existingImagePath', existingSoundEngine.soundEngineImage);
+        }
+
+        // Handle JSON file: use the existing one if no new file is selected
+        const jsonFile = soundEngineFileInput.files[0];
+        if (jsonFile) {
+            formData.append('soundEngineFile', jsonFile);
+        } else if (existingSoundEngine && existingSoundEngine.soundEngineFile) {
+            formData.append('existingJsonFilePath', existingSoundEngine.soundEngineFile);
+        }
+
+        let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
+        let method = 'POST'; // Default method for creating a new sound engine
+
+        console.log('Edit mode:', isEditMode, 'Sound Engine ID:', currentSoundEngineId);
+        console.log('HTTP Method:', method);
+        console.log('API Endpoint:', apiEndpoint);
+
+
+        if (isEditMode && currentSoundEngineId) {
+            // Update the endpoint and method for editing mode
+            apiEndpoint = `${apiEndpoint}/${currentSoundEngineId}`;
+            method = 'PATCH'; // Use PATCH method for updating an existing sound engine
+
+            console.log('Edit mode active. Updating sound engine.');
+            console.log('Updated HTTP Method:', method);
+            console.log('Updated API Endpoint:', apiEndpoint);
+        }
+
+        // Perform the API request
+        fetch(apiEndpoint, {
+            method: method,
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('Sound Engine saved successfully!', 'success');
                 if (isEditMode) {
+                    // Reload sound engine details to reflect updates and switch to view mode
                     loadSoundEngineDetails(currentSoundEngineId);
                     toggleViewMode(false);
                 } else {
-                    window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${response.soundEngine._id}`;
+                    // Redirect to the new sound engine page if creation was successful
+                    window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${data.soundEngine._id}`;
                 }
             } else {
-                showToast(response.message || 'Failed to save sound engine.', 'error');
+                showToast(data.message || 'An error occurred.', 'error');
             }
-        } else {
+        })
+        .catch(error => {
+            console.error('Error during sound engine submission:', error);
             showToast('An error occurred while saving the sound engine.', 'error');
-        }
-
-        // Re-enable form inputs after completion
-        disableFormInputs(false);
-    };
-
-    // Handle upload error
-    xhr.onerror = function() {
-        showToast('An error occurred while uploading the sound engine.', 'error');
-        disableFormInputs(false);
-    };
-
-    xhr.send(formData);
-});
-
+        })
+        .finally(() => {
+            // Re-enable the save button after request completes
+            saveButton.disabled = false;
+        });
+    });
 
     // Function to disable or enable form inputs
     function disableFormInputs(disable) {
@@ -430,26 +414,29 @@ soundEngineForm.addEventListener('submit', function(event) {
         }
     }
 
-let existingSoundEngine = null;  // Define existingSoundEngine at the top
+    let existingSoundEngine = null;  // Define existingSoundEngine at the top
 
 // Load sound engine details
 function loadSoundEngineDetails(soundEngineId) {
     fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load sound engine details: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('Received Sound Engine Data:', data);
 
             if (data.success && data.soundEngine) {
-                existingSoundEngine = data.soundEngine; // Populate existingSoundEngine with the data
+                existingSoundEngine = data.soundEngine;
                 populateViewMode(data.soundEngine);
                 populateFormMode(data.soundEngine);
 
-                // Log the ownerId and userId for comparison
                 console.log('Logged-in userId:', userId);
-                console.log('Sound Engine ownerId:', data.soundEngine.ownerId._id);  // Access the _id field from ownerId
+                console.log('Sound Engine ownerId:', data.soundEngine.ownerId);
 
-                // Check if the logged-in user is the owner of the sound engine
-                isOwner = data.soundEngine.ownerId._id === userId;
+                const isOwner = data.soundEngine.ownerId === userId;
                 console.log('Is user the owner? ', isOwner);
 
                 // Show the edit button only if the user is the owner
@@ -457,6 +444,30 @@ function loadSoundEngineDetails(soundEngineId) {
                     editButton.style.display = 'block';
                 } else {
                     editButton.style.display = 'none';
+                }
+
+                // Display owner details
+                const ownerDetails = data.soundEngine.ownerDetails;
+                const engineOwnerList = document.getElementById('engineOwnerList');
+                if (ownerDetails) {
+                    engineOwnerList.innerHTML = `
+                        <li class="user-list-item">
+                            <div class="user-profile-pic">
+                                <img src="https://media.maar.world${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
+                            </div>
+                            <div class="user-details">
+                                <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
+                                <div class="user-username">
+                                    <a href="/xplorer/?username=${ownerDetails.username}" target="_self">
+                                        @${ownerDetails.username || 'Unknown'}
+                                    </a>
+                                </div>
+                            </div>
+                        </li>`;
+                    document.getElementById('engineOwnerCount').innerText = 1;
+                } else {
+                    engineOwnerList.innerHTML = '<li>No owner details available.</li>';
+                    document.getElementById('engineOwnerCount').innerText = 0;
                 }
             } else {
                 showToast(data.message || 'Failed to load sound engine details.', 'error');
@@ -467,6 +478,8 @@ function loadSoundEngineDetails(soundEngineId) {
             showToast('An error occurred while loading sound engine details.', 'error');
         });
 }
+
+
 
 
     // Populate view mode with sound engine details
@@ -617,4 +630,3 @@ function loadSoundEngineDetails(soundEngineId) {
     });
 });
 </script>
-
