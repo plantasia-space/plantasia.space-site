@@ -392,6 +392,7 @@ input[type="number"] {
   flex-grow: 1; /* Ensure details take up remaining space */
 }
 
+
 .soundEngine-name {
   font-size: 16px;
   font-weight: bold;
@@ -429,6 +430,77 @@ input[type="number"] {
   color: #000000;
 
 }
+
+
+/* ------------------ INTERPLANETARY PLAYERS ----------------------- */
+.interplanetaryPlayer-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.interplanetaryPlayer-list-item {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  justify-content: space-between; /* Space between the content and actions */
+  padding: 10px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+}
+
+.interplanetaryPlayer-profile-pic img {
+  width: 60px; /* Set a fixed size for the image */
+  height: 60px;
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover;
+  margin-right: 15px; /* Add space between the image and the text */
+}
+
+.interplanetaryPlayer-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the text vertically */
+  flex-grow: 1; /* Ensure details take up remaining space */
+}
+
+
+.interplanetaryPlayer-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.interplanetaryPlayer-availability {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.interplanetaryPlayer-params {
+  font-size: 14px;
+  color: #aaa;
+}
+
+
+.interplanetaryPlayer-edit-button {
+  background-color: #ff583300; /* Bright color for the edit button */
+  border: 2px solid #ffffff; /* Same color as the background by default */
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.interplanetaryPlayer-edit-button:hover {
+  background-color: #ffffff; /* Darker shade for hover */
+  color: #000000;
+
+}
+
+
+/* ------------------ GENERAL ----------------------- */
 
 .share-button {
   background-color: #3370ff00; /* Bright color for the share button */

@@ -2,10 +2,10 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/proto
+permalink: /voyage/interplanetary-player
 titles:
   # @start locale config
-  en      : &EN       Protoplanets
+  en      : &EN       interplanetary-players
   en-GB   : *EN
   en-US   : *EN
   en-CA   : *EN
@@ -120,7 +120,7 @@ public: false
 
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch exoplanet data
-    fetch('http://media.maar.world:3001/api/fetchExoplanetData')
+    fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchExoplanetData')
         .then(response => response.json())
         .then(data => {
             console.log('Exoplanet data:', data);
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error loading or parsing the exoplanet data:', error));
 
     // Fetch sound engine data
-    fetch('http://media.maar.world:3001/api/fetchSonicEngineData')
+    fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchSonicEngineData')
         .then(response => response.json())
         .then(data => {
             console.log('Sonic Engine data:', data);
@@ -312,7 +312,7 @@ function submitForm() {
     const userId = localStorage.getItem('userId');
 
 
-    fetch('http://media.maar.world:3001/api/uploadModelFiles', {
+    fetch('http://media.maar.world:3001/api/interplanetaryplayers/uploadModelFiles', {
         method: 'POST',
         body: fileFormData
     })
@@ -323,7 +323,7 @@ function submitForm() {
         // Now submit the rest of the form data
         const configData = {
             ownerId: userId,
-            privacy: "private",
+            isPublic: "false",
             ipId,
             artName: document.getElementById('artName').value,
             sciName: document.getElementById('sciName').selectedOptions[0].textContent.split(': ')[1], // Extract sciName
@@ -363,7 +363,7 @@ function submitForm() {
         }, 100);
 
         // Use the correct endpoint to submit the configuration
-        fetch('http://media.maar.world:3001/api/configIntPlayer', {
+        fetch('http://media.maar.world:3001/api/interplanetaryplayers', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -405,7 +405,7 @@ function submitForm() {
 // Function to update artistic name
 function updateExoplanetArtName(ipId, artName) {
     console.log('Updating exoplanet artistic name for ipId:', ipId, 'artName:', artName);
-    fetch('http://media.maar.world:3001/api/updateExoplanet', {
+    fetch('http://media.maar.world:3001/api/interplanetaryplayers/updateExoplanet', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

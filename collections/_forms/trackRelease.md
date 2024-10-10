@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Fetch exoplanet data and populate dropdown
-    fetch('http://media.maar.world:3001/api/fetchExoplanetData')
+    fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchExoplanetData')
         .then(response => response.json())
         .then(data => {
             const selectElement = document.getElementById('exoplanet');
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => showToast('Error loading exoplanet data.', 'error'));
 
     // Fetch sound engine data
-    fetch('http://media.maar.world:3001/api/fetchSonicEngineData')
+    fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchSonicEngineData')
         .then(response => response.json())
         .then(data => {
             console.log('Sonic Engine data:', data);
