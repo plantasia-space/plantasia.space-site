@@ -415,9 +415,9 @@ input[type="number"] {
 }
 
 .soundEngine-edit-button {
-  background-color: #ff5733; /* Bright color for the edit button */
+  background-color: #ff583300; /* Bright color for the edit button */
+  border: 2px solid #ffffff; /* Same color as the background by default */
   color: #fff;
-  border: none;
   border-radius: 6px;
   padding: 5px 10px;
   cursor: pointer;
@@ -425,10 +425,32 @@ input[type="number"] {
 }
 
 .soundEngine-edit-button:hover {
-  background-color: #e04a29; /* Darker shade for hover */
+  background-color: #ffffff; /* Darker shade for hover */
+  color: #000000;
+
+}
+
+.share-button {
+  background-color: #3370ff00; /* Bright color for the share button */
+  border: 2px solid #ffffff; /* Same color as the background by default */
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.share-button:disabled {
+  background-color: #000; /* Black background for disabled state */
+  cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+  opacity: 0.6; /* Slightly fade the button to indicate it's disabled */
 }
 
 
+.share-button:hover {
+  background-color: #ffffff; /* Darker shade for hover */
+  color: #000000;
+}
 
 
 .follow-button {

@@ -118,7 +118,8 @@ function displayTracks(tracks) {
 }
 
 // Function to display sound engines on the page
-function displaySoundEngines(engineIds) {
+// Function to display sound engines on the page
+function displaySoundEngines(engineIds, userId) {
     const soundEnginesListElement = document.getElementById('sound-engines-list');
     soundEnginesListElement.innerHTML = ''; // Clear any existing content
 
@@ -154,7 +155,7 @@ function displaySoundEngines(engineIds) {
                 </div>
                 <div class="soundEngine-details">
                     <div class="soundEngine-name">${engine.soundEngineName}</div>
-                    <div class="soundEngine-availability">Availability: ${engine.availability}</div>
+                    <div class="soundEngine-availability">Availability: ${engine.isPublic ? 'Public' : 'Private'}</div>
                     <div class="soundEngine-params">
                         X Parameter: ${engine.xParam.label} |
                         Y Parameter: ${engine.yParam.label} |
@@ -162,7 +163,14 @@ function displaySoundEngines(engineIds) {
                     </div>
                 </div>
                 <div class="soundEngine-actions">
-                    <button class="soundEngine-edit-button" onclick="editSoundEngine('${engine._id}')">Edit</button>
+                    <button class="soundEngine-edit-button" onclick="editSoundEngine('${engine._id}')"><span class="material-symbols-outlined">edit</span> Edit</button>
+                    <button 
+                        class="btn share-button" 
+                        ${engine.isPublic ? '' : 'disabled'} 
+                        onclick="shareSoundEngine('${engine._id}')"
+                    >
+                          <span class="material-symbols-outlined">share</span> Share
+                    </button>
                 </div>
             `;
             soundEnginesListElement.appendChild(engineElement);
@@ -175,6 +183,19 @@ function displaySoundEngines(engineIds) {
 // Function to handle editing a sound engine
 function editSoundEngine(engineId) {
     window.location.href = `/voyage/soundEngine?mode=edit&id=${engineId}`;
+}
+
+// Function to handle sharing a sound engine
+function shareSoundEngine(engineId) {
+    const shareUrl = `http://maar.world/xplorer/sound-engine/?engineId=${engineId}`;
+    navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+            alert('Link copied to clipboard!');
+        })
+        .catch(err => {
+            console.error('Failed to copy link: ', err);
+            alert('Failed to copy the link. Please try again.');
+        });
 }
 
 </script>

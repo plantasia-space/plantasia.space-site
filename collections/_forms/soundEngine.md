@@ -31,12 +31,17 @@ public: false
         </div>
     </div>
 
+
     <h3 id="formTitle">Create a Sound Engine</h3>
     <p>Create a new Sound Engine with custom parameters for audio manipulation.</p>
     <div class="p-2"></div>
 
     <!-- View Mode -->
     <div id="soundEngineView">
+
+
+
+
         <div id="soundEngineImagePreviewContainer">
             <img id="soundEngineImagePreview" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
         </div>
@@ -47,13 +52,15 @@ public: false
         <p><strong>Sonification Button:</strong> <span id="displaysonificationState"></span></p>
         <p><strong>Availability:</strong> <span id="displayAvailability"></span></p>
         <p><strong>Credits:</strong> <span id="displayCredits"></span></p>
+
+                        <!-- Engine Owner -->
+        <div id="engineOwnerContainer">
+            <h4>Engine Owner (<span id="engineOwnerCount">0</span>)</h4>
+            <ul id="engineOwnerList"></ul>
+        </div>
     </div>
 
-    <!-- Engine Owner -->
-    <div id="engineOwnerContainer">
-        <h4>engineOwner (<span id="engineOwnerCount">0</span>)</h4>
-        <ul id="engineOwnerList"></ul>
-    </div>
+
 
 
 
@@ -80,7 +87,11 @@ public: false
         <input type="text" id="developerUsername" name="developerUsername" required><br><br>
 
         <label for="soundEngineName">Sound Engine Name<span style="color: red;">*</span>:</label>
-        <input type="text" id="soundEngineName" name="soundEngineName" required><br><br>
+        <input type="text" id="soundEngineName" name="soundEngineName" required>
+        <div id="nameFeedback" style="font-size: 14px; margin-top: 5px;"></div>
+        <input type="hidden" id="soundEngineId" value="">
+        <br><br>
+        
 
         <!-- Color 1 Picker -->
         <div id="color1Section" style="border: 5px solid rgba(255, 255, 255, 1); padding: 10px; margin-bottom: 10px;">
@@ -139,10 +150,13 @@ public: false
 
         <label for="Availability">Availability:</label>
         <select id="availability" name="availability" required>
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-        </select><br><br>
-        
+            <option value="true">Public</option>
+            <option value="false">Private</option>
+        </select>
+        <small style="color: grey;">If you change the availability from Public to Private, all current Interplanetary Players using your engine will still have access. The private status will only apply to future community creations.</small>
+        <br><br>
+         
+
         <label for="credits">Credits:</label>
         <textarea id="credits" name="credits" rows="3" maxlength="500"></textarea><br><br>
 
@@ -240,23 +254,36 @@ document.addEventListener('DOMContentLoaded', function() {
     updateBorderColor();
     updateBorderColor2();
 
-    // Handle mode logic and load sound engine details
-    if (!currentSoundEngineId || mode === 'create') {
-        formTitle.innerText = 'Create a Sound Engine';
-        toggleViewMode(true);
-    } else if (mode === 'edit' && currentSoundEngineId) {
-        isEditMode = true;
-        formTitle.innerText = 'Edit Sound Engine';
-        loadSoundEngineDetails(currentSoundEngineId);
-    } else if (mode === 'soundEngine' && currentSoundEngineId) {
-        formTitle.innerText = 'Sound Engine Details';
-        loadSoundEngineDetails(currentSoundEngineId);
-    }
+// Handle mode logic and load sound engine details
+if (!currentSoundEngineId || mode === 'create') {
+    formTitle.innerText = 'Create a Sound Engine';
+    toggleViewMode(true); // Show the form for creation
+    isEditMode = true; // Ensure that we are in edit mode for creation
+} else if (mode === 'edit' && currentSoundEngineId) {
+    formTitle.innerText = 'Edit Sound Engine';
+    isEditMode = true;
+    loadSoundEngineDetails(currentSoundEngineId);
+    toggleViewMode(true); // Show the form for editing
+} else if (mode === 'soundEngine' && currentSoundEngineId) {
+    formTitle.innerText = 'Sound Engine Details';
+    loadSoundEngineDetails(currentSoundEngineId);
+    toggleViewMode(false); // Ensure we are in view mode
+}
 
-    editButton.addEventListener('click', function() {
-        isEditMode = true; 
+editButton.addEventListener('click', function() {
+    // Toggle the mode directly based on `isEditMode`
+    if (isEditMode) {
+        // If already in edit mode, revert changes like pressing cancel
+        loadSoundEngineDetails(currentSoundEngineId);
+        toggleViewMode(false);
+    } else {
+        // If not in edit mode, switch to edit mode
         toggleViewMode(true);
-    });
+    }
+    // Toggle the edit mode state
+    isEditMode = !isEditMode;
+});
+
 
     cancelButton.addEventListener('click', function() {
         if (isEditMode) {
@@ -306,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const color1 = color1Input.value.trim();
         const color2 = color2Input.value.trim();
         const sonificationState = document.getElementById('sonificationState').value;
-        const availability = document.getElementById('availability').value;
+        const isPublic = document.getElementById('availability').value;
         const credits = document.getElementById('credits').value.trim();
 
         // Validate required fields
@@ -319,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Prepare form data
         const formData = new FormData();
         formData.append('ownerId', userId);
-        formData.append('availability', availability);
+        formData.append('isPublic', isPublic);
         formData.append('developerUsername', developerUsername);
         formData.append('soundEngineName', soundEngineName);
         formData.append('color1', color1);
@@ -437,7 +464,7 @@ function loadSoundEngineDetails(soundEngineId) {
                 console.log('Sound Engine ownerId:', data.soundEngine.ownerId);
 
                 const isOwner = data.soundEngine.ownerId === userId;
-                console.log('Is user the owner? ', isOwner);
+                console.log('Is user the owner?', isOwner);
 
                 // Show the edit button only if the user is the owner
                 if (isOwner) {
@@ -449,6 +476,8 @@ function loadSoundEngineDetails(soundEngineId) {
                 // Display owner details
                 const ownerDetails = data.soundEngine.ownerDetails;
                 const engineOwnerList = document.getElementById('engineOwnerList');
+                console.log("Owner Data:", ownerDetails);
+
                 if (ownerDetails) {
                     engineOwnerList.innerHTML = `
                         <li class="user-list-item">
@@ -481,7 +510,6 @@ function loadSoundEngineDetails(soundEngineId) {
 
 
 
-
     // Populate view mode with sound engine details
     function populateViewMode(soundEngine) {
         document.getElementById('displayDeveloperUsername').innerText = soundEngine.developerUsername;
@@ -489,7 +517,7 @@ function loadSoundEngineDetails(soundEngineId) {
         document.getElementById('displayColor1').innerText = soundEngine.color1;
         document.getElementById('displayColor2').innerText = soundEngine.color2;
         document.getElementById('displaysonificationState').innerText = soundEngine.sonificationState ? 'Enabled' : 'Disabled';
-        document.getElementById('displayAvailability').innerText = soundEngine.availability;
+        document.getElementById('displayAvailability').innerText = soundEngine.isPublic ? 'Public' : 'Private';
         document.getElementById('displayCredits').innerText = soundEngine.credits || 'No credits provided';
 
         if (soundEngine.soundEngineImage) {
@@ -509,9 +537,10 @@ function loadSoundEngineDetails(soundEngineId) {
         document.getElementById('soundEngineName').value = soundEngine.soundEngineName;
         document.getElementById('color1').value = soundEngine.color1;
         document.getElementById('color2').value = soundEngine.color2;
-        document.getElementById('availability').value = soundEngine.availability;
+        document.getElementById('availability').value = soundEngine.isPublic;
         document.getElementById('sonificationState').value = soundEngine.sonificationState;
         document.getElementById('credits').value = soundEngine.credits || '';
+        document.getElementById('soundEngineId').value = soundEngine._id; // Assuming soundEngine is the object you fetched
 
         // Show existing image
         if (soundEngine.soundEngineImage) {
@@ -628,5 +657,77 @@ function loadSoundEngineDetails(soundEngineId) {
         maxInput.addEventListener('input', validateInitValue);
         initInput.addEventListener('input', validateInitValue);
     });
+
+
+    // Function to check if a SoundEngine name exists
+// Function to check if a SoundEngine name exists
+async function checkSoundEngineExists(soundEngineName, soundEngineId = null) {
+    try {
+        const url = new URL('http://media.maar.world:3001/api/soundEngines/exists');
+        url.searchParams.append('soundEngineName', soundEngineName);
+        if (soundEngineId) {
+            url.searchParams.append('id', soundEngineId);
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.exists;
+    } catch (error) {
+        console.error('Error checking SoundEngine existence:', error);
+        return false;
+    }
+}
+
+// Debounce function to limit the number of API calls
+function debounce(func, delay) {
+    let debounceTimer;
+    return function(...args) {
+        const context = this;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+}
+
+// Handle input event for the SoundEngine name
+document.getElementById('soundEngineName').addEventListener('input', debounce(async function(e) {
+    const soundEngineName = e.target.value.trim();
+    const feedback = document.getElementById('nameFeedback');
+    const soundEngineId = document.getElementById('soundEngineId').value.trim(); // Hidden input for the sound engine ID
+
+    // Validate the format of the SoundEngine name
+    const usernameRegex = /^[a-zA-Z0-9_-]{1,30}$/;
+    if (!usernameRegex.test(soundEngineName)) {
+        feedback.textContent = 'Invalid format. Use letters, numbers, underscores, and hyphens (max 30 characters).';
+        feedback.style.color = 'red';
+        return;
+    }
+
+    if (soundEngineName.length === 0) {
+        feedback.textContent = '';
+        return;
+    }
+
+    const exists = await checkSoundEngineExists(soundEngineName, soundEngineId);
+    if (exists) {
+        feedback.textContent = 'Name is already taken.';
+        feedback.style.color = 'red';
+    } else {
+        feedback.textContent = 'Name is available.';
+        feedback.style.color = 'green';
+    }
+}, 500)); // Adjust the delay time if needed
+
+// Prevent form submission if the name is taken
+document.getElementById('soundEngineForm').addEventListener('submit', async function(e) {
+    const soundEngineName = document.getElementById('soundEngineName').value.trim();
+    const soundEngineId = document.getElementById('soundEngineId').value.trim(); // Hidden input for the sound engine ID
+
+    const exists = await checkSoundEngineExists(soundEngineName, soundEngineId);
+    if (exists) {
+        e.preventDefault();
+        alert('Sound Engine name is already taken. Please choose another one.');
+    }
+});
+
 });
 </script>
