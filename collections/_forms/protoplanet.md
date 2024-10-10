@@ -425,6 +425,11 @@ function updateExoplanetArtName(ipId, artName) {
             statusMessage.textContent = 'Exoplanet artistic name updated successfully!';
             statusMessage.classList.remove('error');
             statusMessage.style.display = 'block';
+
+            // Redirect to /voyage after successful update
+            setTimeout(() => {
+                window.location.href = '/voyage';
+            }, 2000); // Adjust the delay if needed
         }
     })
     .catch(error => {
@@ -436,6 +441,7 @@ function updateExoplanetArtName(ipId, artName) {
         enableForm();
     });
 }
+
 
 // Function to enable the form again (used on error)
 function enableForm() {
