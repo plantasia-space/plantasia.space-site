@@ -19,9 +19,9 @@ public: true
 <div class="form-container">
     <h3>Maar World Register</h3>
     <form id="registerForm" class="contact-form">
-        <input type="email" id="email" required placeholder="Enter your email" />
-        <input type="password" id="password" required placeholder="Enter your password" />
-        <input type="password" id="confirmPassword" required placeholder="Confirm your password" />
+        <input type="email" id="email" required placeholder="Enter xPlorer email" />
+        <input type="password" id="password" required placeholder="Enter password" />
+        <input type="password" id="confirmPassword" required placeholder="Confirm password" />
         <button type="submit">Register</button>
         <button type="button" id="loginAccount" class="btn button--outline-primary button--circle">Already an xPlorer?</button>
     </form>

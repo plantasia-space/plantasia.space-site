@@ -52,78 +52,6 @@
 
 }
 
-.form-container {
-  text-align: center; /* Ensures content is centered */
-  max-width: 600px;
-  margin: 0 auto; /* Centers the container */
-  padding: 20px;
-  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.9), 0 2px 6px rgba(51, 255, 255, 0.5), 0 12px 24px rgb(192, 201, 201);
-  border-radius: 8px;
-}
-
-.contact-form {
-  margin-top: 20px; /* Adds some space between the text and the form */
-  text-align: center; /* Center-align the form elements */
-}
-
-.contact-form label {
-  display: block;
-  margin-bottom: 10px;
-  text-align: left; /* Ensures form labels are aligned to the left for readability */
-}
-
-.contact-form input[type="email"],
-.contact-form input[type="text"],
-.contact-form input[type="tel"], /* Add tel input here */
-.contact-form input[type="date"], /* Added date to the existing input styles */
-.contact-form input[type="url"], /* Added url to the existing styles */
-.contact-form textarea,
-.contact-form input[type="password"],
-.contact-form select { /* Added select to the existing styles for input and textarea */
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  background-color: white; /* Ensure background is white for visibility */
-  color: black; /* Set text color to black for visibility */
-}
-
-.contact-form button[type=submit] {
-  background-color: #ff33cc;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: 2px solid #ff33cc; /* Border similar to submit button */
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.contact-form button[type=submit]:hover {
-  background-color: #33ffff00;
-  color: rgb(255, 255, 255);
-
-}
-
-.contact-form button[type=button] {
-  background-color: rgba(255, 255, 255, 0);
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: 2px solid #ff33cc; /* Border similar to submit button */
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%; /* Match the width of the submit button */
-  box-sizing: border-box; /* Ensure padding and border don't affect width */
-}
-
-.contact-form button[type=button]:hover {
-  background-color: #ff33cc; /* Match the background color of the submit button */
-  color: white; /* Ensure text is visible */
-}
 
 .material-symbols-outlined {
   font-variation-settings:
@@ -553,4 +481,162 @@ input[type="number"] {
   .param-range input[type="number"] {
       width: 100%;
   }
+}
+
+/* ------------------ FORM CONTAINER ----------------------- */
+
+
+.form-container {
+  text-align: center; /* Ensures content is centered */
+  max-width: 600px;
+  margin: 0 auto; /* Centers the container */
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.9), 0 2px 6px rgba(51, 255, 255, 0.5), 0 12px 24px rgb(192, 201, 201);
+  border-radius: 8px;
+}
+
+.contact-form {
+  margin-top: 20px; /* Adds some space between the text and the form */
+  text-align: center; /* Center-align the form elements */
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 10px;
+  text-align: left; /* Ensures form labels are aligned to the left for readability */
+}
+
+.contact-form input[type="email"],
+.contact-form input[type="text"],
+.contact-form input[type="tel"], /* Add tel input here */
+.contact-form input[type="date"], /* Added date to the existing input styles */
+.contact-form input[type="url"], /* Added url to the existing styles */
+.contact-form textarea,
+.contact-form input[type="password"],
+.contact-form select { /* Added select to the existing styles for input and textarea */
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  background-color: white; /* Ensure background is white for visibility */
+  color: black; /* Set text color to black for visibility */
+}
+
+.contact-form button[type=submit] {
+  background-color: #ff33cc;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 2px solid #ff33cc; /* Border similar to submit button */
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.contact-form button[type=submit]:hover {
+  background-color: #33ffff00;
+  color: rgb(255, 255, 255);
+
+}
+
+.contact-form button[type=button] {
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 2px solid #ff33cc; /* Border similar to submit button */
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; /* Match the width of the submit button */
+  box-sizing: border-box; /* Ensure padding and border don't affect width */
+}
+
+.contact-form button[type=button]:hover {
+  background-color: #ff33cc; /* Match the background color of the submit button */
+  color: white; /* Ensure text is visible */
+}
+
+/* ------------------ DROPDOWN STYLING ----------------------- */
+
+.form-container {
+  position: relative; /* Ensures dropdown aligns within this container */
+  max-width: 600px; /* Ensure form does not exceed this width */
+  margin: 0 auto; /* Center the form */
+}
+
+.form-container .dropdown {
+  position: absolute;
+  top: 100%; /* Position the dropdown directly below the input */
+  left: 0; /* Aligns the dropdown with the left edge of the input */
+  background-color: #ffffff; /* Light background for dropdown */
+  border: 1px solid #000000; /* Black border for contrast */
+  max-height: 200px;
+  overflow-y: auto;
+  width: calc(100% - 2px); /* Adjust width to match input field and avoid overflow */
+  z-index: 1000;
+  border-radius: 4px; /* Rounded corners for smooth design */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+  margin-top: 5px; /* Add spacing between input and dropdown */
+  color: #000000; /* Black text color inside the dropdown */
+}
+
+.form-container .user-result {
+  padding: 10px;
+  cursor: pointer;
+  color: #000000 !important; /* Black text for readability */
+  background-color: #ffffff !important; /* Light background for each result */
+  border-bottom: 1px solid #ccc; /* Subtle divider between results */
+  transition: background-color 0.3s ease;
+}
+
+.form-container .user-result:hover {
+  background-color: #f0f0f0 !important; /* Light grey background on hover */
+  color: #000000 !important; /* Black text when hovered */
+}
+
+.form-container .user-result:last-child {
+  border-bottom: none; /* Remove border for the last result */
+}
+
+/* ------------------ INPUT FIELD STYLING ----------------------- */
+
+.form-container input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #000000; /* Black border for input */
+  background-color: #ffffff; /* Light background for input */
+  color: #000000; /* Black text color for input */
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-container input[type="text"]::placeholder {
+  color: #888888; /* Grey placeholder text for better contrast */
+}
+
+
+/* ------------------ INPUT FIELD STYLING ----------------------- */
+
+.invite-button {
+  background-color: #ff33cc; /* Match button style with the rest of the form */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+}
+
+.invite-button:hover {
+  background-color: #33ffff; /* Slight color change on hover */
+  color: #000000;
 }

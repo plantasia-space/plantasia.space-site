@@ -85,9 +85,10 @@ public: false
         <label for="uploadTexture">Please upload the texture file (any image format):</label>
         <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*">
 
-        <!-- 3D Artist Name -->
         <label for="dddArtistName">Who is the 3D artist for this creation?</label>
-        <input type="text" id="dddArtistName" name="dddArtistName" required><br><br>
+        <input type="text" class="user-search-input" id="dddArtistName" name="dddArtistName" required>
+        <!-- Container for Search Results -->
+        <div class="dropdown"></div>
 
         <!-- Gender Identity -->
         <label for="genderIdentity">How do they identify?</label>
@@ -124,7 +125,10 @@ public: false
     </form>
 </div>
 
+<script src="scripts/searchUsers.js"></script>
+
 <script>
+
 
 // Define urlParams first, before using it.
 const urlParams = new URLSearchParams(window.location.search);
