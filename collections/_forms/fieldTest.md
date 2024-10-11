@@ -27,3 +27,4 @@ public: false
 </div>
 
 <!-- Include the JavaScript -->
+<script src="../../scripts/searchUsers.js"></script>

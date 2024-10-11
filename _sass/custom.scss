@@ -560,71 +560,55 @@ input[type="number"] {
 }
 
 /* ------------------ DROPDOWN STYLING ----------------------- */
-
-.form-container {
-  position: relative; /* Ensures dropdown aligns within this container */
-  max-width: 600px; /* Ensure form does not exceed this width */
-  margin: 0 auto; /* Center the form */
+.input-wrapper {
+  position: relative;
 }
 
-.form-container .dropdown {
+.input-wrapper .dropdown {
   position: absolute;
-  top: 100%; /* Position the dropdown directly below the input */
-  left: 0; /* Aligns the dropdown with the left edge of the input */
-  background-color: #ffffff; /* Light background for dropdown */
-  border: 1px solid #000000; /* Black border for contrast */
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #000000;
   max-height: 200px;
   overflow-y: auto;
-  width: calc(100% - 2px); /* Adjust width to match input field and avoid overflow */
+  width: 100%;
   z-index: 1000;
-  border-radius: 4px; /* Rounded corners for smooth design */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
-  margin-top: 5px; /* Add spacing between input and dropdown */
-  color: #000000; /* Black text color inside the dropdown */
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin-top: 5px;
+  color: #000000;
+  display: none;
 }
 
-.form-container .user-result {
+.input-wrapper .dropdown.active {
+  display: block;
+}
+
+.user-result {
   padding: 10px;
   cursor: pointer;
-  color: #000000 !important; /* Black text for readability */
-  background-color: #ffffff !important; /* Light background for each result */
-  border-bottom: 1px solid #ccc; /* Subtle divider between results */
+  background-color: #ffffff;
+  color: #000000;
+  border-bottom: 1px solid #ccc;
   transition: background-color 0.3s ease;
 }
 
-.form-container .user-result:hover {
-  background-color: #f0f0f0 !important; /* Light grey background on hover */
-  color: #000000 !important; /* Black text when hovered */
+.user-result:hover,
+.user-result.selected {
+  background-color: #33ffff;
+  font-weight: bold;
+  border-radius: 4px;
 }
 
-.form-container .user-result:last-child {
-  border-bottom: none; /* Remove border for the last result */
+/* Remove border for the last result */
+.user-result:last-child {
+  border-bottom: none;
 }
 
-/* ------------------ INPUT FIELD STYLING ----------------------- */
-
-.form-container input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #000000; /* Black border for input */
-  background-color: #ffffff; /* Light background for input */
-  color: #000000; /* Black text color for input */
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.form-container input[type="text"]::placeholder {
-  color: #888888; /* Grey placeholder text for better contrast */
-}
-
-
-/* ------------------ INPUT FIELD STYLING ----------------------- */
-
+/* ------------------ INVITE BUTTON ----------------------- */
 .invite-button {
-  background-color: #ff33cc; /* Match button style with the rest of the form */
+  background-color: #ff33cc;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -637,6 +621,6 @@ input[type="number"] {
 }
 
 .invite-button:hover {
-  background-color: #33ffff; /* Slight color change on hover */
+  background-color: #33ffff;
   color: #000000;
 }

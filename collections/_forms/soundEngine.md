@@ -59,8 +59,6 @@ public: false
 
 
 
-
-
     <!-- Edit/Create Mode -->
     <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Sound Engine Image Upload -->
@@ -79,9 +77,16 @@ public: false
         <p id="existingJsonFile" style="display: none;">Current JSON File: <a href="" target="_blank" id="existingJsonLink">Download</a></p>
         <input type="file" id="soundEngineFile" name="soundEngineFile" accept=".json"><br><br>
 
-        <!-- Other input fields -->
-        <label for="developerUsername">Developer Username<span style="color: red;">*</span>:</label>
-        <input type="text" id="developerUsername" name="developerUsername" required><br><br>
+
+
+            <!-- Other input fields -->
+    <label for="developerUsername">Developer Username<span style="color: red;">*</span>:</label>
+    <div class="input-wrapper">
+        <input type="text" class="user-search-input" id="developerUsername" name="developerUsername" placeholder="Type a username..." autocomplete="off" required>
+        <div class="dropdown"></div> <!-- Dropdown directly below the input field -->
+    </div>
+
+
 
         <label for="soundEngineName">Sound Engine Name<span style="color: red;">*</span>:</label>
         <input type="text" id="soundEngineName" name="soundEngineName" required>
@@ -167,6 +172,8 @@ public: false
         
         <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
         <div class="p-2"></div>
+
+
     </form>
 </div>
 
@@ -174,6 +181,11 @@ public: false
 <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 
 <script>
+
+     // {%- include scripts/searchUsers.js -%}
+     //   src="scripts/searchUsers.js"
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId'); 
     if (!userId) {

@@ -46,21 +46,36 @@ public: false
         <p id="viewRadius"></p>
         <p id="viewDiscoveryYear"></p>
         <p id="viewDddArtistName"></p>
-        <p id="viewGenderIdentity"></p>
         <p id="viewExoplanetDescription"></p>
         <p id="viewCredits"></p>
+        <p id="viewOwnerDetails" style="display: none;"></p>
+
     </div>
 
     <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form">
+
+            <!-- 3D Model Upload -->
+        <label for="uploadObj">Please upload the 3D model (OBJ format):</label>
+        <input type="file" id="uploadObj" name="uploadObj" accept=".obj">
+
+        <!-- Texture Upload -->
+        <label for="uploadTexture">Please upload the texture file (any image format):</label>
+        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*">
+
+        <label for="dddArtistName">Who is the 3D artist for this creation?</label>
+        <input type="text" class="user-search-input" id="dddArtistName" name="dddArtistName" required>
+        <!-- Container for Search Results -->
+        <div class="dropdown"></div>
+
+
         <!-- Scientific Exoplanet Name -->
         <label for="sciName">Which scientific exoplanet are you representing?</label>
         <select id="sciName" name="sciName" required>
             <option value="">Please select an exoplanet</option>
         </select>
         <!-- This paragraph will display the fixed sciName in edit mode -->
-        <p id="sciNameDisplay" style="display: none;"></p>
-        <br><br>
+        <h4 id="sciNameDisplay" style="display: none;"></h4>
 
         <!-- Exoplanet Details -->
         <div id="exoplanetDetails" style="display: none;">
@@ -77,32 +92,8 @@ public: false
         <label for="artName">What artistic name would you like to give this Interplanetary Player?</label>
         <input type="text" id="artName" name="artName" required><br><br>
 
-        <!-- 3D Model Upload -->
-        <label for="uploadObj">Please upload the 3D model (OBJ format):</label>
-        <input type="file" id="uploadObj" name="uploadObj" accept=".obj">
 
-        <!-- Texture Upload -->
-        <label for="uploadTexture">Please upload the texture file (any image format):</label>
-        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*">
 
-        <label for="dddArtistName">Who is the 3D artist for this creation?</label>
-        <input type="text" class="user-search-input" id="dddArtistName" name="dddArtistName" required>
-        <!-- Container for Search Results -->
-        <div class="dropdown"></div>
-
-        <!-- Gender Identity -->
-        <label for="genderIdentity">How do they identify?</label>
-        <select id="genderIdentity" name="genderIdentity" required>
-            <option value="Prefer not to reply">Prefer not to reply</option>
-            <option value="Woman">Woman</option>
-            <option value="Man">Man</option>
-            <option value="Trans woman">Trans woman</option>
-            <option value="Trans man">Trans man</option>
-            <option value="Non-Binary">Non-Binary</option>
-            <option value="Not Listed">Not Listed</option>
-        </select><br><br>
-
-        <input type="text" id="customGenderIdentity" name="customGenderIdentity" placeholder="Please specify" style="display: none;"><br><br>
 
         <!-- Exoplanet Description -->
         <label for="exoplanetDescription">Can you describe the topology, life, or story of this exoplanet in 500 characters?</label>
@@ -125,7 +116,6 @@ public: false
     </form>
 </div>
 
-<script src="scripts/searchUsers.js"></script>
 
 <script>
 
@@ -144,6 +134,8 @@ let isOwner = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Set the initial mode for the form
+
+    
     setFormMode(mode); // Use the value of 'mode' that was parsed from the URL
 
     // Fetch exoplanet data
@@ -172,9 +164,6 @@ function clearFormFields() {
     document.getElementById('sciName').value = '';
     document.getElementById('artName').value = '';
     document.getElementById('dddArtistName').value = '';
-    document.getElementById('genderIdentity').value = 'Prefer not to reply';
-    document.getElementById('customGenderIdentity').value = '';
-    document.getElementById('customGenderIdentity').style.display = 'none';
     document.getElementById('exoplanetDescription').value = '';
     document.getElementById('credits').value = '';
     document.getElementById('uploadObj').value = '';
@@ -212,10 +201,6 @@ function setupFormListeners() {
         element.addEventListener('input', saveFormData);
     });
 
-    document.getElementById('genderIdentity').addEventListener('change', function() {
-        const customInput = document.getElementById('customGenderIdentity');
-        customInput.style.display = this.value === 'Not Listed' ? 'inline-block' : 'none';
-    });
 
     document.getElementById('articleForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -251,8 +236,6 @@ function saveFormData() {
         sciName: document.getElementById('sciName').value,
         artName: document.getElementById('artName').value,
         dddArtistName: document.getElementById('dddArtistName').value,
-        genderIdentity: document.getElementById('genderIdentity').value,
-        customGenderIdentity: document.getElementById('customGenderIdentity').value,
         exoplanetDescription: document.getElementById('exoplanetDescription').value,
         credits: document.getElementById('credits').value
     };
@@ -266,13 +249,9 @@ function loadFormData() {
             document.getElementById('sciName').value = savedData.sciName;
             document.getElementById('artName').value = savedData.artName;
             document.getElementById('dddArtistName').value = savedData.dddArtistName;
-            document.getElementById('genderIdentity').value = savedData.genderIdentity;
-            document.getElementById('customGenderIdentity').value = savedData.customGenderIdentity;
             document.getElementById('exoplanetDescription').value = savedData.exoplanetDescription;
             document.getElementById('credits').value = savedData.credits;
-            if (savedData.genderIdentity === 'Not Listed') {
-                document.getElementById('customGenderIdentity').style.display = 'inline-block';
-            }
+
         }
     }
 }
@@ -318,9 +297,11 @@ function submitForm() {
         discoveryyear: parseInt(document.getElementById('discoveryyear').textContent, 10),
         description: document.getElementById('exoplanetDescription').value,
         credits: document.getElementById('credits').value,
-        dddArtistName: document.getElementById('dddArtistName').value,
-        genderIdentity: document.getElementById('genderIdentity').value,
-        customGenderIdentity: document.getElementById('customGenderIdentity').value,
+        ddd: {
+            dddArtist: document.getElementById('dddArtistName').value.trim(),
+            objURL: playerData?.ddd?.objURL || '', // Use existing URL if no new file is uploaded
+            textureURL: playerData?.ddd?.textureURL || '' // Use existing URL if no new file is uploaded
+        }
     };
 
     // First, upload files if they exist
@@ -334,11 +315,9 @@ function submitForm() {
 
         // Include file URLs in the JSON data only if new files were uploaded
         if (fileData.uploadObjURL) {
-            configData.ddd = configData.ddd || {};
             configData.ddd.objURL = fileData.uploadObjURL;
         }
         if (fileData.uploadTextureURL) {
-            configData.ddd = configData.ddd || {};
             configData.ddd.textureURL = fileData.uploadTextureURL;
         }
 
@@ -367,7 +346,6 @@ function submitForm() {
         alert('An error occurred. Please try again.');
     });
 }
-
 // Function to update artistic name
 function updateExoplanetArtName(ipId, artName) {
     console.log('Updating exoplanet artistic name for ipId:', ipId, 'artName:', artName);
@@ -472,33 +450,9 @@ function populateEditMode(playerData) {
     document.getElementById('radius').textContent = playerData.radius?.$numberDecimal || 'N/A';
     document.getElementById('discoveryyear').textContent = playerData.discoveryyear?.$numberDecimal || 'N/A';
 
-    // Populate 3D artist name from the dddArtist array if it exists
+    // Populate 3D artist name from the playerData, which should now be a simple string
     const dddArtistNameField = document.getElementById('dddArtistName');
-    const dddArtists = playerData.ddd?.dddArtist || [];
-
-    if (dddArtists.length > 0) {
-        dddArtistNameField.value = dddArtists[0].name || '';
-    } else {
-        dddArtistNameField.value = '';
-    }
-
-    // Populate gender identity
-    const genderIdentitySelect = document.getElementById('genderIdentity');
-    if (genderIdentitySelect) {
-        genderIdentitySelect.value = playerData.genderIdentity || 'Prefer not to reply';
-    } else {
-        console.error('Gender identity select element not found.');
-    }
-
-    // Handle custom gender input if applicable
-    const customGenderInput = document.getElementById('customGenderIdentity');
-    if (playerData.genderIdentity === 'Not Listed' && playerData.customGenderIdentity) {
-        customGenderInput.value = playerData.customGenderIdentity;
-        customGenderInput.style.display = 'inline-block';
-    } else {
-        customGenderInput.value = '';
-        customGenderInput.style.display = 'none';
-    }
+    dddArtistNameField.value = playerData.dddArtist || '';
 
     // Populate exoplanet description
     document.getElementById('exoplanetDescription').value = playerData.description || '';
@@ -542,47 +496,40 @@ function populateEditMode(playerData) {
 }
 
 
-
 function populateViewMode(playerData) {
-    // Display the scientific name of the exoplanet
-    document.getElementById('viewSciName').textContent = playerData.sciName || 'N/A';
-    
-    // Display the artistic name of the player
-    document.getElementById('viewArtName').textContent = `Artistic Name: ${playerData.artName || 'N/A'}`;
-    
-    // Display the right ascension and declination with labels
-    document.getElementById('viewRaDecimal').textContent = `Right Ascension (Decimal): ${playerData.ra_decimal || 'N/A'}`;
-    document.getElementById('viewDecDecimal').textContent = `Declination (Decimal): ${playerData.dec_decimal || 'N/A'}`;
-    
-    // Display the orbital period and radius
-    document.getElementById('viewPeriod').textContent = `Orbital Period [days]: ${playerData.period || 'N/A'}`;
-    document.getElementById('viewRadius').textContent = `Radius [R earth]: ${playerData.radius || 'N/A'}`;
-    document.getElementById('viewDiscoveryYear').textContent = `Discovery Year: ${playerData.discoveryyear || 'N/A'}`;
-
-    // Display the 3D artist name
-    document.getElementById('viewDddArtistName').textContent = `3D Artist: ${playerData.dddArtistName || 'Unknown Artist'}`;
-
-    // Display the gender identity with handling for custom gender
-    document.getElementById('viewGenderIdentity').textContent = 
-        `Gender Identity: ${playerData.genderIdentity === 'Not Listed' && playerData.customGenderIdentity 
-        ? playerData.customGenderIdentity 
-        : playerData.genderIdentity || 'Prefer not to reply'}`;
-
-    // Display the description and credits with labels
-    document.getElementById('viewExoplanetDescription').textContent = `Description: ${playerData.description || 'No description provided.'}`;
-    document.getElementById('viewCredits').textContent = `Credits: ${playerData.credits || 'No credits provided.'}`;
-
-
-    // Handle the 3D model download link
+    // Define the base URL for images and files
     const baseUrl = 'https://media.maar.world';
+
+    // Update the view mode header
+    const header = document.querySelector('.form-container h3');
+    if (header) {
+        header.textContent = 'View Interplanetary Player';
+    }
+
+    // Display the scientific name of the exoplanet
+    document.getElementById('viewSciName').innerHTML = `<strong>Scientific Name:</strong> ${playerData.sciName || 'N/A'}`;
+
+    // Display the artistic name
+    document.getElementById('viewArtName').innerHTML = `<strong>Artistic Name:</strong> ${playerData.artName || 'N/A'}`;
+
+    // Display details with labels
+    document.getElementById('viewRaDecimal').innerHTML = `<strong>Right Ascension (Decimal):</strong> ${playerData.ra_decimal?.$numberDecimal || 'N/A'}`;
+    document.getElementById('viewDecDecimal').innerHTML = `<strong>Declination (Decimal):</strong> ${playerData.dec_decimal?.$numberDecimal || 'N/A'}`;
+    document.getElementById('viewPeriod').innerHTML = `<strong>Orbital Period [days]:</strong> ${playerData.period?.$numberDecimal || 'N/A'}`;
+    document.getElementById('viewRadius').innerHTML = `<strong>Radius [R earth]:</strong> ${playerData.radius?.$numberDecimal || 'N/A'}`;
+    document.getElementById('viewDiscoveryYear').innerHTML = `<strong>Discovery Year:</strong> ${playerData.discoveryyear?.$numberDecimal || 'N/A'}`;
+    document.getElementById('viewDddArtistName').innerHTML = `<strong>3D Artist:</strong> ${playerData.dddArtist || 'Unknown Artist'}`;
+    document.getElementById('viewExoplanetDescription').innerHTML = `<strong>Description:</strong> ${playerData.description || 'No description provided.'}`;
+    document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${playerData.credits || 'No credits provided.'}`;
+
+    // Display the 3D model download link if available
     const objFileLink = document.getElementById('viewObjFile');
     if (playerData.objURL) {
         const objUrl = playerData.objURL.startsWith('http')
             ? playerData.objURL
             : `${baseUrl}${playerData.objURL}`;
-
-        objFileLink.textContent = 'Download 3D Model';
         objFileLink.href = objUrl;
+        objFileLink.textContent = 'Download 3D Model';
         objFileLink.style.display = 'block';
     } else {
         objFileLink.style.display = 'none';
@@ -594,12 +541,25 @@ function populateViewMode(playerData) {
         const textureUrl = playerData.textureURL.startsWith('http')
             ? playerData.textureURL
             : `${baseUrl}${playerData.textureURL}`;
-
         textureImage.src = textureUrl;
         textureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
         textureImage.style.display = 'block';
     } else {
         textureImage.style.display = 'none';
+    }
+
+    // Display owner details
+    const ownerDetails = playerData.ownerDetails;
+    const ownerContainer = document.getElementById('viewOwnerDetails');
+    if (ownerDetails) {
+        ownerContainer.innerHTML = `
+            <strong>Owner:</strong> ${ownerDetails.displayName || 'N/A'}
+            <br>
+            <strong>Username:</strong> @${ownerDetails.username || 'N/A'}
+        `;
+        ownerContainer.style.display = 'block';
+    } else {
+        ownerContainer.style.display = 'none';
     }
 
     // Hide the form and show the view mode
@@ -614,9 +574,17 @@ function setFormMode(mode) {
     const isEditMode = mode === 'edit';
     const isCreateMode = mode === 'create';
 
+    // Log the current mode for debugging
+    console.log('Setting form mode:', mode);
+    console.log('isViewMode:', isViewMode);
+    console.log('isEditMode:', isEditMode);
+    console.log('isCreateMode:', isCreateMode);
+
+    // Toggle form elements' disabled state based on the mode
     const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm textarea');
     formElements.forEach(element => {
-        element.disabled = isViewMode;
+        element.disabled = isViewMode; // Disable input fields only in view mode
+        console.log(`Element ${element.id} disabled:`, isViewMode);
     });
 
     const articleForm = document.getElementById('articleForm');
@@ -624,22 +592,31 @@ function setFormMode(mode) {
     const editButton = document.getElementById('editButton');
     const cancelEditButton = document.getElementById('cancelEditButton');
 
+    // Show or hide the form based on the mode
     if (articleForm) {
-        articleForm.style.display = isViewMode ? 'none' : 'block';
+        articleForm.style.display = (isEditMode || isCreateMode) ? 'block' : 'none';
+        console.log('articleForm display:', articleForm.style.display);
     }
 
+    // Show or hide the view-only section based on the mode
     if (interplanetaryPlayerView) {
         interplanetaryPlayerView.style.display = isViewMode ? 'block' : 'none';
+        console.log('interplanetaryPlayerView display:', interplanetaryPlayerView.style.display);
     }
 
+    // Show the edit button only if in view mode and user is the owner
     if (editButton) {
         editButton.style.display = isViewMode && isOwner ? 'block' : 'none';
+        console.log('editButton display:', editButton.style.display);
     }
 
+    // Show the cancel edit button only in edit mode
     if (cancelEditButton) {
         cancelEditButton.style.display = isEditMode ? 'block' : 'none';
+        console.log('cancelEditButton display:', cancelEditButton.style.display);
     }
 
+    // Update the page title based on the mode
     const header = document.querySelector('.form-container h3');
     if (header) {
         header.textContent = isCreateMode
@@ -647,12 +624,16 @@ function setFormMode(mode) {
             : isEditMode
             ? 'Edit Interplanetary Player'
             : 'View Interplanetary Player';
+        console.log('Header text set to:', header.textContent);
     }
 
+    // Clear form fields if in create mode
     if (isCreateMode) {
-        clearFormFields(); // Clear form fields when in create mode.
+        clearFormFields();
+        console.log('Form fields cleared for create mode.');
     }
 }
+
 
 
 
