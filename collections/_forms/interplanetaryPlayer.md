@@ -25,43 +25,53 @@ public: false
                 </button>
             </a>
         </div>
-         </div>
+        <div class="edit-button-container">
+            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Sound Engine" style="display: none;">
+                <span class="material-symbols-outlined">edit</span> 
+            </button>
+        </div>
+    </div>
     <h3>Create a New Interplanetary Player</h3>
     <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
+    <!-- View Mode -->
+    <div id="interplanetaryPlayerView" style="display: none;">
+        <a id="viewObjFile" style="display: none;">Download 3D Model</a>
+        <img id="viewTextureImage" style="display: none; max-width: 100%; height: auto;" alt="Texture Image" />
+        <p id="viewSciName"></p>
+        <p id="viewArtName"></p>
+        <p id="viewRaDecimal"></p>
+        <p id="viewDecDecimal"></p>
+        <p id="viewPeriod"></p>
+        <p id="viewRadius"></p>
+        <p id="viewDiscoveryYear"></p>
+        <p id="viewDddArtistName"></p>
+        <p id="viewGenderIdentity"></p>
+        <p id="viewExoplanetDescription"></p>
+        <p id="viewCredits"></p>
+    </div>
+
+    <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form">
         <!-- Scientific Exoplanet Name -->
         <label for="sciName">Which scientific exoplanet are you representing?</label>
-        <select id="sciName" name="sciName" required onchange="updateDetails()">
+        <select id="sciName" name="sciName" required>
             <option value="">Please select an exoplanet</option>
-        </select><br><br>
+        </select>
+        <!-- This paragraph will display the fixed sciName in edit mode -->
+        <p id="sciNameDisplay" style="display: none;"></p>
+        <br><br>
 
         <!-- Exoplanet Details -->
-        <div id="exoplanetDetails" style="display:none;">
-            <p><strong>IP ID:</strong> <span id="ipId"></span></p> 
+        <div id="exoplanetDetails" style="display: none;">
+            <p><strong>IP ID:</strong> <span id="ipId"></span></p>
             <p><strong>Right Ascension (Decimal):</strong> <span id="ra_decimal"></span></p>
             <p><strong>Declination (Decimal):</strong> <span id="dec_decimal"></span></p>
             <p><strong>Orbital Period [days]:</strong> <span id="period"></span></p>
             <p><strong>Radius [R earth]:</strong> <span id="radius"></span></p>
             <p><strong>Discovery Year:</strong> <span id="discoveryyear"></span></p>
-            <p style="display: none;"><strong>Position URL:</strong> <a id="posURL" href="#" target="_blank">View Location</a></p>
         </div><br><br>
 
-        <!-- Sonic Engine Selection -->
-        <label for="soundEngine">Which sonic engine would you like to use as the default for your Interplanetary Player?</label>
-        <select id="soundEngine" name="soundEngine" required onchange="updateSoundEngineDetails()">
-            <option value="">Please select a sound engine</option>
-        </select><br><br>
-
-        <div id="soundEngineDetails">
-            <p><strong>X Tag:</strong> <span id="xTag"></span></p>
-            <p><strong>Y Tag:</strong> <span id="yTag"></span></p>
-            <p><strong>Z Tag:</strong> <span id="zTag"></span></p>
-        </div><br>
-
-        <!-- Regen State -->
-        <label for="regenState">Would you like to enable the Regen State?</label>
-        <input type="checkbox" id="regenState" name="regenState"><br><br>
 
         <!-- Artistic Exoplanet Name -->
         <label for="artName">What artistic name would you like to give this Interplanetary Player?</label>
@@ -69,11 +79,11 @@ public: false
 
         <!-- 3D Model Upload -->
         <label for="uploadObj">Please upload the 3D model (OBJ format):</label>
-        <input type="file" id="uploadObj" name="uploadObj" accept=".obj" required><br><br>
+        <input type="file" id="uploadObj" name="uploadObj" accept=".obj">
 
         <!-- Texture Upload -->
         <label for="uploadTexture">Please upload the texture file (any image format):</label>
-        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*" required><br><br>
+        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*">
 
         <!-- 3D Artist Name -->
         <label for="dddArtistName">Who is the 3D artist for this creation?</label>
@@ -116,9 +126,22 @@ public: false
 
 <script>
 
-    let exoplanetData = {};
+// Define urlParams first, before using it.
+const urlParams = new URLSearchParams(window.location.search);
+let mode = urlParams.get('mode') || 'create'; // Default to 'create' if 'mode' is not provided.
+let playerId = urlParams.get('playerId') || ''; // Default to 'create' if 'mode' is not provided.
+let playerData = null; // Define playerData globally.
+
+// Define other variables.
+let exoplanetData = {};
+const userId = localStorage.getItem('userId'); // Retrieve the logged-in user's ID
+let isOwner = false;
+
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Set the initial mode for the form
+    setFormMode(mode); // Use the value of 'mode' that was parsed from the URL
+
     // Fetch exoplanet data
     fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchExoplanetData')
         .then(response => response.json())
@@ -129,21 +152,34 @@ document.addEventListener('DOMContentLoaded', function() {
             populateExoplanetDropdown();
         })
         .catch(error => console.error('Error loading or parsing the exoplanet data:', error));
-
-    // Fetch sound engine data
-    fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchSonicEngineData')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Sonic Engine data:', data);
-
-            soundEngineData = data[0]; // Adjust based on actual API response structure
-            populateSoundEngineDropdown();
-        })
-        .catch(error => console.error('Error loading or parsing the sound engine data:', error));
+    
+    if (playerId) {
+        // Only load player details if a playerId is present.
+        loadInterplanetaryPlayersDetails(playerId);
+    } else {
+        // Ensure form fields are cleared if no playerId is provided.
+        clearFormFields();
+    }
 
     setupFormListeners();
-    loadFormData();
 });
+
+function clearFormFields() {
+    document.getElementById('sciName').value = '';
+    document.getElementById('artName').value = '';
+    document.getElementById('dddArtistName').value = '';
+    document.getElementById('genderIdentity').value = 'Prefer not to reply';
+    document.getElementById('customGenderIdentity').value = '';
+    document.getElementById('customGenderIdentity').style.display = 'none';
+    document.getElementById('exoplanetDescription').value = '';
+    document.getElementById('credits').value = '';
+    document.getElementById('uploadObj').value = '';
+    document.getElementById('uploadTexture').value = '';
+
+    // Hide exoplanet details when in create mode.
+    document.getElementById('exoplanetDetails').style.display = 'none';
+}
+
 
 function populateExoplanetDropdown() {
     const selectElement = document.getElementById('sciName');
@@ -164,19 +200,7 @@ function populateExoplanetDropdown() {
         }
     });
 }
-function populateSoundEngineDropdown() {
-    const selectElement = document.getElementById('soundEngine');
-    selectElement.innerHTML = '<option value="">Please select a sound engine</option>';
 
-    Object.keys(soundEngineData).forEach(engineKey => {
-        if (engineKey !== '_id') { // Ensure '_id' is not a key to skip
-            const option = document.createElement('option');
-            option.value = engineKey;
-            option.textContent = engineKey; // Ensure this is what you want to display
-            selectElement.appendChild(option);
-        }
-    });
-}
 
 function setupFormListeners() {
     const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm textarea');
@@ -195,7 +219,6 @@ function setupFormListeners() {
     });
 
     document.getElementById('sciName').addEventListener('change', updateDetails);
-    document.getElementById('soundEngine').addEventListener('change', updateSoundEngineDetails);
 }
 
 function updateDetails() {
@@ -218,32 +241,10 @@ function updateDetails() {
     }
 }
 
-function updateSoundEngineDetails() {
-    const selectedEngine = document.getElementById('soundEngine').value;
-
-    if (selectedEngine === "") {
-        document.getElementById('xTag').textContent = 'N/A';
-        document.getElementById('yTag').textContent = 'N/A';
-        document.getElementById('zTag').textContent = 'N/A';
-    } else {
-        const soundEngine = soundEngineData[selectedEngine];
-        if (soundEngine) {
-            document.getElementById('xTag').textContent = soundEngine.xTag || 'N/A';
-            document.getElementById('yTag').textContent = soundEngine.yTag || 'N/A';
-            document.getElementById('zTag').textContent = soundEngine.zTag || 'N/A';
-        } else {
-            document.getElementById('xTag').textContent = 'N/A';
-            document.getElementById('yTag').textContent = 'N/A';
-            document.getElementById('zTag').textContent = 'N/A';
-        }
-    }
-}
 
 function saveFormData() {
     const formData = {
         sciName: document.getElementById('sciName').value,
-        soundEngine: document.getElementById('soundEngine').value,
-        regenState: document.getElementById('regenState').checked,
         artName: document.getElementById('artName').value,
         dddArtistName: document.getElementById('dddArtistName').value,
         genderIdentity: document.getElementById('genderIdentity').value,
@@ -255,63 +256,70 @@ function saveFormData() {
 }
 
 function loadFormData() {
-    const savedData = JSON.parse(localStorage.getItem('protoFormData'));
-    if (savedData) {
-        document.getElementById('sciName').value = savedData.sciName;
-        document.getElementById('soundEngine').value = savedData.soundEngine;
-        document.getElementById('regenState').checked = savedData.regenState;
-        document.getElementById('artName').value = savedData.artName;
-        document.getElementById('dddArtistName').value = savedData.dddArtistName;
-        document.getElementById('genderIdentity').value = savedData.genderIdentity;
-        document.getElementById('customGenderIdentity').value = savedData.customGenderIdentity;
-        document.getElementById('exoplanetDescription').value = savedData.exoplanetDescription;
-        document.getElementById('credits').value = savedData.credits;
-
-        // Show custom gender identity field if "Not Listed" was selected
-        if (savedData.genderIdentity === 'Not Listed') {
-            document.getElementById('customGenderIdentity').style.display = 'inline-block';
+    if (mode !== 'create') {
+        const savedData = JSON.parse(localStorage.getItem('protoFormData'));
+        if (savedData) {
+            document.getElementById('sciName').value = savedData.sciName;
+            document.getElementById('artName').value = savedData.artName;
+            document.getElementById('dddArtistName').value = savedData.dddArtistName;
+            document.getElementById('genderIdentity').value = savedData.genderIdentity;
+            document.getElementById('customGenderIdentity').value = savedData.customGenderIdentity;
+            document.getElementById('exoplanetDescription').value = savedData.exoplanetDescription;
+            document.getElementById('credits').value = savedData.credits;
+            if (savedData.genderIdentity === 'Not Listed') {
+                document.getElementById('customGenderIdentity').style.display = 'inline-block';
+            }
         }
     }
 }
+
+
 function submitForm() {
-    // Validate required fields
-    const requiredFields = ['artName', 'sciName', 'exoplanetDescription', 'credits', 'soundEngine', 'dddArtistName'];
-    for (let field of requiredFields) {
-        const element = document.getElementById(field);
-        if (!element.value) {
-            alert(`Please fill out the ${field} field.`);
-            return;
-        }
-    }
+    const method = mode === 'edit' ? 'PUT' : 'POST';
+    const url = method === 'PUT' 
+        ? `http://media.maar.world:3001/api/interplanetaryplayers/${playerId}` 
+        : 'http://media.maar.world:3001/api/interplanetaryplayers';
 
-    // Ensure ipId is correctly filled before submission
-    const ipId = document.getElementById('ipId').textContent;
-    if (ipId === 'N/A' || !ipId) {
-        alert('Invalid IP ID. Please ensure you have selected a valid exoplanet.');
-        return;
-    }
+    // Ensure playerData is defined before using it in edit mode.
+    const ipId = mode === 'edit' && playerData
+        ? playerData.ipId
+        : parseInt(document.getElementById('sciName').value.split(':')[0]);
 
-    // Disable the form to prevent further editing
-    document.getElementById('articleForm').querySelectorAll('input, select, textarea, button').forEach(element => {
-        element.disabled = true;
-    });
-
-    // Show the progress bar
-    const progressBar = document.getElementById('progress');
-    const statusMessage = document.getElementById('statusMessage');
-    progressBar.style.width = '0%';
-    statusMessage.style.display = 'none';
-    statusMessage.classList.remove('error');
-
-    // Upload files first
+    // Prepare FormData for file uploads
     const fileFormData = new FormData();
     fileFormData.append('ipId', ipId);
-    fileFormData.append('uploadObj', document.getElementById('uploadObj').files[0]);
-    fileFormData.append('uploadTexture', document.getElementById('uploadTexture').files[0]);
-        // Fetch the userId from localStorage
-    const userId = localStorage.getItem('userId');
 
+    // Add file uploads if provided
+    const objFile = document.getElementById('uploadObj').files[0];
+    const textureFile = document.getElementById('uploadTexture').files[0];
 
+    if (objFile) {
+        fileFormData.append('uploadObj', objFile);
+    }
+    if (textureFile) {
+        fileFormData.append('uploadTexture', textureFile);
+    }
+
+    // Prepare JSON data for other form fields
+    const configData = {
+        ownerId: userId,
+        isPublic: false,
+        ipId,
+        artName: document.getElementById('artName').value,
+        sciName: document.getElementById('sciNameDisplay').textContent || 'Unknown Exoplanet',
+        ra_decimal: parseFloat(document.getElementById('ra_decimal').textContent),
+        dec_decimal: parseFloat(document.getElementById('dec_decimal').textContent),
+        period: parseFloat(document.getElementById('period').textContent),
+        radius: parseFloat(document.getElementById('radius').textContent),
+        discoveryyear: parseInt(document.getElementById('discoveryyear').textContent, 10),
+        description: document.getElementById('exoplanetDescription').value,
+        credits: document.getElementById('credits').value,
+        dddArtistName: document.getElementById('dddArtistName').value,
+        genderIdentity: document.getElementById('genderIdentity').value,
+        customGenderIdentity: document.getElementById('customGenderIdentity').value,
+    };
+
+    // First, upload files if they exist
     fetch('http://media.maar.world:3001/api/interplanetaryplayers/uploadModelFiles', {
         method: 'POST',
         body: fileFormData
@@ -320,86 +328,40 @@ function submitForm() {
     .then(fileData => {
         console.log('Files uploaded successfully:', fileData);
 
+        // Include file URLs in the JSON data only if new files were uploaded
+        if (fileData.uploadObjURL) {
+            configData.ddd = configData.ddd || {};
+            configData.ddd.objURL = fileData.uploadObjURL;
+        }
+        if (fileData.uploadTextureURL) {
+            configData.ddd = configData.ddd || {};
+            configData.ddd.textureURL = fileData.uploadTextureURL;
+        }
+
         // Now submit the rest of the form data
-        const configData = {
-            ownerId: userId,
-            isPublic: "false",
-            ipId,
-            artName: document.getElementById('artName').value,
-            sciName: document.getElementById('sciName').selectedOptions[0].textContent.split(': ')[1], // Extract sciName
-            ra_decimal: parseFloat(document.getElementById('ra_decimal').textContent),
-            dec_decimal: parseFloat(document.getElementById('dec_decimal').textContent),
-            period: parseFloat(document.getElementById('period').textContent),
-            radius: parseFloat(document.getElementById('radius').textContent),
-            discoveryyear: parseInt(document.getElementById('discoveryyear').textContent, 10),
-            description: document.getElementById('exoplanetDescription').value,
-            credits: document.getElementById('credits').value,
-            soundEngine: document.getElementById('soundEngine').value,
-            sonification: {
-                regenState: document.getElementById('regenState').checked,
-                regen1: 'data/sonification_1.min.json',  
-                regen2: 'data/sonification_2.min.json',  
-                regen3: 'data/sonification_3.min.json',  
-                regen4: 'data/sonification_4.min.json',  
-                regen5: 'data/sonification_5.min.json',  
-                regen6: 'data/sonification_6.min.json',  
-                regen7: 'data/sonification_7.min.json'   
-            },
-            ddd: {
-                dddArtistName: document.getElementById('dddArtistName').value,
-                textureURL: fileData.uploadTextureURL,
-                objURL: fileData.uploadObjURL
-            }
-        };
-
-        console.log('JSON data being sent:', JSON.stringify(configData));
-
-        // Simulate a progress bar fill-up
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress += 10;
-            progressBar.style.width = progress + '%';
-            if (progress >= 100) clearInterval(progressInterval);
-        }, 100);
-
-        // Use the correct endpoint to submit the configuration
-        fetch('http://media.maar.world:3001/api/interplanetaryplayers', {
-            method: 'POST',
+        return fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(configData)
-        })
-        .then(response => {
-            clearInterval(progressInterval); // Ensure the progress bar is full
-            progressBar.style.width = '100%';
-            if (!response.ok) {
-                throw new Error('Failed to submit configuration');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Configuration submitted:', data);
-            updateExoplanetArtName(configData.ipId, configData.artName);
-        })
-        .catch(error => {
-            console.error('Failed to submit configuration:', error);
-            statusMessage.textContent = 'Failed to submit configuration. Please try again.';
-            statusMessage.classList.add('error');
-            statusMessage.style.display = 'block';
-            enableForm();
         });
     })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to submit configuration');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Configuration submitted:', data);
+        alert('Player updated successfully!');
+        window.location.href = '/voyage';
+    })
     .catch(error => {
-        console.error('Failed to upload files:', error);
-        statusMessage.textContent = 'Failed to upload files. Please try again.';
-        statusMessage.classList.add('error');
-        statusMessage.style.display = 'block';
-        enableForm();
+        console.error('Failed to submit configuration:', error);
+        alert('An error occurred. Please try again.');
     });
-
-    // Clear localStorage upon successful submission
-    localStorage.removeItem('protoFormData');
 }
 
 // Function to update artistic name
@@ -450,6 +412,244 @@ function enableForm() {
     });
 
 }
+
+
+function loadInterplanetaryPlayersDetails(playerId) {
+    fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch player details');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                console.error('Error fetching player details:', data.message);
+                return;
+            }
+
+            playerData = data.player; // Assign fetched data to playerData.
+            const isOwner = playerData.ownerId === userId;
+            console.log('Is user the owner?', isOwner);
+
+            // Show the edit button only if the user is the owner
+            const editButton = document.getElementById('editButton');
+            if (editButton) {
+                editButton.style.display = isOwner ? 'block' : 'none';
+            }
+
+            // Pass the fetched data to populate the edit mode
+            populateEditMode(playerData);
+        })
+        .catch(error => {
+            console.error('Error loading interplanetary player details:', error);
+        });
+}
+
+
+function populateEditMode(playerData) {
+    // Handle sciName: show as text and hide the selector in edit mode
+    const sciNameDisplay = document.getElementById('sciNameDisplay');
+    const sciNameSelect = document.getElementById('sciName');
+
+    console.log('Player data received:', JSON.stringify(playerData, null, 2));
+
+    // Show the scientific name as plain text and hide the dropdown
+    sciNameDisplay.textContent = playerData.sciName || 'Unknown Exoplanet';
+    sciNameDisplay.style.display = 'block';
+    sciNameSelect.style.display = 'none';
+    sciNameSelect.required = false; // Remove the required attribute when hidden
+
+    // Populate other form fields with data from playerData for editing
+    document.getElementById('artName').value = playerData.artName || '';
+    document.getElementById('ra_decimal').textContent = playerData.ra_decimal?.$numberDecimal || 'N/A';
+    document.getElementById('dec_decimal').textContent = playerData.dec_decimal?.$numberDecimal || 'N/A';
+    document.getElementById('period').textContent = playerData.period?.$numberDecimal || 'N/A';
+    document.getElementById('radius').textContent = playerData.radius?.$numberDecimal || 'N/A';
+    document.getElementById('discoveryyear').textContent = playerData.discoveryyear?.$numberDecimal || 'N/A';
+
+    // Populate 3D artist name from the dddArtist array if it exists
+    const dddArtistNameField = document.getElementById('dddArtistName');
+    const dddArtists = playerData.ddd?.dddArtist || [];
+
+    if (dddArtists.length > 0) {
+        dddArtistNameField.value = dddArtists[0].name || '';
+    } else {
+        dddArtistNameField.value = '';
+    }
+
+    // Populate gender identity
+    const genderIdentitySelect = document.getElementById('genderIdentity');
+    if (genderIdentitySelect) {
+        genderIdentitySelect.value = playerData.genderIdentity || 'Prefer not to reply';
+    } else {
+        console.error('Gender identity select element not found.');
+    }
+
+    // Handle custom gender input if applicable
+    const customGenderInput = document.getElementById('customGenderIdentity');
+    if (playerData.genderIdentity === 'Not Listed' && playerData.customGenderIdentity) {
+        customGenderInput.value = playerData.customGenderIdentity;
+        customGenderInput.style.display = 'inline-block';
+    } else {
+        customGenderInput.value = '';
+        customGenderInput.style.display = 'none';
+    }
+
+    // Populate exoplanet description
+    document.getElementById('exoplanetDescription').value = playerData.description || '';
+
+    // Populate credits
+    document.getElementById('credits').value = playerData.credits || '';
+
+    const baseUrl = 'https://media.maar.world';
+
+    // Handle the 3D model download link
+    const objFileLink = document.getElementById('viewObjFile');
+    if (playerData.objURL) {
+        const objUrl = playerData.objURL.startsWith('http')
+            ? playerData.objURL
+            : `${baseUrl}${playerData.objURL}`;
+
+        objFileLink.textContent = 'Download 3D Model';
+        objFileLink.href = objUrl;
+        objFileLink.style.display = 'block';
+    } else {
+        objFileLink.style.display = 'none';
+    }
+
+    // Display the texture image if available
+    const textureImage = document.getElementById('viewTextureImage');
+    if (playerData.textureURL) {
+        const textureUrl = playerData.textureURL.startsWith('http')
+            ? playerData.textureURL
+            : `${baseUrl}${playerData.textureURL}`;
+
+        textureImage.src = textureUrl;
+        textureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
+        textureImage.style.display = 'block';
+    } else {
+        textureImage.style.display = 'none';
+    }
+
+    // Show the form for editing and hide the view mode
+    document.getElementById('articleForm').style.display = 'block';
+    document.getElementById('interplanetaryPlayerView').style.display = 'none';
+}
+
+
+
+function populateViewMode(playerData) {
+    // Display the scientific name of the exoplanet
+    document.getElementById('viewSciName').textContent = playerData.sciName || 'N/A';
+    
+    // Display the artistic name of the player
+    document.getElementById('viewArtName').textContent = `Artistic Name: ${playerData.artName || 'N/A'}`;
+    
+    // Display the right ascension and declination with labels
+    document.getElementById('viewRaDecimal').textContent = `Right Ascension (Decimal): ${playerData.ra_decimal || 'N/A'}`;
+    document.getElementById('viewDecDecimal').textContent = `Declination (Decimal): ${playerData.dec_decimal || 'N/A'}`;
+    
+    // Display the orbital period and radius
+    document.getElementById('viewPeriod').textContent = `Orbital Period [days]: ${playerData.period || 'N/A'}`;
+    document.getElementById('viewRadius').textContent = `Radius [R earth]: ${playerData.radius || 'N/A'}`;
+    document.getElementById('viewDiscoveryYear').textContent = `Discovery Year: ${playerData.discoveryyear || 'N/A'}`;
+
+    // Display the 3D artist name
+    document.getElementById('viewDddArtistName').textContent = `3D Artist: ${playerData.dddArtistName || 'Unknown Artist'}`;
+
+    // Display the gender identity with handling for custom gender
+    document.getElementById('viewGenderIdentity').textContent = 
+        `Gender Identity: ${playerData.genderIdentity === 'Not Listed' && playerData.customGenderIdentity 
+        ? playerData.customGenderIdentity 
+        : playerData.genderIdentity || 'Prefer not to reply'}`;
+
+    // Display the description and credits with labels
+    document.getElementById('viewExoplanetDescription').textContent = `Description: ${playerData.description || 'No description provided.'}`;
+    document.getElementById('viewCredits').textContent = `Credits: ${playerData.credits || 'No credits provided.'}`;
+
+
+    // Handle the 3D model download link
+    const baseUrl = 'https://media.maar.world';
+    const objFileLink = document.getElementById('viewObjFile');
+    if (playerData.objURL) {
+        const objUrl = playerData.objURL.startsWith('http')
+            ? playerData.objURL
+            : `${baseUrl}${playerData.objURL}`;
+
+        objFileLink.textContent = 'Download 3D Model';
+        objFileLink.href = objUrl;
+        objFileLink.style.display = 'block';
+    } else {
+        objFileLink.style.display = 'none';
+    }
+
+    // Display the texture image if available
+    const textureImage = document.getElementById('viewTextureImage');
+    if (playerData.textureURL) {
+        const textureUrl = playerData.textureURL.startsWith('http')
+            ? playerData.textureURL
+            : `${baseUrl}${playerData.textureURL}`;
+
+        textureImage.src = textureUrl;
+        textureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
+        textureImage.style.display = 'block';
+    } else {
+        textureImage.style.display = 'none';
+    }
+
+    // Hide the form and show the view mode
+    document.getElementById('articleForm').style.display = 'none';
+    document.getElementById('interplanetaryPlayerView').style.display = 'block';
+}
+
+
+
+function setFormMode(mode) {
+    const isViewMode = mode === 'view';
+    const isEditMode = mode === 'edit';
+    const isCreateMode = mode === 'create';
+
+    const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm textarea');
+    formElements.forEach(element => {
+        element.disabled = isViewMode;
+    });
+
+    const articleForm = document.getElementById('articleForm');
+    const interplanetaryPlayerView = document.getElementById('interplanetaryPlayerView');
+    const editButton = document.getElementById('editButton');
+    const cancelEditButton = document.getElementById('cancelEditButton');
+
+    if (articleForm) {
+        articleForm.style.display = isViewMode ? 'none' : 'block';
+    }
+
+    if (interplanetaryPlayerView) {
+        interplanetaryPlayerView.style.display = isViewMode ? 'block' : 'none';
+    }
+
+    if (editButton) {
+        editButton.style.display = isViewMode && isOwner ? 'block' : 'none';
+    }
+
+    if (cancelEditButton) {
+        cancelEditButton.style.display = isEditMode ? 'block' : 'none';
+    }
+
+    const header = document.querySelector('.form-container h3');
+    if (header) {
+        header.textContent = isCreateMode
+            ? 'Create a New Interplanetary Player'
+            : isEditMode
+            ? 'Edit Interplanetary Player'
+            : 'View Interplanetary Player';
+    }
+
+    if (isCreateMode) {
+        clearFormFields(); // Clear form fields when in create mode.
+    }
+}
+
 
 
 </script>

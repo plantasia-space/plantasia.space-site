@@ -39,9 +39,6 @@ public: false
     <!-- View Mode -->
     <div id="soundEngineView">
 
-
-
-
         <div id="soundEngineImagePreviewContainer">
             <img id="soundEngineImagePreview" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
         </div>

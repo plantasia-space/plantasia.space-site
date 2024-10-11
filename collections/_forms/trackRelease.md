@@ -14,8 +14,6 @@ public: false
 
 ---
 
-<div class="p-5"></div>
-
 <div class="form-container">
     <div class="button-container">
         <div class="back-button-container">
@@ -25,9 +23,27 @@ public: false
                 </button>
             </a>
         </div>
+        <div class="edit-button-container">
+            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Sound Engine" style="display: none;">
+                <span class="material-symbols-outlined">edit</span> 
+            </button>
+        </div>
     </div>
     <h3>Track Release Form</h3>
     <p>Fill the form with details about your track.</p>
+
+    <!-- View Mode -->
+    <div id="interplanetaryPlayerView">
+
+
+
+
+
+
+
+    </div> 
+
+    <!-- Edit/Create Mode -->
 
     <form id="articleForm" class="contact-form">
         <!-- New Artistic Exoplanet Selection -->
@@ -38,15 +54,11 @@ public: false
 
         <!-- Sonic Engine Selection -->
         <label for="soundEngine">Which sonic engine would you like to use as the default for your Interplanetary Player?</label>
-        <select id="soundEngine" name="soundEngine" required onchange="updateSoundEngineDetails()">
+        <select id="soundEngine" name="soundEngine" >
             <option value="">Please select a sound engine</option>
         </select><br><br>
+        <ul class="soundEngine-list" id="sound-engines-list"></ul>
 
-        <div id="soundEngineDetails">
-            <p><strong>X Tag:</strong> <span id="xTag"></span></p>
-            <p><strong>Y Tag:</strong> <span id="yTag"></span></p>
-            <p><strong>Z Tag:</strong> <span id="zTag"></span></p>
-        </div><br>
 
         <!-- Cover Image Upload -->
         <label for="uploadCoverImage">Could you please upload the cover image for your release? (Best Size: 800x800 pixels, Max: 2MB, JPG or PNG):</label>
@@ -188,31 +200,90 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         })
         .catch(error => showToast('Error loading exoplanet data.', 'error'));
+         fetchAvailableSoundEngines(userId);
 
-    // Fetch sound engine data
-    fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchSonicEngineData')
+
+
+function fetchAvailableSoundEngines(ownerId) {
+    fetch(`http://media.maar.world:3001/api/soundEngines/available/${ownerId}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Sonic Engine data:', data);
-
-            soundEngineData = data[0]; // Adjust based on actual API response structure
-            populateSoundEngineDropdown();
+            if (data.success) {
+                console.log('Available Sound Engines:', data.soundEngines);
+                soundEngineData = data.soundEngines; // Adjust based on actual API response structure
+                populateSoundEngineDropdown();
+            } else {
+                console.error('Error fetching sound engines:', data.message);
+            }
         })
         .catch(error => console.error('Error loading or parsing the sound engine data:', error));
+}
 
 function populateSoundEngineDropdown() {
     const selectElement = document.getElementById('soundEngine');
     selectElement.innerHTML = '<option value="">Please select a sound engine</option>';
 
-    // Assuming `soundEngineData` is an array, iterate over each engine
-    soundEngineData.forEach((engine, index) => {
+    // Populate the dropdown with sound engines
+    soundEngineData.forEach(engine => {
         const option = document.createElement('option');
-        option.value = index;  // Use index or an ID to track selected engine
-        option.textContent = `Sonic Engine ${index.toString().padStart(3, '0')}`;  // Display engine index
+        option.value = engine.soundEngineId; // Use the unique ID for the value
+        option.textContent = `🎛️ ${engine.soundEngineName} 👤 ${engine.developerUsername} ${engine.isPublic ? "🔐 Exclusive" : "🌍 Shared"}`;
 
         selectElement.appendChild(option);
     });
 }
+
+function updateSoundEngineDetails() {
+    const selectedEngineId = document.getElementById('soundEngine').value;
+    console.log('Selected Engine ID:', selectedEngineId);
+    console.log('Sound Engine Data:', soundEngineData);
+
+    // Find the selected sound engine from the fetched data using soundEngineId
+    const soundEngine = soundEngineData.find(engine => engine.soundEngineId === selectedEngineId);
+
+    const soundEngineListElement = document.getElementById('sound-engines-list');
+    soundEngineListElement.innerHTML = ''; // Clear previous details
+
+    if (soundEngine) {
+        const imageUrl = soundEngine.soundEngineImage 
+            ? `https://media.maar.world${soundEngine.soundEngineImage}` 
+            : '/path/to/default-placeholder.png';
+
+        const engineElement = document.createElement('li');
+        engineElement.classList.add('soundEngine-list-item');
+        engineElement.innerHTML = `
+            <div class="soundEngine-profile-pic">
+                <img src="${imageUrl}" alt="${soundEngine.soundEngineName}" />
+            </div>
+            <div class="soundEngine-details">
+                <div class="soundEngine-name"><strong>Name:</strong> ${soundEngine.soundEngineName}</div>
+                <div class="soundEngine-credits"><strong>Developer:</strong> ${soundEngine.developerUsername}</div>
+                <div class="soundEngine-availability"><strong>Availability:</strong> ${soundEngine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                <div class="soundEngine-params">
+                    <strong>X Parameter:</strong> ${soundEngine.xParamLabel} 
+                    (Min: ${soundEngine.xParamMin}, Max: ${soundEngine.xParamMax}, Init: ${soundEngine.xParamInit})<br>
+                    <strong>Y Parameter:</strong> ${soundEngine.yParamLabel} 
+                    (Min: ${soundEngine.yParamMin}, Max: ${soundEngine.yParamMax}, Init: ${soundEngine.yParamInit})<br>
+                    <strong>Z Parameter:</strong> ${soundEngine.zParamLabel} 
+                    (Min: ${soundEngine.zParamMin}, Max: ${soundEngine.zParamMax}, Init: ${soundEngine.zParamInit})
+                    <div class="soundEngine-credits"><strong>Credits:</strong> ${soundEngine.credits}</div>
+
+                </div>
+            </div>
+
+            </div>
+        `;
+
+        soundEngineListElement.appendChild(engineElement);
+    } else {
+        // If no sound engine is selected or found, display a default message
+        soundEngineListElement.innerHTML = '<li>Please select a sound engine to view its details.</li>';
+    }
+}
+
+    document.getElementById('soundEngine').addEventListener('change', updateSoundEngineDetails);
+
+
 
     // Handle image preview
     document.getElementById('uploadCoverImage').addEventListener('change', function(event) {
@@ -375,31 +446,6 @@ function populateSoundEngineDropdown() {
             }));
         }
     });
-
-function updateSoundEngineDetails() {
-    const selectedEngineIndex = document.getElementById('soundEngine').value;
-
-    if (selectedEngineIndex === "") {
-        // Reset the fields if no engine is selected
-        document.getElementById('xTag').textContent = 'N/A';
-        document.getElementById('yTag').textContent = 'N/A';
-        document.getElementById('zTag').textContent = 'N/A';
-    } else {
-        // Access the correct engine object using the selected index
-        const soundEngine = soundEngineData[selectedEngineIndex];
-
-        if (soundEngine) {
-            document.getElementById('xTag').textContent = soundEngine.xTag || 'N/A';
-            document.getElementById('yTag').textContent = soundEngine.yTag || 'N/A';
-            document.getElementById('zTag').textContent = soundEngine.zTag || 'N/A';
-        } else {
-            // Fallback in case something goes wrong
-            document.getElementById('xTag').textContent = 'N/A';
-            document.getElementById('yTag').textContent = 'N/A';
-            document.getElementById('zTag').textContent = 'N/A';
-        }
-    }
-}
 
 
     function showToast(message, type = 'success') {

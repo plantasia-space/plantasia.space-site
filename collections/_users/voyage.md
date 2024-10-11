@@ -152,7 +152,8 @@ function displaySoundEngines(engineIds, userId) {
                 </div>
                 <div class="soundEngine-details">
                     <div class="soundEngine-name">${engine.soundEngineName}</div>
-                    <div class="soundEngine-availability">Availability: ${engine.isPublic ? 'Public' : 'Private'}</div>
+    <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+
                     <div class="soundEngine-params">
                         X Parameter: ${engine.xParam.label} |
                         Y Parameter: ${engine.yParam.label} |
@@ -223,12 +224,15 @@ function displayInterplanetaryPlayers(playerIds) {
                 throw new Error(`Failed to fetch details for player ID: ${playerId}`);
             }
 
-            const player = await response.json();
-            console.log('Fetched data:', player);
+            const data = await response.json();
+            console.log('Fetched player data:', data);
+
+            // Extract the player details from the response
+            const player = data.player;
 
             // If the player data is not found or lacks artName, skip this player
             if (!player || !player.artName) {
-                console.error(`Player data not found in response for ID: ${playerId}`);
+                console.error(`Player data not found or missing artName for ID: ${playerId}`);
                 return;
             }
 
@@ -245,7 +249,7 @@ function displayInterplanetaryPlayers(playerIds) {
                 <div class="interplanetaryPlayer-details">
                     <div class="interplanetaryPlayer-name">${player.artName || 'Unnamed'}</div>
                     <div class="interplanetaryPlayer-params"><strong>Scientific Name:</strong> ${player.sciName || 'Unknown'}</div>
-                    <div class="interplanetaryPlayer-params"><strong>Description:</strong> ${player.description?.slice(0, 100) || 'No description available.'}...</div>
+                    <div class="interplanetaryPlayer-params"><strong>Description:</strong> ${player.description?.slice(0, 50) || 'No description available.'}...</div>
                     <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? 'Public' : 'Private'}</div>
                 </div>
                 <div class="interplanetaryPlayer-actions">
@@ -270,7 +274,7 @@ function displayInterplanetaryPlayers(playerIds) {
 
 // Function to handle editing an interplanetary player
 function editInterplanetaryPlayer(playerId) {
-    window.location.href = `/voyage/interplanetary-player?mode=edit&id=${playerId}`;
+    window.location.href = `/voyage/interplanetary-player?mode=edit&playerId=${playerId}`;
 }
 
 // Function to handle sharing an interplanetary player
