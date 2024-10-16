@@ -13,15 +13,15 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Music
+      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Voyage
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
       en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">nature_people</span> Música
+      es-ES   : &ES   <span class="material-symbols-outlined">nature_people</span> Voyage
       es-LA   : *ES
       # @end locale config
-    url: /music.html
+    url: /voyage
 
   # Placeholder for login/logout button
   - titles:
