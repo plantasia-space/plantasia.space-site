@@ -165,13 +165,15 @@ public: false
         <button type="submit">Save Sound Engine</button>
         <div class="p-2"></div>
 
+     <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
+        <div class="p-2"></div>
+        <br>
         <!-- Progress Bar -->
         <div class="progress-bar" style="width: 100%; background-color: lightgray;">
             <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
         </div>
         
-        <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
-        <div class="p-2"></div>
+   
 
 
     </form>
