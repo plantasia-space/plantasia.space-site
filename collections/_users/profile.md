@@ -170,138 +170,135 @@ document.addEventListener('DOMContentLoaded', function() {
     let originalProfileImage = '';
     let currentUsername = ''; // To store the current username
 
-    // Fetch user data based on the userId
-    fetch(`http://media.maar.world:3001/api/profile?userId=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Received user data:', data);
+    // Check if cached profile data is still valid (5 min timeout)
+    function getCachedProfile() {
+        const cachedProfile = JSON.parse(localStorage.getItem('profileData'));
+        const cacheTime = localStorage.getItem('profileCacheTime');
+        const cacheExpiryTime = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-            currentUsername = data.username; // Store the current username
+        if (cachedProfile && (Date.now() - cacheTime) < cacheExpiryTime) {
+            return cachedProfile;
+        }
+        return null;
+    }
 
-            // Populate display fields
-            document.getElementById('displayUsername').innerText = data.username;
-            document.getElementById('displayUsernameForUrl').innerText = data.username;
-            const profileUrl = `https://maar.world/xplorer/?username=${data.username}`;
-            document.getElementById('profileUrl').href = profileUrl;
-            document.getElementById('displayEmail').innerText = data.email;
-            document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
-            document.getElementById('displayRole').innerText = data.role || 'Not provided';
+    // Cache profile data for future use
+    function cacheProfileData(data) {
+        localStorage.setItem('profileData', JSON.stringify(data));
+        localStorage.setItem('profileCacheTime', Date.now());
+    }
 
-            // Populate form fields (hidden until edit mode)
-            document.getElementById('username').value = data.username || ''; // Username for edit view
-            document.getElementById('phone').value = data.phone || ''; // Phone for edit view
+    // Fetch profile data from the server or use cached data if available
+    function fetchUserProfile(userId) {
+        const cachedProfile = getCachedProfile();
+        if (cachedProfile) {
+            console.log('Using cached profile data:', cachedProfile);
+            populateUserProfile(cachedProfile); // Use cached data
+        } else {
+            fetch(`http://media.maar.world:3001/api/profile?userId=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Received fresh profile data:', data);
+                    cacheProfileData(data); // Cache the fresh data
+                    populateUserProfile(data); // Populate UI with fresh data
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                    document.getElementById('messageDisplay').innerText = 'Error fetching user data. Please try again.';
+                });
+        }
+    }
 
-            // Handle custom gender identity if "Not Listed"
-            if (data.genderIdentity === 'Not Listed') {
-                document.getElementById('displayGenderIdentity').innerText = data.customGenderIdentity;
-                document.getElementById('customGenderDisplay').style.display = 'block';
-                document.getElementById('displayCustomGenderIdentity').innerText = data.customGenderIdentity;
-            } else {
-                document.getElementById('displayGenderIdentity').innerText = data.genderIdentity || 'Not provided';
-                document.getElementById('customGenderDisplay').style.display = 'none';
-            }
+    function populateUserProfile(data) {
+        // Populate display fields
+        document.getElementById('displayUsername').innerText = data.username;
+        document.getElementById('displayUsernameForUrl').innerText = data.username;
+        document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username}`;
+        document.getElementById('displayEmail').innerText = data.email;
+        document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
+        document.getElementById('displayRole').innerText = data.role || 'Not provided';
 
-            // Handle other pronouns if "Other"
-            if (data.pronouns === 'Other') {
-                document.getElementById('displayPronouns').innerText = data.otherPronouns;
-                document.getElementById('otherPronounsDisplay').style.display = 'block';
-                document.getElementById('displayOtherPronouns').innerText = data.otherPronouns;
-            } else {
-                document.getElementById('displayPronouns').innerText = data.pronouns || 'Not provided';
-                document.getElementById('otherPronounsDisplay').style.display = 'none';
-            }
+        // Populate form fields for edit mode
+        document.getElementById('username').value = data.username || '';
+        document.getElementById('phone').value = data.phone || '';
 
-            if (data.profileImage) {
-                originalProfileImage = `https://media.maar.world${data.profileImage}`;
-                document.getElementById('profileImagePreview').src = originalProfileImage;
-                document.getElementById('profileImagePreviewForm').src = originalProfileImage;
-                document.getElementById('profileImagePreview').style.display = 'block';
-                document.getElementById('profileImagePreviewForm').style.display = 'block';
-            }
+        // Handle gender identity and pronouns
+        handleCustomFields(data);
 
-            // New fields
-            const displayName = data.displayName || '';
-            document.getElementById('displayName').value = displayName; // Edit mode
-            document.getElementById('displayDisplayName').innerText = displayName; // View mode
+        // Display the profile image
+        if (data.profileImage) {
+            originalProfileImage = `https://media.maar.world${data.profileImage}`;
+            document.getElementById('profileImagePreview').src = originalProfileImage;
+            document.getElementById('profileImagePreviewForm').src = originalProfileImage;
+            document.getElementById('profileImagePreview').style.display = 'block';
+            document.getElementById('profileImagePreviewForm').style.display = 'block';
+        }
 
-            const city = data.city || '';
-            document.getElementById('city').value = city; // Edit mode
-            document.getElementById('displayCity').innerText = city; // View mode
+        // Handle additional fields like displayName, city, country, bio
+        document.getElementById('displayName').value = data.displayName || '';
+        document.getElementById('displayDisplayName').innerText = data.displayName || '';
+        document.getElementById('city').value = data.city || '';
+        document.getElementById('displayCity').innerText = data.city || '';
+        document.getElementById('country').value = data.country || '';
+        document.getElementById('displayCountry').innerText = data.country || '';
+        document.getElementById('bio').value = data.bio || '';
+        document.getElementById('displayBio').innerText = data.bio || '';
 
-            const country = data.country || '';
-            document.getElementById('country').value = country; // Edit mode
-            document.getElementById('displayCountry').innerText = country; // View mode
+        // Handle custom links
+        handleCustomLinks(data.customLinks || []);
+    }
 
-            const bio = data.bio || '';
-            document.getElementById('bio').value = bio; // Edit mode
-            document.getElementById('displayBio').innerText = bio; // View mode
+    function handleCustomFields(data) {
+        // Handle custom gender identity if "Not Listed"
+        if (data.genderIdentity === 'Not Listed') {
+            document.getElementById('displayGenderIdentity').innerText = data.customGenderIdentity;
+            document.getElementById('customGenderDisplay').style.display = 'block';
+        } else {
+            document.getElementById('displayGenderIdentity').innerText = data.genderIdentity || 'Not provided';
+            document.getElementById('customGenderDisplay').style.display = 'none';
+        }
 
-            const customLinks = data.customLinks || [];
-            document.getElementById('customLink1').value = customLinks[0] || ''; // Edit mode
-            document.getElementById('customLink1Display').innerHTML = customLinks[0] ? `<a href="${customLinks[0]}" target="_blank">${customLinks[0]}</a>` : ''; // View mode
+        // Handle other pronouns if "Other"
+        if (data.pronouns === 'Other') {
+            document.getElementById('displayPronouns').innerText = data.otherPronouns;
+            document.getElementById('otherPronounsDisplay').style.display = 'block';
+        } else {
+            document.getElementById('displayPronouns').innerText = data.pronouns || 'Not provided';
+            document.getElementById('otherPronounsDisplay').style.display = 'none';
+        }
+    }
 
-            document.getElementById('customLink2').value = customLinks[1] || ''; // Edit mode
-            document.getElementById('customLink2Display').innerHTML = customLinks[1] ? `<a href="${customLinks[1]}" target="_blank">${customLinks[1]}</a>` : ''; // View mode
-
-            document.getElementById('customLink3').value = customLinks[2] || ''; // Edit mode
-            document.getElementById('customLink3Display').innerHTML = customLinks[2] ? `<a href="${customLinks[2]}" target="_blank">${customLinks[2]}</a>` : ''; // View mode
-
-            // Show/hide custom gender identity field
-            toggleCustomGender(); // Ensure the correct display of the custom gender field
-            toggleOtherPronouns(); // Ensure the correct display of the other pronouns field
-
-            // Trigger the functions on page load to ensure correct display if pre-selected
-            toggleCustomGender();
-            toggleOtherPronouns();
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-
-    // Copy URL to clipboard functionality
-    document.getElementById('copyButton').addEventListener('click', function() {
-        const profileUrl = document.getElementById('profileUrl').href;
-        const tempInput = document.createElement('input');
-        tempInput.value = profileUrl;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-    });
+    function handleCustomLinks(links) {
+        document.getElementById('customLink1').value = links[0] || '';
+        document.getElementById('customLink1Display').innerHTML = links[0] ? `<a href="${links[0]}" target="_blank">${links[0]}</a>` : '';
+        document.getElementById('customLink2').value = links[1] || '';
+        document.getElementById('customLink2Display').innerHTML = links[1] ? `<a href="${links[1]}" target="_blank">${links[1]}</a>` : '';
+        document.getElementById('customLink3').value = links[2] || '';
+        document.getElementById('customLink3Display').innerHTML = links[2] ? `<a href="${links[2]}" target="_blank">${links[2]}</a>` : '';
+    }
 
     // Toggle edit mode or cancel edit if already in edit mode
     document.getElementById('editButton').addEventListener('click', function() {
+        toggleEditMode();
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        toggleEditMode(false);
+    });
+
+    function toggleEditMode(showEdit = true) {
         const profileForm = document.getElementById('profileForm');
         const profileView = document.getElementById('profileView');
-        
-        if (profileForm.style.display === 'block') {
-            // If the form is already displayed, treat it as a cancel action
-            profileForm.style.display = 'none';
-            profileView.style.display = 'block';
-            
-            // Revert to the original profile image if the user cancels
-            document.getElementById('profileImagePreview').src = originalProfileImage;
-            document.getElementById('profileImagePreviewForm').src = originalProfileImage;
-        } else {
-            // Otherwise, enable edit mode
+
+        if (showEdit) {
             profileView.style.display = 'none';
             profileForm.style.display = 'block';
-
-            // Display the original image in edit mode
-            if (originalProfileImage) {
-                document.getElementById('profileImagePreviewForm').src = originalProfileImage;
-                document.getElementById('profileImagePreviewForm').style.display = 'block';
-            }
+        } else {
+            profileView.style.display = 'block';
+            profileForm.style.display = 'none';
+            resetProfileImage();
         }
-    });
-
-    // Cancel button functionality
-    document.getElementById('cancelButton').addEventListener('click', function() {
-        // Revert to the original profile image if the user cancels
-        document.getElementById('profileImagePreview').src = originalProfileImage;
-        document.getElementById('profileImagePreviewForm').src = originalProfileImage;
-
-        document.getElementById('profileForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-    });
+    }
 
     // Image preview functionality during editing
     document.getElementById('profileImage').addEventListener('change', function(event) {
@@ -310,11 +307,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('profileImagePreviewForm').src = e.target.result;
-                document.getElementById('profileImagePreviewForm').style.display = 'block';
             };
             reader.readAsDataURL(file);
         }
     });
+
+    function resetProfileImage() {
+        document.getElementById('profileImagePreview').src = originalProfileImage;
+        document.getElementById('profileImagePreviewForm').src = originalProfileImage;
+    }
 
     // Function to show/hide custom gender identity field based on selection
     function toggleCustomGender() {
@@ -325,7 +326,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             document.getElementById('customGenderLabel').style.display = 'none';
             document.getElementById('customGenderIdentity').style.display = 'none';
-            document.getElementById('customGenderIdentity').value = ''; // Clear the field if hidden
         }
     }
 
@@ -338,64 +338,83 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             document.getElementById('otherPronounsLabel').style.display = 'none';
             document.getElementById('otherPronouns').style.display = 'none';
-            document.getElementById('otherPronouns').value = ''; // Clear the field if hidden
         }
     }
 
-    // Attach event listeners for change events
     document.getElementById('genderIdentity').addEventListener('change', toggleCustomGender);
     document.getElementById('pronouns').addEventListener('change', toggleOtherPronouns);
 
+    // Copy URL to clipboard functionality
+    document.getElementById('copyButton').addEventListener('click', function() {
+        const profileUrl = document.getElementById('profileUrl').href;
+        const tempInput = document.createElement('input');
+        tempInput.value = profileUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+    });
+
+    // Validate username format and uniqueness
     const usernameInput = document.getElementById('username');
     const feedbackElement = document.getElementById('usernameFeedback');
     const validUsername = /^[a-z0-9_-]{1,30}$/;
 
-    // Function to check if the username is valid and unique
     async function checkUsername() {
-        let username = usernameInput.value.trim().toLowerCase();
+        const username = usernameInput.value.trim().toLowerCase();
 
-        // Validate username format
         if (!validUsername.test(username)) {
             feedbackElement.innerText = 'Invalid username format.';
             feedbackElement.style.color = 'red';
             return false;
         }
 
-        // Skip uniqueness check if the username hasn't changed
         if (username === currentUsername) {
             feedbackElement.innerText = 'This is your current username.';
-            feedbackElement.style.color = 'green'; // Show success in green
+            feedbackElement.style.color = 'green';
             return true;
         }
 
-        // Check if the username is unique
-        const isUsernameUnique = await checkUsernameUniqueness(username);
-        if (!isUsernameUnique) {
+        const isUnique = await checkUsernameUniqueness(username);
+        if (!isUnique) {
             feedbackElement.innerText = 'Username is already taken.';
             feedbackElement.style.color = 'red';
             return false;
         }
 
         feedbackElement.innerText = 'Username is available!';
-        feedbackElement.style.color = 'green'; // Show success in green
+        feedbackElement.style.color = 'green';
         return true;
     }
 
+    async function checkUsernameUniqueness(username) {
+        try {
+            const response = await fetch(`http://media.maar.world:3001/api/checkUsername?username=${username}`);
+            const data = await response.json();
+            return data.isUnique;
+        } catch (error) {
+            console.error('Error checking username uniqueness:', error);
+            return false;
+        }
+    }
 
-    // Automatically check username uniqueness on input
     usernameInput.addEventListener('input', checkUsername);
 
+    // Submit profile form
     document.getElementById('profileForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
-        // Validate the username before submitting
         const isUsernameValid = await checkUsername();
-        if (!isUsernameValid) {
-            return; // Stop form submission if the username is invalid or taken
-        }
+        if (!isUsernameValid) return;
 
-        const userId = localStorage.getItem('userId');
         const formData = new FormData();
+        populateFormData(formData);
+
+        // Handle form submission with progress
+        submitFormData(formData);
+    });
+
+    function populateFormData(formData) {
         formData.append('userId', userId);
         formData.append('username', usernameInput.value.trim().toLowerCase());
         formData.append('genderIdentity', document.getElementById('genderIdentity').value);
@@ -411,7 +430,6 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('profileImage', document.getElementById('profileImage').files[0]);
         }
 
-        // New fields
         formData.append('displayName', document.getElementById('displayName').value.trim());
         formData.append('city', document.getElementById('city').value.trim());
         formData.append('country', document.getElementById('country').value.trim());
@@ -421,13 +439,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('customLink2').value.trim(),
             document.getElementById('customLink3').value.trim()
         ]));
+    }
 
-        // Progress bar initialization
+    function submitFormData(formData) {
         const progressBar = document.getElementById('progress');
         progressBar.style.width = '0%';
         document.querySelector('.progress-bar').style.display = 'block';
 
-        // AJAX request with progress event
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://media.maar.world:3001/api/updateUserProfile', true);
 
@@ -441,22 +459,13 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.onload = function() {
             const response = JSON.parse(xhr.responseText);
             if (xhr.status === 200 && response.success) {
-                // Update localStorage with the new data
-                localStorage.setItem('userEmail', response.user.email);
-                localStorage.setItem('userName', response.user.username);
-
+                // Invalidate cached data after successful update
+                localStorage.removeItem('profileData');
                 document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
                 document.getElementById('messageDisplay').style.color = 'green';
-
-                // Update originalProfileImage with the newly uploaded image
-                if (response.user.profileImage) {
-                    originalProfileImage = `https://media.maar.world${response.user.profileImage}`;
-                }
-
-                // Reload the page
                 window.location.reload();
             } else {
-                document.getElementById('messageDisplay').innerText = 'Failed to update profile: ' + response.message;
+                document.getElementById('messageDisplay').innerText = `Failed to update profile: ${response.message}`;
                 document.getElementById('messageDisplay').style.color = 'red';
             }
         };
@@ -467,7 +476,11 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         xhr.send(formData);
-    });
+    }
+
+    // Initial call to fetch profile
+    fetchUserProfile(userId);
+
 
     // Function to check if the username is unique
     async function checkUsernameUniqueness(username) {

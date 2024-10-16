@@ -34,52 +34,18 @@ public: false
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', async function() {
-    try {
-        // Retrieve token from localStorage
-        const token = localStorage.getItem('token');
+document.addEventListener('DOMContentLoaded', function() {
+    const cachedSession = localStorage.getItem('sessionData');
+    const user = cachedSession ? JSON.parse(cachedSession) : null;
 
-        if (!token) {
-            console.error('No token found, redirecting to login.');
-            window.location.href = '/login';
-            return;
-        }
-
-        // Send a request to the backend to verify the token and fetch user data
-        const response = await fetch('http://media.maar.world:3001/api/auth/check-session', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        // Check if the response is valid
-        if (!response.ok) {
-            console.error('Session validation failed, redirecting to login.');
-            window.location.href = '/login';
-            return;
-        }
-
-        const { user } = await response.json();
-
-        if (!user) {
-            console.error('No user data found, redirecting to login.');
-            window.location.href = '/login';
-            return;
-        }
-
-        console.log('User is logged in:', user);
-
-        // Display user information on the page using username instead of email
+    if (user) {
+        // Display user-related data using the cached session
         displayUserInfo(user.role || 'Listener', user.username || user.email);
-
-        // Display user tracks, sound engines, and interplanetary players
         displayTracks(user.tracksOwned || []);
         displaySoundEngines(user.enginesOwned || [], user.userId);
         displayInterplanetaryPlayers(user.interplanetaryPlayersOwned || []);
-    } catch (error) {
-        console.error('Error fetching user session:', error);
+    } else {
+        console.error('No valid session found. Redirecting to login...');
         window.location.href = '/login';
     }
 });
@@ -87,8 +53,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Function to display user information
 function displayUserInfo(userRole, userName) {
     const userInfoElement = document.getElementById('user-info');
-    localStorage.setItem('username', userName);
-
     userInfoElement.innerHTML = `
         <strong>User Role:</strong> ${userRole}<br>
         <strong>User Name:</strong> ${userName}
@@ -138,7 +102,6 @@ function displaySoundEngines(engineIds, userId) {
 
             const data = await response.json();
             const engine = data.soundEngine;
-            console.log('Fetched Sound Engine:', engine);
 
             const imageUrl = engine.soundEngineImage 
                 ? `https://media.maar.world${engine.soundEngineImage}` 
@@ -152,7 +115,7 @@ function displaySoundEngines(engineIds, userId) {
                 </div>
                 <div class="soundEngine-details">
                     <div class="soundEngine-name">${engine.soundEngineName}</div>
-    <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                    <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
 
                     <div class="soundEngine-params">
                         X Parameter: ${engine.xParam.label} |
@@ -177,7 +140,6 @@ function displaySoundEngines(engineIds, userId) {
         }
     });
 }
-
 
 // Function to handle editing a sound engine
 function editSoundEngine(engineId) {
@@ -207,39 +169,19 @@ function displayInterplanetaryPlayers(playerIds) {
         return;
     }
 
-    // Define the base URL for media resources
-    const baseURL = 'https://media.maar.world';
-
-    // For each player ID, fetch its details and display
     playerIds.forEach(async (playerId) => {
         try {
-            const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`);
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch details for player ID: ${playerId}`);
             }
 
             const data = await response.json();
-            console.log('Fetched player data:', data);
-
-            // Extract the player details from the response
             const player = data.player;
 
-            // If the player data is not found or lacks artName, skip this player
-            if (!player || !player.artName) {
-                console.error(`Player data not found or missing artName for ID: ${playerId}`);
-                return;
-            }
+            const imageUrl = player.ddd?.textureURL ? `https://media.maar.world${player.ddd.textureURL}` : '/path/to/default-image.png';
 
-            // Construct the full image URL
-            const imageUrl = player.ddd?.textureURL ? `${baseURL}${player.ddd.textureURL}` : '/path/to/default-image.png';
-
-            // Create the player display element
             const playerElement = document.createElement('li');
             playerElement.classList.add('interplanetaryPlayer-list-item');
             playerElement.innerHTML = `

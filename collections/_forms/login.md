@@ -4,11 +4,11 @@ show_title: false
 show_date: false
 permalink: /login
 titles:
-en: &EN Login
-en-GB: *EN
-en-US: *EN
-en-CA: *EN
-en-AU: *EN
+  en: &EN Login
+  en-GB: *EN
+  en-US: *EN
+  en-CA: *EN
+  en-AU: *EN
 key: IP
 public: true
 ---
@@ -16,230 +16,206 @@ public: true
 <br><br>
 
 <div class="form-container">
-<h3 id="loginTitle">Maar World Login</h3>
+  <h3 id="loginTitle">Maar World Login</h3>
 
-<!-- Login Form (shown if no recovery token is present) -->
-<form id="loginForm" class="contact-form">
-    <input type="email" id="email" required placeholder="Enter xPlorer email" />
-    <input type="password" id="password" required placeholder="Enter password" />
+  <!-- Login Form (shown if no recovery token is present) -->
+  <form id="loginForm" class="contact-form">
+    <input type="email" id="loginEmail" required placeholder="Enter xPlorer email" />
+    <input type="password" id="loginPassword" required placeholder="Enter password" />
     <label>
-        <input type="checkbox" id="rememberMe" /> Remember Me
+      <input type="checkbox" id="loginRememberMe" /> Remember Me
     </label>
     <button type="submit">Login</button>
-    <button type="button" id="createAccount" class="btn button--outline-primary button--circle">Create an account</button>
-</form>
+    <button type="button" id="createAccountButton" class="btn button--outline-primary button--circle">Create an account</button>
+  </form>
 
-<!-- Reset Password Form (shown if recovery token is present) -->
-<form id="resetPasswordForm" class="contact-form" style="display: none;">
+  <!-- Reset Password Form (shown if recovery token is present) -->
+  <form id="resetPasswordForm" class="contact-form" style="display: none;">
     <input type="password" id="newPassword" required placeholder="Enter your new password" />
-    <input type="password" id="confirmPassword" required placeholder="Confirm your new password" />
+    <input type="password" id="confirmNewPassword" required placeholder="Confirm your new password" />
     <button type="submit">Reset Password</button>
-</form>
+  </form>
 
-<p id="message" style="color: red;"></p> <!-- For displaying server messages -->
+  <p id="message" style="color: red;"></p> <!-- For displaying server messages -->
 
-<!-- Forgot password link -->
-<p><a href="#" id="forgotPasswordLink">Forgot your password?</a></p>
+  <!-- Forgot password link -->
+  <p><a href="#" id="forgotPasswordLink">Forgot your password?</a></p>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const messageElement = document.getElementById('message');
-    const resetPasswordForm = document.getElementById('resetPasswordForm');
-    const loginForm = document.getElementById('loginForm');
-    const loginTitle = document.getElementById('loginTitle');
+  const messageElement = document.getElementById('message');
+  const resetPasswordForm = document.getElementById('resetPasswordForm');
+  const loginForm = document.getElementById('loginForm');
+  const loginTitle = document.getElementById('loginTitle');
 
-    // Redirect logged-in users to /voyage
-function checkUserLogin() {
+  // Redirect logged-in users to /voyage
+  function checkUserLogin() {
     const token = localStorage.getItem('token');
     const isLoginPage = window.location.pathname === '/login';
     
     if (token && !isLoginPage) {
-        window.location.href = '/voyage';
+      window.location.href = '/voyage';
     }
-}
+  }
 
-    // Call the check function immediately to prevent rendering the login form for logged-in users.
-    checkUserLogin();
+  checkUserLogin(); // Prevent login page from showing to logged-in users
 
-    // Function to parse the URL hash and get the access token
-    function parseHash() {
-        const hash = window.location.hash.substring(1);  // Get everything after '#'
-        const params = new URLSearchParams(hash);
-        return {
-            accessToken: params.get('access_token'),  // Get the access token from the URL
-            type: params.get('type'),
-        };
-    }
+  // Function to parse URL hash (for reset password token)
+  function parseHash() {
+    const hash = window.location.hash.substring(1); // Get everything after '#'
+    const params = new URLSearchParams(hash);
+    return {
+      accessToken: params.get('access_token'),
+      type: params.get('type'),
+    };
+  }
 
-    // Function to handle password reset with the backend
-    async function handleResetPassword(accessToken) {
-        const newPassword = document.getElementById('newPassword').value.trim();
-        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+  // Function to handle password reset
+  async function handleResetPassword(accessToken) {
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const confirmPassword = document.getElementById('confirmNewPassword').value.trim();
 
-        if (newPassword !== confirmPassword) {
-            messageElement.innerText = "Passwords do not match.";
-            return;
-        }
-
-        try {
-            // Send the accessToken and newPassword to the backend
-            const response = await fetch('http://media.maar.world:3001/api/auth/reset-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    accessToken: accessToken,
-                    newPassword: newPassword,
-                }),
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Password reset failed');
-            }
-
-            messageElement.innerText = "Password reset successful! You can now log in with your new password.";
-            messageElement.style.color = 'green';
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 1500);
-        } catch (error) {
-            console.error('Password reset failed:', error);
-            messageElement.innerText = error.message;
-            messageElement.style.color = 'red';
-        }
+    if (newPassword !== confirmPassword) {
+      messageElement.innerText = "Passwords do not match.";
+      return;
     }
 
-    // Function to handle login
-// Function to handle login
-async function loginUser(email, password) {
     try {
-        const response = await fetch('http://media.maar.world:3001/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
+      const response = await fetch('http://media.maar.world:3001/api/auth/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accessToken, newPassword })
+      });
 
-        if (!response.ok) {
-            let errorMessage = 'Login failed. Please try again.';
-
-            // Check for specific status codes and show more detailed messages
-            if (response.status === 429) {
-                errorMessage = 'Too many login attempts. Please wait and try again later.';
-            } else if (response.status === 401) {
-                errorMessage = 'Invalid email or password. Please check your credentials and try again.';
-            } else if (response.status === 500) {
-                errorMessage = 'Server error. Please try again later.';
-            } else {
-                // Try to get the error message from the response if available
-                const data = await response.json();
-                errorMessage = data.message || errorMessage;
-            }
-
-            throw new Error(errorMessage);
-        }
-
+      if (!response.ok) {
         const data = await response.json();
+        throw new Error(data.message || 'Password reset failed');
+      }
 
-        // Save token and userId in localStorage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);
-
-        // Success message
-        messageElement.innerText = "Login successful! Redirecting...";
-        messageElement.style.color = 'green';
-
-        // Redirect after successful login
-        setTimeout(() => {
-            window.location.href = '/voyage';
-        }, 1500);
+      messageElement.innerText = "Password reset successful! You can now log in with your new password.";
+      messageElement.style.color = 'green';
+      setTimeout(() => window.location.href = '/login', 1500);
     } catch (error) {
-        console.error('Login failed:', error);
-
-        // Display the specific error message to the user
-        messageElement.innerText = error.message;
-        messageElement.style.color = 'red';
+      messageElement.innerText = error.message;
+      messageElement.style.color = 'red';
     }
-}
+  }
 
-    function setupLoginForm() {
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            loginUser(email, password);
-        });
+  // Function to handle user login
+  async function loginUser(email, password) {
+    try {
+      const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (!response.ok) {
+        let errorMessage = 'Login failed. Please try again.';
+        if (response.status === 429) errorMessage = 'Too many login attempts. Please wait and try again later.';
+        else if (response.status === 401) errorMessage = 'Invalid email or password.';
+        else if (response.status === 500) errorMessage = 'Server error. Please try again later.';
+        
+        const data = await response.json();
+        errorMessage = data.message || errorMessage;
+
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);
+
+      messageElement.innerText = "Login successful! Redirecting...";
+      messageElement.style.color = 'green';
+      setTimeout(() => window.location.href = '/voyage', 1500);
+    } catch (error) {
+      messageElement.innerText = error.message;
+      messageElement.style.color = 'red';
     }
+  }
 
-    function setupCreateAccountButton() {
-        document.getElementById('createAccount').addEventListener('click', function() {
-            window.location.href = '/register';
-        });
-    }
+  // Setup form handlers
+  function setupLoginForm() {
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      loginUser(email, password);
+    });
+  }
 
-    async function handleForgotPassword() {
-        const email = document.getElementById('email').value.trim();
-        if (!email) {
-            messageElement.innerText = "Please enter your email to reset the password.";
-            return;
-        }
+  function setupCreateAccountButton() {
+    document.getElementById('createAccountButton').addEventListener('click', function() {
+      window.location.href = '/register';
+    });
+  }
 
-        try {
-            const response = await fetch('http://media.maar.world:3001/api/auth/forgot-password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Password reset failed');
-            }
-
-            messageElement.innerText = "Password reset email sent! Please check your inbox.";
-            messageElement.style.color = 'green';
-        } catch (error) {
-            console.error('Password reset failed:', error);
-            messageElement.innerText = "Password reset failed. Please try again.";
-            messageElement.style.color = 'red';
-        }
-    }
-
-    function setupForgotPasswordLink() {
-        document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
-            event.preventDefault();
-            handleForgotPassword();
-        });
-    }
-
-    function initializeForms() {
-        setupLoginForm();
-        setupCreateAccountButton();
-        setupForgotPasswordLink();
+  async function handleForgotPassword() {
+    const email = document.getElementById('loginEmail').value.trim();
+    if (!email) {
+      messageElement.innerText = "Please enter your email to reset the password.";
+      return;
     }
 
-    function initializePage() {
-        const { accessToken, type } = parseHash();
+    try {
+      const response = await fetch('http://media.maar.world:3001/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
 
-        if (type === 'recovery' && accessToken) {
-            loginForm.style.display = 'none';
-            resetPasswordForm.style.display = 'block';
-            loginTitle.textContent = 'Reset Your Password';
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Password reset failed');
+      }
 
-            resetPasswordForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                handleResetPassword(accessToken);
-            });
-        } else {
-            loginForm.style.display = 'block';
-            resetPasswordForm.style.display = 'none';
-        }
+      messageElement.innerText = "Password reset email sent! Please check your inbox.";
+      messageElement.style.color = 'green';
+    } catch (error) {
+      messageElement.innerText = "Password reset failed. Please try again.";
+      messageElement.style.color = 'red';
+    }
+  }
 
-        initializeForms();
+  function setupForgotPasswordLink() {
+    document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
+      event.preventDefault();
+      handleForgotPassword();
+    });
+  }
+
+  // Initialize all form behaviors
+  function initializeForms() {
+    setupLoginForm();
+    setupCreateAccountButton();
+    setupForgotPasswordLink();
+  }
+
+  // Initialize the page logic
+  function initializePage() {
+    const { accessToken, type } = parseHash();
+
+    if (type === 'recovery' && accessToken) {
+      loginForm.style.display = 'none';
+      resetPasswordForm.style.display = 'block';
+      loginTitle.textContent = 'Reset Your Password';
+
+      resetPasswordForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        handleResetPassword(accessToken);
+      });
+    } else {
+      loginForm.style.display = 'block';
+      resetPasswordForm.style.display = 'none';
     }
 
-    initializePage();
+    initializeForms();
+  }
+
+  initializePage(); // Start page-specific logic
 });
 </script>
