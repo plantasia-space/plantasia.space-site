@@ -1,7 +1,3 @@
----
-layout: none
----
-
 <!DOCTYPE html>
 {%- include snippets/get-lang.html -%}
 <html lang="{{ __return }}">
@@ -26,107 +22,117 @@ layout: none
       {%- include scripts/common.js -%}
     </script>
 
-    <!-- Include the authentication script -->
+    <!-- Authentication Functions -->
     <script>
-      {%- include scripts/auth.js -%}
- //     {%- include scripts/searchUsers.js -%}
-
-    </script>
-
-    <!-- Add script to check JWT token and session before rendering page -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM fully loaded and parsed');
-    
-        const authLink = document.getElementById('auth-link');
-        const currentPage = window.location.pathname;
-        const isPublicPage = {{ page.public | default: true }};  // Default to public unless specified otherwise
-    
-        // Function to handle logout
-        async function logoutUser() {
-          const token = localStorage.getItem('token');
-          if (!token) {
-            console.error('No token found for logout.');
-            return;
-          }
-    
+      // Function to handle user login with email/password via backend proxy
+      async function loginUser(email, password) {
           try {
-            const response = await fetch('http://media.maar.world:3001/api/auth/logout', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              },
-            });
-    
-            if (!response.ok) {
-              throw new Error('Failed to log out');
-            }
-    
-            // Clear the token and redirect to login
-            localStorage.removeItem('token');
-            window.location.href = '/login';
+              const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email, password })  // Send login details
+              });
+      
+              if (!response.ok) throw new Error('Login failed');
+      
+              const data = await response.json();
+              localStorage.setItem('token', data.token);
+              localStorage.setItem('userId', data.user.id);
+      
+              // Redirect after successful login
+              window.location.href = '/voyage';
           } catch (error) {
-            console.error('Logout error:', error);
+              console.error('Login error:', error);
+              document.getElementById('message').innerText = "Login failed. Please try again.";
           }
-        }
-    
-        // Check if a valid token exists
-        function checkAuth() {
+      }
+      
+      // Function to handle sending password reset email
+      async function forgotPassword(email) {
+          try {
+              const response = await fetch('http://media.maar.world:3001/api/auth/forgot-password', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email })
+              });
+      
+              if (!response.ok) throw new Error('Password reset failed');
+      
+              console.log('Password reset email sent to:', email);
+          } catch (error) {
+              console.error('Password reset error:', error);
+          }
+      }
+      
+      // Function to check if the user is logged in
+      function checkAuth() {
           const token = localStorage.getItem('token');
-          if (token) {
-            console.log('User is logged in, showing logout link');
-            return true;
+          return !!token;
+      }
+      
+      // Function to handle user logout
+      async function logoutUser() {
+          try {
+              const token = localStorage.getItem('token');
+              if (!token) return console.error('No token found');
+      
+              const response = await fetch('http://media.maar.world:3001/api/auth/logout', {
+                  method: 'POST',
+                  headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json',
+                  },
+              });
+      
+              if (!response.ok) throw new Error('Logout failed');
+      
+              // Clear token and user data from localStorage and redirect
+              localStorage.clear();
+              window.location.href = '/login';
+          } catch (error) {
+              console.error('Logout error:', error);
           }
-          console.log('No valid token found');
-          return false;
-        }
-    
-        // Update the auth link (login or logout)
-        function updateAuthLink() {
+      }
+      
+      // Manage session persistence
+      function manageSessionPersistence() {
+          const token = localStorage.getItem('token');
+          if (token) console.log('Session will persist with token.');
+          return token;
+      }
+      
+      // Check for session and update auth link
+      document.addEventListener('DOMContentLoaded', function() {
           const authLink = document.getElementById('auth-link');
-          
-          if (authLink) {
-            if (checkAuth()) {
-              authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
-              authLink.href = 'javascript:void(0)'; // Keep the href for Logout as void
-              authLink.onclick = function (event) {
-                event.preventDefault();
-                logoutUser();
-              };
-            } else {
-              // Ensure the user is always directed to /login if not authenticated
-              authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-              authLink.href = '/login'; // Set the correct login URL
-              authLink.onclick = null;  // Clear any previous onclick events to avoid conflicts
+          const isPublicPage = {{ page.public | default: true }};  // Default to public
+      
+          function updateAuthLink() {
+              if (checkAuth()) {
+                  authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+                  authLink.onclick = logoutUser;
+              } else {
+                  authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
+                  authLink.href = '/login';
+                  authLink.onclick = null;
+              }
+          }
+      
+          // Check session before rendering private pages
+          function checkSession() {
+            const token = localStorage.getItem('token');
+            const isLoginPage = window.location.pathname === '/login';
+            
+            if (!isPublicPage && !token && !isLoginPage) {
+                window.location.href = '/login';
             }
-          }
         }
-        
-    
-        // Function to handle session validation
-        function checkUserSession() {
-          const token = localStorage.getItem('token');
-          console.log('Checking token in localStorage:', token);
-    
-          // If the page is private and no token is found, redirect to login
-          if (!isPublicPage && !token) {
-            console.log('No valid session, redirecting to login...');
-            window.location.href = '/login';  // Redirect to login if no valid session
-          }
-        }
-    
-        // Initialize the page with session and auth link checks
-        checkUserSession();  // Verify user session based on the page's access rule
-        updateAuthLink();    // Update auth link on load
-    
-        // Handle storage changes (e.g., session updates in other tabs)
-        window.addEventListener('storage', function () {
-          console.log('Storage event detected, updating auth link');
-          updateAuthLink();
-        });
+      
+          checkSession();  // Check session for private pages
+          updateAuthLink();  // Update auth link on load
+      
+          // Update auth link on session change in other tabs
+          window.addEventListener('storage', updateAuthLink);
       });
     </script>
-        
   </body>
 </html>

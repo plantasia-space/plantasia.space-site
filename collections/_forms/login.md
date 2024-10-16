@@ -50,13 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginTitle = document.getElementById('loginTitle');
 
     // Redirect logged-in users to /voyage
-    function checkUserLogin() {
-        const token = localStorage.getItem('token');
-        if (token) {
-            console.log('User is already logged in. Redirecting to /voyage.');
-            window.location.href = '/voyage';
-        }
+function checkUserLogin() {
+    const token = localStorage.getItem('token');
+    const isLoginPage = window.location.pathname === '/login';
+    
+    if (token && !isLoginPage) {
+        window.location.href = '/voyage';
     }
+}
 
     // Call the check function immediately to prevent rendering the login form for logged-in users.
     checkUserLogin();
@@ -112,36 +113,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to handle login
-    async function loginUser(email, password) {
-        try {
-            const response = await fetch('http://media.maar.world:3001/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+// Function to handle login
+async function loginUser(email, password) {
+    try {
+        const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-            if (!response.ok) {
+        if (!response.ok) {
+            let errorMessage = 'Login failed. Please try again.';
+
+            // Check for specific status codes and show more detailed messages
+            if (response.status === 429) {
+                errorMessage = 'Too many login attempts. Please wait and try again later.';
+            } else if (response.status === 401) {
+                errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+            } else if (response.status === 500) {
+                errorMessage = 'Server error. Please try again later.';
+            } else {
+                // Try to get the error message from the response if available
                 const data = await response.json();
-                throw new Error(data.message || 'Login failed');
+                errorMessage = data.message || errorMessage;
             }
 
-            const data = await response.json();
-
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userId', data.userId);
-
-            messageElement.innerText = "Login successful! Redirecting...";
-            messageElement.style.color = 'green';
-
-            setTimeout(() => {
-                window.location.href = '/voyage';
-            }, 1500);
-        } catch (error) {
-            console.error('Login failed:', error);
-            messageElement.innerText = "Login failed. Please try again.";
-            messageElement.style.color = 'red';
+            throw new Error(errorMessage);
         }
+
+        const data = await response.json();
+
+        // Save token and userId in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId);
+
+        // Success message
+        messageElement.innerText = "Login successful! Redirecting...";
+        messageElement.style.color = 'green';
+
+        // Redirect after successful login
+        setTimeout(() => {
+            window.location.href = '/voyage';
+        }, 1500);
+    } catch (error) {
+        console.error('Login failed:', error);
+
+        // Display the specific error message to the user
+        messageElement.innerText = error.message;
+        messageElement.style.color = 'red';
     }
+}
 
     function setupLoginForm() {
         loginForm.addEventListener('submit', function(event) {
