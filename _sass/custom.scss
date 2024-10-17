@@ -127,6 +127,28 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   object-fit: cover; /* Ensures the image covers the container area without distortion */
 }
 
+/* Container Styles */
+#textureImagePreviewContainer {
+  max-width: 100%; /* Container will not exceed 100% of its parent */
+
+  width: 100%; /* Container takes up 100% width of its parent */
+
+  margin-top: 10px;
+}
+
+/* Image Styles */
+#viewTextureImage,
+#texturePreviewForm {
+  max-width: 400px; /* Image will not exceed 400px in width */
+  width: 100%; /* Image takes up 100% of the container's width */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center the image horizontally */
+  border: 1px solid #33ffff;
+
+}
+
+
 
 $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 
