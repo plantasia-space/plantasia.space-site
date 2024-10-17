@@ -20,6 +20,8 @@
     <!-- Include common scripts -->
     <script>
       {%- include scripts/common.js -%}
+      {%- include scripts/searchUsers.js -%}
+
     </script>
     
         <!-- Centralized Authentication and Session Management -->
@@ -101,21 +103,7 @@
             }
           });
     
-          // Update login/logout link
-          function updateAuthLink() {
-            const authLink = document.getElementById('auth-link');
-            if (authLink) {
-              const token = localStorage.getItem('token');
-              if (token) {
-                authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
-                authLink.onclick = logoutUser;
-              } else {
-                authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-                authLink.href = '/login';
-              }
-            }
-          }
-    
+        
           // Logout function
           async function logoutUser() {
             const token = localStorage.getItem('token');
@@ -139,6 +127,23 @@
             }
           }
     
+
+            // Update login/logout link
+            function updateAuthLink() {
+              const authLink = document.getElementById('auth-link');
+              if (authLink) {
+                const token = localStorage.getItem('token');
+                if (token) {
+                  authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+                  authLink.onclick = logoutUser;
+                } else {
+                  authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
+                  authLink.href = '/login';
+                }
+              }
+            }
+    
+            
         </script>
       </body>
     </html>
