@@ -4,7 +4,7 @@ show_title: false
 show_date: false
 permalink: /voyage
 titles:
-  en: &EN voyage
+  en: &EN Voyage
   en-GB: *EN
   en-US: *EN
   en-CA: *EN
@@ -13,6 +13,7 @@ key: IP
 public: false
 ---
 
+<!-- Voyage Page Container -->
 <div id="voyage-content">
     <h1>Voyage</h1>
     <p id="user-info"></p>
@@ -33,7 +34,69 @@ public: false
     <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
 </div>
 
+<!-- Toast Notification Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Include lscache library for Sound Engines caching -->
+<script src="https://unpkg.com/lscache/lscache.min.js"></script>
+
+<!-- JavaScript to Handle Data Retrieval and Rendering -->
 <script>
+/**
+ * Fetches data from the API with caching using lscache.
+ * Specifically used for Sound Engines.
+ * @param {string} url - The API endpoint.
+ * @param {string} cacheKey - The key to store/retrieve data from cache.
+ * @param {boolean} forceRefresh - If true, bypasses the cache.
+ * @returns {Promise<Object>} - The fetched data.
+ */
+async function fetchDataWithCache(url, cacheKey, forceRefresh = false) {
+    if (!forceRefresh) {
+        const cachedData = lscache.get(cacheKey);
+        if (cachedData) {
+            console.log(`Cache hit for ${cacheKey}`);
+            return cachedData;
+        }
+    }
+
+    console.log(`Fetching data from server for ${cacheKey}`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        lscache.set(cacheKey, data, 5); // Cache for 5 minutes
+        console.log(`Data fetched and cached for ${cacheKey}`);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error);
+        throw error;
+    }
+}
+
+/**
+ * Fetches data directly from the API without using caching.
+ * Specifically used for Interplanetary Players (IPP).
+ * @param {string} url - The API endpoint.
+ * @returns {Promise<Object>} - The fetched data.
+ */
+async function fetchData(url) {
+    console.log(`Fetching data from server: ${url}`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(`Data fetched successfully from ${url}`);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error);
+        throw error;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const cachedSession = localStorage.getItem('sessionData');
     const user = cachedSession ? JSON.parse(cachedSession) : null;
@@ -42,29 +105,38 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display user-related data using the cached session
         displayUserInfo(user.role || 'Listener', user.username || user.email);
         displayTracks(user.tracksOwned || []);
-        displaySoundEngines(user.enginesOwned || [], user.userId);
-        displayInterplanetaryPlayers(user.interplanetaryPlayersOwned || []);
+        displaySoundEnginesBatch(user.enginesOwned || []);
+        displayInterplanetaryPlayersBatch(user.interplanetaryPlayersOwned || []);
     } else {
         console.error('No valid session found. Redirecting to login...');
         window.location.href = '/login';
     }
 });
 
-// Function to display user information
+/**
+ * Function to display user information
+ * @param {string} userRole - The role of the user.
+ * @param {string} userName - The name of the user.
+ */
 function displayUserInfo(userRole, userName) {
     const userInfoElement = document.getElementById('user-info');
     userInfoElement.innerHTML = `
         <strong>User Role:</strong> ${userRole}<br>
         <strong>User Name:</strong> ${userName}
     `;
+    console.log('User info displayed:', { userRole, userName });
 }
 
-// Function to display tracks on the page
+/**
+ * Function to display tracks on the page
+ * @param {Array} tracks - Array of track objects owned by the user.
+ */
 function displayTracks(tracks) {
     const tracksListElement = document.getElementById('tracks-list');
 
     if (!tracks || tracks.length === 0) {
         tracksListElement.innerHTML = '<li>No tracks found.</li>';
+        console.log('No tracks to display.');
         return;
     }
 
@@ -80,155 +152,285 @@ function displayTracks(tracks) {
         `;
         tracksListElement.appendChild(trackElement);
     });
+    console.log(`${tracks.length} tracks displayed.`);
 }
 
-// Function to display sound engines on the page
-function displaySoundEngines(engineIds, userId) {
+/**
+ * Function to display sound engines on the page using batch fetching with caching.
+ * @param {Array<string>} engineIds - Array of sound engine IDs owned by the user.
+ */
+async function displaySoundEnginesBatch(engineIds) {
     const soundEnginesListElement = document.getElementById('sound-engines-list');
-    soundEnginesListElement.innerHTML = '';
+    soundEnginesListElement.innerHTML = ''; // Clear existing list
 
     if (!engineIds || engineIds.length === 0) {
         soundEnginesListElement.innerHTML = '<li>No sound engines found.</li>';
+        console.log('No sound engines to display.');
         return;
     }
 
-    engineIds.forEach(async (engineId) => {
-        try {
-            const response = await fetch(`http://media.maar.world:3001/api/soundengines/${engineId}`);
+    // Validate and filter sound engine IDs
+    const validEngineIds = engineIds.filter(id => isValidObjectId(id));
+    if (validEngineIds.length === 0) {
+        soundEnginesListElement.innerHTML = '<li>No valid sound engine IDs found.</li>';
+        console.warn('No valid sound engine IDs to fetch.');
+        return;
+    }
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch details for engine ID: ${engineId}`);
-            }
+    // Create a cache key based on sorted IDs for consistency
+    const sortedIds = [...validEngineIds].sort();
+    const cacheKey = `soundEngines_batch_${sortedIds.join('_')}`;
+    const batchUrl = `http://media.maar.world:3001/api/soundEngines/batch?ids=${sortedIds.join(',')}`;
 
-            const data = await response.json();
-            const engine = data.soundEngine;
+    try {
+        const data = await fetchDataWithCache(batchUrl, cacheKey, false);
+        if (data.success && Array.isArray(data.soundEngines)) {
+            console.log(`Fetched ${data.soundEngines.length} sound engines.`);
+            data.soundEngines.forEach(engine => {
+                if (!engine || typeof engine !== 'object') {
+                    console.warn('Invalid sound engine data:', engine);
+                    return;
+                }
 
-            const imageUrl = engine.soundEngineImage 
-                ? `https://media.maar.world${engine.soundEngineImage}` 
-                : '/path/to/default-placeholder.png';
+                const imageUrl = engine.soundEngineImage
+                    ? `https://media.maar.world${encodeURI(engine.soundEngineImage)}`
+                    : 'https://media.maar.world/uploads/default/default-soundEngine.jpg'; // Provide a default image path
 
-            const engineElement = document.createElement('li');
-            engineElement.classList.add('soundEngine-list-item');
-            engineElement.innerHTML = `
-                <div class="soundEngine-profile-pic">
-                    <img src="${imageUrl}" alt="${engine.soundEngineName}">
-                </div>
-                <div class="soundEngine-details">
-                    <div class="soundEngine-name">${engine.soundEngineName}</div>
-                    <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                const soundEngineName = engine.soundEngineName || 'Unnamed Sound Engine';
 
-                    <div class="soundEngine-params">
-                        X Parameter: ${engine.xParam.label} |
-                        Y Parameter: ${engine.yParam.label} |
-                        Z Parameter: ${engine.zParam.label}
+                // Create DOM elements
+                const soundEngineDiv = document.createElement('li');
+                soundEngineDiv.classList.add('soundEngine-list-item');
+
+                soundEngineDiv.innerHTML = `
+                    <div class="soundEngine-profile-pic">
+                        <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
                     </div>
-                </div>
-                <div class="soundEngine-actions">
-                    <button class="soundEngine-edit-button" onclick="editSoundEngine('${engine._id}')"><span class="material-symbols-outlined">edit</span> Edit</button>
-                    <button 
-                        class="btn share-button" 
-                        ${engine.isPublic ? '' : 'disabled'} 
-                        onclick="shareSoundEngine('${engine._id}')"
-                    >
-                          <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                </div>
-            `;
-            soundEnginesListElement.appendChild(engineElement);
-        } catch (error) {
-            console.error(`Error fetching sound engine details for ID: ${engineId}`, error);
+                    <div class="soundEngine-details">
+                        <div class="soundEngine-name">${soundEngineName}</div>
+                        <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                        <div class="soundEngine-params">
+                            <strong>Parameters:</strong> 
+                            X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
+                            Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
+                            Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
+                        </div>
+                    </div>
+                    <div class="soundEngine-actions">
+                        <button class="soundEngine-edit-button" onclick="editSoundEngine('${engine._id}')">
+                            <span class="material-symbols-outlined">edit</span> 
+                        </button>
+                        <button 
+                            class="btn share-button" 
+                            ${engine.isPublic ? '' : 'disabled'} 
+                            onclick="shareSoundEngine('${engine._id}')"
+                        >
+                            <span class="material-symbols-outlined">share</span> 
+                        </button>
+                    </div>
+                `;
+                soundEnginesListElement.appendChild(soundEngineDiv);
+            });
+            console.log('All sound engines displayed successfully.');
+        } else {
+            console.error('Failed to fetch sound engines:', data.message);
+            soundEnginesListElement.innerHTML = '<li>Failed to load sound engines.</li>';
+            showToast('Failed to load your sound engines.', 'error');
         }
-    });
+    } catch (error) {
+        console.error('Error displaying sound engines:', error);
+        soundEnginesListElement.innerHTML = '<li>An error occurred while loading sound engines.</li>';
+        showToast('An error occurred while loading your sound engines.', 'error');
+    }
 }
 
-// Function to handle editing a sound engine
-function editSoundEngine(engineId) {
-    window.location.href = `/voyage/soundEngine?mode=edit&id=${engineId}`;
-}
-
-// Function to handle sharing a sound engine
-function shareSoundEngine(engineId) {
-    const shareUrl = `http://maar.world/xplorer/sound-engine/?engineId=${engineId}`;
-    navigator.clipboard.writeText(shareUrl)
-        .then(() => {
-            alert('Link copied to clipboard!');
-        })
-        .catch(err => {
-            console.error('Failed to copy link: ', err);
-            alert('Failed to copy the link. Please try again.');
-        });
-}
-
-// Function to display interplanetary players on the page
-function displayInterplanetaryPlayers(playerIds) {
+/**
+ * Function to display interplanetary players on the page without caching.
+ * @param {Array<string>} playerIds - Array of interplanetary player IDs owned by the user.
+ */
+async function displayInterplanetaryPlayersBatch(playerIds) {
     const playersListElement = document.querySelector('.interplanetaryPlayer-list');
     playersListElement.innerHTML = ''; // Clear any existing content
 
     if (!playerIds || playerIds.length === 0) {
         playersListElement.innerHTML = '<li>No interplanetary players found.</li>';
+        console.log('No interplanetary players to display.');
         return;
     }
 
-    playerIds.forEach(async (playerId) => {
-        try {
-            const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`);
+    // Validate and filter player IDs
+    const validPlayerIds = playerIds.filter(id => isValidObjectId(id));
+    if (validPlayerIds.length === 0) {
+        playersListElement.innerHTML = '<li>No valid interplanetary player IDs found.</li>';
+        console.warn('No valid interplanetary player IDs to fetch.');
+        return;
+    }
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch details for player ID: ${playerId}`);
-            }
+    const batchUrl = `http://media.maar.world:3001/api/interplanetaryPlayers/batch?ids=${validPlayerIds.join(',')}`;
 
-            const data = await response.json();
-            const player = data.player;
+    try {
+        const data = await fetchData(batchUrl);
+        if (data.success && Array.isArray(data.interplanetaryPlayers)) {
+            console.log(`Fetched ${data.interplanetaryPlayers.length} interplanetary players.`);
+            
+            data.interplanetaryPlayers.forEach(player => {
+                console.log('Interplanetary Player Object:', player); // <-- Debugging Line
 
-            const imageUrl = player.ddd?.textureURL ? `https://media.maar.world${player.ddd.textureURL}` : '/path/to/default-image.png';
+                if (!player || typeof player !== 'object') {
+                    console.warn('Invalid interplanetary player data:', player);
+                    return;
+                }
 
-            const playerElement = document.createElement('li');
-            playerElement.classList.add('interplanetaryPlayer-list-item');
-            playerElement.innerHTML = `
-                <div class="interplanetaryPlayer-profile-pic">
-                    <img src="${imageUrl}" alt="${player.artName}">
-                </div>
-                <div class="interplanetaryPlayer-details">
-                    <div class="interplanetaryPlayer-name">${player.artName || 'Unnamed'}</div>
-                    <div class="interplanetaryPlayer-params"><strong>Scientific Name:</strong> ${player.sciName || 'Unknown'}</div>
-                    <div class="interplanetaryPlayer-params"><strong>Description:</strong> ${player.description?.slice(0, 50) || 'No description available.'}...</div>
-                    <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? 'Public' : 'Private'}</div>
-                </div>
-                <div class="interplanetaryPlayer-actions">
-                    <button class="interplanetaryPlayer-edit-button" onclick="editInterplanetaryPlayer('${player._id}')">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                    <button 
-                        class="btn share-button" 
-                        ${player.isPublic ? '' : 'disabled'} 
-                        onclick="shareInterplanetaryPlayer('${player._id}')"
-                    >
-                        <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                </div>
-            `;
-            playersListElement.appendChild(playerElement);
-        } catch (error) {
-            console.error(`Error fetching interplanetary player details for ID: ${playerId}`, error);
+                // Fetch image from ddd.textureURL, and fall back to a default image
+                const imageUrl = player.ddd?.textureURL
+                    ? `https://media.maar.world${encodeURI(player.ddd.textureURL)}`
+                    : 'https://media.maar.world/uploads/default/default-interplanetaryPlayer.jpg'; // Default image
+
+                // Use artName for the player name
+                const playerName = player.artName || 'Unnamed Player'; 
+                const sciName = player.sciName || 'Unknown';
+                const description = player.description ? player.description.substring(0, 30) + '...' : 'No description available.';
+
+                // Create DOM elements
+                const playerDiv = document.createElement('li');
+                playerDiv.classList.add('interplanetaryPlayer-list-item');
+
+                playerDiv.innerHTML = `
+                    <div class="interplanetaryPlayer-profile-pic">
+                        <img src="${imageUrl}" alt="${playerName}" loading="lazy">
+                    </div>
+                    <div class="interplanetaryPlayer-details">
+                        <div class="interplanetaryPlayer-name">${playerName}</div>
+                        <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
+                        <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
+                        <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
+                    </div>
+                    <div class="interplanetaryPlayer-actions">
+                        <button class="interplanetaryPlayer-edit-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                            <span class="material-symbols-outlined">edit</span> 
+                        </button>
+                        <button 
+                            class="btn share-button" 
+                            onclick="shareInterplanetaryPlayer('${player._id}')"
+                        >
+                            <span class="material-symbols-outlined">share</span> 
+                        </button>
+                    </div>
+                `;
+                playersListElement.appendChild(playerDiv);
+            });
+            console.log('All interplanetary players displayed successfully.');
+        } else {
+            console.error('Failed to fetch interplanetary players:', data.message);
+            playersListElement.innerHTML = '<li>Failed to load interplanetary players.</li>';
+            showToast('Failed to load your interplanetary players.', 'error');
         }
-    });
+    } catch (error) {
+        console.error('Error displaying interplanetary players:', error);
+        playersListElement.innerHTML = '<li>An error occurred while loading interplanetary players.</li>';
+        showToast('An error occurred while loading your interplanetary players.', 'error');
+    }
 }
 
-// Function to handle editing an interplanetary player
+/**
+ * Validate if a string is a valid MongoDB ObjectId.
+ * @param {string} id
+ * @returns {boolean}
+ */
+function isValidObjectId(id) {
+    return /^[a-fA-F0-9]{24}$/.test(id);
+}
+
+/**
+ * Function to handle editing a sound engine.
+ * @param {string} engineId - The ID of the sound engine to edit.
+ */
+function editSoundEngine(engineId) {
+    console.log(`Editing sound engine with ID: ${engineId}`);
+    window.location.href = `/voyage/soundEngine?mode=edit&id=${engineId}`;
+}
+
+/**
+ * Function to handle sharing a sound engine.
+ * @param {string} engineId - The ID of the sound engine to share.
+ */
+function shareSoundEngine(engineId) {
+    const shareUrl = `http://maar.world/xplorer/sound-engine/?engineId=${engineId}`;
+    console.log(`Sharing sound engine with URL: ${shareUrl}`);
+    navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+            showToast('Sound engine link copied to clipboard!', 'success');
+        })
+        .catch(err => {
+            console.error('Failed to copy sound engine link:', err);
+            showToast('Failed to copy the sound engine link. Please try again.', 'error');
+        });
+}
+
+/**
+ * Function to handle editing an interplanetary player.
+ * @param {string} playerId - The ID of the interplanetary player to edit.
+ */
 function editInterplanetaryPlayer(playerId) {
+    console.log(`Editing interplanetary player with ID: ${playerId}`);
     window.location.href = `/voyage/interplanetary-player?mode=edit&playerId=${playerId}`;
 }
 
-// Function to handle sharing an interplanetary player
+/**
+ * Function to handle sharing an interplanetary player.
+ * @param {string} playerId - The ID of the interplanetary player to share.
+ */
 function shareInterplanetaryPlayer(playerId) {
     const shareUrl = `http://maar.world/xplorer/interplanetary-player/?playerId=${playerId}`;
+    console.log(`Sharing interplanetary player with URL: ${shareUrl}`);
     navigator.clipboard.writeText(shareUrl)
         .then(() => {
-            alert('Link copied to clipboard!');
+            showToast('Interplanetary player link copied to clipboard!', 'success');
         })
         .catch(err => {
-            console.error('Failed to copy link: ', err);
-            alert('Failed to copy the link. Please try again.');
+            console.error('Failed to copy interplanetary player link:', err);
+            showToast('Failed to copy the interplanetary player link. Please try again.', 'error');
         });
+}
+
+/**
+ * Function to display Toast Notifications
+ * @param {string} message - The message to display
+ * @param {string} type - The type of message ('success' or 'error')
+ */
+function showToast(message, type = 'success') {
+    const toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) {
+        console.error('Toast container element not found');
+        return; // Exit the function if the toast container is missing
+    }
+
+    const toast = document.createElement('div');
+    const toastId = `toast_${Date.now()}`;
+    toast.classList.add('toast');
+    toast.setAttribute('id', toastId);
+    if (type === 'success') {
+        toast.classList.add('success');
+    } else if (type === 'error') {
+        toast.classList.add('error');
+    }
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+
+    // Trigger CSS animation
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+
+    // Remove toast after animation
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            const toastElem = document.getElementById(toastId);
+            if (toastElem) {
+                toastElem.remove();
+            }
+        }, 500);
+    }, 3000);
 }
 </script>
