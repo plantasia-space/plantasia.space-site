@@ -19,132 +19,100 @@
 
     <!-- Include common scripts -->
     <script>
+  //    {%- include scripts/cacheUtils.js -%}
       {%- include scripts/common.js -%}
       {%- include scripts/searchUsers.js -%}
 
     </script>
     
-        <!-- Centralized Authentication and Session Management -->
-        <script>
-          const API_BASE = 'http://media.maar.world:3001';
-    
-          // Centralized session checking with caching and retry logic
-          async function checkSessionWithCache() {
-            const token = localStorage.getItem('token');
-            const cachedSession = localStorage.getItem('sessionData');
-            const sessionExpiry = localStorage.getItem('sessionExpiry');
-            const currentTime = Date.now();
-    
-            // Use cached session if it's still valid
-            if (cachedSession && sessionExpiry && currentTime < parseInt(sessionExpiry, 10)) {
-              console.log('Using cached session.');
-              return JSON.parse(cachedSession); // Return cached session data
-            }
-    
-            // If no token, redirect to login
-            if (!token) {
-              redirectToLogin('No token found, redirecting to login.');
-              return null;
-            }
-    
-            try {
-              const response = await fetch(`${API_BASE}/api/auth/check-session`, {
-                method: 'GET',
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json'
-                }
-              });
-    
-              if (!response.ok) {
-                if (response.status === 429) {
-                  console.warn(`429 Too Many Requests`);
-                  return null; // Skip retries to avoid overloading server
-                }
-                redirectToLogin('Session validation failed, redirecting to login.');
-                return null;
-              }
-    
-              const { user, expiresIn } = await response.json();
-    
-              if (!user) {
-                redirectToLogin('No user data found, redirecting to login.');
-                return null;
-              }
-    
-              // Cache session data and set expiry time in localStorage
-              localStorage.setItem('sessionData', JSON.stringify(user));
-              localStorage.setItem('sessionExpiry', Date.now() + expiresIn * 1000); // Cache expiry time
-    
-              return user; // Return the session data
-    
-            } catch (error) {
-              console.error('Error checking session:', error);
-              redirectToLogin('Error occurred during session validation, redirecting to login.');
-              return null;
-            }
-          }
-    
-          // Handle login redirection
-          function redirectToLogin(message) {
-            console.error(message);
-            window.location.href = '/login';
-          }
-    
-          // Call session check on DOM load
-          document.addEventListener('DOMContentLoaded', async function() {
-            const sessionData = await checkSessionWithCache();
-    
-            if (sessionData) {
-              console.log('Session is valid:', sessionData);
-              localStorage.setItem('username', sessionData.username || sessionData.email);
-              // Update auth link or other elements on the page if necessary
-              updateAuthLink();
+    <!-- Centralized Authentication and Session Management -->
+    <script>
+      const API_BASE = 'http://media.maar.world:3001';
+
+      // Centralized session checking with retries and proper cookie handling
+      async function checkSession() {
+        try {
+          const response = await fetch(`${API_BASE}/api/auth/check-session`, {
+            method: 'GET',
+            credentials: 'include', // Include cookies in the request
+            headers: {
+              'Content-Type': 'application/json'
             }
           });
-    
-        
-          // Logout function
-          async function logoutUser() {
-            const token = localStorage.getItem('token');
-            if (!token) return console.error('No token found');
-    
-            try {
-              const response = await fetch(`${API_BASE}/api/auth/logout`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json'
-                }
-              });
-    
-              if (!response.ok) throw new Error('Logout failed');
-    
-              localStorage.clear();
-              window.location.href = '/login';
-            } catch (error) {
-              console.error('Logout error:', error);
-            }
-          }
-    
 
-            // Update login/logout link
-            function updateAuthLink() {
-              const authLink = document.getElementById('auth-link');
-              if (authLink) {
-                const token = localStorage.getItem('token');
-                if (token) {
-                  authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
-                  authLink.onclick = logoutUser;
-                } else {
-                  authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-                  authLink.href = '/login';
-                }
-              }
+          // Log the response status and headers for debugging
+          console.log('Check Session Response Status:', response.status);
+          console.log('Check Session Response Headers:', response.headers);
+
+          const data = await response.json();
+
+          if (response.ok) {
+            if (data.user) {
+              const username = data.user.username || data.user.email;
+              localStorage.setItem('userId', data.user.userId);
+              localStorage.setItem('username', username);
+              updateAuthLink(true); // User is logged in
+              console.log('Session is valid:', data.user);
+            } else {
+              updateAuthLink(false); // User is not logged in
+              console.log('No user data found.');
             }
-    
-            
-        </script>
-      </body>
-    </html>
-    
+          } else {
+            // If session check fails, treat user as not logged in
+            updateAuthLink(false);
+            console.warn('Session check failed, user is not logged in.');
+          }
+        } catch (error) {
+          console.error('Error during session check:', error);
+          updateAuthLink(false);
+        }
+      }
+
+      // Handle login redirection
+      function redirectToLogin(message) {
+        console.error(message);
+        window.location.href = '/login';
+      }
+
+      // Logout function
+      async function logoutUser() {
+        try {
+          const response = await fetch(`${API_BASE}/api/auth/logout`, {
+            method: 'POST',
+            credentials: 'include', // Include cookies in the request
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            localStorage.clear();
+            updateAuthLink(false);
+            window.location.href = '/login';
+          } else {
+            throw new Error('Logout failed');
+          }
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      }
+
+      // Update login/logout link
+      function updateAuthLink(isLoggedIn) {
+        const authLink = document.getElementById('auth-link');
+        if (authLink) {
+          if (isLoggedIn) {
+            authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+            authLink.onclick = logoutUser;
+          } else {
+            authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
+            authLink.href = '/login';
+          }
+        }
+      }
+
+      // Call session check on DOM load
+   //   document.addEventListener('DOMContentLoaded', checkSession);
+    </script>
+  </body>
+</html>

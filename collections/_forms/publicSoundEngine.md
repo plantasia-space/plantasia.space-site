@@ -141,7 +141,7 @@ function loadSoundEngineDetails(soundEngineId) {
             engineOwnerList.innerHTML = `
                 <li class="user-list-item">
                     <div class="user-profile-pic">
-                        <img src="https://media.maar.world${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
+                        <img src="https://media.maar.world${ownerDetails.profileImage || '/https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${ownerDetails.username}">
                     </div>
                     <div class="user-details">
                         <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>

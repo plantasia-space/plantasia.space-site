@@ -20,7 +20,7 @@ public: false
         <div class="back-button-container">
             <a href="/voyage" title="Back to Voyage">
                 <button id="backButton" class="btn button--outline-primary button--circle">
-                    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                    <span class="material-symbols-outlined">brightness_6</span>
                 </button>
             </a>
         </div>
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const formTitle = document.getElementById('formTitle');
     const soundEngineView = document.getElementById('soundEngineView');
     const soundEngineForm = document.getElementById('soundEngineForm');
-    const editButton = document.getElementById('editButton');
+    let editButton = document.getElementById('editButton');
     const backButton = document.getElementById('backButton');
     const cancelButton = document.getElementById('cancelButton');
 
@@ -282,14 +282,21 @@ if (!currentSoundEngineId || mode === 'create') {
 }
 
 editButton.addEventListener('click', function() {
+
+                    console.log('is CLICKED.');
+
     // Toggle the mode directly based on `isEditMode`
     if (isEditMode) {
         // If already in edit mode, revert changes like pressing cancel
         loadSoundEngineDetails(currentSoundEngineId);
         toggleViewMode(false);
+                console.log('is edit mode FALSEEEE.');
+
     } else {
         // If not in edit mode, switch to edit mode
         toggleViewMode(true);
+                console.log('is edit mode  TRUEEE.');
+
     }
     // Toggle the edit mode state
     isEditMode = !isEditMode;
@@ -446,14 +453,19 @@ editButton.addEventListener('click', function() {
         if (editMode) {
             soundEngineView.style.display = 'none';
             soundEngineForm.style.display = 'block';
+                        console.log('Switched to edit mode.');
+
         } else {
             soundEngineView.style.display = 'block';
             soundEngineForm.style.display = 'none';
+                        console.log('Switched to view mode.');
+
         }
     }
 
     let existingSoundEngine = null;  // Define existingSoundEngine at the top
 
+// Load sound engine details
 // Load sound engine details
 function loadSoundEngineDetails(soundEngineId) {
     fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
@@ -474,7 +486,8 @@ function loadSoundEngineDetails(soundEngineId) {
                 console.log('Logged-in userId:', userId);
                 console.log('Sound Engine ownerId:', data.soundEngine.ownerId);
 
-                const isOwner = data.soundEngine.ownerId === userId;
+                // Update the global isOwner variable
+                isOwner = data.soundEngine.ownerId === userId;
                 console.log('Is user the owner?', isOwner);
 
                 // Show the edit button only if the user is the owner
@@ -482,6 +495,31 @@ function loadSoundEngineDetails(soundEngineId) {
                     editButton.style.display = 'block';
                 } else {
                     editButton.style.display = 'none';
+                }
+
+                // Re-select the editButton after DOM updates
+                editButton = document.getElementById('editButton');
+
+                // Attach the event listener here
+                if (editButton) {
+                    console.log('Attaching event listener to editButton.');
+                    editButton.addEventListener('click', function() {
+                        // Toggle the mode directly based on `isEditMode`
+                        if (isEditMode) {
+                            // If already in edit mode, revert changes like pressing cancel
+                            loadSoundEngineDetails(currentSoundEngineId);
+                            toggleViewMode(false);
+                            console.log('is edit mode FALSEEEE.');
+                        } else {
+                            // If not in edit mode, switch to edit mode
+                            toggleViewMode(true);
+                            console.log('is edit mode  TRUEEE.');
+                        }
+                        // Toggle the edit mode state
+                        isEditMode = !isEditMode;
+                    });
+                } else {
+                    console.error('editButton element not found after DOM updates!');
                 }
 
                 // Display owner details
@@ -493,7 +531,7 @@ function loadSoundEngineDetails(soundEngineId) {
                     engineOwnerList.innerHTML = `
                         <li class="user-list-item">
                             <div class="user-profile-pic">
-                                <img src="https://media.maar.world${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
+                                <img src="https://media.maar.world${ownerDetails.profileImage || 'https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${ownerDetails.username}">
                             </div>
                             <div class="user-details">
                                 <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
@@ -509,6 +547,10 @@ function loadSoundEngineDetails(soundEngineId) {
                     engineOwnerList.innerHTML = '<li>No owner details available.</li>';
                     document.getElementById('engineOwnerCount').innerText = 0;
                 }
+
+                // **Add this line to set the view mode correctly**
+              //  toggleViewMode(isEditMode);
+
             } else {
                 showToast(data.message || 'Failed to load sound engine details.', 'error');
             }
@@ -518,7 +560,6 @@ function loadSoundEngineDetails(soundEngineId) {
             showToast('An error occurred while loading sound engine details.', 'error');
         });
 }
-
 
 
     // Populate view mode with sound engine details

@@ -27,4 +27,15 @@ public: false
 </div>
 
 <!-- Include the JavaScript -->
-<script src="../../scripts/searchUsers.js"></script>
+<script>
+
+localStorage.clear();
+document.cookie.split(";").forEach((c) => {
+    document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+});
+
+
+</script>
+
