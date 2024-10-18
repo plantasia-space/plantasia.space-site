@@ -154,7 +154,7 @@ fetch(`http://media.maar.world:3001/api/getPublicProfile?username=${username}`)
                         return `
                         <li class="user-list-item">
                             <div class="user-profile-pic">
-                                <img src="https://media.maar.world${following?.user?.profileImage || '/default_profile.png'}" alt="${following?.user?.username}">
+                                <img src="https://media.maar.world${following?.user?.profileImage || 'https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${following?.user?.username}">
                             </div>
                             <div class="user-details">
                                 <div class="user-display-name">${following?.user?.displayName || 'Unknown'}</div>
@@ -209,7 +209,7 @@ fetch(`http://media.maar.world:3001/api/getPublicProfile?username=${username}`)
                     return `
                     <li class="user-list-item">
                         <div class="user-profile-pic">
-                            <img src="https://media.maar.world${mutualFollower?.user?.profileImage || '/default_profile.png'}" alt="${mutualFollower?.user?.username}">
+                            <img src="https://media.maar.world${mutualFollower?.user?.profileImage || 'https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${mutualFollower?.user?.username}">
                         </div>
                         <div class="user-details">
                             <div class="user-display-name">${mutualFollower?.user?.displayName || 'Unknown'}</div>

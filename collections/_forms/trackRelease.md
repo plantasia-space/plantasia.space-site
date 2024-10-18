@@ -247,7 +247,7 @@ function updateSoundEngineDetails() {
     if (soundEngine) {
         const imageUrl = soundEngine.soundEngineImage 
             ? `https://media.maar.world${soundEngine.soundEngineImage}` 
-            : '/path/to/default-placeholder.png';
+            : 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
 
         const engineElement = document.createElement('li');
         engineElement.classList.add('soundEngine-list-item');
