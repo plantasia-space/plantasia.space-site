@@ -13,12 +13,12 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN      <span class="material-symbols-outlined">nature_people</span> Voyage
+      en      : &EN      <span class="material-symbols-outlined">brightness_6</span> Voyage
       en-GB   : *EN
       en-US   : *EN
       en-CA   : *EN
       en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">nature_people</span> Voyage
+      es-ES   : &ES   <span class="material-symbols-outlined">brightness_6</span> Voyage
       es-LA   : *ES
       # @end locale config
     url: /voyage
