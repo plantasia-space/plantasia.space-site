@@ -1,5 +1,5 @@
 // Store the last search query to prevent redundant requests
-let previousQuery = '';
+let previousQueryX = '';
 let isFetching = false;
 
 // Function to search for users based on input
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleUserSearch(inputElement, resultsContainer) {
     let timeout;
     let selectedIndex = -1;
-    let previousQuery = '';
+    let previousQueryX = '';
     let isFetching = false;
 
     inputElement.addEventListener('input', () => {
@@ -31,14 +31,14 @@ function handleUserSearch(inputElement, resultsContainer) {
         const query = inputElement.value.trim();
 
         // Check if the query has changed to avoid redundant requests
-        if (query === previousQuery || query.length < 2) {
+        if (query === previousQueryX || query.length < 2) {
             resultsContainer.innerHTML = '';
             selectedIndex = -1;
             resultsContainer.classList.remove('active');
             return;
         }
 
-        previousQuery = query; // Update the last query
+        previousQueryX = query; // Update the last query
         timeout = setTimeout(async () => {
             const users = await searchUsers(query, isFetching);
             updateResultsDropdown(users, resultsContainer, inputElement);

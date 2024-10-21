@@ -20,7 +20,7 @@ public: false
 
     <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
     <p><a href="/voyage/soundengine"><span class="material-symbols-outlined">noise_control_on</span> Create a new sound engine</a></p> 
-    <p><a href="/voyage/interplanetary-player"><span class="material-symbols-outlined">globe</span> Create or edit a new Interplanetary Player</a></p> 
+    <p><a href="/voyage/interplanetary-player"><span class="material-symbols-outlined">public</span> Create or edit a new Interplanetary Player</a></p> 
     <p><a href="/voyage/track-release"><span class="material-symbols-outlined">diversity_1</span> Release a new track</a></p> 
     <p><a href="/voyage/playlist"><span class="material-symbols-outlined">playlist_add_circle</span> Create a new playlist or album</a></p> 
 
@@ -36,9 +36,6 @@ public: false
 
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="toast-container"></div>
-
-<!-- Include lscache library for Sound Engines caching -->
-<script src="https://unpkg.com/lscache/lscache.min.js"></script>
 
 <!-- JavaScript to Handle Data Retrieval and Rendering -->
 <script>
@@ -204,10 +201,10 @@ async function displaySoundEnginesBatch(engineIds) {
 
                 soundEngineDiv.innerHTML = `
                     <div class="soundEngine-profile-pic">
-                        <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
+                        <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy" style="max-width: 80px; max-height: 80px;">
                     </div>
                     <div class="soundEngine-details">
-                        <div class="soundEngine-name">${soundEngineName}</div>
+                        <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
                         <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
                         <div class="soundEngine-params">
                             <strong>Parameters:</strong> 
@@ -216,7 +213,7 @@ async function displaySoundEnginesBatch(engineIds) {
                             Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
                         </div>
                     </div>
-                    <div class="soundEngine-actions">
+                    <div class="button-container">
                         <button class="soundEngine-edit-button" onclick="editSoundEngine('${engine._id}')">
                             <span class="material-symbols-outlined">edit</span> 
                         </button>
@@ -227,6 +224,15 @@ async function displaySoundEnginesBatch(engineIds) {
                         >
                             <span class="material-symbols-outlined">share</span> 
                         </button>
+                        <!-- More Options Button -->
+                        <div class="more-options-container">
+                            <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
+                                <span class="material-symbols-outlined">more_horiz</span>
+                            </button>
+                            <div class="more-options-dropdown" style="display: none;">
+                                <button class="delete-button" onclick="deleteSoundEngine('${engine._id}', this)">Delete</button>
+                            </div>
+                        </div>
                     </div>
                 `;
                 soundEnginesListElement.appendChild(soundEngineDiv);
@@ -297,15 +303,15 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
                 playerDiv.innerHTML = `
                     <div class="interplanetaryPlayer-profile-pic">
-                        <img src="${imageUrl}" alt="${playerName}" loading="lazy">
+                        <img src="${imageUrl}" alt="${playerName}" loading="lazy" style="max-width: 80px; max-height: 80px;">
                     </div>
                     <div class="interplanetaryPlayer-details">
-                        <div class="interplanetaryPlayer-name">${playerName}</div>
+                        <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
                         <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
                         <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
                         <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
                     </div>
-                    <div class="interplanetaryPlayer-actions">
+                    <div class="button-container">
                         <button class="interplanetaryPlayer-edit-button" onclick="editInterplanetaryPlayer('${player._id}')">
                             <span class="material-symbols-outlined">edit</span> 
                         </button>
@@ -315,6 +321,15 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                         >
                             <span class="material-symbols-outlined">share</span> 
                         </button>
+                        <!-- More Options Button -->
+                        <div class="more-options-container">
+                            <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
+                                <span class="material-symbols-outlined">more_horiz</span>
+                            </button>
+                            <div class="more-options-dropdown" style="display: none;">
+                                <button class="delete-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">Delete</button>
+                            </div>
+                        </div>
                     </div>
                 `;
                 playersListElement.appendChild(playerDiv);
@@ -433,4 +448,133 @@ function showToast(message, type = 'success') {
         }, 500);
     }, 3000);
 }
+
+/**
+ * Function to toggle the visibility of the More Options dropdown
+ * @param {Event} event - The click event
+ */
+function toggleMoreOptions(event) {
+    event.stopPropagation(); // Prevent event from bubbling up
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) {
+        const isDisplayed = dropdown.style.display === 'block';
+        // Close any other open dropdowns
+        closeAllDropdowns();
+        dropdown.style.display = isDisplayed ? 'none' : 'block';
+    }
+}
+
+/**
+ * Function to close all open dropdown menus
+ */
+function closeAllDropdowns() {
+    const dropdowns = document.querySelectorAll('.more-options-dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.style.display = 'none';
+    });
+}
+
+/**
+ * Function to handle the deletion of a sound engine
+ * @param {string} engineId - The ID of the sound engine to delete
+ * @param {HTMLElement} button - The delete button that was clicked
+ */
+function deleteSoundEngine(engineId, button) {
+    // Confirm deletion with the user
+    const confirmation = confirm('Are you sure you want to delete this Sound Engine? This action cannot be undone.');
+    if (!confirmation) return;
+
+    // Disable the delete button to prevent multiple clicks
+    button.disabled = true;
+    button.textContent = 'Deleting...';
+
+    // Send DELETE request to the server
+    fetch(`http://media.maar.world:3001/api/soundEngines/${engineId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete the Sound Engine.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showToast('Sound Engine deleted successfully!', 'success');
+            // Remove the sound engine from the DOM
+            const soundEngineListItem = button.closest('.soundEngine-list-item');
+            if (soundEngineListItem) {
+                soundEngineListItem.remove();
+            }
+        } else {
+            throw new Error(data.message || 'Failed to delete the Sound Engine.');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting Sound Engine:', error);
+        showToast(`Error: ${error.message}`, 'error');
+        // Re-enable the delete button
+        button.disabled = false;
+        button.textContent = 'Delete';
+    });
+}
+
+/**
+ * Function to handle the deletion of an interplanetary player
+ * @param {string} playerId - The ID of the interplanetary player to delete
+ * @param {HTMLElement} button - The delete button that was clicked
+ */
+function deleteInterplanetaryPlayer(playerId, button) {
+    // Confirm deletion with the user
+    const confirmation = confirm('Are you sure you want to delete this Interplanetary Player? This action cannot be undone.');
+    if (!confirmation) return;
+
+    // Disable the delete button to prevent multiple clicks
+    button.disabled = true;
+    button.textContent = 'Deleting...';
+
+    // Send DELETE request to the server
+    fetch(`http://media.maar.world:3001/api/interplanetaryPlayers/${playerId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete the Interplanetary Player.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showToast('Interplanetary Player deleted successfully!', 'success');
+            // Remove the player from the DOM
+            const playerListItem = button.closest('.interplanetaryPlayer-list-item');
+            if (playerListItem) {
+                playerListItem.remove();
+            }
+        } else {
+            throw new Error(data.message || 'Failed to delete the Interplanetary Player.');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting Interplanetary Player:', error);
+        showToast(`Error: ${error.message}`, 'error');
+        // Re-enable the delete button
+        button.disabled = false;
+        button.textContent = 'Delete';
+    });
+}
+    
+// Event listener to close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    // If the click is not within a more-options-container, close all dropdowns
+    if (!event.target.closest('.more-options-container')) {
+        closeAllDropdowns();
+    }
+});
 </script>

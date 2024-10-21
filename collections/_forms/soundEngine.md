@@ -184,9 +184,6 @@ public: false
 
 <script>
 
-     // {%- include scripts/searchUsers.js -%}
-     //   src="scripts/searchUsers.js"
-
 
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId'); 
