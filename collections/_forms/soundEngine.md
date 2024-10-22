@@ -409,18 +409,21 @@ soundEngineForm.addEventListener('submit', async function(event) {
         return;
     }
 
-    const sonificationStateValue = sonificationState === 'true';
+const sonificationStateValue = sonificationState === 'true';
 
-    // Additional Validation: Ensure Sonification File is Uploaded if Enabled
-    if (sonificationStateValue) {
-        const sonificationFile = document.getElementById('sonificationFile').files[0];
-        if (!sonificationFile && (!existingSoundEngine || !existingSoundEngine.sonificationFile)) {
-            showToast('Please upload a Sonification file or ensure an existing one is present.', 'error');
-            saveButton.disabled = false; // Re-enable the save button
-            disableFormInputs(false);
-            return;
-        }
+// Additional Validation: Ensure Sonification File is Uploaded if Enabled and no existing file is present
+if (sonificationStateValue) {
+    const sonificationFile = document.getElementById('sonificationFile').files[0];
+
+    // Check if there's no new file and no existing file
+    if (!sonificationFile && (!existingSoundEngine || !existingSoundEngine.sonificationFile)) {
+        showToast('Please upload a Sonification file or ensure an existing one is present.', 'error');
+        saveButton.disabled = false; // Re-enable the save button
+        disableFormInputs(false); // Re-enable form inputs
+        return;
     }
+}
+
 
     // Prepare form data
     const formData = new FormData();
@@ -879,22 +882,6 @@ soundEngineForm.addEventListener('submit', async function(event) {
     }
 
 
-const sonificationFileInput = document.getElementById('sonificationFile');
-
-sonificationFileInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const allowedTypes = ['application/json', 'text/plain', 'application/javascript'];
-        if (!allowedTypes.includes(file.type)) {
-            showToast('Invalid file type. Please upload a JSON, TXT, or JS file.', 'error');
-            sonificationFileInput.value = ''; // Clear the invalid file
-        } else if (file.size > 5 * 1024 * 1024) { // Example: 5MB limit
-            showToast('File size exceeds 5MB. Please upload a smaller file.', 'error');
-            sonificationFileInput.value = ''; // Clear the oversized file
-        }
-    }
-});
-
 
     /**
      * Handle input event for the SoundEngine name with debounce
@@ -944,39 +931,63 @@ sonificationFileInput.addEventListener('change', function(event) {
     /**
      * Function to toggle the sonification file input
      */
-    const sonificationStateSelect = document.getElementById('sonificationState');
-    const sonificationFileContainer = document.getElementById('sonificationFileContainer');
+// Get the sonification state, sonification file input, and existing file elements
+// Get the sonification state, sonification file input, and existing file elements
+const sonificationStateSelect = document.getElementById('sonificationState');
+const sonificationFileContainer = document.getElementById('sonificationFileContainer');
+const existingSonificationFile = document.getElementById('existingSonificationFile');
+const sonificationFileInput = document.getElementById('sonificationFile');
 
-    function toggleSonificationFileInput() {
-        const sonificationFileLabel = document.getElementById('sonificationFileLabel');
-        if (sonificationStateSelect.value === 'true') {
-            sonificationFileContainer.style.display = 'block';
-            document.getElementById('sonificationFile').required = true; // Make it required
+// Function to toggle the sonification file input based on state and existing file
+function toggleSonificationFileInput() {
+    const sonificationFileLabel = document.getElementById('sonificationFileLabel');
+    
+    if (sonificationStateSelect.value === 'true') {
+        sonificationFileContainer.style.display = 'block';
+
+        // If there is no existing sonification file, make the input required
+        if (!existingSoundEngine || !existingSoundEngine.sonificationFile) {
+            sonificationFileInput.required = true;
             sonificationFileLabel.classList.add('required-field'); // Add required indicator
         } else {
-            sonificationFileContainer.style.display = 'none';
-            // Clear the file input
-            document.getElementById('sonificationFile').value = '';
-            // Remove the required attribute
-            document.getElementById('sonificationFile').required = false;
-            // Remove required indicator
+            // If there is an existing file, don't make the file input required
+            sonificationFileInput.required = false;
             sonificationFileLabel.classList.remove('required-field');
-            // Hide existing file link
-            document.getElementById('existingSonificationFile').style.display = 'none';
+            // Show the existing file link
+            existingSonificationFile.style.display = 'block';
+        }
+    } else {
+        sonificationFileContainer.style.display = 'none';
+        // Clear the file input
+        sonificationFileInput.value = '';
+        // Remove the required attribute if the state is disabled
+        sonificationFileInput.required = false;
+        sonificationFileLabel.classList.remove('required-field');
+        // Hide existing file link
+        existingSonificationFile.style.display = 'none';
+    }
+}
+
+// Initial check on page load
+toggleSonificationFileInput();
+
+// Event listener for changes in sonificationState
+sonificationStateSelect.addEventListener('change', toggleSonificationFileInput);
+
+// Sonification File preview functionality
+sonificationFileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const allowedTypes = ['application/json', 'text/plain', 'application/javascript'];
+        if (!allowedTypes.includes(file.type)) {
+            showToast('Invalid file type. Please upload a JSON, TXT, or JS file.', 'error');
+            sonificationFileInput.value = ''; // Clear the invalid file
+        } else if (file.size > 5 * 1024 * 1024) { // Example: 5MB limit
+            showToast('File size exceeds 5MB. Please upload a smaller file.', 'error');
+            sonificationFileInput.value = ''; // Clear the oversized file
         }
     }
-
-
-    // Initial check on page load
-    toggleSonificationFileInput();
-
-    // Event listener for changes in sonificationState
-    sonificationStateSelect.addEventListener('change', toggleSonificationFileInput);
-
-    /**
-     * Function to handle form submission with Sonification File
-     */
-    // (Already handled in the existing form submission handler above)
+});
 
 });
 </script>
