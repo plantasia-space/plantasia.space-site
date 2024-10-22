@@ -79,12 +79,12 @@ public: false
 
 
 
-            <!-- Other input fields -->
-    <label for="developerUsername">Developer Username<span style="color: red;">*</span>:</label>
-    <div class="input-wrapper">
-        <input type="text" class="user-search-input" id="developerUsername" name="developerUsername" placeholder="Type a username..." autocomplete="off" required>
-        <div class="dropdown"></div> <!-- Dropdown directly below the input field -->
-    </div>
+        <!-- Other input fields -->
+        <label for="developerUsername">Developer Username<span style="color: red;">*</span>:</label>
+        <div class="input-wrapper">
+            <input type="text" class="user-search-input" id="developerUsername" name="developerUsername" placeholder="Type a username..." autocomplete="off" required>
+            <div class="dropdown"></div> <!-- Dropdown directly below the input field -->
+        </div>
 
 
 
@@ -150,6 +150,16 @@ public: false
             <option value="true">Enabled</option>
         </select><br><br>
 
+        <!-- Sonification File Upload (Conditional) -->
+        <div id="sonificationFileContainer" style="display: none;">
+            <label for="sonificationFile" id="sonificationFileLabel">Upload Sonification File (Optional):</label>
+            <p id="existingSonificationFile" style="display: none;">
+                Current Sonification File: <a href="" target="_blank" id="existingSonificationLink">Download</a>
+            </p>
+            <input type="file" id="sonificationFile" name="sonificationFile" accept=".json, .txt, .js"><br><br>
+        </div>
+
+
         <label for="Availability">Availability:</label>
         <select id="availability" name="availability" required>
             <option value="true">Public</option>
@@ -173,7 +183,6 @@ public: false
             <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
         </div>
         
-   
 
     </form>
 </div>
@@ -338,12 +347,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Sonification File preview functionality (optional, similar to image)
+    // Add if needed
+
     // Function to reset form state after creation
     function resetFormState() {
         soundEngineImagePreviewForm.src = '';
         soundEngineImagePreviewForm.style.display = 'none';
         document.getElementById('existingImage').style.display = 'none';
         document.getElementById('existingJsonFile').style.display = 'none';
+        document.getElementById('existingSonificationFile').style.display = 'none';
         document.getElementById('nameFeedback').innerText = '';
 
         // Reset hidden fields and color pickers
@@ -360,70 +373,94 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to handle form submission
-    soundEngineForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        // Disable all form inputs to prevent multiple submissions while processing
-        disableFormInputs(true);
-        // Disable the save button to prevent multiple submissions
-        const saveButton = soundEngineForm.querySelector('[type="submit"]');
-        saveButton.disabled = true;
+// Handle form submission
+soundEngineForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    // Disable all form inputs to prevent multiple submissions while processing
+    disableFormInputs(true);
+    // Disable the save button to prevent multiple submissions
+    const saveButton = soundEngineForm.querySelector('[type="submit"]');
+    saveButton.disabled = true;
 
-        // Gather input values
-        const developerUsername = document.getElementById('developerUsername').value.trim();
-        const soundEngineName = document.getElementById('soundEngineName').value.trim();
-        const color1 = color1Input.value.trim();
-        const color2 = color2Input.value.trim();
-        const sonificationState = document.getElementById('sonificationState').value;
-        const isPublic = document.getElementById('availability').value;
-        const credits = document.getElementById('credits').value.trim();
+    // Gather input values
+    const developerUsername = document.getElementById('developerUsername').value.trim();
+    const soundEngineName = document.getElementById('soundEngineName').value.trim();
+    const color1 = color1Input.value.trim();
+    const color2 = color2Input.value.trim();
+    const sonificationState = document.getElementById('sonificationState').value;
+    const isPublic = document.getElementById('availability').value;
+    const credits = document.getElementById('credits').value.trim();
 
-        // Validate required fields
-        if (!developerUsername || !soundEngineName || !color1 || !color2 || sonificationState === '' || !userId) {
-            showToast('Please fill in all required fields.', 'error');
+    // Validate required fields
+    if (!developerUsername || !soundEngineName || !color1 || !color2 || sonificationState === '' || !userId) {
+        showToast('Please fill in all required fields.', 'error');
+        saveButton.disabled = false; // Re-enable the save button
+        disableFormInputs(false);
+        return;
+    }
+
+    // Validate Sound Engine Name Availability
+    const soundEngineId = document.getElementById('soundEngineId').value.trim();
+    const isNameAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
+    if (!isNameAvailable) {
+        showToast('Sound Engine name is already taken. Please choose another one.', 'error');
+        saveButton.disabled = false; // Re-enable the save button
+        disableFormInputs(false);
+        return;
+    }
+
+    const sonificationStateValue = sonificationState === 'true';
+
+    // Additional Validation: Ensure Sonification File is Uploaded if Enabled
+    if (sonificationStateValue) {
+        const sonificationFile = document.getElementById('sonificationFile').files[0];
+        if (!sonificationFile && (!existingSoundEngine || !existingSoundEngine.sonificationFile)) {
+            showToast('Please upload a Sonification file or ensure an existing one is present.', 'error');
             saveButton.disabled = false; // Re-enable the save button
-                    return disableFormInputs(false);
-
+            disableFormInputs(false);
+            return;
         }
+    }
 
-        // Validate Sound Engine Name Availability
-        const soundEngineId = document.getElementById('soundEngineId').value.trim();
-        const isNameAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
-        if (!isNameAvailable) {
-            showToast('Sound Engine name is already taken. Please choose another one.', 'error');
-            saveButton.disabled = false; // Re-enable the save button
-        return disableFormInputs(false);
+    // Prepare form data
+    const formData = new FormData();
+    formData.append('ownerId', userId);
+    formData.append('isPublic', isPublic);
+    formData.append('developerUsername', developerUsername);
+    formData.append('soundEngineName', soundEngineName);
+    formData.append('color1', color1);
+    formData.append('color2', color2);
+    formData.append('xParam', JSON.stringify({ label: 'Speed', min: -100, max: 100, initValue: 1 }));
+    formData.append('yParam', JSON.stringify({ label: 'Tremolo', min: -100, max: 100, initValue: 0 }));
+    formData.append('zParam', JSON.stringify({ label: 'SpaceReverb', min: -100, max: 100, initValue: 0 }));
+    formData.append('sonificationState', sonificationStateValue);
+    formData.append('credits', credits);
+
+    // Handle image file: use the existing one if no new file is selected
+    const imageFile = soundEngineImageInput.files[0];
+    if (imageFile) {
+        formData.append('soundEngineImage', imageFile);
+    } else if (existingSoundEngine && existingSoundEngine.soundEngineImage) {
+        formData.append('existingImagePath', existingSoundEngine.soundEngineImage);
+    }
+
+    // Handle JSON file: use the existing one if no new file is selected
+    const jsonFile = soundEngineFileInput.files[0];
+    if (jsonFile) {
+        formData.append('soundEngineFile', jsonFile);
+    } else if (existingSoundEngine && existingSoundEngine.soundEngineFile) {
+        formData.append('existingJsonFilePath', existingSoundEngine.soundEngineFile);
+    }
+
+    // Handle Sonification File: only if sonification is enabled
+    if (sonificationStateValue) {
+        const sonificationFile = document.getElementById('sonificationFile').files[0];
+        if (sonificationFile) {
+            formData.append('sonificationFile', sonificationFile);
+        } else if (existingSoundEngine && existingSoundEngine.sonificationFile) {
+            formData.append('existingSonificationFilePath', existingSoundEngine.sonificationFile);
         }
-
-        // Prepare form data
-        const formData = new FormData();
-        formData.append('ownerId', userId);
-        formData.append('isPublic', isPublic);
-        formData.append('developerUsername', developerUsername);
-        formData.append('soundEngineName', soundEngineName);
-        formData.append('color1', color1);
-        formData.append('color2', color2);
-        formData.append('xParam', JSON.stringify({ label: 'Speed', min: -100, max: 100, initValue: 1 }));
-        formData.append('yParam', JSON.stringify({ label: 'Tremolo', min: -100, max: 100, initValue: 0 }));
-        formData.append('zParam', JSON.stringify({ label: 'SpaceReverb', min: -100, max: 100, initValue: 0 }));
-        formData.append('sonificationState', sonificationState);
-        formData.append('credits', credits);
-
-        // Handle image file: use the existing one if no new file is selected
-        const imageFile = soundEngineImageInput.files[0];
-        if (imageFile) {
-            formData.append('soundEngineImage', imageFile);
-        } else if (existingSoundEngine && existingSoundEngine.soundEngineImage) {
-            formData.append('existingImagePath', existingSoundEngine.soundEngineImage);
-        }
-
-        // Handle JSON file: use the existing one if no new file is selected
-        const jsonFile = soundEngineFileInput.files[0];
-        if (jsonFile) {
-            formData.append('soundEngineFile', jsonFile);
-        } else if (existingSoundEngine && existingSoundEngine.soundEngineFile) {
-            formData.append('existingJsonFilePath', existingSoundEngine.soundEngineFile);
-        }
-
+    }
         let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
         let method = 'POST'; // Default method for creating a new sound engine
 
@@ -464,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Redirect to View Mode with the same Sound Engine ID
                     setTimeout(() => {
                         window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${currentSoundEngineId}`;
-                    }, 3000); // 2-second delay to allow the toast to be visible
+                    }, 3000); // 3-second delay to allow the toast to be visible
                 } else if (isCreateMode) {
                     // Create Mode Logic
 
@@ -671,6 +708,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('credits').value = soundEngine.credits || '';
         document.getElementById('soundEngineId').value = soundEngine._id; // Assuming soundEngine is the object you fetched
 
+        // Toggle the visibility of the sonification file input based on sonificationState
+        toggleSonificationFileInput();
+
         // Show existing image
         if (soundEngine.soundEngineImage) {
             const fullImageUrl = `${baseUrl}${soundEngine.soundEngineImage}`;
@@ -692,6 +732,16 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('existingJsonLink').textContent = soundEngine.soundEngineFile.split('/').pop();
         } else {
             document.getElementById('existingJsonFile').style.display = 'none';
+        }
+
+        // Show existing Sonification file
+        if (soundEngine.sonificationFile) {
+            const fullSonificationUrl = `${baseUrl}${soundEngine.sonificationFile}`;
+            document.getElementById('existingSonificationFile').style.display = 'block';
+            document.getElementById('existingSonificationLink').href = fullSonificationUrl;
+            document.getElementById('existingSonificationLink').textContent = soundEngine.sonificationFile.split('/').pop();
+        } else {
+            document.getElementById('existingSonificationFile').style.display = 'none';
         }
 
         // Update the color pickers and alpha sliders based on stored RGBA values
@@ -828,6 +878,24 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
+
+const sonificationFileInput = document.getElementById('sonificationFile');
+
+sonificationFileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const allowedTypes = ['application/json', 'text/plain', 'application/javascript'];
+        if (!allowedTypes.includes(file.type)) {
+            showToast('Invalid file type. Please upload a JSON, TXT, or JS file.', 'error');
+            sonificationFileInput.value = ''; // Clear the invalid file
+        } else if (file.size > 5 * 1024 * 1024) { // Example: 5MB limit
+            showToast('File size exceeds 5MB. Please upload a smaller file.', 'error');
+            sonificationFileInput.value = ''; // Clear the oversized file
+        }
+    }
+});
+
+
     /**
      * Handle input event for the SoundEngine name with debounce
      */
@@ -872,6 +940,43 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Sound Engine name is already taken. Please choose another one.', 'error');
         }
     });
+
+    /**
+     * Function to toggle the sonification file input
+     */
+    const sonificationStateSelect = document.getElementById('sonificationState');
+    const sonificationFileContainer = document.getElementById('sonificationFileContainer');
+
+    function toggleSonificationFileInput() {
+        const sonificationFileLabel = document.getElementById('sonificationFileLabel');
+        if (sonificationStateSelect.value === 'true') {
+            sonificationFileContainer.style.display = 'block';
+            document.getElementById('sonificationFile').required = true; // Make it required
+            sonificationFileLabel.classList.add('required-field'); // Add required indicator
+        } else {
+            sonificationFileContainer.style.display = 'none';
+            // Clear the file input
+            document.getElementById('sonificationFile').value = '';
+            // Remove the required attribute
+            document.getElementById('sonificationFile').required = false;
+            // Remove required indicator
+            sonificationFileLabel.classList.remove('required-field');
+            // Hide existing file link
+            document.getElementById('existingSonificationFile').style.display = 'none';
+        }
+    }
+
+
+    // Initial check on page load
+    toggleSonificationFileInput();
+
+    // Event listener for changes in sonificationState
+    sonificationStateSelect.addEventListener('change', toggleSonificationFileInput);
+
+    /**
+     * Function to handle form submission with Sonification File
+     */
+    // (Already handled in the existing form submission handler above)
 
 });
 </script>
