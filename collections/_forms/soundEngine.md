@@ -175,7 +175,6 @@ public: false
         
    
 
-
     </form>
 </div>
 
@@ -184,16 +183,21 @@ public: false
 
 <script>
 
+    if (typeof lscache === 'undefined') {
+    console.warn('lscache is not available on this page.');
+} else {
+    console.log('lscache is loaded and available.');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId'); 
+
+
     if (!userId) {
-        document.getElementById('messageDisplay').innerText = 'No logged-in user found. Please log in first.';
-        document.getElementById('messageDisplay').style.color = 'red';
         window.location.href = '/login';
         return;
     }
-
+    let isCreateMode = false;
     let isEditMode = false;
     let currentSoundEngineId = null;
     let isOwner = false;
@@ -201,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const formTitle = document.getElementById('formTitle');
     const soundEngineView = document.getElementById('soundEngineView');
     const soundEngineForm = document.getElementById('soundEngineForm');
-    let editButton = document.getElementById('editButton');
+    const editButton = document.getElementById('editButton');
     const backButton = document.getElementById('backButton');
     const cancelButton = document.getElementById('cancelButton');
 
@@ -262,58 +266,58 @@ document.addEventListener('DOMContentLoaded', function() {
     updateBorderColor();
     updateBorderColor2();
 
-// Handle mode logic and load sound engine details
-if (!currentSoundEngineId || mode === 'create') {
-    formTitle.innerText = 'Create a Sound Engine';
-    toggleViewMode(true); // Show the form for creation
-    isEditMode = true; // Ensure that we are in edit mode for creation
-} else if (mode === 'edit' && currentSoundEngineId) {
-    formTitle.innerText = 'Edit Sound Engine';
-    isEditMode = true;
-    loadSoundEngineDetails(currentSoundEngineId);
-    toggleViewMode(true); // Show the form for editing
-} else if (mode === 'soundEngine' && currentSoundEngineId) {
-    formTitle.innerText = 'Sound Engine Details';
-    loadSoundEngineDetails(currentSoundEngineId);
-    toggleViewMode(false); // Ensure we are in view mode
-}
-
-editButton.addEventListener('click', function() {
-
-                    console.log('is CLICKED.');
-
-    // Toggle the mode directly based on `isEditMode`
-    if (isEditMode) {
-        // If already in edit mode, revert changes like pressing cancel
+    // Handle mode logic and load sound engine details
+    if (!currentSoundEngineId || mode === 'create') {
+        formTitle.innerText = 'Create a Sound Engine';
+        toggleViewMode(true); // Show the form for creation
+        isCreateMode = true;
+        isEditMode = false;
+        editButton.style.display = 'none'; // Hide edit button in create mode
+    } else if (mode === 'edit' && currentSoundEngineId) {
+        formTitle.innerText = 'Edit Sound Engine';
+        isEditMode = true;
+        isCreateMode = false;
         loadSoundEngineDetails(currentSoundEngineId);
-        toggleViewMode(false);
-                console.log('is edit mode FALSEEEE.');
-
-    } else {
-        // If not in edit mode, switch to edit mode
-        toggleViewMode(true);
-                console.log('is edit mode  TRUEEE.');
-
+        toggleViewMode(true); // Show the form for editing
+    } else if (mode === 'soundEngine' && currentSoundEngineId) {
+        formTitle.innerText = 'Sound Engine Details';
+        isEditMode = false;
+        isCreateMode = false;
+        loadSoundEngineDetails(currentSoundEngineId);
+        toggleViewMode(false); // Ensure we are in view mode
     }
-    // Toggle the edit mode state
-    isEditMode = !isEditMode;
-});
 
-
-    cancelButton.addEventListener('click', function() {
+    // Edit Button Event Listener
+    editButton.addEventListener('click', function() {
         if (isEditMode) {
+            // If already in edit mode, switch back to view mode
             loadSoundEngineDetails(currentSoundEngineId);
             toggleViewMode(false);
-            isEditMode = false; 
+            isEditMode = false;
         } else {
-            soundEngineForm.reset();
-            soundEngineImagePreviewForm.src = '';
-            soundEngineImagePreviewForm.style.display = 'none';
-            toggleViewMode(false);
-            isEditMode = false; 
+            // Switch to edit mode
+            toggleViewMode(true);
+            isEditMode = true;
         }
     });
 
+    // Cancel Button Event Listener
+    cancelButton.addEventListener('click', function() {
+        if (isCreateMode || isEditMode) {
+            // Reset the form and switch back to view mode
+            if (isEditMode) {
+                loadSoundEngineDetails(currentSoundEngineId);
+            } else {
+                soundEngineForm.reset();
+                resetFormState();
+            }
+            toggleViewMode(false);
+            isCreateMode = false;
+            isEditMode = false;
+        }
+    });
+
+    // Back Button Event Listener
     backButton.addEventListener('click', function() {
         window.location.href = '/voyage';
     });
@@ -334,10 +338,32 @@ editButton.addEventListener('click', function() {
         }
     });
 
-    // Function to handle form submission
-    soundEngineForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+    // Function to reset form state after creation
+    function resetFormState() {
+        soundEngineImagePreviewForm.src = '';
+        soundEngineImagePreviewForm.style.display = 'none';
+        document.getElementById('existingImage').style.display = 'none';
+        document.getElementById('existingJsonFile').style.display = 'none';
+        document.getElementById('nameFeedback').innerText = '';
 
+        // Reset hidden fields and color pickers
+        document.getElementById('soundEngineId').value = '';
+        color1Picker.value = '#ff33cc';
+        alpha1Picker.value = '1';
+        color2Picker.value = '#33ffff';
+        alpha2Picker.value = '1';
+        updateBorderColor();
+        updateBorderColor2();
+
+        // Optionally, set focus back to the first input field
+        document.getElementById('developerUsername').focus();
+    }
+
+    // Function to handle form submission
+    soundEngineForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        // Disable all form inputs to prevent multiple submissions while processing
+        disableFormInputs(true);
         // Disable the save button to prevent multiple submissions
         const saveButton = soundEngineForm.querySelector('[type="submit"]');
         saveButton.disabled = true;
@@ -355,7 +381,17 @@ editButton.addEventListener('click', function() {
         if (!developerUsername || !soundEngineName || !color1 || !color2 || sonificationState === '' || !userId) {
             showToast('Please fill in all required fields.', 'error');
             saveButton.disabled = false; // Re-enable the save button
-            return;
+                    return disableFormInputs(false);
+
+        }
+
+        // Validate Sound Engine Name Availability
+        const soundEngineId = document.getElementById('soundEngineId').value.trim();
+        const isNameAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
+        if (!isNameAvailable) {
+            showToast('Sound Engine name is already taken. Please choose another one.', 'error');
+            saveButton.disabled = false; // Re-enable the save button
+        return disableFormInputs(false);
         }
 
         // Prepare form data
@@ -391,10 +427,9 @@ editButton.addEventListener('click', function() {
         let apiEndpoint = 'http://media.maar.world:3001/api/soundEngines';
         let method = 'POST'; // Default method for creating a new sound engine
 
-        console.log('Edit mode:', isEditMode, 'Sound Engine ID:', currentSoundEngineId);
+        console.log('Create mode:', isCreateMode, 'Edit mode:', isEditMode, 'Sound Engine ID:', currentSoundEngineId);
         console.log('HTTP Method:', method);
         console.log('API Endpoint:', apiEndpoint);
-
 
         if (isEditMode && currentSoundEngineId) {
             // Update the endpoint and method for editing mode
@@ -406,38 +441,108 @@ editButton.addEventListener('click', function() {
             console.log('Updated API Endpoint:', apiEndpoint);
         }
 
-        // Perform the API request
-        fetch(apiEndpoint, {
-            method: method,
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch(apiEndpoint, {
+                method: method,
+                body: formData,
+            });
+            const data = await response.json();
+
+            console.log("Data received after submission:", data); // Log the entire response
+
             if (data.success) {
-                showToast('Sound Engine saved successfully!', 'success');
+
+            clearProfileCache(userId);
+            console.log("id"+" "+userId);
                 if (isEditMode) {
-                    // Reload sound engine details to reflect updates and switch to view mode
-                    loadSoundEngineDetails(currentSoundEngineId);
-                    toggleViewMode(false);
-                } else {
-                    // Redirect to the new sound engine page if creation was successful
-                    window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${data.soundEngine._id}`;
+                    // Edit Mode Logic
+                    showToast('Sound Engine updated successfully!', 'success');
+
+                    // No need to update sessionData.enginesOwned since it's an edit
+
+
+                    // Redirect to View Mode with the same Sound Engine ID
+                    setTimeout(() => {
+                        window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${currentSoundEngineId}`;
+                    }, 3000); // 2-second delay to allow the toast to be visible
+                } else if (isCreateMode) {
+                    // Create Mode Logic
+
+                    showToast('Sound Engine created successfully!', 'success');
+
+                    // Capture the new Sound Engine ID
+                    const newSoundEngineId = data.soundEngine && data.soundEngine._id ? data.soundEngine._id : null;
+
+                    if (newSoundEngineId) {
+                        // Update sessionData.enginesOwned in localStorage
+                        const sessionData = JSON.parse(localStorage.getItem('sessionData'));
+                        if (sessionData) {
+                            if (Array.isArray(sessionData.enginesOwned)) {
+                                sessionData.enginesOwned.push(newSoundEngineId);
+                            } else {
+                                sessionData.enginesOwned = [newSoundEngineId];
+                            }
+                            localStorage.setItem('sessionData', JSON.stringify(sessionData));
+                            console.log('Updated sessionData.enginesOwned:', sessionData.enginesOwned);
+                        } else {
+                            console.warn('sessionData not found in localStorage. Creating new sessionData.');
+                            const newSessionData = {
+                                // Include other necessary session properties here
+                                enginesOwned: [newSoundEngineId],
+                                // e.g., tracksOwned: [], interplanetaryPlayersOwned: [], etc.
+                                // Ensure other necessary fields are populated to prevent data loss
+                            };
+                            localStorage.setItem('sessionData', JSON.stringify(newSessionData));
+                            console.log('Initialized sessionData with enginesOwned:', newSessionData.enginesOwned);
+                        }
+
+                        // Clear cache to fetch the latest Sound Engines
+
+                        // Redirect to View Mode of the newly created Sound Engine
+                        setTimeout(() => {
+                            window.location.href = `/voyage/soundEngine?mode=soundEngine&id=${newSoundEngineId}`;
+                        }, 2000); // 2-second delay to allow the toast to be visible
+                    } else {
+                        console.error('Sound Engine ID is invalid or missing:', newSoundEngineId);
+                        showToast('Failed to retrieve Sound Engine ID. Please try again.', 'error');
+                    }
                 }
             } else {
+                console.error("Error in response data:", data);
                 showToast(data.message || 'An error occurred.', 'error');
             }
-        })
-        .catch(error => {
-            console.error('Error during sound engine submission:', error);
+        } catch (error) {
+            console.error('Error during sound engine submission:', error); // Log any error that occurs
             showToast('An error occurred while saving the sound engine.', 'error');
-        })
-        .finally(() => {
+        } finally {
             // Re-enable the save button after request completes
             saveButton.disabled = false;
-        });
+                    disableFormInputs(false); // Re-enable form inputs after submission or error
+
+        }
     });
 
-    // Function to disable or enable form inputs
+    /**
+     * Function to clear cached Sound Engines.
+     */
+        function clearProfileCache(userId) {
+            if (typeof lscache === 'undefined') {
+                console.warn('lscache is not available. Skipping cache clearing.');
+                return;
+            }
+
+            const cacheKey = `profile_${userId}`;
+            const cachedProfile = lscache.get(cacheKey);
+            if (cachedProfile) {
+                lscache.remove(cacheKey);
+                console.log(`Profile cache cleared for user`);
+            } else {
+                console.log(`No cache found for user`);
+            }
+        }
+    /**
+     * Function to disable or enable form inputs
+     */
     function disableFormInputs(disable) {
         const inputs = soundEngineForm.querySelectorAll('input, textarea, select, button');
         inputs.forEach(input => {
@@ -445,121 +550,94 @@ editButton.addEventListener('click', function() {
         });
     }
 
-    // Toggle between view and edit modes
+    /**
+     * Toggle between view and edit modes
+     */
     function toggleViewMode(editMode) {
         if (editMode) {
             soundEngineView.style.display = 'none';
             soundEngineForm.style.display = 'block';
-                        console.log('Switched to edit mode.');
-
+            console.log(editMode ? 'Switched to edit/create mode.' : 'Switched to view mode.');
         } else {
             soundEngineView.style.display = 'block';
             soundEngineForm.style.display = 'none';
-                        console.log('Switched to view mode.');
-
+            console.log('Switched to view mode.');
         }
     }
 
     let existingSoundEngine = null;  // Define existingSoundEngine at the top
 
-// Load sound engine details
-// Load sound engine details
-function loadSoundEngineDetails(soundEngineId) {
-    fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to load sound engine details: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Received Sound Engine Data:', data);
-
-            if (data.success && data.soundEngine) {
-                existingSoundEngine = data.soundEngine;
-                populateViewMode(data.soundEngine);
-                populateFormMode(data.soundEngine);
-
-                console.log('Logged-in userId:', userId);
-                console.log('Sound Engine ownerId:', data.soundEngine.ownerId);
-
-                // Update the global isOwner variable
-                isOwner = data.soundEngine.ownerId === userId;
-                console.log('Is user the owner?', isOwner);
-
-                // Show the edit button only if the user is the owner
-                if (isOwner) {
-                    editButton.style.display = 'block';
-                } else {
-                    editButton.style.display = 'none';
+    /**
+     * Load sound engine details
+     */
+    function loadSoundEngineDetails(soundEngineId) {
+        fetch(`http://media.maar.world:3001/api/soundEngines/${soundEngineId}?userId=${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load sound engine details: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received Sound Engine Data:', data);
 
-                // Re-select the editButton after DOM updates
-                editButton = document.getElementById('editButton');
+                if (data.success && data.soundEngine) {
+                    existingSoundEngine = data.soundEngine;
+                    populateViewMode(data.soundEngine);
+                    populateFormMode(data.soundEngine);
 
-                // Attach the event listener here
-                if (editButton) {
-                    console.log('Attaching event listener to editButton.');
-                    editButton.addEventListener('click', function() {
-                        // Toggle the mode directly based on `isEditMode`
-                        if (isEditMode) {
-                            // If already in edit mode, revert changes like pressing cancel
-                            loadSoundEngineDetails(currentSoundEngineId);
-                            toggleViewMode(false);
-                            console.log('is edit mode FALSEEEE.');
-                        } else {
-                            // If not in edit mode, switch to edit mode
-                            toggleViewMode(true);
-                            console.log('is edit mode  TRUEEE.');
-                        }
-                        // Toggle the edit mode state
-                        isEditMode = !isEditMode;
-                    });
-                } else {
-                    console.error('editButton element not found after DOM updates!');
-                }
+                    console.log('Logged-in userId:', userId);
+                    console.log('Sound Engine ownerId:', data.soundEngine.ownerId);
 
-                // Display owner details
-                const ownerDetails = data.soundEngine.ownerDetails;
-                const engineOwnerList = document.getElementById('engineOwnerList');
-                console.log("Owner Data:", ownerDetails);
+                    // Update the global isOwner variable
+                    isOwner = data.soundEngine.ownerId === userId;
+                    console.log('Is user the owner?', isOwner);
 
-                if (ownerDetails) {
-                    engineOwnerList.innerHTML = `
-                        <li class="user-list-item">
-                            <div class="user-profile-pic">
-                                <img src="https://media.maar.world${ownerDetails.profileImage || 'https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${ownerDetails.username}">
-                            </div>
-                            <div class="user-details">
-                                <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
-                                <div class="user-username">
-                                    <a href="/xplorer/?username=${ownerDetails.username}" target="_self">
-                                        @${ownerDetails.username || 'Unknown'}
-                                    </a>
+                    // Show the edit button only if the user is the owner
+                    if (isOwner) {
+                        editButton.style.display = 'block';
+                    } else {
+                        editButton.style.display = 'none';
+                    }
+
+                    // Display owner details
+                    const ownerDetails = data.soundEngine.ownerDetails;
+                    const engineOwnerList = document.getElementById('engineOwnerList');
+                    console.log("Owner Data:", ownerDetails);
+
+                    if (ownerDetails) {
+                        engineOwnerList.innerHTML = `
+                            <li class="user-list-item">
+                                <div class="user-profile-pic">
+                                    <img src="https://media.maar.world${ownerDetails.profileImage || '/uploads/default/default-profile.jpg'}" alt="${ownerDetails.username}">
                                 </div>
-                            </div>
-                        </li>`;
-                    document.getElementById('engineOwnerCount').innerText = 1;
+                                <div class="user-details">
+                                    <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
+                                    <div class="user-username">
+                                        <a href="/xplorer/?username=${ownerDetails.username}" target="_self">
+                                            @${ownerDetails.username || 'Unknown'}
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>`;
+                        document.getElementById('engineOwnerCount').innerText = 1;
+                    } else {
+                        engineOwnerList.innerHTML = '<li>No owner details available.</li>';
+                        document.getElementById('engineOwnerCount').innerText = 0;
+                    }
                 } else {
-                    engineOwnerList.innerHTML = '<li>No owner details available.</li>';
-                    document.getElementById('engineOwnerCount').innerText = 0;
+                    showToast(data.message || 'Failed to load sound engine details.', 'error');
                 }
+            })
+            .catch(error => {
+                console.error('An error occurred while loading sound engine details:', error);
+                showToast('An error occurred while loading sound engine details.', 'error');
+            });
+    }
 
-                // **Add this line to set the view mode correctly**
-              //  toggleViewMode(isEditMode);
-
-            } else {
-                showToast(data.message || 'Failed to load sound engine details.', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('An error occurred while loading sound engine details:', error);
-            showToast('An error occurred while loading sound engine details.', 'error');
-        });
-}
-
-
-    // Populate view mode with sound engine details
+    /**
+     * Populate view mode with sound engine details
+     */
     function populateViewMode(soundEngine) {
         document.getElementById('displayDeveloperUsername').innerText = soundEngine.developerUsername;
         document.getElementById('displaySoundEngineName').innerText = soundEngine.soundEngineName;
@@ -578,7 +656,9 @@ function loadSoundEngineDetails(soundEngineId) {
         }
     }
 
-    // Populate form fields for edit mode
+    /**
+     * Populate form fields for edit mode
+     */
     function populateFormMode(soundEngine) {
         const baseUrl = 'https://media.maar.world';
 
@@ -597,10 +677,11 @@ function loadSoundEngineDetails(soundEngineId) {
             document.getElementById('existingImage').style.display = 'block';
             document.getElementById('existingImageLink').href = fullImageUrl;
             document.getElementById('existingImageLink').textContent = soundEngine.soundEngineImage.split('/').pop();
-            document.getElementById('soundEngineImagePreviewForm').src = fullImageUrl;
-            document.getElementById('soundEngineImagePreviewForm').style.display = 'block';
+            soundEngineImagePreviewForm.src = fullImageUrl;
+            soundEngineImagePreviewForm.style.display = 'block';
         } else {
-            document.getElementById('soundEngineImagePreviewForm').style.display = 'none';
+            document.getElementById('existingImage').style.display = 'none';
+            soundEngineImagePreviewForm.style.display = 'none';
         }
 
         // Show existing JSON file
@@ -627,7 +708,9 @@ function loadSoundEngineDetails(soundEngineId) {
         updateBorderColor2();
     }
 
-    // Helper to extract RGBA values from a string like "rgba(255, 51, 204, 0.5)"
+    /**
+     * Helper to extract RGBA values from a string like "rgba(255, 51, 204, 0.5)"
+     */
     function extractRGBAValues(rgbaString) {
         const rgbaMatch = rgbaString.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*(\d*(?:\.\d+)?)?\)/);
         if (rgbaMatch) {
@@ -637,12 +720,16 @@ function loadSoundEngineDetails(soundEngineId) {
         return [0, 0, 0, 1]; // default values if parsing fails
     }
 
-    // Helper to convert RGB values to hex
+    /**
+     * Helper to convert RGB values to hex
+     */
     function rgbToHex(r, g, b) {
         return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
     }
 
-    // Toast function for showing messages
+    /**
+     * Toast function for showing messages
+     */
     function showToast(message, type = 'success') {
         const toastContainer = document.getElementById('toastContainer');
         const toast = document.createElement('div');
@@ -672,7 +759,9 @@ function loadSoundEngineDetails(soundEngineId) {
         }, 3000);
     }
 
-    // Validation for Min, Max, and Initial Values
+    /**
+     * Validation for Min, Max, and Initial Values
+     */
     const params = ['x', 'y', 'z'];
     
     params.forEach(param => {
@@ -707,76 +796,82 @@ function loadSoundEngineDetails(soundEngineId) {
         initInput.addEventListener('input', validateInitValue);
     });
 
+    /**
+     * Function to check if a SoundEngine name exists
+     */
+    async function checkSoundEngineExists(soundEngineName, soundEngineId = null) {
+        try {
+            const url = new URL('http://media.maar.world:3001/api/soundEngines/exists');
+            url.searchParams.append('soundEngineName', soundEngineName);
+            if (soundEngineId) {
+                url.searchParams.append('id', soundEngineId);
+            }
 
-    // Function to check if a SoundEngine name exists
-// Function to check if a SoundEngine name exists
-async function checkSoundEngineExists(soundEngineName, soundEngineId = null) {
-    try {
-        const url = new URL('http://media.maar.world:3001/api/soundEngines/exists');
-        url.searchParams.append('soundEngineName', soundEngineName);
-        if (soundEngineId) {
-            url.searchParams.append('id', soundEngineId);
+            const response = await fetch(url);
+            const data = await response.json();
+            return !data.exists; // Return true if name is available
+        } catch (error) {
+            console.error('Error checking SoundEngine existence:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Debounce function to limit the number of API calls
+     */
+    function debounce(func, delay) {
+        let debounceTimer;
+        return function(...args) {
+            const context = this;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
+
+    /**
+     * Handle input event for the SoundEngine name with debounce
+     */
+    document.getElementById('soundEngineName').addEventListener('input', debounce(async function(e) {
+        const soundEngineName = e.target.value.trim();
+        const feedback = document.getElementById('nameFeedback');
+        const soundEngineId = document.getElementById('soundEngineId').value.trim(); // Hidden input for the sound engine ID
+
+        // Validate the format of the SoundEngine name
+        const nameRegex = /^[a-zA-Z0-9_-]{1,30}$/;
+        if (!nameRegex.test(soundEngineName)) {
+            feedback.textContent = 'Invalid format. Use letters, numbers, underscores, and hyphens (max 30 characters).';
+            feedback.style.color = 'red';
+            return;
         }
 
-        const response = await fetch(url);
-        const data = await response.json();
-        return data.exists;
-    } catch (error) {
-        console.error('Error checking SoundEngine existence:', error);
-        return false;
-    }
-}
+        if (soundEngineName.length === 0) {
+            feedback.textContent = '';
+            return;
+        }
 
-// Debounce function to limit the number of API calls
-function debounce(func, delay) {
-    let debounceTimer;
-    return function(...args) {
-        const context = this;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    };
-}
+        const isAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
+        if (!isAvailable) {
+            feedback.textContent = 'Name is already taken.';
+            feedback.style.color = 'red';
+        } else {
+            feedback.textContent = 'Name is available.';
+            feedback.style.color = 'green';
+        }
+    }, 500)); // Adjust the delay time if needed
 
-// Handle input event for the SoundEngine name
-document.getElementById('soundEngineName').addEventListener('input', debounce(async function(e) {
-    const soundEngineName = e.target.value.trim();
-    const feedback = document.getElementById('nameFeedback');
-    const soundEngineId = document.getElementById('soundEngineId').value.trim(); // Hidden input for the sound engine ID
+    /**
+     * Prevent form submission if the name is taken
+     */
+    soundEngineForm.addEventListener('submit', async function(e) {
+        const soundEngineName = document.getElementById('soundEngineName').value.trim();
+        const soundEngineId = document.getElementById('soundEngineId').value.trim(); // Hidden input for the sound engine ID
 
-    // Validate the format of the SoundEngine name
-    const usernameRegex = /^[a-zA-Z0-9_-]{1,30}$/;
-    if (!usernameRegex.test(soundEngineName)) {
-        feedback.textContent = 'Invalid format. Use letters, numbers, underscores, and hyphens (max 30 characters).';
-        feedback.style.color = 'red';
-        return;
-    }
-
-    if (soundEngineName.length === 0) {
-        feedback.textContent = '';
-        return;
-    }
-
-    const exists = await checkSoundEngineExists(soundEngineName, soundEngineId);
-    if (exists) {
-        feedback.textContent = 'Name is already taken.';
-        feedback.style.color = 'red';
-    } else {
-        feedback.textContent = 'Name is available.';
-        feedback.style.color = 'green';
-    }
-}, 500)); // Adjust the delay time if needed
-
-// Prevent form submission if the name is taken
-document.getElementById('soundEngineForm').addEventListener('submit', async function(e) {
-    const soundEngineName = document.getElementById('soundEngineName').value.trim();
-    const soundEngineId = document.getElementById('soundEngineId').value.trim(); // Hidden input for the sound engine ID
-
-    const exists = await checkSoundEngineExists(soundEngineName, soundEngineId);
-    if (exists) {
-        e.preventDefault();
-        alert('Sound Engine name is already taken. Please choose another one.');
-    }
-});
+        const isAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
+        if (!isAvailable) {
+            e.preventDefault();
+            showToast('Sound Engine name is already taken. Please choose another one.', 'error');
+        }
+    });
 
 });
 </script>
