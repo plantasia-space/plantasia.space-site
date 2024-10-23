@@ -563,7 +563,7 @@ if (sonificationStateValue) {
     });
 
     /**
-     * Function to clear cached Sound Engines.
+     * Function to clear cached Profiles.
      */
         function clearProfileCache(userId) {
             if (typeof lscache === 'undefined') {

@@ -8,6 +8,8 @@
       {%- include scripts/utils/utils.js -%}
       {%- include scripts/lib/throttle.js -%}
       {%- include scripts/lib/lazyload.js -%}
+      {%- include scripts/lib/lscache.min.js -%}
+
     </script>
     {%- include scripts/variables.html -%}
     {%- include scripts/cookie-consent.html -%}
@@ -21,11 +23,12 @@
     <script>
       {%- include scripts/common.js -%}
      // {%- include scripts/searchUsers.js -%}
-
     </script>
     
-    <!-- Centralized Authentication and Session Management -->
+
     <script>
+
+      
       const API_BASE = 'http://media.maar.world:3001';
 
       // Centralized session checking with retries and proper cookie handling
@@ -110,6 +113,27 @@
         }
       }
 
+      // Function to fetch profile data
+async function fetchProfileData(userId) {
+  try {
+      const response = await fetch(`http://media.maar.world:3001/api/users/${userId}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch profile data.');
+      }
+
+      const profileData = await response.json();
+      localStorage.setItem('profileData', JSON.stringify(profileData));
+  } catch (error) {
+      console.error('Error fetching profile data:', error);
+  }
+}
       // Call session check on DOM load
    //   document.addEventListener('DOMContentLoaded', checkSession);
     </script>

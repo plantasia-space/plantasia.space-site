@@ -474,6 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('messageDisplay').innerText = 'An error occurred while updating your profile.';
             document.getElementById('messageDisplay').style.color = 'red';
         };
+            clearProfileCache(userId);
 
         xhr.send(formData);
     }
@@ -495,4 +496,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 });
+
+    /**
+     * Function to clear cached Profiles.
+     */
+        function clearProfileCache(userId) {
+            if (typeof lscache === 'undefined') {
+                console.warn('lscache is not available. Skipping cache clearing.');
+                return;
+            }
+
+            const cacheKey = `profile_${userId}`;
+            const cachedProfile = lscache.get(cacheKey);
+            if (cachedProfile) {
+                lscache.remove(cacheKey);
+                console.log(`Profile cache cleared for user`);
+            } else {
+                console.log(`No cache found for user`);
+            }
+        }
+        
 </script>
