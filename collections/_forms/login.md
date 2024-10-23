@@ -105,38 +105,33 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Function to handle user login
-  async function loginUser(email, password) {
+async function loginUser(email, password) {
     try {
-      const response = await fetch('http://media.maar.world:3001/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+        const response = await fetch('http://media.maar.world:3001/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-      if (!response.ok) {
-        let errorMessage = 'Login failed. Please try again.';
-        if (response.status === 429) errorMessage = 'Too many login attempts. Please wait and try again later.';
-        else if (response.status === 401) errorMessage = 'Invalid email or password.';
-        else if (response.status === 500) errorMessage = 'Server error. Please try again later.';
-        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Login failed. Please try again.');
+        }
+
         const data = await response.json();
-        errorMessage = data.message || errorMessage;
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId); // Store user ID
 
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);
-
-      messageElement.innerText = "Login successful! Redirecting...";
-      messageElement.style.color = 'green';
-      setTimeout(() => window.location.href = '/voyage', 1500);
+        messageElement.innerText = "Login successful! Redirecting...";
+        messageElement.style.color = 'green';
+        setTimeout(() => window.location.href = '/voyage', 1500);
     } catch (error) {
-      messageElement.innerText = error.message;
-      messageElement.style.color = 'red';
+        messageElement.innerText = error.message;
+        messageElement.style.color = 'red';
     }
-  }
+}
+
+
 
   // Setup form handlers
   function setupLoginForm() {
