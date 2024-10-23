@@ -210,6 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function populateUserProfile(data) {
+        // Store the original username
+        currentUsername = data.username || '';
+
         // Populate display fields
         document.getElementById('displayUsername').innerText = data.username;
         document.getElementById('displayUsernameForUrl').innerText = data.username;
@@ -360,45 +363,70 @@ document.addEventListener('DOMContentLoaded', function() {
     const feedbackElement = document.getElementById('usernameFeedback');
     const validUsername = /^[a-z0-9_-]{1,30}$/;
 
-    async function checkUsername() {
-        const username = usernameInput.value.trim().toLowerCase();
+async function checkUsername() {
+    const username = usernameInput.value.trim().toLowerCase();
 
-        if (!validUsername.test(username)) {
-            feedbackElement.innerText = 'Invalid username format.';
-            feedbackElement.style.color = 'red';
-            return false;
-        }
+    if (!validUsername.test(username)) {
+        feedbackElement.innerText = 'Invalid username format.';
+        feedbackElement.style.color = 'red';
+        return false;
+    }
 
-        if (username === currentUsername) {
-            feedbackElement.innerText = 'This is your current username.';
-            feedbackElement.style.color = 'green';
-            return true;
-        }
-
-        const isUnique = await checkUsernameUniqueness(username);
-        if (!isUnique) {
-            feedbackElement.innerText = 'Username is already taken.';
-            feedbackElement.style.color = 'red';
-            return false;
-        }
-
-        feedbackElement.innerText = 'Username is available!';
+    if (username === currentUsername) {
+        feedbackElement.innerText = 'This is your current username.';
         feedbackElement.style.color = 'green';
         return true;
     }
 
-    async function checkUsernameUniqueness(username) {
-        try {
-            const response = await fetch(`http://media.maar.world:3001/api/checkUsername?username=${username}`);
-            const data = await response.json();
-            return data.isUnique;
-        } catch (error) {
-            console.error('Error checking username uniqueness:', error);
-            return false;
-        }
+    // Pass the correct userId (UUID) here
+    const isUnique = await checkUsernameUniqueness(username, userId);
+    if (!isUnique) {
+        feedbackElement.innerText = 'Username is already taken.';
+        feedbackElement.style.color = 'red';
+        return false;
     }
 
-    usernameInput.addEventListener('input', checkUsername);
+    feedbackElement.innerText = 'Username is available!';
+    feedbackElement.style.color = 'green';
+    return true;
+}
+
+
+    // Debounce function to limit the rate of function execution
+    function debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
+    // Create a debounced version of checkUsername
+    const debouncedCheckUsername = debounce(checkUsername, 500);
+
+    // Update the event listener to use the debounced function
+    usernameInput.addEventListener('input', debouncedCheckUsername);
+
+    // Function to check if the username is unique
+// Function to check if the username is unique
+async function checkUsernameUniqueness(username, currentUserId = null) {
+    try {
+        const url = new URL('http://media.maar.world:3001/api/checkUsername');
+        url.searchParams.append('username', username);
+        
+        // Include currentUserId if available (i.e., during edit)
+        if (currentUserId) {
+            url.searchParams.append('currentUserId', currentUserId);
+        }
+
+        const response = await fetch(url.toString());
+        const data = await response.json();
+        return data.isUnique; // Assuming server returns { isUnique: true/false }
+    } catch (error) {
+        console.error('Error checking username uniqueness:', error);
+        return false;
+    }
+}
 
     // Submit profile form
     document.getElementById('profileForm').addEventListener('submit', async function(event) {
@@ -474,7 +502,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('messageDisplay').innerText = 'An error occurred while updating your profile.';
             document.getElementById('messageDisplay').style.color = 'red';
         };
-            clearProfileCache(userId);
 
         xhr.send(formData);
     }
@@ -483,37 +510,23 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchUserProfile(userId);
 
 
-    // Function to check if the username is unique
-    async function checkUsernameUniqueness(username) {
-        try {
-            const response = await fetch(`http://media.maar.world:3001/api/checkUsername?username=${username}`);
-            const data = await response.json();
-            return data.isUnique; // Assuming server returns { isUnique: true/false }
-        } catch (error) {
-            console.error('Error checking username uniqueness:', error);
-            return false;
-        }
-    }
-
-});
-
     /**
      * Function to clear cached Profiles.
      */
-        function clearProfileCache(userId) {
-            if (typeof lscache === 'undefined') {
-                console.warn('lscache is not available. Skipping cache clearing.');
-                return;
-            }
-
-            const cacheKey = `profile_${userId}`;
-            const cachedProfile = lscache.get(cacheKey);
-            if (cachedProfile) {
-                lscache.remove(cacheKey);
-                console.log(`Profile cache cleared for user`);
-            } else {
-                console.log(`No cache found for user`);
-            }
+    function clearProfileCache(userId) {
+        if (typeof lscache === 'undefined') {
+            console.warn('lscache is not available. Skipping cache clearing.');
+            return;
         }
-        
+
+        const cacheKey = `profile_${userId}`;
+        const cachedProfile = lscache.get(cacheKey);
+        if (cachedProfile) {
+            lscache.remove(cacheKey);
+            console.log(`Profile cache cleared for user`);
+        } else {
+            console.log(`No cache found for user`);
+        }
+    }
+});
 </script>
