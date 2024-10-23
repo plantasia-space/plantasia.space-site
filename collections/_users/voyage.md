@@ -35,6 +35,10 @@ public: false
 
     <h2>Your Interplanetary Players:</h2>
     <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
+
+        <h2>Your Playlists:</h2>
+    <ul class="playlist-list" id="playlist-list"></ul>
+
 </div>
 
 <!-- Toast Notification Container -->
@@ -105,33 +109,38 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('No valid session found. Redirecting to login...');
         window.location.href = '/login';
         return;
-    }    
+    }
+
     // Fetch user profile data
     fetchUserProfile(userId);
+
 });
 
-// Function to fetch user profile data from cache or server
-function fetchUserProfile(userId) {
-    const cachedProfile = lscache.get(`profile_${userId}`);
-    if (cachedProfile) {
-        console.log('Using cached profile data:', cachedProfile);
-        populateUserProfile(cachedProfile); // Use cached data
-    } else {
-        fetch(`http://media.maar.world:3001/api/profile?userId=${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Received fresh profile data:', data);
-                lscache.set(`profile_${userId}`, data, 60); // Cache for 60 minutes
-                populateUserProfile(data); // Populate UI with fresh data
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-                document.getElementById('messageDisplay').innerText = 'Error fetching user data. Please try again.';
-            });
+/**
+ * Function to fetch user profile data using cache.js
+ * @param {string} userId
+ */
+async function fetchUserProfile(userId) {
+    const cacheKey = `profile_${userId}`;
+    try {
+        const data = await fetchDataWithCache(
+            `http://media.maar.world:3001/api/profile?userId=${userId}`,
+            cacheKey,
+            60, // Cache for 60 minutes
+            false // forceRefresh: false
+        );
+        populateUserProfile(data);
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        document.getElementById('messageDisplay').innerText = 'Error fetching user data. Please try again.';
     }
 }
 
-// Function to populate user profile UI
+/**
+ * Function to populate user profile UI
+ * @param {Object} profileData - The user's profile data
+ */
+
 function populateUserProfile(profileData) {
     // Call populateUserProfileList to display the profile
     populateUserProfileList(profileData);
@@ -245,8 +254,7 @@ function displayTracks(tracks) {
  * @param {Array<string>} engineIds - Array of sound engine IDs owned by the user.
  */
 async function displaySoundEnginesBatch(engineIds) {
-
-        console.log('Starting displaySoundEnginesBatch with IDs:', engineIds);
+    console.log('Starting displaySoundEnginesBatch with IDs:', engineIds);
 
     const soundEnginesListElement = document.getElementById('sound-engines-list');
     soundEnginesListElement.innerHTML = ''; // Clear existing list
@@ -271,7 +279,13 @@ async function displaySoundEnginesBatch(engineIds) {
     const batchUrl = `http://media.maar.world:3001/api/soundEngines/batch?ids=${sortedIds.join(',')}`;
 
     try {
-        const data = await fetchDataWithCache(batchUrl, cacheKey, false);
+        const data = await fetchDataWithCache(
+            batchUrl,
+            cacheKey,
+            5, // Cache for 5 minutes
+            false // forceRefresh: false
+        );
+
         if (data.success && Array.isArray(data.soundEngines)) {
             console.log(`Fetched ${data.soundEngines.length} sound engines.`);
             data.soundEngines.forEach(engine => {
@@ -575,6 +589,9 @@ function closeAllDropdowns() {
  * @param {HTMLElement} button - The delete button that was clicked
  */
 function deleteSoundEngine(engineId, button) {
+    const userId = localStorage.getItem('userId');
+    const cacheKey = `profile_${userId}`;
+
     // Confirm deletion with the user
     const confirmation = confirm('Are you sure you want to delete this Sound Engine? This action cannot be undone.');
     if (!confirmation) return;
@@ -604,6 +621,8 @@ function deleteSoundEngine(engineId, button) {
             if (soundEngineListItem) {
                 soundEngineListItem.remove();
             }
+            // Clear the profile cache after deletion
+            clearCachedData(cacheKey);
         } else {
             throw new Error(data.message || 'Failed to delete the Sound Engine.');
         }
@@ -611,7 +630,6 @@ function deleteSoundEngine(engineId, button) {
     .catch(error => {
         console.error('Error deleting Sound Engine:', error);
         showToast(`Error: ${error.message}`, 'error');
-        // Re-enable the delete button
         button.disabled = false;
         button.textContent = 'Delete';
     });
@@ -624,6 +642,7 @@ function deleteSoundEngine(engineId, button) {
  */
 async function deleteInterplanetaryPlayer(playerId, buttonElement) {
     const userId = localStorage.getItem('userId');
+    const cacheKey = `profile_${userId}`;
 
     if (!userId) {
         alert('User not authenticated. Please log in.');
@@ -632,11 +651,7 @@ async function deleteInterplanetaryPlayer(playerId, buttonElement) {
 
     // Display a confirmation prompt before deletion
     const confirmation = confirm('Are you sure you want to delete this Interplanetary Player? This action cannot be undone.');
-    if (!confirmation) {
-        return; // Exit the function if the user cancels
-    }
-
-    console.log(`Deleting player at URL: /api/interplanetaryplayers/${playerId}`);
+    if (!confirmation) return;
 
     try {
         const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
@@ -644,19 +659,18 @@ async function deleteInterplanetaryPlayer(playerId, buttonElement) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userId }), // Send userId in the request body
+            body: JSON.stringify({ userId }),
         });
 
         const result = await response.json();
         if (result.success) {
-            // Ensure the player container is found
-            const playerContainer = buttonElement.closest('.interplanetaryPlayer-list-item'); // Use the correct class
+            const playerContainer = buttonElement.closest('.interplanetaryPlayer-list-item');
             if (playerContainer) {
-                playerContainer.remove(); // Remove the player from the UI
-                alert('Player deleted successfully.');
-            } else {
-                console.warn('Player container not found in the DOM.');
+                playerContainer.remove();
+                showToast('Player deleted successfully.', 'success');
             }
+            // Clear the profile cache after deletion
+            clearCachedData(cacheKey);
         } else {
             alert(`Error: ${result.message}`);
         }

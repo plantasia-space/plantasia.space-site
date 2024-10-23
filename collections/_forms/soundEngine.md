@@ -492,7 +492,7 @@ if (sonificationStateValue) {
 
             if (data.success) {
 
-            clearProfileCache(userId);
+            clearCachedData(`profile_${userId}`);
             console.log("id"+" "+userId);
                 if (isEditMode) {
                     // Edit Mode Logic
@@ -562,24 +562,7 @@ if (sonificationStateValue) {
         }
     });
 
-    /**
-     * Function to clear cached Profiles.
-     */
-        function clearProfileCache(userId) {
-            if (typeof lscache === 'undefined') {
-                console.warn('lscache is not available. Skipping cache clearing.');
-                return;
-            }
 
-            const cacheKey = `profile_${userId}`;
-            const cachedProfile = lscache.get(cacheKey);
-            if (cachedProfile) {
-                lscache.remove(cacheKey);
-                console.log(`Profile cache cleared for user`);
-            } else {
-                console.log(`No cache found for user`);
-            }
-        }
     /**
      * Function to disable or enable form inputs
      */
