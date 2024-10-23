@@ -704,3 +704,126 @@ input[type="number"] {
       transition: opacity 0.3s ease;
   }
 
+/* Add this CSS to your styles */
+.required-field::after {
+  content: " *";
+  color: red;
+}
+/* Artname check  */
+
+.feedback-message {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+.feedback-error {
+  color: red;
+}
+.feedback-success {
+  color: green;
+}
+
+
+////////////////////////////////
+/// 
+/// 
+/// 
+/// *
+/// 
+.voyage-profile {
+  display: flex;
+  flex-direction: row; /* Image on the left, details on the right */
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background: url('/img/lab/genesis-lab.jpg') no-repeat center center; /* Add background image */
+  background-size: cover; /* Make sure the image covers the entire area */
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
+  transition: transform 0.3s ease; /* Smooth hover animation */
+  width: 100%; /* Ensure full width within parent */
+  position: relative;
+  overflow: hidden; /* Ensures that the background doesn't overflow */
+}
+
+.voyage-profile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Add a dark overlay for better text contrast */
+  z-index: 1;
+}
+
+.voyage-profile:hover {
+  transform: translateY(-5px); /* Hover effect to lift the profile card */
+}
+
+.voyage-profile-pic img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffffff;
+  margin-right: 20px; /* Adds space between image and text */
+  position: relative;
+  z-index: 2; /* Ensure the image is on top of the overlay */
+}
+
+.voyage-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  position: relative;
+  z-index: 2; /* Ensure the details are on top of the overlay */
+}
+
+.voyage-display-name {
+  font-family: 'Orbitron', sans-serif; /* Apply Orbitron font */
+  font-size: 1.5em; /* Resemble h1 */
+  font-weight: 700; /* Bold */
+  color: #ffffff; /* White text */
+  background-color: #000000a6; /* Black highlight background */
+  padding: 10px 15px; /* Add padding for spacing inside the background */
+  letter-spacing: 1.5px; /* Adds spacing between letters for a more futuristic look */
+  text-transform: uppercase; /* Make the text all uppercase */
+  margin: 0.5em 0; /* Add spacing above and below */
+  border-radius: 8px; /* Rounded corners for a smoother look */
+  display: inline-block; /* Make the background fit the text content */
+}
+
+
+.voyage-username {
+  font-size: 1em;
+  color: #ffffff;
+  background-color: #000000a6; /* Black highlight background */
+
+}
+
+.voyage-bio {
+  font-size: 0.95em;
+  color: #dddddd;
+  margin-top: 8px;
+}
+
+.voyage-role {
+  font-size: 1em;
+  color: #cccccc;
+  margin-top: 8px;
+}
+
+.voyage-custom-link a {
+  color: #33ffff;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.voyage-custom-link a:hover {
+  text-decoration: underline;
+}
