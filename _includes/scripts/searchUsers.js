@@ -2,6 +2,9 @@
 let previousQueryX = '';
 let isFetching = false;
 
+// Flag to indicate a valid username selection
+let validSelection = false;
+
 // Function to search for users based on input
 document.addEventListener('DOMContentLoaded', () => {
     const searchInputs = document.querySelectorAll('.user-search-input');
@@ -23,8 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleUserSearch(inputElement, resultsContainer) {
     let timeout;
     let selectedIndex = -1;
-    let previousQueryX = '';
-    let isFetching = false;
 
     inputElement.addEventListener('input', () => {
         clearTimeout(timeout);
@@ -78,11 +79,21 @@ function handleUserSearch(inputElement, resultsContainer) {
     });
 
     inputElement.addEventListener('blur', async () => {
-        const inputValue = inputElement.value.trim();
-        if (inputValue) {
-            const isValid = await checkUsernameValidity(inputValue);
-            if (!isValid) inputElement.value = '';
-        }
+        setTimeout(async () => {
+            if (validSelection) {
+                validSelection = false; // Reset flag
+                return; // Do not clear the input
+            }
+
+            const inputValue = inputElement.value.trim();
+            if (inputValue) {
+                const isValid = await checkUsernameValidity(inputValue);
+                if (!isValid) {
+                    inputElement.value = '';
+                    displayDddArtistFeedback('Selected username is invalid or does not exist.', 'error');
+                }
+            }
+        }, 200); // Adjust delay as needed
     });
 
     // Hide the dropdown when clicking outside the input and dropdown
@@ -94,8 +105,8 @@ function handleUserSearch(inputElement, resultsContainer) {
 }
 
 // Update the searchUsers function to accept isFetching as a parameter
-async function searchUsers(query, isFetching) {
-    if (isFetching) return [];
+async function searchUsers(query, isFetchingParam) {
+    if (isFetchingParam) return [];
     isFetching = true;
 
     try {
@@ -162,6 +173,8 @@ function updateResultsDropdown(users, container, inputElement) {
             inputElement.value = user.username;
             container.innerHTML = '';
             container.classList.remove('active'); // Hide the dropdown
+            validSelection = true; // Set flag to prevent clearing
+            displayDddArtistFeedback('', 'success'); // Clear any previous error messages
         });
 
         container.appendChild(item);
@@ -193,10 +206,35 @@ async function checkUsernameValidity(username) {
             return false;
         }
 
+        if (!response.ok) {
+            console.warn(`Unexpected response status: ${response.status}`);
+            return false;
+        }
+
         const data = await response.json();
+        console.log('Check Username Response:', data);
         return !data.isUnique; // If `isUnique` is false, the username exists
     } catch (error) {
         console.error('Error checking username validity:', error);
         return false;
+    }
+}
+
+// Function to update the form or provide feedback based on validity
+function displayDddArtistFeedback(message, type) {
+    const feedbackElem = document.getElementById('dddArtistFeedback');
+    const dddArtistInput = document.getElementById('dddArtistName');
+
+    feedbackElem.textContent = message;
+    feedbackElem.className = 'feedback-message'; // Reset classes
+
+    dddArtistInput.classList.remove('feedback-success', 'feedback-error'); // Reset classes
+
+    if (type === 'success') {
+        feedbackElem.classList.add('feedback-success');
+        dddArtistInput.classList.add('feedback-success');
+    } else if (type === 'error') {
+        feedbackElem.classList.add('feedback-error');
+        dddArtistInput.classList.add('feedback-error');
     }
 }
