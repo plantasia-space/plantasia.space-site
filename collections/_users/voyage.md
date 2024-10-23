@@ -17,6 +17,9 @@ public: false
 <div id="voyage-content">
     <h1>Voyage</h1>
     <p id="user-info"></p>
+    <ul class="user-list" id="user-profile-list">
+        <!-- User profile will be populated here -->
+    </ul>
 
     <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
     <p><a href="/voyage/soundengine"><span class="material-symbols-outlined">noise_control_on</span> Create a new sound engine</a></p> 
@@ -95,33 +98,118 @@ async function fetchData(url) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const cachedSession = localStorage.getItem('sessionData');
-    const user = cachedSession ? JSON.parse(cachedSession) : null;
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
 
-    if (user) {
-        // Display user-related data using the cached session
-        displayUserInfo(user.role || 'Listener', user.username || user.email);
-        displayTracks(user.tracksOwned || []);
-        displaySoundEnginesBatch(user.enginesOwned || []);
-        displayInterplanetaryPlayersBatch(user.interplanetaryPlayersOwned || []);
-    } else {
+    if (!token || !userId) {
         console.error('No valid session found. Redirecting to login...');
         window.location.href = '/login';
-    }
+        return;
+    }    
+    // Fetch user profile data
+    fetchUserProfile(userId);
 });
 
+// Function to fetch user profile data from cache or server
+function fetchUserProfile(userId) {
+    const cachedProfile = lscache.get(`profile_${userId}`);
+    if (cachedProfile) {
+        console.log('Using cached profile data:', cachedProfile);
+        populateUserProfile(cachedProfile); // Use cached data
+    } else {
+        fetch(`http://media.maar.world:3001/api/profile?userId=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Received fresh profile data:', data);
+                lscache.set(`profile_${userId}`, data, 60); // Cache for 60 minutes
+                populateUserProfile(data); // Populate UI with fresh data
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                document.getElementById('messageDisplay').innerText = 'Error fetching user data. Please try again.';
+            });
+    }
+}
+
+// Function to populate user profile UI
+function populateUserProfile(profileData) {
+    // Call populateUserProfileList to display the profile
+    populateUserProfileList(profileData);
+
+    console.log('User profile populated:', profileData);
+    
+    // Check and display Sound Engines
+    if (Array.isArray(profileData.enginesOwned)) {
+        displaySoundEnginesBatch(profileData.enginesOwned);
+    } else {
+        console.warn('enginesOwned is not an array:', profileData.enginesOwned);
+        document.getElementById('sound-engines-list').innerHTML = '<li>No sound engines found.</li>';
+    }
+    
+    // Check and display Interplanetary Players
+    if (Array.isArray(profileData.interplanetaryPlayersOwned)) {
+        displayInterplanetaryPlayersBatch(profileData.interplanetaryPlayersOwned);
+    } else {
+        console.warn('interplanetaryPlayersOwned is not an array:', profileData.interplanetaryPlayersOwned);
+        document.querySelector('.interplanetaryPlayer-list').innerHTML = '<li>No interplanetary players found.</li>';
+    }
+}
+
 /**
- * Function to display user information
- * @param {string} userRole - The role of the user.
- * @param {string} userName - The name of the user.
+ * Function to populate the user profile using the user-list structure
+ * @param {Object} profileData - The user's profile data
  */
-function displayUserInfo(userRole, userName) {
-    const userInfoElement = document.getElementById('user-info');
-    userInfoElement.innerHTML = `
-        <strong>User Role:</strong> ${userRole}<br>
-        <strong>User Name:</strong> ${userName}
+/**
+ * Function to populate the user profile using the user-list structure
+ * @param {Object} profileData - The user's profile data
+ */
+function populateUserProfileList(profileData) {
+    const userProfileList = document.getElementById('user-profile-list');
+
+    if (!profileData) {
+        userProfileList.innerHTML = '<li>No profile information available.</li>';
+        return;
+    }
+
+    userProfileList.innerHTML = `
+        <li class="voyage-profile">
+            <!-- Profile Image -->
+            <div class="voyage-profile-pic">
+                <a href="/voyage/profile">
+                    <img src="https://media.maar.world${profileData.profileImage || '/default_profile.png'}" alt="${profileData.username}">
+                </a>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="voyage-details">
+                <!-- Display Name and Username -->
+                <div class="voyage-display-name">${profileData.displayName || 'Unknown'}</div>
+                <div class="voyage-username">
+                    <a href="/xplorer/?username=${encodeURIComponent(profileData.username)}" target="_self">
+                        @${profileData.username || 'Unknown'}
+                    </a>
+                </div>
+
+                <!-- Bio -->
+                ${profileData.bio ? `<div class="voyage-bio">${profileData.bio}</div>` : ''}
+
+                <!-- Role -->
+                <div class="voyage-role"><strong>Role:</strong> ${profileData.role || 'Listener'}</div>
+
+                <!-- 1st Custom Link -->
+                ${profileData.customLinks && profileData.customLinks[0] && profileData.customLinks[0] !== '' ? 
+                    `<div class="voyage-custom-link">
+                        <a href="${profileData.customLinks[0]}" target="_blank">${profileData.customLinks[0]}</a>
+                    </div>` 
+                    : ''
+                }
+            </div>
+        </li>
     `;
-    console.log('User info displayed:', { userRole, userName });
+}
+
+function navigateToProfile() {
+    window.location.href = '/voyage/profile';
 }
 
 /**
@@ -157,6 +245,9 @@ function displayTracks(tracks) {
  * @param {Array<string>} engineIds - Array of sound engine IDs owned by the user.
  */
 async function displaySoundEnginesBatch(engineIds) {
+
+        console.log('Starting displaySoundEnginesBatch with IDs:', engineIds);
+
     const soundEnginesListElement = document.getElementById('sound-engines-list');
     soundEnginesListElement.innerHTML = ''; // Clear existing list
 
@@ -255,6 +346,9 @@ async function displaySoundEnginesBatch(engineIds) {
  * @param {Array<string>} playerIds - Array of interplanetary player IDs owned by the user.
  */
 async function displayInterplanetaryPlayersBatch(playerIds) {
+
+        console.log('Starting displayInterplanetaryPlayersBatch with IDs:', playerIds);
+
     const playersListElement = document.querySelector('.interplanetaryPlayer-list');
     playersListElement.innerHTML = ''; // Clear any existing content
 

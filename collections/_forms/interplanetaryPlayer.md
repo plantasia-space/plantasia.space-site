@@ -955,7 +955,13 @@ async function submitForm() {
             window.location.href = newURL;
         }
     }
-
+   const editButton = document.getElementById('editButton');
+    if (editButton) {
+        editButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default button behavior
+            toggleEditMode(); // Toggle between view and edit modes
+        });
+    }
     // Handle Browser Navigation (Back/Forward)
     window.addEventListener('popstate', (event) => {
         if (event.state) {
