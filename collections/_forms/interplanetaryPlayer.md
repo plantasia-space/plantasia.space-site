@@ -64,11 +64,17 @@ public: false
             <img id="texturePreviewForm" src="" alt="Texture Image" style="display: none;">
         </div>
 
-        <label for="uploadObj">Please upload the 3D model (OBJ format):</label>
+        <label for="uploadObj">
+            Please upload the 3D model (OBJ format): <span class="required" id="uploadObjRequired">*</span>
+            <span class="tooltip" title="Ensure the file is in .obj format and does not exceed 10MB.">?</span>
+        </label>
         <input type="file" id="uploadObj" name="uploadObj" accept=".obj">
 
         <!-- Texture Upload -->
-        <label for="uploadTexture">Please upload the texture file (any image format):</label>
+        <label for="uploadTexture">
+            Please upload the texture file (any image format): <span class="required" id="uploadTextureRequired">*</span>
+            <span class="tooltip" title="Supported formats: .jpg, .png, .gif. Maximum size: 5MB.">?</span>
+        </label>
         <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*">
         <!-- Existing Texture File -->
         <div id="existingTextureFile" style="display: none;">
@@ -79,11 +85,15 @@ public: false
             Current 3D Model File: <a href="#" target="_blank" id="existingObjLink">Download</a>
         </div>
 
-        <label for="dddArtistName">Who is the 3D artist for this creation? Please introduce @username</label>
+        <label for="dddArtistName">
+            Who is the 3D artist for this creation? Please introduce @username <span class="required">*</span>
+            <span class="tooltip" title="Provide the username of the 3D artist responsible for this creation.">?</span>
+        </label>
         <div class="input-wrapper">
             <input type="text" class="user-search-input" id="dddArtistName" name="dddArtistName" placeholder="Type a username..." autocomplete="off" required>
             <div class="dropdown"></div>
         </div>
+        <span id="dddArtistFeedback" class="feedback-message"></span><br><br>
 
         <!-- Scientific Exoplanet Name -->
         <label for="sciName">Which scientific exoplanet are you representing?</label>
@@ -124,7 +134,7 @@ public: false
         <input type="text" id="credits" name="credits" required><br><br>
 
         <!-- Submit Button -->
-        <button type="submit">Submit</button>
+        <button type="submit" id="submitButton" disabled>Submit</button>
 
         <br>
              <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
@@ -140,7 +150,6 @@ public: false
         <div id="statusMessage" class="status-message" style="display: none;"></div>
     </form>
 </div>
-
 <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 
 <script>
@@ -294,6 +303,8 @@ public: false
         moonAmountInput = document.getElementById('moonAmount');
         const cancelButton = document.getElementById('cancelButton');
         const artNameInput = document.getElementById('artName');
+        const uploadObjInput = document.getElementById('uploadObj');
+        const uploadTextureInput = document.getElementById('uploadTexture');
 
         // Validate moonAmount to be between 0 and 145
         moonAmountInput.addEventListener('input', function() {
@@ -307,7 +318,6 @@ public: false
 
             moonAmountInput.value = value;
         });
-
 
         // Texture Upload Preview
         document.getElementById('uploadTexture').addEventListener('change', function(event) {
@@ -335,10 +345,19 @@ public: false
             }
         });
 
+        // OBJ Upload Preview (Optional: Similar to Texture Upload)
+        document.getElementById('uploadObj').addEventListener('change', function(event) {
+            const objFile = event.target.files[0];
+            if (objFile) {
+                console.log(`OBJ file selected: ${objFile.name}`);
+                // Additional preview or validation can be added here if needed
+            }
+        });
+
         // Cancel Button Event Listener
         cancelButton.addEventListener('click', function() {
             setFormMode("view");
-            console.log("canceling"); 
+            console.log("Canceling form editing/creation.");
         });
 
         // Save form data on input change
@@ -351,7 +370,7 @@ public: false
         // Handle form submission
         document.getElementById('articleForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            submitForm(); // Call submitForm when the form is submitted
+            handleFormSubmission();
         });
 
         // Handle change in exoplanet selection
@@ -404,7 +423,23 @@ public: false
         }
     }
 
+    /**
+        * Function to Handle Form Submission with Enhanced Validation
+        */
+    async function handleFormSubmission() {
+        // In Create Mode, ensure both files are uploaded
+        if (currentMode === 'create') {
+            const objFile = document.getElementById('uploadObj').files[0];
+            const textureFile = document.getElementById('uploadTexture').files[0];
 
+            if (!objFile || !textureFile) {
+                showToast('Please upload both the 3D model (OBJ) and the texture image before submitting.', 'error');
+                return;
+            }
+        }
+
+        submitForm(); // Proceed with form submission
+    }
 
     /**
         * Function to Submit the Form for Creating or Editing an Interplanetary Player.
@@ -802,6 +837,10 @@ public: false
             if (submitButton) {
                 submitButton.disabled = false;
             }
+
+            // In Edit Mode: Make file uploads optional
+            document.getElementById('uploadObj').required = false;
+            document.getElementById('uploadTexture').required = false;
         }
     }
 
@@ -888,9 +927,9 @@ public: false
         const cachedProfile = lscache.get(cacheKey);
         if (cachedProfile) {
             lscache.remove(cacheKey);
-            console.log(`Profile cache cleared for user`);
+            console.log('Profile cache cleared for user');
         } else {
-            console.log(`No cache found for user`);
+            console.log('No cache found for user');
         }
     }
 
@@ -979,6 +1018,23 @@ public: false
 
             // Clear the form fields if in create mode
             clearFormFields();
+
+            // In Create Mode: Make file uploads required
+            document.getElementById('uploadObj').required = true;
+            document.getElementById('uploadTexture').required = true;
+
+            // Initially disable the submit button until both files are uploaded
+            const submitButton = document.getElementById('submitButton');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+
+            // Add event listeners to file inputs to monitor file selections
+            const uploadObjInput = document.getElementById('uploadObj');
+            const uploadTextureInput = document.getElementById('uploadTexture');
+
+            uploadObjInput.addEventListener('change', checkFileUploads);
+            uploadTextureInput.addEventListener('change', checkFileUploads);
         }
     }
 
@@ -1036,69 +1092,69 @@ public: false
         history.replaceState({ mode: currentMode, playerId }, '', window.location.href);
     });
 
-/**
- * Function to Check the Availability of artName.
- */
-async function checkArtNameAvailability(artName, excludeId = '') {
-    const submitButton = document.querySelector('#articleForm button[type="submit"]');
-    if (!artName.trim()) {
-        displayArtNameFeedback('Artistic Name is required.', 'error');
-        if (submitButton) {
-            submitButton.disabled = true;
-        }
-        return false;
-    }
-
-    try {
-        const params = new URLSearchParams({ name: artName.trim() });
-        if (excludeId) {
-            params.append('excludeId', excludeId);
+    /**
+     * Function to Check the Availability of artName.
+     */
+    async function checkArtNameAvailability(artName, excludeId = '') {
+        const submitButton = document.querySelector('#articleForm button[type="submit"]');
+        if (!artName.trim()) {
+            displayArtNameFeedback('Artistic Name is required.', 'error');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+            return false;
         }
 
-        const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/checkArtName?${params.toString()}`);
-    
-        if (response.status === 200) {
-            const data = await response.json();
-            if (data.success) {
-                displayArtNameFeedback('Artistic Name is available.', 'success');
-                if (submitButton) {
-                    submitButton.disabled = false;
+        try {
+            const params = new URLSearchParams({ name: artName.trim() });
+            if (excludeId) {
+                params.append('excludeId', excludeId);
+            }
+
+            const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/checkArtName?${params.toString()}`);
+        
+            if (response.status === 200) {
+                const data = await response.json();
+                if (data.success) {
+                    displayArtNameFeedback('Artistic Name is available.', 'success');
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                    }
+                    return true;
+                } else {
+                    displayArtNameFeedback('Error checking name. Please try again.', 'error');
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                    }
+                    return false;
                 }
-                return true;
+            } else if (response.status === 409) {
+                // Handle 409 Conflict gracefully without logging
+                displayArtNameFeedback('Artistic Name is already taken.', 'error');
+                showToast('Please choose a different Artistic Name.', 'error');
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+                return false;
             } else {
+                // Handle other unexpected statuses
                 displayArtNameFeedback('Error checking name. Please try again.', 'error');
                 if (submitButton) {
                     submitButton.disabled = true;
                 }
                 return false;
             }
-        } else if (response.status === 409) {
-            // Handle 409 Conflict gracefully without logging
-            displayArtNameFeedback('Artistic Name is already taken.', 'error');
-            showToast('Please choose a different Artistic Name.', 'error');
-
-            if (submitButton) {
-                submitButton.disabled = true;
-            }
-            return false;
-        } else {
-            // Handle other unexpected statuses
+        } catch (error) {
+            // Only log unexpected errors
+            console.error('Error checking artName availability:', error);
             displayArtNameFeedback('Error checking name. Please try again.', 'error');
             if (submitButton) {
                 submitButton.disabled = true;
             }
             return false;
         }
-    } catch (error) {
-        // Only log unexpected errors
-        console.error('Error checking artName availability:', error);
-        displayArtNameFeedback('Error checking name. Please try again.', 'error');
-        if (submitButton) {
-            submitButton.disabled = true;
-        }
-        return false;
     }
-}
 
     /**
         * Function to Display Feedback Messages for artName.
@@ -1110,42 +1166,77 @@ async function checkArtNameAvailability(artName, excludeId = '') {
         feedbackElem.textContent = message;
         feedbackElem.className = 'feedback-message'; // Reset classes
 
-        artNameInput.classList.remove('success', 'error'); // Reset classes
+        artNameInput.classList.remove('feedback-success', 'feedback-error'); // Reset classes
 
         if (type === 'success') {
             feedbackElem.classList.add('feedback-success');
-            artNameInput.classList.add('success');
+            artNameInput.classList.add('feedback-success');
         } else if (type === 'error') {
             feedbackElem.classList.add('feedback-error');
-            artNameInput.classList.add('error');
+            artNameInput.classList.add('feedback-error');
         }
     }
 
-/**
- * Event Listener for artName input field.
- */
-function setupArtNameValidation() {
-    const artNameInput = document.getElementById('artName');
+    /**
+     * Function to Check if Both Files are Uploaded in Create Mode
+     */
+    function checkFileUploads() {
+        if (currentMode !== 'create') {
+            return; // Only enforce in create mode
+        }
 
-    let debounceTimeout = null;
+        const objFile = document.getElementById('uploadObj').files[0];
+        const textureFile = document.getElementById('uploadTexture').files[0];
+        const submitButton = document.getElementById('submitButton');
 
-    // Debounce function to limit the number of API calls
-    artNameInput.addEventListener('input', () => {
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(async () => {
+        if (objFile && textureFile) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+    /**
+     * Function to Handle Form Submission with Enhanced Validation
+     */
+    async function handleFormSubmission() {
+        // In Create Mode, ensure both files are uploaded
+        if (currentMode === 'create') {
+            const objFile = document.getElementById('uploadObj').files[0];
+            const textureFile = document.getElementById('uploadTexture').files[0];
+
+            if (!objFile || !textureFile) {
+                showToast('Please upload both the 3D model (OBJ) and the texture image before submitting.', 'error');
+                return;
+            }
+        }
+
+        submitForm(); // Proceed with form submission
+    }
+
+    /**
+     * Function to Set Up artName Validation with Debounce
+     */
+    function setupArtNameValidation() {
+        const artNameInput = document.getElementById('artName');
+
+        let debounceTimeout = null;
+
+        // Debounce function to limit the number of API calls
+        artNameInput.addEventListener('input', () => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(async () => {
+                const artName = artNameInput.value;
+                const excludeId = currentMode === 'edit' ? playerId : '';
+                await checkArtNameAvailability(artName, excludeId);
+            }, 500); // Wait for 500ms after the user stops typing
+        });
+
+        // Also check on blur (when the user leaves the field)
+        artNameInput.addEventListener('blur', async () => {
             const artName = artNameInput.value;
             const excludeId = currentMode === 'edit' ? playerId : '';
             await checkArtNameAvailability(artName, excludeId);
-        }, 500); // Wait for 500ms after the user stops typing
-    });
-
-    // Also check on blur (when the user leaves the field)
-    artNameInput.addEventListener('blur', async () => {
-        const artName = artNameInput.value;
-        const excludeId = currentMode === 'edit' ? playerId : '';
-        await checkArtNameAvailability(artName, excludeId);
-    });
-}
-
-
+        });
+    }
 </script>

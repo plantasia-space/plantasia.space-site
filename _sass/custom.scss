@@ -834,3 +834,43 @@ input[type="number"] {
   #artName.error {
     border-color: red;
   }
+
+
+
+  // TOOLTIP
+
+  /* Required Indicator */
+.required {
+  color: red;
+  margin-left: 5px;
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px;
+  color: #007bff;
+}
+
+.tooltip::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 125%; /* Position above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #555;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
