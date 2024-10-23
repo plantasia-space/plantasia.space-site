@@ -221,7 +221,7 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
   background-color: #333;
   color: #fff;
   text-align: left;
-  border-radius: 2px;
+  border-radius: 10px;
   padding: 16px;
   position: fixed;
   z-index: 1001;
@@ -827,3 +827,10 @@ input[type="number"] {
 .voyage-custom-link a:hover {
   text-decoration: underline;
 }
+  /* Success and error states for artName input */
+  #artName.success {
+    border-color: green;
+  }
+  #artName.error {
+    border-color: red;
+  }
