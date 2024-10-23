@@ -18,13 +18,13 @@ key: xPlorer
     <div class="button-container">
         <div class="back-button-container">
             <a href="/voyage" title="Voyage">
-                <button id="backButton" class="btn button--outline-primary button--circle">
+                <button id="backButton" class="btn button--outline-primary button--circle" aria-label="Go Back">
                     <span class="material-symbols-outlined">arrow_back_ios_new</span>
                 </button>
             </a>
         </div>
         <div class="edit-button-container">
-            <button id="editButton" class="btn button--outline-primary button--circle" title="View/Edit Profile">
+            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile" aria-label="Edit Profile">
                 <span class="material-symbols-outlined">edit</span> 
             </button>
         </div>
@@ -46,7 +46,7 @@ key: xPlorer
 
         <p><strong>Profile URL:</strong> 
         <a id="profileUrl" href="#">maar.world/xplorer/?username=<span id="displayUsernameForUrl"></span></a>
-        <button id="copyButton" class="btn button--outline-primary button--circle" title="Copy URL">
+        <button id="copyButton" class="btn button--outline-primary button--circle" title="Copy URL" aria-label="Copy Profile URL">
             <span class="material-symbols-outlined">content_copy</span>
         </button>
         </p>
@@ -164,11 +164,15 @@ key: xPlorer
     </form>
 </div>
 
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId');
     let originalProfileImage = '';
     let currentUsername = ''; // To store the current username
+    let isEditMode = false; // State variable to track current mode
 
     // Check if cached profile data is still valid (5 min timeout)
     function getCachedProfile() {
@@ -289,16 +293,38 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleEditMode(false);
     });
 
-    function toggleEditMode(showEdit = true) {
+    /**
+     * Function to toggle between Edit and View modes.
+     * If showEdit is true, switch to Edit mode.
+     * If showEdit is false, switch to View mode.
+     * If showEdit is undefined, toggle the current state.
+     */
+    function toggleEditMode(showEdit = undefined) {
         const profileForm = document.getElementById('profileForm');
         const profileView = document.getElementById('profileView');
+        const editButton = document.getElementById('editButton');
+        const editButtonIcon = editButton.querySelector('span');
 
-        if (showEdit) {
+        if (typeof showEdit === 'boolean') {
+            isEditMode = showEdit;
+        } else {
+            isEditMode = !isEditMode; // Toggle the state
+        }
+
+        if (isEditMode) {
+            // Switch to Edit Mode
             profileView.style.display = 'none';
             profileForm.style.display = 'block';
+            editButtonIcon.textContent = 'visibility'; // Change icon to 'visibility'
+            editButton.title = 'View Profile'; // Update tooltip
+            editButton.setAttribute('aria-label', 'View Profile');
         } else {
+            // Switch to View Mode
             profileView.style.display = 'block';
             profileForm.style.display = 'none';
+            editButtonIcon.textContent = 'edit'; // Change icon back to 'edit'
+            editButton.title = 'Edit Profile'; // Update tooltip
+            editButton.setAttribute('aria-label', 'Edit Profile');
             resetProfileImage();
         }
     }
@@ -363,34 +389,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const feedbackElement = document.getElementById('usernameFeedback');
     const validUsername = /^[a-z0-9_-]{1,30}$/;
 
-async function checkUsername() {
-    const username = usernameInput.value.trim().toLowerCase();
+    async function checkUsername() {
+        const username = usernameInput.value.trim().toLowerCase();
 
-    if (!validUsername.test(username)) {
-        feedbackElement.innerText = 'Invalid username format.';
-        feedbackElement.style.color = 'red';
-        return false;
-    }
+        if (!validUsername.test(username)) {
+            feedbackElement.innerText = 'Invalid username format.';
+            feedbackElement.style.color = 'red';
+            return false;
+        }
 
-    if (username === currentUsername) {
-        feedbackElement.innerText = 'This is your current username.';
+        if (username === currentUsername) {
+            feedbackElement.innerText = 'This is your current username.';
+            feedbackElement.style.color = 'green';
+            return true;
+        }
+
+        // Pass the correct userId (UUID) here
+        const isUnique = await checkUsernameUniqueness(username, userId);
+        if (!isUnique) {
+            feedbackElement.innerText = 'Username is already taken.';
+            feedbackElement.style.color = 'red';
+            return false;
+        }
+
+        feedbackElement.innerText = 'Username is available!';
         feedbackElement.style.color = 'green';
         return true;
     }
-
-    // Pass the correct userId (UUID) here
-    const isUnique = await checkUsernameUniqueness(username, userId);
-    if (!isUnique) {
-        feedbackElement.innerText = 'Username is already taken.';
-        feedbackElement.style.color = 'red';
-        return false;
-    }
-
-    feedbackElement.innerText = 'Username is available!';
-    feedbackElement.style.color = 'green';
-    return true;
-}
-
 
     // Debounce function to limit the rate of function execution
     function debounce(func, delay) {
@@ -408,25 +433,24 @@ async function checkUsername() {
     usernameInput.addEventListener('input', debouncedCheckUsername);
 
     // Function to check if the username is unique
-// Function to check if the username is unique
-async function checkUsernameUniqueness(username, currentUserId = null) {
-    try {
-        const url = new URL('http://media.maar.world:3001/api/checkUsername');
-        url.searchParams.append('username', username);
-        
-        // Include currentUserId if available (i.e., during edit)
-        if (currentUserId) {
-            url.searchParams.append('currentUserId', currentUserId);
-        }
+    async function checkUsernameUniqueness(username, currentUserId = null) {
+        try {
+            const url = new URL('http://media.maar.world:3001/api/checkUsername');
+            url.searchParams.append('username', username);
+            
+            // Include currentUserId if available (i.e., during edit)
+            if (currentUserId) {
+                url.searchParams.append('currentUserId', currentUserId);
+            }
 
-        const response = await fetch(url.toString());
-        const data = await response.json();
-        return data.isUnique; // Assuming server returns { isUnique: true/false }
-    } catch (error) {
-        console.error('Error checking username uniqueness:', error);
-        return false;
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            return data.isUnique; // Assuming server returns { isUnique: true/false }
+        } catch (error) {
+            console.error('Error checking username uniqueness:', error);
+            return false;
+        }
     }
-}
 
     // Submit profile form
     document.getElementById('profileForm').addEventListener('submit', async function(event) {
