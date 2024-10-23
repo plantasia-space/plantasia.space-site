@@ -416,15 +416,16 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                             <span class="material-symbols-outlined">share</span> 
                         </button>
                         <!-- More Options Button -->
-                        <div class="more-options-container">
-                            <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
-                                <span class="material-symbols-outlined">more_horiz</span>
-                            </button>
-                            <div class="more-options-dropdown" style="display: none;">
-                                <button class="delete-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">Delete</button>
-                            </div>
-                        </div>
-                    </div>
+<div class="more-options-container">
+  <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
+    <span class="material-symbols-outlined">more_horiz</span>
+  </button>
+  <div class="more-options-dropdown" style="display: none;">
+    <button class="delete-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">Delete</button>
+  </div>
+</div>
+
+</div>
                 `;
                 playersListElement.appendChild(playerDiv);
             });
@@ -621,47 +622,48 @@ function deleteSoundEngine(engineId, button) {
  * @param {string} playerId - The ID of the interplanetary player to delete
  * @param {HTMLElement} button - The delete button that was clicked
  */
-function deleteInterplanetaryPlayer(playerId, button) {
-    // Confirm deletion with the user
+async function deleteInterplanetaryPlayer(playerId, buttonElement) {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+        alert('User not authenticated. Please log in.');
+        return;
+    }
+
+    // Display a confirmation prompt before deletion
     const confirmation = confirm('Are you sure you want to delete this Interplanetary Player? This action cannot be undone.');
-    if (!confirmation) return;
+    if (!confirmation) {
+        return; // Exit the function if the user cancels
+    }
 
-    // Disable the delete button to prevent multiple clicks
-    button.disabled = true;
-    button.textContent = 'Deleting...';
+    console.log(`Deleting player at URL: /api/interplanetaryplayers/${playerId}`);
 
-    // Send DELETE request to the server
-    fetch(`http://media.maar.world:3001/api/interplanetaryPlayers/${playerId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to delete the Interplanetary Player.');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            showToast('Interplanetary Player deleted successfully!', 'success');
-            // Remove the player from the DOM
-            const playerListItem = button.closest('.interplanetaryPlayer-list-item');
-            if (playerListItem) {
-                playerListItem.remove();
+    try {
+        const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }), // Send userId in the request body
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            // Ensure the player container is found
+            const playerContainer = buttonElement.closest('.interplanetaryPlayer-list-item'); // Use the correct class
+            if (playerContainer) {
+                playerContainer.remove(); // Remove the player from the UI
+                alert('Player deleted successfully.');
+            } else {
+                console.warn('Player container not found in the DOM.');
             }
         } else {
-            throw new Error(data.message || 'Failed to delete the Interplanetary Player.');
+            alert(`Error: ${result.message}`);
         }
-    })
-    .catch(error => {
-        console.error('Error deleting Interplanetary Player:', error);
-        showToast(`Error: ${error.message}`, 'error');
-        // Re-enable the delete button
-        button.disabled = false;
-        button.textContent = 'Delete';
-    });
+    } catch (error) {
+        console.error('Error deleting player:', error);
+        alert('An unexpected error occurred.');
+    }
 }
     
 // Event listener to close dropdowns when clicking outside
