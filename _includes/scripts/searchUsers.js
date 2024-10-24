@@ -90,7 +90,7 @@ function handleUserSearch(inputElement, resultsContainer) {
                 const isValid = await checkUsernameValidity(inputValue);
                 if (!isValid) {
                     inputElement.value = '';
-                    displayDddArtistFeedback('Selected username is invalid or does not exist.', 'error');
+                 //   displayDddArtistFeedback('Selected username is invalid or does not exist.', 'error');
                 }
             }
         }, 200); // Adjust delay as needed
@@ -174,7 +174,7 @@ function updateResultsDropdown(users, container, inputElement) {
             container.innerHTML = '';
             container.classList.remove('active'); // Hide the dropdown
             validSelection = true; // Set flag to prevent clearing
-            displayDddArtistFeedback('', 'success'); // Clear any previous error messages
+            //displayDddArtistFeedback('', 'success'); // Clear any previous error messages
         });
 
         container.appendChild(item);
@@ -220,7 +220,7 @@ async function checkUsernameValidity(username) {
     }
 }
 
-// Function to update the form or provide feedback based on validity
+/* Function to update the form or provide feedback based on validity
 function displayDddArtistFeedback(message, type) {
     const feedbackElem = document.getElementById('dddArtistFeedback');
     const dddArtistInput = document.getElementById('dddArtistName');
@@ -238,3 +238,4 @@ function displayDddArtistFeedback(message, type) {
         dddArtistInput.classList.add('feedback-error');
     }
 }
+*/
