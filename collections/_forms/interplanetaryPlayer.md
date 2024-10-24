@@ -445,6 +445,9 @@ public: false
         * Function to Submit the Form for Creating or Editing an Interplanetary Player.
         */
     async function submitForm() {
+
+                disableFormInputs();
+
         if (submitButton) {
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
@@ -644,6 +647,8 @@ public: false
             console.error('Error:', error);
             showToast(`Error: ${error.message}`, 'error');
         } finally {
+                        enableFormInputs();
+
             // Re-enable the submit button and reset progress bar
             if (submitButton) {
                 submitButton.disabled = false;
@@ -1212,6 +1217,28 @@ public: false
         }
 
         submitForm(); // Proceed with form submission
+    }
+
+   // Function to Disable All Form Inputs
+    function disableFormInputs() {
+        const form = document.getElementById('articleForm');
+        if (form) {
+            const inputs = form.querySelectorAll('input, select, textarea, button');
+            inputs.forEach(input => {
+                input.disabled = true;
+            });
+        }
+    }
+
+    // Function to Enable All Form Inputs
+    function enableFormInputs() {
+        const form = document.getElementById('articleForm');
+        if (form) {
+            const inputs = form.querySelectorAll('input, select, textarea, button');
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+        }
     }
 
     /**
