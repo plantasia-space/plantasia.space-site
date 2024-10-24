@@ -13,19 +13,115 @@ key: IP
 public: false
 ---
 
+
 <!-- Voyage Page Container -->
 <div id="voyage-content">
     <h1>Voyage</h1>
+
+       <div class="form-container">
+ 
     <p id="user-info"></p>
     <ul class="user-list" id="user-profile-list">
         <!-- User profile will be populated here -->
     </ul>
 
-    <p><a href="/voyage/profile"><span class="material-symbols-outlined">account_circle</span> Go to your profile</a></p> 
-    <p><a href="/voyage/soundengine"><span class="material-symbols-outlined">noise_control_on</span> Create a new sound engine</a></p> 
-    <p><a href="/voyage/interplanetary-player"><span class="material-symbols-outlined">public</span> Create or edit a new Interplanetary Player</a></p> 
-    <p><a href="/voyage/track-release"><span class="material-symbols-outlined">diversity_1</span> Release a new track</a></p> 
-    <p><a href="/voyage/playlist"><span class="material-symbols-outlined">playlist_add_circle</span> Create a new playlist or album</a></p> 
+
+<div class="cards-container">
+  <div class="grid grid--p-3">
+    
+    <div class="cell cell--12 cell--lg-4 content">
+      <div>
+        <a href="/voyage/profile">
+          <div class="card card--clickable">
+            <div class="card__image">
+              <img class="image" src="https://media.maar.world/uploads/default/default-profile.jpg" />
+              <div class="card__content">
+                <p><span class="material-symbols-outlined">account_circle</span> Edit your profile</p>
+              </div>  
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="cell cell--12 cell--lg-4 content">
+      <div>
+        <a href="/voyage/track-release">
+          <div class="card card--clickable">
+            <div class="card__image">
+              <img class="image" src="https://media.maar.world/uploads/default/default-tracks.jpg" />
+              <div class="card__content">
+                <p><span class="material-symbols-outlined">diversity_1</span> Release a track</p>
+              </div>  
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="cell cell--12 cell--lg-4 content">
+      <div>
+        <a href="/voyage/playlist">
+          <div class="card card--clickable">
+            <div class="card__image">
+              <img class="image" src="https://media.maar.world/uploads/default/default-playlist.jpg" />
+              <div class="card__content">
+                <p><span class="material-symbols-outlined">playlist_add_circle</span> Create a playlist or album</p>
+              </div>  
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="cell cell--12 cell--lg-4 content">
+      <div>
+        <a href="/voyage/interplanetary-player">
+          <div class="card card--clickable">
+            <div class="card__image">
+              <img class="image" src="https://media.maar.world/uploads/default/default-player.jpg" />
+              <div class="card__content">
+                <p><span class="material-symbols-outlined">public</span> Create an Interplanetary Player</p>
+              </div>  
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+        <div class="cell cell--12 cell--lg-4 content">
+      <div>
+        <a href="/voyage/soundengine">
+          <div class="card card--clickable">
+            <div class="card__image">
+              <img class="image" src="https://media.maar.world/uploads/default/default-soundEngine.jpg" />
+              <div class="card__content">
+                <p><span class="material-symbols-outlined">noise_control_on</span> Create a Sound Engine</p>
+              </div>  
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+    <div class="cell cell--12 cell--lg-4 content">
+      <div>
+        <a href="/">
+          <div class="card card--clickable">
+            <div class="card__image">
+              <img class="image" src="https://media.maar.world/uploads/default/default-discover.jpg" />
+              <div class="card__content">
+                <p><span class="material-symbols-outlined">hexagon</span> Discover</p>
+              </div>  
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <h2>Your Released Tracks:</h2>
     <ul id="tracks-list"></ul>
@@ -38,6 +134,10 @@ public: false
 
         <h2>Your Playlists:</h2>
     <ul class="playlist-list" id="playlist-list"></ul>
+
+
+</div>
+
 
 </div>
 
