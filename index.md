@@ -121,4 +121,22 @@ article_header:
     // Cargar los primeros 5 elementos
     loadItems(currentPage);
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const lastScrollY = localStorage.getItem('lastScrollY');
+    if (lastScrollY) {
+        // Use a smoother scroll effect
+        window.scrollTo({
+            top: lastScrollY,
+            behavior: 'smooth' // This will apply smooth scrolling
+        });
+    }
+});
+
+window.addEventListener('scroll', () => {
+    // Save the current scroll position to local storage
+    localStorage.setItem('lastScrollY', window.scrollY);
+});
+
+
 </script>
