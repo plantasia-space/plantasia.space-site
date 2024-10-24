@@ -66,9 +66,9 @@ key: xPlorer
         <p><strong>Custom Links:</strong>
         <div id="displayCustomLinks">
             <span id="customLink1Display"></span>
-            <span id="separator1" style="display:none;"> | </span> <!-- Hide separator by default -->
+            <span id="separator1" style="display:none;"> | </span> <!-- Hide separator by default --><br>
             <span id="customLink2Display"></span>
-            <span id="separator2" style="display:none;"> | </span> <!-- Hide separator by default -->
+            <span id="separator2" style="display:none;"> | </span> <!-- Hide separator by default --><br>
             <span id="customLink3Display"></span>
         </div>
         </p>
@@ -147,11 +147,11 @@ key: xPlorer
         <input type="url" id="customLink3" name="customLink3"><br><br>
 
         <!-- Submit Button -->
-        <button type="submit"><span class="material-symbols-outlined">check_circle</span> Update Profile</button>
+        <button type="submit"> Update Profile</button>
         <div class="p-2"></div>
 
         <!-- Cancel Button -->
-        <button type="button" id="cancelButton" class="btn btn-secondary"><span class="material-symbols-outlined">cancel</span> Cancel</button>
+        <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
         <div class="p-2"></div>
 
         <!-- Progress Bar -->
@@ -174,14 +174,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fetch profile data using the global fetchDataWithCache function
     fetchUserProfile(userId);
 
-    async function fetchUserProfile(userId) {
+    async function fetchUserProfile(userId, forceRefresh = false) {
         const cacheKey = `profile_${userId}`;
         try {
             const data = await fetchDataWithCache(
                 `http://media.maar.world:3001/api/profile?userId=${userId}`,
                 cacheKey,
                 5, // Cache for 5 minutes
-                false // forceRefresh: false
+                forceRefresh // Allow forcing a refresh
             );
             populateUserProfile(data);
         } catch (error) {
@@ -195,14 +195,15 @@ document.addEventListener('DOMContentLoaded', function() {
         currentUsername = data.username || '';
 
         // Populate display fields
-        document.getElementById('displayUsername').innerText = data.username;
-        document.getElementById('displayUsernameForUrl').innerText = data.username;
-        document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username}`;
-        document.getElementById('displayEmail').innerText = data.email;
+        document.getElementById('displayUsername').innerText = data.username || '';
+        document.getElementById('displayUsernameForUrl').innerText = data.username || '';
+        document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username || ''}`;
+        document.getElementById('displayEmail').innerText = data.email || '';
         document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
         document.getElementById('displayRole').innerText = data.role || 'Not provided';
 
         // Populate form fields for edit mode
+        document.getElementById('displayName').value = data.displayName || ''; // Corrected from innerText to value
         document.getElementById('username').value = data.username || '';
         document.getElementById('phone').value = data.phone || '';
 
@@ -216,11 +217,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('profileImagePreviewForm').src = originalProfileImage;
             document.getElementById('profileImagePreview').style.display = 'block';
             document.getElementById('profileImagePreviewForm').style.display = 'block';
+        } else {
+            document.getElementById('profileImagePreview').style.display = 'none';
+            document.getElementById('profileImagePreviewForm').style.display = 'none';
         }
 
-        // Handle additional fields like displayName, city, country, bio
-        document.getElementById('displayName').innerText = data.displayName || '';
-        document.getElementById('displayDisplayName').innerText = data.displayName || '';
+        // Handle additional fields like city, country, bio
+        document.getElementById('displayDisplayName').innerText = data.displayName || ''; // View mode
         document.getElementById('city').value = data.city || '';
         document.getElementById('displayCity').innerText = data.city || '';
         document.getElementById('country').value = data.country || '';
@@ -269,10 +272,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove the separate cancel button if you want to handle cancel via the edit button
     // If you prefer to keep it, ensure it also toggles the mode
     document.getElementById('cancelButton').addEventListener('click', function() {
-        toggleEditMode(false); // Pass false to indicate cancelling edit
+        toggleEditMode(); 
     });
 
-    function toggleEditMode(forceViewMode = null) {
+    async function toggleEditMode(forceViewMode = null) {
         const profileForm = document.getElementById('profileForm');
         const profileView = document.getElementById('profileView');
         const editButton = document.getElementById('editButton');
@@ -300,6 +303,9 @@ document.addEventListener('DOMContentLoaded', function() {
             editButtonIcon.textContent = 'edit'; // Change back to edit icon
             editButton.setAttribute('data-mode', 'view');
             resetProfileImage();
+
+            // Re-fetch and populate the profile data to ensure it's up-to-date
+            await fetchUserProfile(userId, true);
         }
     }
 
@@ -468,10 +474,11 @@ document.addEventListener('DOMContentLoaded', function() {
         ]));
     }
 
-    function submitFormData(formData) {
+    async function submitFormData(formData) {
         const progressBar = document.getElementById('progress');
         progressBar.style.width = '0%';
         document.querySelector('.progress-bar').style.display = 'block';
+        const cacheKey = `profile_${userId}`;
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://media.maar.world:3001/api/updateUserProfile', true);
@@ -483,16 +490,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
-        xhr.onload = function() {
-            const response = JSON.parse(xhr.responseText);
-            if (xhr.status === 200 && response.success) {
-                // Invalidate cached data after successful update
-                clearUserCaches(userId);
-                document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
-                document.getElementById('messageDisplay').style.color = 'green';
-                toggleEditMode(); // Switch back to view mode after successful update
-            } else {
-                document.getElementById('messageDisplay').innerText = `Failed to update profile: ${response.message}`;
+        xhr.onload = async function() {
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (xhr.status === 200 && response.success) {
+                    // Invalidate cached data after successful update
+                    lscache.remove(cacheKey);
+                    console.log(`Cache removed for key ${cacheKey}`);
+                    document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
+                    document.getElementById('messageDisplay').style.color = 'green';
+                    
+                    // Re-fetch the updated profile data
+                    await fetchUserProfile(userId, true);
+
+                    // Switch back to view mode after successful update
+                    toggleEditMode(); 
+                } else {
+                    document.getElementById('messageDisplay').innerText = `Failed to update profile: ${response.message}`;
+                    document.getElementById('messageDisplay').style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Error parsing server response:', error);
+                document.getElementById('messageDisplay').innerText = 'An unexpected error occurred.';
                 document.getElementById('messageDisplay').style.color = 'red';
             }
         };
@@ -505,16 +524,10 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.send(formData);
     }
 
-    // Function to clear cached user data
-    function clearUserCaches(userId) {
-        const cacheKeys = [
-            `profile_${userId}`
-            // Add other cache keys if necessary
-        ];
-        cacheKeys.forEach(key => localStorage.removeItem(key));
-    }
-
     // Initial call to fetch profile
     fetchUserProfile(userId);
 });
+
+
+
 </script>
