@@ -49,18 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const loginForm = document.getElementById('loginForm');
   const loginTitle = document.getElementById('loginTitle');
 
-  // Redirect logged-in users to /voyage
-  function checkUserLogin() {
-    const token = localStorage.getItem('token');
-    const isLoginPage = window.location.pathname === '/login';
-    
-    if (token && !isLoginPage) {
-      window.location.href = '/voyage';
-    }
-  }
-
-  checkUserLogin(); // Prevent login page from showing to logged-in users
-
   // Function to parse URL hash (for reset password token)
   function parseHash() {
     const hash = window.location.hash.substring(1); // Get everything after '#'
@@ -78,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (newPassword !== confirmPassword) {
       messageElement.innerText = "Passwords do not match.";
+      messageElement.style.color = 'red';
       return;
     }
 
@@ -87,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Include cookies if CSRF tokens are used
         body: JSON.stringify({ accessToken, newPassword })
       });
 
@@ -104,42 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Function to handle user login
-async function loginUser(email, password) {
-    try {
-        const response = await fetch('http://media.maar.world:3001/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Login failed. Please try again.');
-        }
-
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId); // Store user ID
-
-        messageElement.innerText = "Login successful! Redirecting...";
-        messageElement.style.color = 'green';
-        setTimeout(() => window.location.href = '/voyage', 1500);
-    } catch (error) {
-        messageElement.innerText = error.message;
-        messageElement.style.color = 'red';
-    }
-}
-
-
-
-  // Setup form handlers
+  // Setup form handlers using auth.js's functions
   function setupLoginForm() {
     loginForm.addEventListener('submit', function(event) {
       event.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
-      loginUser(email, password);
+      loginUser(email, password); // Use auth.js's loginUser function
     });
   }
 
@@ -149,37 +110,16 @@ async function loginUser(email, password) {
     });
   }
 
-  async function handleForgotPassword() {
-    const email = document.getElementById('loginEmail').value.trim();
-    if (!email) {
-      messageElement.innerText = "Please enter your email to reset the password.";
-      return;
-    }
-
-    try {
-      const response = await fetch('http://media.maar.world:3001/api/auth/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Password reset failed');
-      }
-
-      messageElement.innerText = "Password reset email sent! Please check your inbox.";
-      messageElement.style.color = 'green';
-    } catch (error) {
-      messageElement.innerText = "Password reset failed. Please try again.";
-      messageElement.style.color = 'red';
-    }
-  }
-
   function setupForgotPasswordLink() {
-    document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
+    document.getElementById('forgotPasswordLink').addEventListener('click', async function(event) {
       event.preventDefault();
-      handleForgotPassword();
+      const email = document.getElementById('loginEmail').value.trim();
+      if (!email) {
+        messageElement.innerText = "Please enter your email to reset the password.";
+        messageElement.style.color = 'red';
+        return;
+      }
+      await forgotPassword(email); // Use auth.js's forgotPassword function
     });
   }
 

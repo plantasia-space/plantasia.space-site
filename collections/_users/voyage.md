@@ -13,132 +13,129 @@ key: IP
 public: false
 ---
 
-
 <!-- Voyage Page Container -->
 <div id="voyage-content">
     <h1>Voyage</h1>
 
-       <div class="form-container">
- 
-    <p id="user-info"></p>
-    <ul class="user-list" id="user-profile-list">
-        <!-- User profile will be populated here -->
-    </ul>
+    <div class="form-container">
+        <p id="user-info"></p>
+        <ul class="user-list" id="user-profile-list">
+            <!-- User profile will be populated here -->
+        </ul>
 
+        <div class="cards-container">
+            <div class="grid grid--p-3">
+                <!-- Profile Card -->
+                <div class="cell cell--12 cell--lg-4 content">
+                    <div>
+                        <a href="/voyage/profile">
+                            <div class="card card--clickable">
+                                <div class="card__image">
+                                    <img class="image" src="https://media.maar.world/uploads/default/default-profile.jpg" alt="Edit Profile" />
+                                    <div class="card__content">
+                                        <p><span class="material-symbols-outlined">account_circle</span> Edit your profile</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
 
-<div class="cards-container">
-  <div class="grid grid--p-3">
-    
-    <div class="cell cell--12 cell--lg-4 content">
-      <div>
-        <a href="/voyage/profile">
-          <div class="card card--clickable">
-            <div class="card__image">
-              <img class="image" src="https://media.maar.world/uploads/default/default-profile.jpg" />
-              <div class="card__content">
-                <p><span class="material-symbols-outlined">account_circle</span> Edit your profile</p>
-              </div>  
+                <!-- Track Release Card -->
+                <div class="cell cell--12 cell--lg-4 content">
+                    <div>
+                        <a href="/voyage/track-release">
+                            <div class="card card--clickable">
+                                <div class="card__image">
+                                    <img class="image" src="https://media.maar.world/uploads/default/default-tracks.jpg" alt="Release Track" />
+                                    <div class="card__content">
+                                        <p><span class="material-symbols-outlined">diversity_1</span> Release a track</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Playlist Creation Card -->
+                <div class="cell cell--12 cell--lg-4 content">
+                    <div>
+                        <a href="/voyage/playlist">
+                            <div class="card card--clickable">
+                                <div class="card__image">
+                                    <img class="image" src="https://media.maar.world/uploads/default/default-playlist.jpg" alt="Create Playlist" />
+                                    <div class="card__content">
+                                        <p><span class="material-symbols-outlined">playlist_add_circle</span> Create a playlist or album</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Interplanetary Player Card -->
+                <div class="cell cell--12 cell--lg-4 content">
+                    <div>
+                        <a href="/voyage/interplanetary-player">
+                            <div class="card card--clickable">
+                                <div class="card__image">
+                                    <img class="image" src="https://media.maar.world/uploads/default/default-player.jpg" alt="Create Interplanetary Player" />
+                                    <div class="card__content">
+                                        <p><span class="material-symbols-outlined">public</span> Create an Interplanetary Player</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sound Engine Creation Card -->
+                <div class="cell cell--12 cell--lg-4 content">
+                    <div>
+                        <a href="/voyage/soundengine">
+                            <div class="card card--clickable">
+                                <div class="card__image">
+                                    <img class="image" src="https://media.maar.world/uploads/default/default-soundEngine.jpg" alt="Create Sound Engine" />
+                                    <div class="card__content">
+                                        <p><span class="material-symbols-outlined">noise_control_on</span> Create a Sound Engine</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Discover Card -->
+                <div class="cell cell--12 cell--lg-4 content">
+                    <div>
+                        <a href="/">
+                            <div class="card card--clickable">
+                                <div class="card__image">
+                                    <img class="image" src="https://media.maar.world/uploads/default/default-discover.jpg" alt="Discover" />
+                                    <div class="card__content">
+                                        <p><span class="material-symbols-outlined">hexagon</span> Discover</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </a>
-      </div>
-    </div>
+        </div>
 
-    <div class="cell cell--12 cell--lg-4 content">
-      <div>
-        <a href="/voyage/track-release">
-          <div class="card card--clickable">
-            <div class="card__image">
-              <img class="image" src="https://media.maar.world/uploads/default/default-tracks.jpg" />
-              <div class="card__content">
-                <p><span class="material-symbols-outlined">diversity_1</span> Release a track</p>
-              </div>  
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
+        <!-- User Data Sections -->
+        <h2>Your Released Tracks:</h2>
+        <ul id="tracks-list"></ul>
 
-    <div class="cell cell--12 cell--lg-4 content">
-      <div>
-        <a href="/voyage/playlist">
-          <div class="card card--clickable">
-            <div class="card__image">
-              <img class="image" src="https://media.maar.world/uploads/default/default-playlist.jpg" />
-              <div class="card__content">
-                <p><span class="material-symbols-outlined">playlist_add_circle</span> Create a playlist or album</p>
-              </div>  
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
+        <h2>Your Sound Engines:</h2>
+        <ul class="soundEngine-list" id="sound-engines-list"></ul>
 
-    <div class="cell cell--12 cell--lg-4 content">
-      <div>
-        <a href="/voyage/interplanetary-player">
-          <div class="card card--clickable">
-            <div class="card__image">
-              <img class="image" src="https://media.maar.world/uploads/default/default-player.jpg" />
-              <div class="card__content">
-                <p><span class="material-symbols-outlined">public</span> Create an Interplanetary Player</p>
-              </div>  
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-    
-        <div class="cell cell--12 cell--lg-4 content">
-      <div>
-        <a href="/voyage/soundengine">
-          <div class="card card--clickable">
-            <div class="card__image">
-              <img class="image" src="https://media.maar.world/uploads/default/default-soundEngine.jpg" />
-              <div class="card__content">
-                <p><span class="material-symbols-outlined">noise_control_on</span> Create a Sound Engine</p>
-              </div>  
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-
-
-    <div class="cell cell--12 cell--lg-4 content">
-      <div>
-        <a href="/">
-          <div class="card card--clickable">
-            <div class="card__image">
-              <img class="image" src="https://media.maar.world/uploads/default/default-discover.jpg" />
-              <div class="card__content">
-                <p><span class="material-symbols-outlined">hexagon</span> Discover</p>
-              </div>  
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    <h2>Your Released Tracks:</h2>
-    <ul id="tracks-list"></ul>
-
-    <h2>Your Sound Engines:</h2>
-    <ul class="soundEngine-list" id="sound-engines-list"></ul>
-
-    <h2>Your Interplanetary Players:</h2>
-    <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
+        <h2>Your Interplanetary Players:</h2>
+        <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
 
         <h2>Your Playlists:</h2>
-    <ul class="playlist-list" id="playlist-list"></ul>
-
-
-</div>
-
-
+        <ul class="playlist-list" id="playlist-list"></ul>
+    </div>
 </div>
 
 <!-- Toast Notification Container -->
@@ -148,13 +145,14 @@ public: false
 <script>
 /**
  * Fetches data from the API with caching using lscache.
- * Specifically used for Sound Engines.
+ * Specifically used for Sound Engines and other data.
  * @param {string} url - The API endpoint.
  * @param {string} cacheKey - The key to store/retrieve data from cache.
+ * @param {number} ttl - Time-to-live for the cache in minutes.
  * @param {boolean} forceRefresh - If true, bypasses the cache.
  * @returns {Promise<Object>} - The fetched data.
  */
-async function fetchDataWithCache(url, cacheKey, forceRefresh = false) {
+async function fetchDataWithCache(url, cacheKey, ttl, forceRefresh = false) {
     if (!forceRefresh) {
         const cachedData = lscache.get(cacheKey);
         if (cachedData) {
@@ -165,12 +163,19 @@ async function fetchDataWithCache(url, cacheKey, forceRefresh = false) {
 
     console.log(`Fetching data from server for ${cacheKey}`);
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include', // Include cookies in the request
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Authorization': `Bearer ${token}`, // Removed since token is in HTTP-only cookie
+            }
+        });
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        lscache.set(cacheKey, data, 5); // Cache for 5 minutes
+        lscache.set(cacheKey, data, ttl); // Cache for specified minutes
         console.log(`Data fetched and cached for ${cacheKey}`);
         return data;
     } catch (error) {
@@ -181,14 +186,21 @@ async function fetchDataWithCache(url, cacheKey, forceRefresh = false) {
 
 /**
  * Fetches data directly from the API without using caching.
- * Specifically used for Interplanetary Players (IPP).
+ * Specifically used for Interplanetary Players (IPP) or real-time data.
  * @param {string} url - The API endpoint.
  * @returns {Promise<Object>} - The fetched data.
  */
 async function fetchData(url) {
     console.log(`Fetching data from server: ${url}`);
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include', // Include cookies in the request
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Authorization': `Bearer ${token}`, // Removed since token is in HTTP-only cookie
+            }
+        });
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -202,22 +214,20 @@ async function fetchData(url) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
-    if (!token || !userId) {
-        console.error('No valid session found. Redirecting to login...');
+    if (!userId) {
+        console.error('No userId found. Redirecting to login.');
         window.location.href = '/login';
         return;
     }
 
     // Fetch user profile data
     fetchUserProfile(userId);
-
 });
 
 /**
- * Function to fetch user profile data using cache.js
+ * Function to fetch user profile data
  * @param {string} userId
  */
 async function fetchUserProfile(userId) {
@@ -226,13 +236,12 @@ async function fetchUserProfile(userId) {
         const data = await fetchDataWithCache(
             `http://media.maar.world:3001/api/profile?userId=${userId}`,
             cacheKey,
-            60, // Cache for 60 minutes
-            false // forceRefresh: false
+            60 // Cache for 60 minutes
         );
         populateUserProfile(data);
     } catch (error) {
         console.error('Error fetching user data:', error);
-        document.getElementById('messageDisplay').innerText = 'Error fetching user data. Please try again.';
+        showToast('Error fetching user data. Please try again.', 'error');
     }
 }
 
@@ -240,34 +249,45 @@ async function fetchUserProfile(userId) {
  * Function to populate user profile UI
  * @param {Object} profileData - The user's profile data
  */
-
 function populateUserProfile(profileData) {
-    // Call populateUserProfileList to display the profile
+    // Populate the user profile list
     populateUserProfileList(profileData);
 
     console.log('User profile populated:', profileData);
-    
-    // Check and display Sound Engines
+
+    // Display Sound Engines
     if (Array.isArray(profileData.enginesOwned)) {
         displaySoundEnginesBatch(profileData.enginesOwned);
     } else {
         console.warn('enginesOwned is not an array:', profileData.enginesOwned);
         document.getElementById('sound-engines-list').innerHTML = '<li>No sound engines found.</li>';
     }
-    
-    // Check and display Interplanetary Players
+
+    // Display Interplanetary Players
     if (Array.isArray(profileData.interplanetaryPlayersOwned)) {
         displayInterplanetaryPlayersBatch(profileData.interplanetaryPlayersOwned);
     } else {
         console.warn('interplanetaryPlayersOwned is not an array:', profileData.interplanetaryPlayersOwned);
         document.querySelector('.interplanetaryPlayer-list').innerHTML = '<li>No interplanetary players found.</li>';
     }
+
+    // Display Tracks
+    if (Array.isArray(profileData.tracksOwned)) {
+        displayTracks(profileData.tracksOwned);
+    } else {
+        console.warn('tracksOwned is not an array:', profileData.tracksOwned);
+        document.getElementById('tracks-list').innerHTML = '<li>No tracks found.</li>';
+    }
+
+    // Display Playlists
+    if (Array.isArray(profileData.playlistsOwned)) {
+        displayPlaylists(profileData.playlistsOwned);
+    } else {
+        console.warn('playlistsOwned is not an array:', profileData.playlistsOwned);
+        document.getElementById('playlist-list').innerHTML = '<li>No playlists found.</li>';
+    }
 }
 
-/**
- * Function to populate the user profile using the user-list structure
- * @param {Object} profileData - The user's profile data
- */
 /**
  * Function to populate the user profile using the user-list structure
  * @param {Object} profileData - The user's profile data
@@ -285,7 +305,7 @@ function populateUserProfileList(profileData) {
             <!-- Profile Image -->
             <div class="voyage-profile-pic">
                 <a href="/voyage/profile">
-                    <img src="https://media.maar.world${profileData.profileImage || '/default_profile.png'}" alt="${profileData.username}">
+                    <img src="https://media.maar.world${profileData.profileImage || '/default_profile.png'}" alt="${profileData.username || 'User'}">
                 </a>
             </div>
 
@@ -317,10 +337,6 @@ function populateUserProfileList(profileData) {
     `;
 }
 
-function navigateToProfile() {
-    window.location.href = '/voyage/profile';
-}
-
 /**
  * Function to display tracks on the page
  * @param {Array} tracks - Array of track objects owned by the user.
@@ -333,6 +349,8 @@ function displayTracks(tracks) {
         console.log('No tracks to display.');
         return;
     }
+
+    tracksListElement.innerHTML = ''; // Clear existing list
 
     tracks.forEach(track => {
         const artistNames = track.artistNames.map(artist => artist.name).join(', ');
@@ -382,8 +400,7 @@ async function displaySoundEnginesBatch(engineIds) {
         const data = await fetchDataWithCache(
             batchUrl,
             cacheKey,
-            5, // Cache for 5 minutes
-            false // forceRefresh: false
+            5 // Cache for 5 minutes
         );
 
         if (data.success && Array.isArray(data.soundEngines)) {
@@ -460,8 +477,7 @@ async function displaySoundEnginesBatch(engineIds) {
  * @param {Array<string>} playerIds - Array of interplanetary player IDs owned by the user.
  */
 async function displayInterplanetaryPlayersBatch(playerIds) {
-
-        console.log('Starting displayInterplanetaryPlayersBatch with IDs:', playerIds);
+    console.log('Starting displayInterplanetaryPlayersBatch with IDs:', playerIds);
 
     const playersListElement = document.querySelector('.interplanetaryPlayer-list');
     playersListElement.innerHTML = ''; // Clear any existing content
@@ -484,11 +500,12 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
     try {
         const data = await fetchData(batchUrl);
+
         if (data.success && Array.isArray(data.interplanetaryPlayers)) {
             console.log(`Fetched ${data.interplanetaryPlayers.length} interplanetary players.`);
             
             data.interplanetaryPlayers.forEach(player => {
-                console.log('Interplanetary Player Object:', player); // <-- Debugging Line
+                console.log('Interplanetary Player Object:', player); // Debugging Line
 
                 if (!player || typeof player !== 'object') {
                     console.warn('Invalid interplanetary player data:', player);
@@ -530,16 +547,15 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                             <span class="material-symbols-outlined">share</span> 
                         </button>
                         <!-- More Options Button -->
-<div class="more-options-container">
-  <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
-    <span class="material-symbols-outlined">more_horiz</span>
-  </button>
-  <div class="more-options-dropdown" style="display: none;">
-    <button class="delete-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">Delete</button>
-  </div>
-</div>
-
-</div>
+                        <div class="more-options-container">
+                            <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
+                                <span class="material-symbols-outlined">more_horiz</span>
+                            </button>
+                            <div class="more-options-dropdown" style="display: none;">
+                                <button class="delete-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
                 `;
                 playersListElement.appendChild(playerDiv);
             });
@@ -554,6 +570,34 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         playersListElement.innerHTML = '<li>An error occurred while loading interplanetary players.</li>';
         showToast('An error occurred while loading your interplanetary players.', 'error');
     }
+}
+
+/**
+ * Function to display playlists on the page.
+ * @param {Array} playlists - Array of playlist objects owned by the user.
+ */
+function displayPlaylists(playlists) {
+    const playlistListElement = document.getElementById('playlist-list');
+
+    if (!playlists || playlists.length === 0) {
+        playlistListElement.innerHTML = '<li>No playlists found.</li>';
+        console.log('No playlists to display.');
+        return;
+    }
+
+    playlistListElement.innerHTML = ''; // Clear existing list
+
+    playlists.forEach(playlist => {
+        const playlistElement = document.createElement('li');
+        playlistElement.innerHTML = `
+            <strong>Playlist Name:</strong> ${playlist.playlistName}<br>
+            <strong>Description:</strong> ${playlist.description || 'No description provided.'}<br>
+            <strong>Privacy:</strong> ${playlist.privacy}<br>
+            <strong>Created On:</strong> ${new Date(playlist.createdAt).toLocaleDateString()}
+        `;
+        playlistListElement.appendChild(playlistElement);
+    });
+    console.log(`${playlists.length} playlists displayed.`);
 }
 
 /**
@@ -688,7 +732,7 @@ function closeAllDropdowns() {
  * @param {string} engineId - The ID of the sound engine to delete
  * @param {HTMLElement} button - The delete button that was clicked
  */
-function deleteSoundEngine(engineId, button) {
+async function deleteSoundEngine(engineId, button) {
     const userId = localStorage.getItem('userId');
     const cacheKey = `profile_${userId}`;
 
@@ -700,20 +744,21 @@ function deleteSoundEngine(engineId, button) {
     button.disabled = true;
     button.textContent = 'Deleting...';
 
-    // Send DELETE request to the server
-    fetch(`http://media.maar.world:3001/api/soundEngines/${engineId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
+    try {
+        const response = await fetch(`http://media.maar.world:3001/api/soundEngines/${engineId}`, {
+            method: 'DELETE',
+            credentials: 'include', // Include cookies
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
         if (!response.ok) {
-            throw new Error('Failed to delete the Sound Engine.');
+            const data = await response.json();
+            throw new Error(data.message || 'Failed to delete the Sound Engine.');
         }
-        return response.json();
-    })
-    .then(data => {
+
+        const data = await response.json();
         if (data.success) {
             showToast('Sound Engine deleted successfully!', 'success');
             // Remove the sound engine from the DOM
@@ -722,17 +767,16 @@ function deleteSoundEngine(engineId, button) {
                 soundEngineListItem.remove();
             }
             // Clear the profile cache after deletion
-            clearCachedData(cacheKey);
+            lscache.remove(cacheKey);
         } else {
             throw new Error(data.message || 'Failed to delete the Sound Engine.');
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error deleting Sound Engine:', error);
         showToast(`Error: ${error.message}`, 'error');
         button.disabled = false;
         button.textContent = 'Delete';
-    });
+    }
 }
 
 /**
@@ -756,11 +800,17 @@ async function deleteInterplanetaryPlayer(playerId, buttonElement) {
     try {
         const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
             method: 'DELETE',
+            credentials: 'include', // Include cookies
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ userId }),
         });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Failed to delete the Interplanetary Player.');
+        }
 
         const result = await response.json();
         if (result.success) {
@@ -770,16 +820,16 @@ async function deleteInterplanetaryPlayer(playerId, buttonElement) {
                 showToast('Player deleted successfully.', 'success');
             }
             // Clear the profile cache after deletion
-            clearCachedData(cacheKey);
+            lscache.remove(cacheKey);
         } else {
-            alert(`Error: ${result.message}`);
+            throw new Error(result.message || 'Failed to delete the Interplanetary Player.');
         }
     } catch (error) {
         console.error('Error deleting player:', error);
-        alert('An unexpected error occurred.');
+        showToast(`Error: ${error.message}`, 'error');
     }
 }
-    
+
 // Event listener to close dropdowns when clicking outside
 document.addEventListener('click', function(event) {
     // If the click is not within a more-options-container, close all dropdowns

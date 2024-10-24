@@ -9,7 +9,6 @@
       {%- include scripts/lib/throttle.js -%}
       {%- include scripts/lib/lazyload.js -%}
       {%- include scripts/lib/lscache.min.js -%}
-
     </script>
     {%- include scripts/variables.html -%}
     {%- include scripts/cookie-consent.html -%}
@@ -21,123 +20,14 @@
 
     <!-- Include common scripts -->
     <script>
+      {%- include scripts/auth.js -%}
       {%- include scripts/common.js -%}
       {%- include scripts/cache.js -%}
 
-     // {%- include scripts/searchUsers.js -%}
+      // Removed redundant authentication scripts to prevent duplication
+      // {%- include scripts/searchUsers.js -%}
     </script>
-    
 
-    <script>
 
-      
-      const API_BASE = 'http://media.maar.world:3001';
-
-      // Centralized session checking with retries and proper cookie handling
-      async function checkSession() {
-        try {
-          const response = await fetch(`${API_BASE}/api/auth/check-session`, {
-            method: 'GET',
-            credentials: 'include', // Include cookies in the request
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-
-          // Log the response status and headers for debugging
-          console.log('Check Session Response Status:', response.status);
-          console.log('Check Session Response Headers:', response.headers);
-
-          const data = await response.json();
-
-          if (response.ok) {
-            if (data.user) {
-              const username = data.user.username || data.user.email;
-              localStorage.setItem('userId', data.user.userId);
-              localStorage.setItem('username', username);
-              updateAuthLink(true); // User is logged in
-              console.log('Session is valid:', data.user);
-            } else {
-              updateAuthLink(false); // User is not logged in
-              console.log('No user data found.');
-            }
-          } else {
-            // If session check fails, treat user as not logged in
-            updateAuthLink(false);
-            console.warn('Session check failed, user is not logged in.');
-          }
-        } catch (error) {
-          console.error('Error during session check:', error);
-          updateAuthLink(false);
-        }
-      }
-
-      // Handle login redirection
-      function redirectToLogin(message) {
-        console.error(message);
-        window.location.href = '/login';
-      }
-
-      // Logout function
-      async function logoutUser() {
-        try {
-          const response = await fetch(`${API_BASE}/api/auth/logout`, {
-            method: 'POST',
-            credentials: 'include', // Include cookies in the request
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-
-          if (response.ok) {
-            localStorage.clear();
-            updateAuthLink(false);
-            window.location.href = '/login';
-          } else {
-            throw new Error('Logout failed');
-          }
-        } catch (error) {
-          console.error('Logout error:', error);
-        }
-      }
-
-      // Update login/logout link
-      function updateAuthLink(isLoggedIn) {
-        const authLink = document.getElementById('auth-link');
-        if (authLink) {
-          if (isLoggedIn) {
-            authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
-            authLink.onclick = logoutUser;
-          } else {
-            authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
-            authLink.href = '/login';
-          }
-        }
-      }
-
-      // Function to fetch profile data
-async function fetchProfileData(userId) {
-  try {
-      const response = await fetch(`http://media.maar.world:3001/api/users/${userId}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-      });
-
-      if (!response.ok) {
-          throw new Error('Failed to fetch profile data.');
-      }
-
-      const profileData = await response.json();
-      localStorage.setItem('profileData', JSON.stringify(profileData));
-  } catch (error) {
-      console.error('Error fetching profile data:', error);
-  }
-}
-      // Call session check on DOM load
-   //   document.addEventListener('DOMContentLoaded', checkSession);
-    </script>
   </body>
 </html>

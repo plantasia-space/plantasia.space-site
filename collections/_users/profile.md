@@ -23,11 +23,11 @@ key: xPlorer
                 </button>
             </a>
         </div>
-        <div class="edit-button-container">
-            <button id="editButton" class="btn button--outline-primary button--circle" title="View/Edit Profile">
-                <span class="material-symbols-outlined">edit</span> 
-            </button>
-        </div>
+    <div class="edit-button-container">
+        <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile" data-mode="view">
+            <span class="material-symbols-outlined" id="editButtonIcon">edit</span> 
+        </button>
+    </div>
     </div>
 
     <h3>xPlorer Profile</h3>
@@ -165,8 +165,6 @@ key: xPlorer
 </div>
 
 <script>
-
-    
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId');
     let originalProfileImage = '';
@@ -221,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Handle additional fields like displayName, city, country, bio
-        document.getElementById('displayName').value = data.displayName || '';
+        document.getElementById('displayName').innerText = data.displayName || '';
         document.getElementById('displayDisplayName').innerText = data.displayName || '';
         document.getElementById('city').value = data.city || '';
         document.getElementById('displayCity').innerText = data.city || '';
@@ -268,20 +266,39 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleEditMode();
     });
 
+    // Remove the separate cancel button if you want to handle cancel via the edit button
+    // If you prefer to keep it, ensure it also toggles the mode
     document.getElementById('cancelButton').addEventListener('click', function() {
-        toggleEditMode(false);
+        toggleEditMode(false); // Pass false to indicate cancelling edit
     });
 
-    function toggleEditMode(showEdit = true) {
+    function toggleEditMode(forceViewMode = null) {
         const profileForm = document.getElementById('profileForm');
         const profileView = document.getElementById('profileView');
+        const editButton = document.getElementById('editButton');
+        const editButtonIcon = document.getElementById('editButtonIcon');
 
-        if (showEdit) {
+        // Determine the new mode
+        if (forceViewMode === null) {
+            isEditMode = !isEditMode;
+        } else {
+            isEditMode = !forceViewMode;
+        }
+
+        if (isEditMode) {
+            // Switch to Edit Mode
             profileView.style.display = 'none';
             profileForm.style.display = 'block';
+            editButton.setAttribute('title', 'View Profile');
+            editButtonIcon.textContent = 'visibility'; // Change to view icon
+            editButton.setAttribute('data-mode', 'edit');
         } else {
+            // Switch to View Mode
             profileView.style.display = 'block';
             profileForm.style.display = 'none';
+            editButton.setAttribute('title', 'Edit Profile');
+            editButtonIcon.textContent = 'edit'; // Change back to edit icon
+            editButton.setAttribute('data-mode', 'view');
             resetProfileImage();
         }
     }
@@ -339,41 +356,41 @@ document.addEventListener('DOMContentLoaded', function() {
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
+        alert('Profile URL copied to clipboard!');
     });
 
     // Validate username format and uniqueness
     const usernameInput = document.getElementById('username');
     const feedbackElement = document.getElementById('usernameFeedback');
-    const validUsername = /^[a-z0-9_-]{1,30}$/;
+    const validUsername = /^[a-z0-9_.]{1,30}$/;
 
-async function checkUsername() {
-    const username = usernameInput.value.trim().toLowerCase();
+    async function checkUsername() {
+        const username = usernameInput.value.trim().toLowerCase();
 
-    if (!validUsername.test(username)) {
-        feedbackElement.innerText = 'Invalid username format.';
-        feedbackElement.style.color = 'red';
-        return false;
-    }
+        if (!validUsername.test(username)) {
+            feedbackElement.innerText = 'Invalid username format.';
+            feedbackElement.style.color = 'red';
+            return false;
+        }
 
-    if (username === currentUsername) {
-        feedbackElement.innerText = 'This is your current username.';
+        if (username === currentUsername) {
+            feedbackElement.innerText = 'This is your current username.';
+            feedbackElement.style.color = 'green';
+            return true;
+        }
+
+        // Pass the correct userId (UUID) here
+        const isUnique = await checkUsernameUniqueness(username, userId);
+        if (!isUnique) {
+            feedbackElement.innerText = 'Username is already taken.';
+            feedbackElement.style.color = 'red';
+            return false;
+        }
+
+        feedbackElement.innerText = 'Username is available!';
         feedbackElement.style.color = 'green';
         return true;
     }
-
-    // Pass the correct userId (UUID) here
-    const isUnique = await checkUsernameUniqueness(username, userId);
-    if (!isUnique) {
-        feedbackElement.innerText = 'Username is already taken.';
-        feedbackElement.style.color = 'red';
-        return false;
-    }
-
-    feedbackElement.innerText = 'Username is available!';
-    feedbackElement.style.color = 'green';
-    return true;
-}
-
 
     // Debounce function to limit the rate of function execution
     function debounce(func, delay) {
@@ -391,25 +408,24 @@ async function checkUsername() {
     usernameInput.addEventListener('input', debouncedCheckUsername);
 
     // Function to check if the username is unique
-// Function to check if the username is unique
-async function checkUsernameUniqueness(username, currentUserId = null) {
-    try {
-        const url = new URL('http://media.maar.world:3001/api/checkUsername');
-        url.searchParams.append('username', username);
-        
-        // Include currentUserId if available (i.e., during edit)
-        if (currentUserId) {
-            url.searchParams.append('currentUserId', currentUserId);
-        }
+    async function checkUsernameUniqueness(username, currentUserId = null) {
+        try {
+            const url = new URL('http://media.maar.world:3001/api/checkUsername');
+            url.searchParams.append('username', username);
+            
+            // Include currentUserId if available (i.e., during edit)
+            if (currentUserId) {
+                url.searchParams.append('currentUserId', currentUserId);
+            }
 
-        const response = await fetch(url.toString());
-        const data = await response.json();
-        return data.isUnique; // Assuming server returns { isUnique: true/false }
-    } catch (error) {
-        console.error('Error checking username uniqueness:', error);
-        return false;
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            return data.isUnique; // Assuming server returns { isUnique: true/false }
+        } catch (error) {
+            console.error('Error checking username uniqueness:', error);
+            return false;
+        }
     }
-}
 
     // Submit profile form
     document.getElementById('profileForm').addEventListener('submit', async function(event) {
@@ -474,7 +490,7 @@ async function checkUsernameUniqueness(username, currentUserId = null) {
                 clearUserCaches(userId);
                 document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
                 document.getElementById('messageDisplay').style.color = 'green';
-                window.location.reload();
+                toggleEditMode(); // Switch back to view mode after successful update
             } else {
                 document.getElementById('messageDisplay').innerText = `Failed to update profile: ${response.message}`;
                 document.getElementById('messageDisplay').style.color = 'red';
@@ -489,9 +505,16 @@ async function checkUsernameUniqueness(username, currentUserId = null) {
         xhr.send(formData);
     }
 
+    // Function to clear cached user data
+    function clearUserCaches(userId) {
+        const cacheKeys = [
+            `profile_${userId}`
+            // Add other cache keys if necessary
+        ];
+        cacheKeys.forEach(key => localStorage.removeItem(key));
+    }
+
     // Initial call to fetch profile
     fetchUserProfile(userId);
-
-
 });
 </script>
