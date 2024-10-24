@@ -266,7 +266,7 @@ input[type="number"] {
   display: flex;
   align-items: center; /* Vertically center the content */
   justify-content: safe center; 
-  padding: 10px;
+  padding: 20px;
   border: 2px solid #fff;
   border-radius: 12px;
   margin-bottom: 10px;
@@ -309,7 +309,7 @@ input[type="number"] {
 }
 
 
-/* ------------------ GLOBAL STYLES ----------------------- */
+/* Start of Adjusted CSS */
 
 /* Ensure consistent box-sizing across all elements */
 *, *::before, *::after {
@@ -317,49 +317,83 @@ input[type="number"] {
 }
 
 /* ------------------ LISTS ----------------------- */
-.soundEngine-list, .interplanetaryPlayer-list {
+
+.soundEngine-list,
+.interplanetaryPlayer-list,
+.menu-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
 /* Common Styles for List Items */
-.soundEngine-list-item, .interplanetaryPlayer-list-item {
+.soundEngine-list-item,
+.interplanetaryPlayer-list-item,
+.menu-list-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: 20px;
   border: 2px solid #ffffff;
   border-radius: 12px;
-  margin-bottom: 15px;
-  background-color: #000; /* Black background */
-  color: #fff; /* White text */
-  position: relative; /* Needed for absolute positioning of the "More" button */
-  /* Remove overflow: hidden to allow dropdown visibility */
+  margin-bottom: 20px;
+  background-color: #000;
+  color: #fff;
+  position: relative;
   overflow: visible;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Profile Picture */
-.soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
-  width: 80px;
-  height: 80px;
+/* Hover Effect for List Items */
+.soundEngine-list-item:hover,
+.interplanetaryPlayer-list-item:hover,
+.menu-list-item:hover {
+  background-color: #1a1a1a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Image Styles for All List Items */
+.soundEngine-list-item img,
+.interplanetaryPlayer-list-item img,
+.menu-list-item img {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
+  border: 2px solid #ffffff;
+
   object-fit: cover;
-  margin-right: 15px;
+  margin-right: 20px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+
+
+/* Image Containers */
+.soundEngine-profile-pic,
+.interplanetaryPlayer-profile-pic {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 /* Details Section */
-.soundEngine-details, .interplanetaryPlayer-details {
+.soundEngine-details,
+.interplanetaryPlayer-details,
+.menu-item-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
-  min-width: 0; /* Allows text to wrap and prevent overflow */
+  min-width: 0;
   word-wrap: break-word;
 }
 
 /* Name Styling */
-.soundEngine-name, .interplanetaryPlayer-name {
+.soundEngine-name,
+.interplanetaryPlayer-name,
+.menu-item-title {
   font-size: 1.2em;
   font-weight: bold;
   color: #fff;
@@ -369,16 +403,22 @@ input[type="number"] {
   text-overflow: ellipsis;
 }
 
-/* Availability and Parameters/Description Styling */
-.soundEngine-availability, .soundEngine-params,
-.interplanetaryPlayer-availability, .interplanetaryPlayer-sciName, .interplanetaryPlayer-description {
+/* Description and Availability Styling */
+.soundEngine-availability,
+.soundEngine-params,
+.interplanetaryPlayer-availability,
+.interplanetaryPlayer-sciName,
+.interplanetaryPlayer-description,
+.menu-item-description {
   font-size: 1em;
   color: #ccc;
   margin-bottom: 3px;
 }
 
 /* Actions Section */
-.soundEngine-actions, .interplanetaryPlayer-actions {
+.soundEngine-actions,
+.interplanetaryPlayer-actions,
+.menu-actions {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -386,49 +426,35 @@ input[type="number"] {
 
 /* ------------------ MORE OPTIONS BUTTON ----------------------- */
 
-/* More Options Container */
 .more-options-container {
   position: absolute;
-  top: 15px; /* Align with the top padding of the list item */
-  right: 15px; /* Align with the right padding of the list item */
+  top: 15px;
+  right: 15px;
   display: inline-block;
-  background-color: #3370ff00; /* Transparent background as per your preference */
-  border: 2px solid #ffffff; /* White border */
-  color: #fff;
-  border-radius: 6px;
-  padding: 5px 10px;
   cursor: pointer;
   font-size: 14px;
+  z-index: 1001;
 }
 
-/* Hover Effects for More Options Container */
-.more-options-container:hover {
-  background-color: #ffffff; /* Darker shade for hover */
-  color: #000000;
-}
-
-/* More Options Button */
 .more-options-button {
-  background-color: #3370ff00; /* Transparent background */
+  background-color: transparent;
   color: #fff;
   cursor: pointer;
-  border: none; /* Remove border to simplify */
+  border: none;
   border-radius: 6px;
-  font-size: 1.5em; /* Increased font size for better visibility */
+  font-size: 1.5em;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Focus State for More Options Button */
-.more-options-button:focus {
-  outline: none;
+.more-options-container:hover .more-options-button {
+  color: #ccc;
 }
 
-/* Dropdown Menu */
 .more-options-dropdown {
   position: absolute;
-  top: 100%; /* Position below the "More" button */
+  top: 100%;
   right: 0;
   background-color: #000000;
   color: #ffffff;
@@ -436,9 +462,9 @@ input[type="number"] {
   border: 1px solid #ffffff;
   border-radius: 8px;
   padding: 10px;
-  display: none; /* Hidden by default */
+  display: none;
   flex-direction: column;
-  z-index: 1000; /* Ensure it appears above other elements */
+  z-index: 1000;
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(-10px);
@@ -450,7 +476,6 @@ input[type="number"] {
   transform: translateY(0);
 }
 
-/* Option Button Styling */
 .more-options-dropdown .option-button {
   background-color: transparent;
   border: none;
@@ -462,39 +487,77 @@ input[type="number"] {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: background-color 0.2s ease;
 }
 
 .more-options-dropdown .option-button:hover {
-  background-color: #65656536; /* Semi-transparent hover background */
+  background-color: #333333;
   border-radius: 4px;
 }
 
-/* Transition for Dropdown */
-.more-options-dropdown {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+/* ------------------ MENU LIST STYLES ----------------------- */
+
+.menu-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-/* ------------------ MEDIA QUERIES FOR RESPONSIVENESS ----------------------- */
+.menu-list-item {
+  /* Styles are already defined in common list item styles */
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  padding: 0;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.menu-link:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ------------------ RESPONSIVE DESIGN ----------------------- */
 
 /* Tablets and Below */
 @media (max-width: 1024px) {
-  .soundEngine-list-item, .interplanetaryPlayer-list-item {
+  .soundEngine-list-item,
+  .interplanetaryPlayer-list-item,
+  .menu-list-item {
     padding: 12px;
     margin-bottom: 12px;
   }
 
-  .soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+  .soundEngine-list-item img,
+  .interplanetaryPlayer-list-item img,
+  .menu-list-item img {
     width: 70px;
     height: 70px;
     margin-right: 12px;
   }
 
-  .soundEngine-name, .interplanetaryPlayer-name {
+  .soundEngine-name,
+  .interplanetaryPlayer-name,
+  .menu-item-title {
     font-size: 1.1em;
   }
 
-  .soundEngine-availability, .soundEngine-params,
-  .interplanetaryPlayer-availability, .interplanetaryPlayer-sciName, .interplanetaryPlayer-description {
+  .soundEngine-availability,
+  .soundEngine-params,
+  .interplanetaryPlayer-availability,
+  .interplanetaryPlayer-sciName,
+  .interplanetaryPlayer-description,
+  .menu-item-description {
     font-size: 0.95em;
   }
 
@@ -505,32 +568,40 @@ input[type="number"] {
 
 /* Mobile Devices */
 @media (max-width: 768px) {
-  .soundEngine-list-item, .interplanetaryPlayer-list-item {
+  .soundEngine-list-item,
+  .interplanetaryPlayer-list-item,
+  .menu-list-item {
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 10px;
   }
 
-  .soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
-    width: 60px;
-    height: 60px;
+  .soundEngine-list-item img,
+  .interplanetaryPlayer-list-item img,
+  .menu-list-item img {
     margin-right: 0;
     margin-bottom: 10px;
+    width: 60px;
+    height: 60px;
   }
 
-  .soundEngine-details, .interplanetaryPlayer-details {
+  .soundEngine-details,
+  .interplanetaryPlayer-details,
+  .menu-item-details {
     align-items: center;
     text-align: center;
   }
 
-  .soundEngine-actions, .interplanetaryPlayer-actions {
+  .soundEngine-actions,
+  .interplanetaryPlayer-actions,
+  .menu-actions {
     margin-top: 10px;
     gap: 5px;
   }
 
   .more-options-container {
-    top: 10px; /* Adjust for smaller padding */
+    top: 10px;
     right: 10px;
   }
 
@@ -542,23 +613,33 @@ input[type="number"] {
 
 /* Small Mobile Devices */
 @media (max-width: 480px) {
-  .soundEngine-list-item, .interplanetaryPlayer-list-item {
+  .soundEngine-list-item,
+  .interplanetaryPlayer-list-item,
+  .menu-list-item {
     padding: 8px;
     margin-bottom: 10px;
   }
 
-  .soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+  .soundEngine-list-item img,
+  .interplanetaryPlayer-list-item img,
+  .menu-list-item img {
     width: 50px;
     height: 50px;
     margin-bottom: 8px;
   }
 
-  .soundEngine-name, .interplanetaryPlayer-name {
+  .soundEngine-name,
+  .interplanetaryPlayer-name,
+  .menu-item-title {
     font-size: 1em;
   }
 
-  .soundEngine-availability, .soundEngine-params,
-  .interplanetaryPlayer-availability, .interplanetaryPlayer-sciName, .interplanetaryPlayer-description {
+  .soundEngine-availability,
+  .soundEngine-params,
+  .interplanetaryPlayer-availability,
+  .interplanetaryPlayer-sciName,
+  .interplanetaryPlayer-description,
+  .menu-item-description {
     font-size: 0.9em;
   }
 
@@ -577,12 +658,16 @@ input[type="number"] {
 }
 
 /* Preventing Overflow */
-.soundEngine-details, .interplanetaryPlayer-details {
+.soundEngine-details,
+.interplanetaryPlayer-details,
+.menu-item-details {
   word-wrap: break-word;
 }
 
 /* Ensuring Images Do Not Overflow */
-.soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+.soundEngine-list-item img,
+.interplanetaryPlayer-list-item img,
+.menu-list-item img {
   max-width: 100%;
   height: auto;
 }
@@ -604,6 +689,11 @@ input[type="number"] {
   outline: 2px dashed #ffffff;
   outline-offset: 4px;
 }
+
+/* Rest of your styles remain unchanged */
+/* ... (Include the rest of your CSS code here) */
+
+/* End of Adjusted CSS */
 
 
 /* ------------------ GENERAL ----------------------- */

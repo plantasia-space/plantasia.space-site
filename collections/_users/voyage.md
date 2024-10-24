@@ -16,107 +16,77 @@ public: false
 <!-- Voyage Page Container -->
 <div id="voyage-content">
     <h1>Voyage</h1>
-  <div class="world-form">
-      <div class="form-box">
-        <p id="user-info"></p>
-        <ul class="user-list" id="user-profile-list">
-            <!-- User profile will be populated here -->
-        </ul>
-        <div class="cards-container">
-            <div class="grid grid--p-3">
-                <!-- Profile Card -->
-                <div class="cell cell--12 cell--lg-4 content">
-                    <div>
-                        <a href="/voyage/profile">
-                            <div class="card card--clickable">
-                                <div class="card__image">
-                                    <img class="image" src="https://media.maar.world/uploads/default/default-profile.jpg" alt="Edit Profile" />
-                                    <div class="card__content">
-                                        <p><span class="material-symbols-outlined">account_circle</span> Edit your profile</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <!-- Track Release Card -->
-                <div class="cell cell--12 cell--lg-4 content">
-                    <div>
-                        <a href="/voyage/track-release">
-                            <div class="card card--clickable">
-                                <div class="card__image">
-                                    <img class="image" src="https://media.maar.world/uploads/default/default-tracks.jpg" alt="Release Track" />
-                                    <div class="card__content">
-                                        <p><span class="material-symbols-outlined">diversity_1</span> Release a track</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <!-- Playlist Creation Card -->
-                <div class="cell cell--12 cell--lg-4 content">
-                    <div>
-                        <a href="/voyage/playlist">
-                            <div class="card card--clickable">
-                                <div class="card__image">
-                                    <img class="image" src="https://media.maar.world/uploads/default/default-playlist.jpg" alt="Create Playlist" />
-                                    <div class="card__content">
-                                        <p><span class="material-symbols-outlined">playlist_add_circle</span> Create a playlist or album</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <!-- Interplanetary Player Card -->
-                <div class="cell cell--12 cell--lg-4 content">
-                    <div>
-                        <a href="/voyage/interplanetary-player">
-                            <div class="card card--clickable">
-                                <div class="card__image">
-                                    <img class="image" src="https://media.maar.world/uploads/default/default-player.jpg" alt="Create Interplanetary Player" />
-                                    <div class="card__content">
-                                        <p><span class="material-symbols-outlined">public</span> Create an Interplanetary Player</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <!-- Sound Engine Creation Card -->
-                <div class="cell cell--12 cell--lg-4 content">
-                    <div>
-                        <a href="/voyage/soundengine">
-                            <div class="card card--clickable">
-                                <div class="card__image">
-                                    <img class="image" src="https://media.maar.world/uploads/default/default-soundEngine.jpg" alt="Create Sound Engine" />
-                                    <div class="card__content">
-                                        <p><span class="material-symbols-outlined">noise_control_on</span> Create a Sound Engine</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <!-- Discover Card -->
-                <div class="cell cell--12 cell--lg-4 content">
-                    <div>
-                        <a href="/">
-                            <div class="card card--clickable">
-                                <div class="card__image">
-                                    <img class="image" src="https://media.maar.world/uploads/default/default-discover.jpg" alt="Discover" />
-                                    <div class="card__content">
-                                        <p><span class="material-symbols-outlined">hexagon</span> Discover</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div class="world-form">
+        <div class="form-box">
+            <p id="user-info"></p>
+            <ul class="user-list" id="user-profile-list">
+                <!-- User profile will be populated here -->
+            </ul>
+    <!-- New Menu List -->
+    <h2>Dashboard Menu</h2>
+    <!-- Menu List -->
+    <!-- Profile Menu Item -->
+    <li class="menu-list-item">
+        <a href="/voyage/profile" class="menu-link">
+        <img src="https://media.maar.world/uploads/default/default-profile.jpg" alt="Edit Profile">
+        <div class="menu-item-details">
+            <div class="menu-item-title">Edit your profile</div>
+            <div class="menu-item-description">Update your profile information and preferences.</div>
         </div>
-        <!-- User Data Sections -->
+        </a>
+    </li>
+    <!-- Track Release Menu Item -->
+    <li class="menu-list-item">
+        <a href="/voyage/track-release" class="menu-link">
+        <img src="https://media.maar.world/uploads/default/default-tracks.jpg" alt="Release Track">
+        <div class="menu-item-details">
+            <div class="menu-item-title">Release a track</div>
+            <div class="menu-item-description">Upload and share your latest music tracks.</div>
+        </div>
+        </a>
+    </li>
+    <!-- Playlist Creation Menu Item -->
+    <li class="menu-list-item">
+        <a href="/voyage/playlist" class="menu-link">
+        <img src="https://media.maar.world/uploads/default/default-playlist.jpg" alt="Create Playlist">
+        <div class="menu-item-details">
+            <div class="menu-item-title">Create a playlist or album</div>
+            <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
+        </div>
+        </a>
+    </li>
+    <!-- Interplanetary Player Menu Item -->
+    <li class="menu-list-item">
+        <a href="/voyage/interplanetary-player" class="menu-link">
+        <img src="https://media.maar.world/uploads/default/default-player.jpg" alt="Create Interplanetary Player">
+        <div class="menu-item-details">
+            <div class="menu-item-title">Create an Interplanetary Player</div>
+            <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
+        </div>
+        </a>
+    </li>
+    <!-- Sound Engine Creation Menu Item -->
+    <li class="menu-list-item">
+        <a href="/voyage/soundengine" class="menu-link">
+        <img src="https://media.maar.world/uploads/default/default-soundEngine.jpg" alt="Create Sound Engine">
+        <div class="menu-item-details">
+            <div class="menu-item-title">Create a Sound Engine</div>
+            <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
+        </div>
+        </a>    
+    </li>
+    <!-- Discover Menu Item -->
+    <li class="menu-list-item">
+        <a href="/" class="menu-link">
+        <img src="https://media.maar.world/uploads/default/default-discover.jpg" alt="Discover">
+        <div class="menu-item-details">
+            <div class="menu-item-title">Discover</div>
+            <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
+        </div>
+        </a>
+    </li>
+    
+        <!-- Existing Lists -->
         <h2>Your Released Tracks:</h2>
         <ul id="tracks-list"></ul>
         <h2>Your Sound Engines:</h2>
@@ -127,12 +97,10 @@ public: false
         <ul class="playlist-list" id="playlist-list"></ul>
     </div>
     </div>
-    
 </div>
 
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="toast-container"></div>
-
 
 <!-- JavaScript to Handle Data Retrieval and Rendering -->
 <script>
@@ -413,43 +381,45 @@ async function displaySoundEnginesBatch(engineIds) {
 
                 // Create DOM elements
                 const soundEngineDiv = document.createElement('li');
-                soundEngineDiv.classList.add('soundEngine-list-item');
+               // soundEngineDiv.classList.add('soundEngine-list-item');
 
-                soundEngineDiv.innerHTML = `
-                    <div class="soundEngine-profile-pic">
-                        <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
-                    </div>
-                    <div class="soundEngine-details">
-                        <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
-                        <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
-                        <div class="soundEngine-params">
-                            <strong>Parameters:</strong> 
-                            X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
-                            Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
-                            Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
-                        </div>
-                    </div>
-                    <div class="soundEngine-actions">
-                        <!-- More Options Button -->
-                        <div class="more-options-container">
-                            <button class="more-options-button" onclick="toggleMoreOptions(event)" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                                <span class="material-symbols-outlined">more_horiz</span>
-                            </button>
-                            <div class="more-options-dropdown">
-                                <button class="option-button" onclick="editSoundEngine('${engine._id}')">
-                                    <span class="material-symbols-outlined">edit</span> Edit
-                                </button>
-                                <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
-                                    <span class="material-symbols-outlined">share</span> Share
-                                </button>
-                                <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
-                                    <span class="material-symbols-outlined">delete</span> Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                soundEnginesListElement.appendChild(soundEngineDiv);
+soundEngineDiv.innerHTML = `
+    <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
+        <div class="soundEngine-profile-pic">
+            <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
+        </div>
+        <div class="soundEngine-details">
+            <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
+            <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+            <div class="soundEngine-params">
+                <strong>Parameters:</strong> 
+                X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
+                Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
+                Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
+            </div>
+        </div>
+        <div class="soundEngine-actions">
+            <div class="more-options-container">
+                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                </button>
+                <div class="more-options-dropdown">
+                    <button class="option-button" onclick="editSoundEngine('${engine._id}')">
+                        <span class="material-symbols-outlined">edit</span> Edit
+                    </button>
+                    <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
+                    <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
+                        <span class="material-symbols-outlined">delete</span> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+`;
+soundEnginesListElement.appendChild(soundEngineDiv);
+
             });
             console.log('All sound engines displayed successfully.');
         } else {
@@ -463,7 +433,6 @@ async function displaySoundEnginesBatch(engineIds) {
         showToast('An error occurred while loading your sound engines.', 'error');
     }
 }
-
 
 /**
  * Function to display interplanetary players on the page using batch fetching.
@@ -518,39 +487,40 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
                 // Create DOM elements
                 const playerDiv = document.createElement('li');
-                playerDiv.classList.add('interplanetaryPlayer-list-item');
+             //   playerDiv.classList.add('interplanetaryPlayer-list-item');
 
-                playerDiv.innerHTML = `
-                    <div class="interplanetaryPlayer-profile-pic">
-                        <img src="${imageUrl}" alt="${playerName}" loading="lazy">
-                    </div>
-                    <div class="interplanetaryPlayer-details">
-                        <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
-                        <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
-                        <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
-                        <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
-                    </div>
-                    <div class="interplanetaryPlayer-actions">
-                        <!-- More Options Button -->
-                        <div class="more-options-container">
-                            <button class="more-options-button" onclick="toggleMoreOptions(event)" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                                <span class="material-symbols-outlined">more_horiz</span>
-                            </button>
-                            <div class="more-options-dropdown">
-                                <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
-                                    <span class="material-symbols-outlined">edit</span> Edit
-                                </button>
-                                <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
-                                    <span class="material-symbols-outlined">share</span> Share
-                                </button>
-                                <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
-                                    <span class="material-symbols-outlined">delete</span> Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                playersListElement.appendChild(playerDiv);
+playerDiv.innerHTML = `
+    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
+        <div class="interplanetaryPlayer-profile-pic">
+            <img src="${imageUrl}" alt="${playerName}" loading="lazy">
+        </div>
+        <div class="interplanetaryPlayer-details">
+            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
+            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
+            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
+            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
+        </div>
+        <div class="interplanetaryPlayer-actions">
+            <div class="more-options-container">
+                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                </button>
+                <div class="more-options-dropdown">
+                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                        <span class="material-symbols-outlined">edit</span> Edit
+                    </button>
+                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
+                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
+                        <span class="material-symbols-outlined">delete</span> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+`;
+playersListElement.appendChild(playerDiv);
             });
             console.log('All interplanetary players displayed successfully.');
         } else {
@@ -564,7 +534,6 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         showToast('An error occurred while loading your interplanetary players.', 'error');
     }
 }
-
 
 /**
  * Function to display playlists on the page.
@@ -696,17 +665,44 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
+
 /**
- * Function to toggle the visibility of the More Options dropdown
- * @param {Event} event - The click event
+ * Function to handle the card click and toggle the dropdown.
+ * @param {string} engineId - The ID of the sound engine.
+ * @param {Event} event - The click event.
  */
+function handleCardClick(engineId, event) {
+    event.preventDefault(); // Prevent default link behavior
+    console.log(`Card clicked for Sound Engine ID: ${engineId}`);
+
+    // Find the dropdown inside the clicked card and toggle it
+    const card = event.currentTarget;
+    const dropdown = card.querySelector('.more-options-dropdown');
+
+    if (dropdown) {
+        const isDisplayed = dropdown.classList.contains('show');
+        closeAllDropdowns(); // Close any other open dropdowns.
+
+        // Toggle the dropdown visibility
+        if (!isDisplayed) {
+            dropdown.classList.add('show');
+            card.setAttribute('aria-expanded', 'true');
+        } else {
+            dropdown.classList.remove('show');
+            card.setAttribute('aria-expanded', 'false');
+        }
+    }
+}
+
+
 function toggleMoreOptions(event) {
-    event.stopPropagation(); // Prevent event from bubbling up
+
+    console.log(event);
+    event.stopPropagation(); // Prevent event from bubbling up.
     const dropdown = event.currentTarget.nextElementSibling;
     if (dropdown) {
         const isDisplayed = dropdown.classList.contains('show');
-        // Close any other open dropdowns
-        closeAllDropdowns();
+        closeAllDropdowns(); // Close any other open dropdowns.
         if (!isDisplayed) {
             dropdown.classList.add('show');
             event.currentTarget.setAttribute('aria-expanded', 'true');
@@ -717,24 +713,17 @@ function toggleMoreOptions(event) {
     }
 }
 
-/**
- * Function to close all open dropdown menus
- */
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.more-options-dropdown');
-    dropdowns.forEach(dropdown => {
-        dropdown.classList.remove('show');
-    });
-    const buttons = document.querySelectorAll('.more-options-button');
-    buttons.forEach(button => {
-        button.setAttribute('aria-expanded', 'false');
-    });
+    dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+
+    const cards = document.querySelectorAll('.soundEngine-list-item, .interplanetaryPlayer-list-item');
+    cards.forEach(card => card.setAttribute('aria-expanded', 'false'));
 }
 
 // Event listener to close dropdowns when clicking outside
 document.addEventListener('click', function(event) {
-    // Close all dropdowns if the click is outside any more-options-container
-    if (!event.target.closest('.more-options-container')) {
+    if (!event.target.closest('.soundEngine-list-item, .interplanetaryPlayer-list-item')) {
         closeAllDropdowns();
     }
 });
@@ -794,7 +783,7 @@ async function deleteSoundEngine(engineId, button) {
 /**
  * Function to handle the deletion of an interplanetary player
  * @param {string} playerId - The ID of the interplanetary player to delete
- * @param {HTMLElement} button - The delete button that was clicked
+ * @param {HTMLElement} buttonElement - The delete button that was clicked
  */
 async function deleteInterplanetaryPlayer(playerId, buttonElement) {
     const userId = localStorage.getItem('userId');
@@ -842,11 +831,21 @@ async function deleteInterplanetaryPlayer(playerId, buttonElement) {
     }
 }
 
-// Event listener to close dropdowns when clicking outside
-document.addEventListener('click', function(event) {
-    // If the click is not within a more-options-container, close all dropdowns
-    if (!event.target.closest('.more-options-container')) {
-        closeAllDropdowns();
+document.addEventListener('DOMContentLoaded', () => {
+    const lastScrollY = localStorage.getItem('lastScrollY');
+    if (lastScrollY) {
+        // Use a smoother scroll effect
+        window.scrollTo({
+            top: lastScrollY,
+            behavior: 'smooth' // This will apply smooth scrolling
+        });
     }
 });
+
+window.addEventListener('scroll', () => {
+    // Save the current scroll position to local storage
+    localStorage.setItem('lastScrollY', window.scrollY);
+});
+
+
 </script>
