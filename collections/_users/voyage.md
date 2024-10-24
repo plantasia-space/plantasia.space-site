@@ -16,13 +16,12 @@ public: false
 <!-- Voyage Page Container -->
 <div id="voyage-content">
     <h1>Voyage</h1>
-
-    <div class="form-container">
+  <div class="world-form">
+      <div class="form-box">
         <p id="user-info"></p>
         <ul class="user-list" id="user-profile-list">
             <!-- User profile will be populated here -->
         </ul>
-
         <div class="cards-container">
             <div class="grid grid--p-3">
                 <!-- Profile Card -->
@@ -40,7 +39,6 @@ public: false
                         </a>
                     </div>
                 </div>
-
                 <!-- Track Release Card -->
                 <div class="cell cell--12 cell--lg-4 content">
                     <div>
@@ -56,7 +54,6 @@ public: false
                         </a>
                     </div>
                 </div>
-
                 <!-- Playlist Creation Card -->
                 <div class="cell cell--12 cell--lg-4 content">
                     <div>
@@ -72,7 +69,6 @@ public: false
                         </a>
                     </div>
                 </div>
-
                 <!-- Interplanetary Player Card -->
                 <div class="cell cell--12 cell--lg-4 content">
                     <div>
@@ -88,7 +84,6 @@ public: false
                         </a>
                     </div>
                 </div>
-
                 <!-- Sound Engine Creation Card -->
                 <div class="cell cell--12 cell--lg-4 content">
                     <div>
@@ -104,7 +99,6 @@ public: false
                         </a>
                     </div>
                 </div>
-
                 <!-- Discover Card -->
                 <div class="cell cell--12 cell--lg-4 content">
                     <div>
@@ -122,24 +116,23 @@ public: false
                 </div>
             </div>
         </div>
-
         <!-- User Data Sections -->
         <h2>Your Released Tracks:</h2>
         <ul id="tracks-list"></ul>
-
         <h2>Your Sound Engines:</h2>
         <ul class="soundEngine-list" id="sound-engines-list"></ul>
-
         <h2>Your Interplanetary Players:</h2>
         <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
-
         <h2>Your Playlists:</h2>
         <ul class="playlist-list" id="playlist-list"></ul>
     </div>
+    </div>
+    
 </div>
 
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="toast-container"></div>
+
 
 <!-- JavaScript to Handle Data Retrieval and Rendering -->
 <script>
@@ -369,6 +362,7 @@ function displayTracks(tracks) {
 
 /**
  * Function to display sound engines on the page using batch fetching with caching.
+ * Consolidates action buttons into a single "More Options" button with a dropdown menu.
  * @param {Array<string>} engineIds - Array of sound engine IDs owned by the user.
  */
 async function displaySoundEnginesBatch(engineIds) {
@@ -423,7 +417,7 @@ async function displaySoundEnginesBatch(engineIds) {
 
                 soundEngineDiv.innerHTML = `
                     <div class="soundEngine-profile-pic">
-                        <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy" style="max-width: 80px; max-height: 80px;">
+                        <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
                     </div>
                     <div class="soundEngine-details">
                         <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
@@ -435,24 +429,22 @@ async function displaySoundEnginesBatch(engineIds) {
                             Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
                         </div>
                     </div>
-                    <div class="button-container">
-                        <button class="soundEngine-edit-button" onclick="editSoundEngine('${engine._id}')">
-                            <span class="material-symbols-outlined">edit</span> 
-                        </button>
-                        <button 
-                            class="btn share-button" 
-                            ${engine.isPublic ? '' : 'disabled'} 
-                            onclick="shareSoundEngine('${engine._id}')"
-                        >
-                            <span class="material-symbols-outlined">share</span> 
-                        </button>
+                    <div class="soundEngine-actions">
                         <!-- More Options Button -->
                         <div class="more-options-container">
-                            <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
+                            <button class="more-options-button" onclick="toggleMoreOptions(event)" aria-haspopup="true" aria-expanded="false" aria-label="More options">
                                 <span class="material-symbols-outlined">more_horiz</span>
                             </button>
-                            <div class="more-options-dropdown" style="display: none;">
-                                <button class="delete-button" onclick="deleteSoundEngine('${engine._id}', this)">Delete</button>
+                            <div class="more-options-dropdown">
+                                <button class="option-button" onclick="editSoundEngine('${engine._id}')">
+                                    <span class="material-symbols-outlined">edit</span> Edit
+                                </button>
+                                <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
+                                    <span class="material-symbols-outlined">share</span> Share
+                                </button>
+                                <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
+                                    <span class="material-symbols-outlined">delete</span> Delete
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -472,8 +464,10 @@ async function displaySoundEnginesBatch(engineIds) {
     }
 }
 
+
 /**
- * Function to display interplanetary players on the page without caching.
+ * Function to display interplanetary players on the page using batch fetching.
+ * Consolidates action buttons into a single "More Options" button with a dropdown menu.
  * @param {Array<string>} playerIds - Array of interplanetary player IDs owned by the user.
  */
 async function displayInterplanetaryPlayersBatch(playerIds) {
@@ -528,7 +522,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
                 playerDiv.innerHTML = `
                     <div class="interplanetaryPlayer-profile-pic">
-                        <img src="${imageUrl}" alt="${playerName}" loading="lazy" style="max-width: 80px; max-height: 80px;">
+                        <img src="${imageUrl}" alt="${playerName}" loading="lazy">
                     </div>
                     <div class="interplanetaryPlayer-details">
                         <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
@@ -536,23 +530,22 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                         <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
                         <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
                     </div>
-                    <div class="button-container">
-                        <button class="interplanetaryPlayer-edit-button" onclick="editInterplanetaryPlayer('${player._id}')">
-                            <span class="material-symbols-outlined">edit</span> 
-                        </button>
-                        <button 
-                            class="btn share-button" 
-                            onclick="shareInterplanetaryPlayer('${player._id}')"
-                        >
-                            <span class="material-symbols-outlined">share</span> 
-                        </button>
+                    <div class="interplanetaryPlayer-actions">
                         <!-- More Options Button -->
                         <div class="more-options-container">
-                            <button class="btn more-options-button" onclick="toggleMoreOptions(event)">
+                            <button class="more-options-button" onclick="toggleMoreOptions(event)" aria-haspopup="true" aria-expanded="false" aria-label="More options">
                                 <span class="material-symbols-outlined">more_horiz</span>
                             </button>
-                            <div class="more-options-dropdown" style="display: none;">
-                                <button class="delete-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">Delete</button>
+                            <div class="more-options-dropdown">
+                                <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                                    <span class="material-symbols-outlined">edit</span> Edit
+                                </button>
+                                <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
+                                    <span class="material-symbols-outlined">share</span> Share
+                                </button>
+                                <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
+                                    <span class="material-symbols-outlined">delete</span> Delete
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -571,6 +564,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         showToast('An error occurred while loading your interplanetary players.', 'error');
     }
 }
+
 
 /**
  * Function to display playlists on the page.
@@ -710,10 +704,16 @@ function toggleMoreOptions(event) {
     event.stopPropagation(); // Prevent event from bubbling up
     const dropdown = event.currentTarget.nextElementSibling;
     if (dropdown) {
-        const isDisplayed = dropdown.style.display === 'block';
+        const isDisplayed = dropdown.classList.contains('show');
         // Close any other open dropdowns
         closeAllDropdowns();
-        dropdown.style.display = isDisplayed ? 'none' : 'block';
+        if (!isDisplayed) {
+            dropdown.classList.add('show');
+            event.currentTarget.setAttribute('aria-expanded', 'true');
+        } else {
+            dropdown.classList.remove('show');
+            event.currentTarget.setAttribute('aria-expanded', 'false');
+        }
     }
 }
 
@@ -723,9 +723,21 @@ function toggleMoreOptions(event) {
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.more-options-dropdown');
     dropdowns.forEach(dropdown => {
-        dropdown.style.display = 'none';
+        dropdown.classList.remove('show');
+    });
+    const buttons = document.querySelectorAll('.more-options-button');
+    buttons.forEach(button => {
+        button.setAttribute('aria-expanded', 'false');
     });
 }
+
+// Event listener to close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    // Close all dropdowns if the click is outside any more-options-container
+    if (!event.target.closest('.more-options-container')) {
+        closeAllDropdowns();
+    }
+});
 
 /**
  * Function to handle the deletion of a sound engine

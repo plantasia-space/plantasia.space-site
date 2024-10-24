@@ -309,65 +309,91 @@ input[type="number"] {
 }
 
 
-/* ------------------ SOUND ENGINE ----------------------- */
-.soundEngine-list {
+/* ------------------ GLOBAL STYLES ----------------------- */
+
+/* Ensure consistent box-sizing across all elements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ------------------ LISTS ----------------------- */
+.soundEngine-list, .interplanetaryPlayer-list {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
-.soundEngine-list-item {
+/* Common Styles for List Items */
+.soundEngine-list-item, .interplanetaryPlayer-list-item {
   display: flex;
-  align-items: center; /* Vertically center the content */
-  justify-content: space-between; /* Space between the content and actions */
-  padding: 10px;
-  border: 2px solid #fff;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 2px solid #ffffff;
   border-radius: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background-color: #000; /* Black background */
   color: #fff; /* White text */
+  position: relative; /* Needed for absolute positioning of the "More" button */
+  /* Remove overflow: hidden to allow dropdown visibility */
+  overflow: visible;
 }
 
-.soundEngine-profile-pic img {
-  width: 60px; /* Set a fixed size for the image */
-  height: 60px;
-  border-radius: 50%; /* Make the image circular */
+/* Profile Picture */
+.soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px; /* Add space between the image and the text */
+  margin-right: 15px;
 }
 
-.soundEngine-details {
+/* Details Section */
+.soundEngine-details, .interplanetaryPlayer-details {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center the text vertically */
-  flex-grow: 1; /* Ensure details take up remaining space */
+  justify-content: center;
+  flex-grow: 1;
+  min-width: 0; /* Allows text to wrap and prevent overflow */
+  word-wrap: break-word;
 }
 
-
-.soundEngine-name {
-  font-size: 16px;
+/* Name Styling */
+.soundEngine-name, .interplanetaryPlayer-name {
+  font-size: 1.2em;
   font-weight: bold;
   color: #fff;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.soundEngine-availability {
-  font-size: 14px;
+/* Availability and Parameters/Description Styling */
+.soundEngine-availability, .soundEngine-params,
+.interplanetaryPlayer-availability, .interplanetaryPlayer-sciName, .interplanetaryPlayer-description {
+  font-size: 1em;
   color: #ccc;
+  margin-bottom: 3px;
 }
 
-.soundEngine-params {
-  font-size: 14px;
-  color: #aaa;
-}
-
-.soundEngine-actions {
+/* Actions Section */
+.soundEngine-actions, .interplanetaryPlayer-actions {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.soundEngine-edit-button {
-  background-color: #ff583300; /* Bright color for the edit button */
-  border: 2px solid #ffffff; /* Same color as the background by default */
+/* ------------------ MORE OPTIONS BUTTON ----------------------- */
+
+/* More Options Container */
+.more-options-container {
+  position: absolute;
+  top: 15px; /* Align with the top padding of the list item */
+  right: 15px; /* Align with the right padding of the list item */
+  display: inline-block;
+  background-color: #3370ff00; /* Transparent background as per your preference */
+  border: 2px solid #ffffff; /* White border */
   color: #fff;
   border-radius: 6px;
   padding: 5px 10px;
@@ -375,78 +401,208 @@ input[type="number"] {
   font-size: 14px;
 }
 
-.soundEngine-edit-button:hover {
+/* Hover Effects for More Options Container */
+.more-options-container:hover {
   background-color: #ffffff; /* Darker shade for hover */
   color: #000000;
-
 }
 
-
-/* ------------------ INTERPLANETARY PLAYERS ----------------------- */
-.interplanetaryPlayer-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.interplanetaryPlayer-list-item {
+/* More Options Button */
+.more-options-button {
+  background-color: #3370ff00; /* Transparent background */
+  color: #fff;
+  cursor: pointer;
+  border: none; /* Remove border to simplify */
+  border-radius: 6px;
+  font-size: 1.5em; /* Increased font size for better visibility */
   display: flex;
-  align-items: center; /* Vertically center the content */
-  justify-content: space-between; /* Space between the content and actions */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Focus State for More Options Button */
+.more-options-button:focus {
+  outline: none;
+}
+
+/* Dropdown Menu */
+.more-options-dropdown {
+  position: absolute;
+  top: 100%; /* Position below the "More" button */
+  right: 0;
+  background-color: #000000;
+  color: #ffffff;
+  min-width: 150px;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
   padding: 10px;
-  border: 2px solid #fff;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  background-color: #000; /* Black background */
-  color: #fff; /* White text */
-}
-
-.interplanetaryPlayer-profile-pic img {
-  width: 60px; /* Set a fixed size for the image */
-  height: 60px;
-  border-radius: 50%; /* Make the image circular */
-  object-fit: cover;
-  margin-right: 15px; /* Add space between the image and the text */
-}
-
-.interplanetaryPlayer-details {
-  display: flex;
+  display: none; /* Hidden by default */
   flex-direction: column;
-  justify-content: center; /* Center the text vertically */
-  flex-grow: 1; /* Ensure details take up remaining space */
+  z-index: 1000; /* Ensure it appears above other elements */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
+.more-options-dropdown.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
 
-.interplanetaryPlayer-name {
-  font-size: 16px;
-  font-weight: bold;
+/* Option Button Styling */
+.more-options-dropdown .option-button {
+  background-color: transparent;
+  border: none;
   color: #fff;
-}
-
-.interplanetaryPlayer-availability {
-  font-size: 14px;
-  color: #ccc;
-}
-
-.interplanetaryPlayer-params {
-  font-size: 14px;
-  color: #aaa;
-}
-
-
-.interplanetaryPlayer-edit-button {
-  background-color: #ff583300; /* Bright color for the edit button */
-  border: 2px solid #ffffff; /* Same color as the background by default */
-  color: #fff;
-  border-radius: 6px;
-  padding: 5px 10px;
+  text-align: left;
+  padding: 8px 16px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.interplanetaryPlayer-edit-button:hover {
-  background-color: #ffffff; /* Darker shade for hover */
-  color: #000000;
+.more-options-dropdown .option-button:hover {
+  background-color: #65656536; /* Semi-transparent hover background */
+  border-radius: 4px;
+}
 
+/* Transition for Dropdown */
+.more-options-dropdown {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ------------------ MEDIA QUERIES FOR RESPONSIVENESS ----------------------- */
+
+/* Tablets and Below */
+@media (max-width: 1024px) {
+  .soundEngine-list-item, .interplanetaryPlayer-list-item {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+    width: 70px;
+    height: 70px;
+    margin-right: 12px;
+  }
+
+  .soundEngine-name, .interplanetaryPlayer-name {
+    font-size: 1.1em;
+  }
+
+  .soundEngine-availability, .soundEngine-params,
+  .interplanetaryPlayer-availability, .interplanetaryPlayer-sciName, .interplanetaryPlayer-description {
+    font-size: 0.95em;
+  }
+
+  .more-options-button {
+    font-size: 1.3em;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+  .soundEngine-list-item, .interplanetaryPlayer-list-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+    width: 60px;
+    height: 60px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .soundEngine-details, .interplanetaryPlayer-details {
+    align-items: center;
+    text-align: center;
+  }
+
+  .soundEngine-actions, .interplanetaryPlayer-actions {
+    margin-top: 10px;
+    gap: 5px;
+  }
+
+  .more-options-container {
+    top: 10px; /* Adjust for smaller padding */
+    right: 10px;
+  }
+
+  .more-options-dropdown {
+    right: 50%;
+    transform: translateX(50%) translateY(-10px);
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .soundEngine-list-item, .interplanetaryPlayer-list-item {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+
+  .soundEngine-name, .interplanetaryPlayer-name {
+    font-size: 1em;
+  }
+
+  .soundEngine-availability, .soundEngine-params,
+  .interplanetaryPlayer-availability, .interplanetaryPlayer-sciName, .interplanetaryPlayer-description {
+    font-size: 0.9em;
+  }
+
+  .more-options-button {
+    font-size: 1.2em;
+  }
+
+  .more-options-dropdown {
+    min-width: 120px;
+  }
+
+  .more-options-dropdown .option-button {
+    font-size: 0.9em;
+    padding: 6px 12px;
+  }
+}
+
+/* Preventing Overflow */
+.soundEngine-details, .interplanetaryPlayer-details {
+  word-wrap: break-word;
+}
+
+/* Ensuring Images Do Not Overflow */
+.soundEngine-profile-pic img, .interplanetaryPlayer-profile-pic img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensuring Dropdown Stays Within Viewport */
+.more-options-dropdown {
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+/* Option Button Focus State */
+.option-button:focus {
+  outline: 2px dashed #ffffff;
+  outline-offset: 4px;
+}
+
+/* More Options Button Focus State */
+.more-options-button:focus {
+  outline: 2px dashed #ffffff;
+  outline-offset: 4px;
 }
 
 
@@ -647,62 +803,6 @@ input[type="number"] {
   color: #000000;
 }
 
-/* ------------------ MORE OPTIONS BUTTON ----------------------- */
-
-    /* More Options Container */
-    .more-options-container {
-      position: relative;
-      display: inline-block;
-      background-color: #3370ff00; /* Bright color for the share button */
-      border: 2px solid #ffffff; /* Same color as the background by default */
-      color: #fff;
-      border-radius: 6px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-size: 14px;
-  }
-  
-  .more-options-container:hover {
-    background-color: #ffffff; /* Darker shade for hover */
-    color: #000000;
-  }
-
-  /* More Options Dropdown */
-  .more-options-dropdown {
-      position: absolute;
-      top: 30px; /* Adjust based on button size */
-      right: 0;
-      background-color: #000000;
-      color: #ffffff;
-      min-width: 120px;
-      border: solid;
-      box-shadow: 0px 8px 16px 0px rgb(255, 255, 255);
-      border-width: 1px;
-      border-color: #ffffff;
-      border-radius: 5px;
-      z-index: 1;
-      padding: 5px 0;
-  }
-
-  /* Delete Button Styling */
-  .more-options-dropdown .delete-button {
-      width: 100%;
-      padding: 8px 16px;
-      border: none;
-      background: none;
-      text-align: left;
-      cursor: pointer;
-      font-size: 14px;
-  }
-
-  .more-options-dropdown .delete-button:hover {
-      background-color: #65656536;
-  }
-
-  /* Transition for Dropdown */
-  .more-options-dropdown {
-      transition: opacity 0.3s ease;
-  }
 
 /* Add this CSS to your styles */
 .required-field::after {
@@ -730,6 +830,15 @@ input[type="number"] {
 /// 
 /// *
 /// 
+
+/* Global Box-Sizing for Consistent Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base Styles for Voyage Profile */
 .voyage-profile {
   display: flex;
   flex-direction: row; /* Image on the left, details on the right */
@@ -798,12 +907,10 @@ input[type="number"] {
   display: inline-block; /* Make the background fit the text content */
 }
 
-
 .voyage-username {
   font-size: 1em;
   color: #ffffff;
   background-color: #000000a6; /* Black highlight background */
-
 }
 
 .voyage-bio {
@@ -827,7 +934,123 @@ input[type="number"] {
 .voyage-custom-link a:hover {
   text-decoration: underline;
 }
-  /* Success and error states for artName input */
+
+/* Media Queries for Responsiveness */
+
+/* Tablets and Below */
+@media (max-width: 1024px) {
+  .voyage-profile {
+    padding: 15px;
+  }
+
+  .voyage-profile-pic img {
+    width: 90px;
+    height: 90px;
+    margin-right: 15px;
+  }
+
+  .voyage-display-name {
+    font-size: 1.3em;
+    padding: 8px 12px;
+  }
+
+  .voyage-username {
+    font-size: 0.95em;
+  }
+
+  .voyage-bio,
+  .voyage-role {
+    font-size: 0.9em;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+  .voyage-profile {
+    flex-direction: column; /* Stack image above details */
+    padding: 15px;
+  }
+
+  .voyage-profile-pic img {
+    width: 80px;
+    height: 80px;
+    margin-right: 0;
+    margin-bottom: 15px; /* Space below the image */
+  }
+
+  .voyage-details {
+    align-items: center;
+    text-align: center;
+  }
+
+  .voyage-display-name {
+    font-size: 1.2em;
+    padding: 8px 12px;
+  }
+
+  .voyage-username {
+    font-size: 0.9em;
+  }
+
+  .voyage-bio,
+  .voyage-role {
+    font-size: 0.85em;
+  }
+
+  .voyage-custom-link a {
+    margin-top: 8px;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .voyage-profile {
+    padding: 10px;
+  }
+
+  .voyage-profile-pic img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+  }
+
+  .voyage-display-name {
+    font-size: 1.1em;
+    padding: 6px 10px;
+  }
+
+  .voyage-username {
+    font-size: 0.85em;
+  }
+
+  .voyage-bio,
+  .voyage-role {
+    font-size: 0.8em;
+  }
+
+  .voyage-custom-link a {
+    margin-top: 6px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Success and error states for artName input */
   #artName.success {
     border-color: green;
   }
@@ -873,4 +1096,65 @@ input[type="number"] {
 
 .tooltip:hover::after {
   opacity: 1;
+}
+
+
+/* ------------------ MAAR.WORLD  NEUTRAL FORM CONTAINER ----------------------- */
+
+
+/* Full-width container with retro-futuristic neutral styling */
+.world-form {
+  width: 100%;
+  min-height: auto; /* Changed from 100vh to auto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #000000, #000000);
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible; /* Changed from hidden to visible */
+}
+
+
+.form-box {
+  background: rgba(0, 0, 0, 0.95);
+  padding: 30px 40px;
+  border: 1px solid #ffffff; /* Subtle accent color */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(236, 236, 236, 0.824);
+  position: relative;
+ // z-index: 2; /* Above the CRT overlay */
+  width: 100%;
+ // max-width: 700px; /* Optimized max-width for readability */
+}
+
+/* Form title */
+.form-box h2 {
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #33ffff; /* Accent color for titles */
+  text-align: center;
+  font-weight: 700;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-box {
+    padding: 20px 30px;
+  }
+
+  .form-box h2 {
+    font-size: 1.75em;
+  }
+}
+
+/* Accessibility: Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  .world-form::before,
+  .old-crt-monitor {
+    animation: none;
+    background: none;
+  }
 }
