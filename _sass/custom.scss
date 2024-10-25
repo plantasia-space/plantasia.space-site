@@ -148,6 +148,21 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 
 }
 
+.cover-image-container {
+  width: 256px;
+  height: 256px;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Centers the container itself */
+}
+
+.cover-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
 
 
 $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
@@ -320,7 +335,9 @@ input[type="number"] {
 
 .soundEngine-list,
 .interplanetaryPlayer-list,
-.menu-list {
+.menu-list,
+.track-list,
+.playlist-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -329,7 +346,9 @@ input[type="number"] {
 /* Common Styles for List Items */
 .soundEngine-list-item,
 .interplanetaryPlayer-list-item,
-.menu-list-item {
+.menu-list-item,
+.track-list-item,
+.playlist-list-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -342,12 +361,16 @@ input[type="number"] {
   position: relative;
   overflow: visible;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  flex-direction: column; /* Stack items vertically */
+  text-align: center; /* Center text */
 }
 
 /* Hover Effect for List Items */
 .soundEngine-list-item:hover,
 .interplanetaryPlayer-list-item:hover,
-.menu-list-item:hover {
+.menu-list-item:hover,
+.track-list-item:hover,
+.playlist-list-item:hover {
   background-color: #1a1a1a;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -355,12 +378,13 @@ input[type="number"] {
 /* Image Styles for All List Items */
 .soundEngine-list-item img,
 .interplanetaryPlayer-list-item img,
-.menu-list-item img {
+.menu-list-item img,
+.track-list-item img,
+.playlist-list-item img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
-
+  border: 1px solid #ffffff;
   object-fit: cover;
   margin-right: 20px;
   position: relative;
@@ -368,11 +392,11 @@ input[type="number"] {
   flex-shrink: 0; /* Prevent image from shrinking */
 }
 
-
-
 /* Image Containers */
 .soundEngine-profile-pic,
-.interplanetaryPlayer-profile-pic {
+.interplanetaryPlayer-profile-pic,
+.track-profile-pic,
+.playlist-profile-pic {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -381,7 +405,9 @@ input[type="number"] {
 /* Details Section */
 .soundEngine-details,
 .interplanetaryPlayer-details,
-.menu-item-details {
+.menu-item-details,
+.track-details,
+.playlist-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -393,7 +419,9 @@ input[type="number"] {
 /* Name Styling */
 .soundEngine-name,
 .interplanetaryPlayer-name,
-.menu-item-title {
+.menu-item-title,
+.track-name,
+.playlist-name {
   font-size: 1.2em;
   font-weight: bold;
   color: #fff;
@@ -409,7 +437,13 @@ input[type="number"] {
 .interplanetaryPlayer-availability,
 .interplanetaryPlayer-sciName,
 .interplanetaryPlayer-description,
-.menu-item-description {
+.menu-item-description,
+.track-privacy,
+.track-release-date,
+.track-description,
+.playlist-privacy,
+.playlist-created-on,
+.playlist-description {
   font-size: 1em;
   color: #ccc;
   margin-bottom: 3px;
@@ -418,7 +452,9 @@ input[type="number"] {
 /* Actions Section */
 .soundEngine-actions,
 .interplanetaryPlayer-actions,
-.menu-actions {
+.menu-actions,
+.track-actions,
+.playlist-actions {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -512,9 +548,6 @@ input[type="number"] {
 }
 
 .menu-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
   text-decoration: none;
   color: inherit;
@@ -533,22 +566,31 @@ input[type="number"] {
 @media (max-width: 1024px) {
   .soundEngine-list-item,
   .interplanetaryPlayer-list-item,
-  .menu-list-item {
+  .menu-list-item,
+  .track-list-item,
+  .playlist-list-item {
     padding: 12px;
     margin-bottom: 12px;
   }
 
   .soundEngine-list-item img,
   .interplanetaryPlayer-list-item img,
-  .menu-list-item img {
+  .menu-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
     width: 70px;
     height: 70px;
     margin-right: 12px;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align the content */
+    text-align: center; /* Center text */
   }
 
   .soundEngine-name,
   .interplanetaryPlayer-name,
-  .menu-item-title {
+  .menu-item-title,
+  .track-name,
+  .playlist-name {
     font-size: 1.1em;
   }
 
@@ -557,7 +599,13 @@ input[type="number"] {
   .interplanetaryPlayer-availability,
   .interplanetaryPlayer-sciName,
   .interplanetaryPlayer-description,
-  .menu-item-description {
+  .menu-item-description,
+  .track-privacy,
+  .track-release-date,
+  .track-description,
+  .playlist-privacy,
+  .playlist-created-on,
+  .playlist-description {
     font-size: 0.95em;
   }
 
@@ -570,32 +618,48 @@ input[type="number"] {
 @media (max-width: 768px) {
   .soundEngine-list-item,
   .interplanetaryPlayer-list-item,
-  .menu-list-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .menu-list-item,
+  .track-list-item,
+  .playlist-list-item {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align the content */
+    text-align: center; /* Center text */
     padding: 10px;
+  }
+
+  .menu-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
+    margin-right: 0; /* Remove margin on right */
+    margin-bottom: 10px; /* Space below the image */
+    width: 60px; /* Adjust width if needed */
+    height: 60px; /* Adjust height if needed */
   }
 
   .soundEngine-list-item img,
   .interplanetaryPlayer-list-item img,
-  .menu-list-item img {
-    margin-right: 0;
-    margin-bottom: 10px;
-    width: 60px;
-    height: 60px;
+  .track-list-item img,
+  .playlist-list-item img {
+    margin-right: 0; /* Ensure no right margin */
+    margin-bottom: 10px; /* Space below the image */
+    width: 60px; /* Uniform image width */
+    height: 60px; /* Uniform image height */
   }
 
   .soundEngine-details,
   .interplanetaryPlayer-details,
-  .menu-item-details {
-    align-items: center;
-    text-align: center;
+  .menu-item-details,
+  .track-details,
+  .playlist-details {
+    align-items: center; /* Center details */
+    text-align: center; /* Center text */
   }
-
+  
   .soundEngine-actions,
   .interplanetaryPlayer-actions,
-  .menu-actions {
+  .menu-actions,
+  .track-actions,
+  .playlist-actions {
     margin-top: 10px;
     gap: 5px;
   }
@@ -615,14 +679,18 @@ input[type="number"] {
 @media (max-width: 480px) {
   .soundEngine-list-item,
   .interplanetaryPlayer-list-item,
-  .menu-list-item {
+  .menu-list-item,
+  .track-list-item,
+  .playlist-list-item {
     padding: 8px;
     margin-bottom: 10px;
   }
 
   .soundEngine-list-item img,
   .interplanetaryPlayer-list-item img,
-  .menu-list-item img {
+  .menu-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
     width: 50px;
     height: 50px;
     margin-bottom: 8px;
@@ -630,7 +698,9 @@ input[type="number"] {
 
   .soundEngine-name,
   .interplanetaryPlayer-name,
-  .menu-item-title {
+  .menu-item-title,
+  .track-name,
+  .playlist-name {
     font-size: 1em;
   }
 
@@ -639,7 +709,13 @@ input[type="number"] {
   .interplanetaryPlayer-availability,
   .interplanetaryPlayer-sciName,
   .interplanetaryPlayer-description,
-  .menu-item-description {
+  .menu-item-description,
+  .track-privacy,
+  .track-release-date,
+  .track-description,
+  .playlist-privacy,
+  .playlist-created-on,
+  .playlist-description {
     font-size: 0.9em;
   }
 
@@ -660,14 +736,18 @@ input[type="number"] {
 /* Preventing Overflow */
 .soundEngine-details,
 .interplanetaryPlayer-details,
-.menu-item-details {
+.menu-item-details,
+.track-details,
+.playlist-details {
   word-wrap: break-word;
 }
 
 /* Ensuring Images Do Not Overflow */
 .soundEngine-list-item img,
 .interplanetaryPlayer-list-item img,
-.menu-list-item img {
+.menu-list-item img,
+.track-list-item img,
+.playlist-list-item img {
   max-width: 100%;
   height: auto;
 }
@@ -694,8 +774,6 @@ input[type="number"] {
 /* ... (Include the rest of your CSS code here) */
 
 /* End of Adjusted CSS */
-
-
 /* ------------------ GENERAL ----------------------- */
 
 .share-button {
@@ -1064,6 +1142,7 @@ input[type="number"] {
   .voyage-profile-pic img {
     width: 80px;
     height: 80px;
+    border: 1px; 
     margin-right: 0;
     margin-bottom: 15px; /* Space below the image */
   }
@@ -1247,4 +1326,65 @@ input[type="number"] {
     animation: none;
     background: none;
   }
+}
+
+
+////////////////////////////////////////////////////////////////////
+/// 
+/* Styles for Collapsible Sections */
+.collapsible-section {
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #fff; /* Adjust text color as needed */
+}
+
+.toggle-button {
+  width: $button-size; /* Adjust the size as needed */
+  height: $button-size; /* Ensure both buttons are the same size */
+  padding: 0; /* Ensure padding doesn't affect the size */
+  border-radius: 50%; /* Ensures the button remains circular */
+  font-size: $button-size*.5; /* Adjust to ensure the icons are the same size */
+
+}
+
+.toggle-button:focus {
+  outline: none;
+}
+
+.collapsible-section ul {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Base style */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+  font-size: 24px; /* Default size for general use */
+}
+
+/* Larger variation for specific sections */
+.material-symbols-large {
+  font-family: 'Material Symbols Outlined';
+  font-size: 48px; /* Adjust this size as needed */
+  font-variation-settings:
+    'FILL' 1,    /* Filled style for added emphasis */
+    'wght' 600,  /* Bolder weight */
+    'GRAD' 100,  /* Higher gradient for visibility */
+    'opsz' 72;   /* Larger optical size */
 }
