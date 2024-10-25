@@ -1,241 +1,271 @@
-// Store the last search query to prevent redundant requests
-let previousQueryX = '';
-let isFetching = false;
+// searchUsers.js
 
-// Flag to indicate a valid username selection
-let validSelection = false;
+(function() {
+    // Configuration
+    const API_ENDPOINT = 'http://media.maar.world:3001/api/searchUsers'; // Ensure this matches your server's route
+    const DEBOUNCE_DELAY = 300; // milliseconds
 
-// Function to search for users based on input
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInputs = document.querySelectorAll('.user-search-input');
+    /**
+     * Debounce function to limit the rate of API calls
+     * @param {Function} func - The function to debounce
+     * @param {number} delay - Delay in milliseconds
+     * @returns {Function} - Debounced function
+     */
+    function debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
 
-    searchInputs.forEach((searchInput) => {
-        // Ensure that the input has not been initialized already
-        if (searchInput && !searchInput.dataset.initialized) {
-            searchInput.dataset.initialized = 'true'; // Mark as initialized
-            const resultsContainer = searchInput.nextElementSibling;
+    /**
+     * Initialize search functionality for all .user-search-input fields
+     */
+    function initializeSearchUsers() {
+        const searchInputs = document.querySelectorAll('.user-search-input');
 
-            if (resultsContainer && resultsContainer.classList.contains('dropdown')) {
-                handleUserSearch(searchInput, resultsContainer);
+        searchInputs.forEach(input => {
+            // Avoid initializing the same input multiple times
+            if (input.dataset.initialized) return;
+            input.dataset.initialized = 'true';
+
+            const wrapper = input.closest('.input-wrapper');
+            const dropdown = wrapper.querySelector('.dropdown');
+
+            if (!dropdown) return; // Skip if no dropdown container is found
+
+            // Ensure there's a hidden input for userId
+            let hiddenInput = wrapper.querySelector('.artistUserId');
+            if (!hiddenInput) {
+                hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.classList.add('artistUserId');
+                hiddenInput.name = 'artistUserIds[]'; // Adjust the name attribute as needed
+                wrapper.appendChild(hiddenInput);
             }
-        }
-    });
-});
 
-// Function to handle input and display search results with keyboard navigation
-function handleUserSearch(inputElement, resultsContainer) {
-    let timeout;
-    let selectedIndex = -1;
+            // Debounced input handler
+            const debouncedHandleInput = debounce(handleInput, DEBOUNCE_DELAY);
 
-    inputElement.addEventListener('input', () => {
-        clearTimeout(timeout);
-        const query = inputElement.value.trim();
+            // Attach event listeners
+            input.addEventListener('input', debouncedHandleInput);
+            input.addEventListener('keydown', handleKeyDown);
+            input.addEventListener('blur', handleBlur);
 
-        // Check if the query has changed to avoid redundant requests
-        if (query === previousQueryX || query.length < 2) {
-            resultsContainer.innerHTML = '';
-            selectedIndex = -1;
-            resultsContainer.classList.remove('active');
+            // Click outside to close dropdown
+            document.addEventListener('click', function(event) {
+                if (!wrapper.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        });
+    }
+
+    /**
+     * Handle input event with debounce
+     * @param {Event} event 
+     */
+    async function handleInput(event) {
+        const input = event.target;
+        const query = input.value.trim();
+
+        console.log(`Searching for users with query: "${query}"`);
+
+        if (query.length < 2) { // Minimum characters to start search
+            clearDropdown(input);
             return;
         }
 
-        previousQueryX = query; // Update the last query
-        timeout = setTimeout(async () => {
-            const users = await searchUsers(query, isFetching);
-            updateResultsDropdown(users, resultsContainer, inputElement);
-        }, 500); // Adjusted debounce delay for better performance
-    });
+        try {
+            const response = await fetch(`${API_ENDPOINT}?query=${encodeURIComponent(query)}`);
 
-    inputElement.addEventListener('keydown', (event) => {
-        const results = resultsContainer.querySelectorAll('.user-result');
+            console.log(`API Response Status: ${response.status}`);
 
-        switch (event.key) {
-            case 'ArrowDown':
-                event.preventDefault();
-                if (selectedIndex < results.length - 1) {
-                    selectedIndex++;
-                    updateSelection(results, selectedIndex);
-                }
-                break;
-
-            case 'ArrowUp':
-                event.preventDefault();
-                if (selectedIndex > 0) {
-                    selectedIndex--;
-                    updateSelection(results, selectedIndex);
-                }
-                break;
-
-            case 'Enter':
-                event.preventDefault();
-                if (selectedIndex >= 0 && results[selectedIndex]) {
-                    results[selectedIndex].click();
-                }
-                break;
-
-            default:
-                break;
-        }
-    });
-
-    inputElement.addEventListener('blur', async () => {
-        setTimeout(async () => {
-            if (validSelection) {
-                validSelection = false; // Reset flag
-                return; // Do not clear the input
+            if (response.status === 429) { // Too Many Requests
+                showDropdownMessage(input, 'Too many requests. Please wait.', 'error');
+                return;
             }
 
-            const inputValue = inputElement.value.trim();
-            if (inputValue) {
-                const isValid = await checkUsernameValidity(inputValue);
-                if (!isValid) {
-                    inputElement.value = '';
-                 //   displayDddArtistFeedback('Selected username is invalid or does not exist.', 'error');
-                }
+            if (response.status === 404) { // No Users Found
+                showNoUsersFound(input);
+                return;
             }
-        }, 200); // Adjust delay as needed
-    });
 
-    // Hide the dropdown when clicking outside the input and dropdown
-    document.addEventListener('click', (event) => {
-        if (!inputElement.contains(event.target) && !resultsContainer.contains(event.target)) {
-            resultsContainer.classList.remove('active');
+            if (!response.ok) { // Other Errors
+                showDropdownMessage(input, 'Error fetching results.', 'error');
+                return;
+            }
+
+            const data = await response.json();
+
+            console.log('API Response Data:', data);
+
+            // Since server returns an array, check if it's an array and has users
+            if (Array.isArray(data) && data.length > 0) {
+                populateDropdown(input, data);
+            } else {
+                showNoUsersFound(input);
+            }
+        } catch (error) {
+            console.error('Error fetching user search results:', error);
+            showDropdownMessage(input, 'Error fetching results.', 'error');
         }
-    });
-}
-
-// Update the searchUsers function to accept isFetching as a parameter
-async function searchUsers(query, isFetchingParam) {
-    if (isFetchingParam) return [];
-    isFetching = true;
-
-    try {
-        const response = await fetch(`http://media.maar.world:3001/api/searchUsers?query=${encodeURIComponent(query)}`);
-        isFetching = false;
-
-        if (response.status === 429) {
-            console.warn('Too many requests. Please wait.');
-            return [];
-        }
-
-        if (response.status === 404) {
-            console.warn('No users found for the query.');
-            return []; // Treat 404 as "no users found"
-        }
-
-        if (!response.ok) {
-            console.warn(`Search request failed: ${response.status}`);
-            return [];
-        }
-
-        const data = await response.json();
-        return data || [];
-    } catch (error) {
-        console.error('Error during user search:', error);
-        isFetching = false;
-        return [];
     }
-}
 
-// Function to update the dropdown results
-function updateResultsDropdown(users, container, inputElement) {
-    container.innerHTML = ''; // Clear previous results
+    /**
+     * Populate the dropdown with user results
+     * @param {HTMLElement} input 
+     * @param {Array} users 
+     */
+    function populateDropdown(input, users) {
+        const wrapper = input.closest('.input-wrapper');
+        const dropdown = wrapper.querySelector('.dropdown');
+        dropdown.innerHTML = ''; // Clear previous results
 
-    if (users.length === 0) {
-        const noResult = document.createElement('div');
-        noResult.className = 'user-result';
-        noResult.textContent = 'No users found. Invite them to join for better collaboration!';
-        noResult.style.color = '#d9534f';
-        container.appendChild(noResult);
+        users.forEach(user => {
+            const item = document.createElement('div');
+            item.classList.add('dropdown-item');
+            item.textContent = `${user.displayName} (@${user.username})`;
+            item.dataset.userId = user.userId; // Store userId for later use
+
+            // Click event to select the user
+            item.addEventListener('click', () => {
+                input.value = user.username;
+                const hiddenInput = wrapper.querySelector('.artistUserId');
+                hiddenInput.value = user.userId;
+                dropdown.classList.remove('active');
+            });
+
+            dropdown.appendChild(item);
+        });
+
+        dropdown.classList.add('active');
+    }
+
+    /**
+     * Show a message in the dropdown (e.g., errors)
+     * @param {HTMLElement} input 
+     * @param {string} message 
+     * @param {string} type - 'error' or 'info'
+     */
+    function showDropdownMessage(input, message, type) {
+        const wrapper = input.closest('.input-wrapper');
+        const dropdown = wrapper.querySelector('.dropdown');
+        dropdown.innerHTML = ''; // Clear previous results
+
+        const messageItem = document.createElement('div');
+        messageItem.classList.add('dropdown-item', `dropdown-item-${type}`);
+        messageItem.textContent = message;
+        dropdown.appendChild(messageItem);
+
+        dropdown.classList.add('active');
+    }
+
+    /**
+     * Show "No users found" message with an invite option
+     * @param {HTMLElement} input 
+     */
+    function showNoUsersFound(input) {
+        const wrapper = input.closest('.input-wrapper');
+        const dropdown = wrapper.querySelector('.dropdown');
+        dropdown.innerHTML = ''; // Clear previous results
+
+        const noResultItem = document.createElement('div');
+        noResultItem.classList.add('dropdown-item', 'dropdown-item-info');
+        noResultItem.textContent = 'No users found. Invite them to join for better collaboration!';
+        dropdown.appendChild(noResultItem);
 
         const inviteButton = document.createElement('button');
-        inviteButton.className = 'invite-button';
+        inviteButton.classList.add('invite-button');
         inviteButton.textContent = 'Register a new xPlorer';
         inviteButton.addEventListener('click', () => {
             window.location.href = '/register';
         });
-        container.appendChild(inviteButton);
+        dropdown.appendChild(inviteButton);
 
-        container.classList.add('active'); // Show the dropdown
-        return;
+        dropdown.classList.add('active');
     }
 
-    users.forEach(user => {
-        const item = document.createElement('div');
-        item.className = 'user-result';
+    /**
+     * Clear the dropdown and reset hidden input
+     * @param {HTMLElement} input 
+     */
+    function clearDropdown(input) {
+        const wrapper = input.closest('.input-wrapper');
+        const dropdown = wrapper.querySelector('.dropdown');
+        dropdown.innerHTML = '';
+        dropdown.classList.remove('active');
 
-        const displayText = highlightMatch(`${user.displayName} (@${user.username})`, inputElement.value);
-        const text = document.createElement('span');
-        text.innerHTML = displayText;
-        item.appendChild(text);
-
-        item.addEventListener('click', () => {
-            inputElement.value = user.username;
-            container.innerHTML = '';
-            container.classList.remove('active'); // Hide the dropdown
-            validSelection = true; // Set flag to prevent clearing
-            //displayDddArtistFeedback('', 'success'); // Clear any previous error messages
-        });
-
-        container.appendChild(item);
-    });
-
-    container.classList.add('active'); // Show the dropdown when results are present
-}
-
-// Function to update the visual selection in the dropdown
-function updateSelection(results, selectedIndex) {
-    results.forEach((result, index) => {
-        result.classList.toggle('selected', index === selectedIndex);
-        if (index === selectedIndex) result.scrollIntoView({ block: 'nearest' });
-    });
-}
-
-// Function to highlight matching text
-function highlightMatch(text, query) {
-    const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
-}
-
-// Function to check if a username is valid using the /checkUsername endpoint
-async function checkUsernameValidity(username) {
-    try {
-        const response = await fetch(`http://media.maar.world:3001/api/checkUsername?username=${encodeURIComponent(username)}`);
-        if (response.status === 429) {
-            console.warn('Too many requests. Please wait.');
-            return false;
+        const hiddenInput = wrapper.querySelector('.artistUserId');
+        if (hiddenInput) {
+            hiddenInput.value = '';
         }
+    }
 
-        if (!response.ok) {
-            console.warn(`Unexpected response status: ${response.status}`);
-            return false;
+    /**
+     * Handle keydown events for navigation (Arrow keys and Enter)
+     * @param {KeyboardEvent} event 
+     */
+    function handleKeyDown(event) {
+        const input = event.target;
+        const wrapper = input.closest('.input-wrapper');
+        const dropdown = wrapper.querySelector('.dropdown');
+        const items = dropdown.querySelectorAll('.dropdown-item');
+
+        if (!dropdown.classList.contains('active') || items.length === 0) return;
+
+        let currentIndex = Array.from(items).findIndex(item => item.classList.contains('active-item'));
+
+        switch (event.key) {
+            case 'ArrowDown':
+                event.preventDefault();
+                if (currentIndex < items.length - 1) {
+                    if (currentIndex >= 0) {
+                        items[currentIndex].classList.remove('active-item');
+                    }
+                    items[currentIndex + 1].classList.add('active-item');
+                }
+                break;
+            case 'ArrowUp':
+                event.preventDefault();
+                if (currentIndex > 0) {
+                    items[currentIndex].classList.remove('active-item');
+                    items[currentIndex - 1].classList.add('active-item');
+                }
+                break;
+            case 'Enter':
+                event.preventDefault();
+                if (currentIndex >= 0 && items[currentIndex]) {
+                    items[currentIndex].click();
+                }
+                break;
+            default:
+                break;
         }
-
-        const data = await response.json();
-        console.log('Check Username Response:', data);
-        return !data.isUnique; // If `isUnique` is false, the username exists
-    } catch (error) {
-        console.error('Error checking username validity:', error);
-        return false;
     }
-}
 
-/* Function to update the form or provide feedback based on validity
-function displayDddArtistFeedback(message, type) {
-    const feedbackElem = document.getElementById('dddArtistFeedback');
-    const dddArtistInput = document.getElementById('dddArtistName');
+    /**
+     * Handle blur event to validate selection
+     * @param {Event} event 
+     */
+    function handleBlur(event) {
+        const input = event.target;
+        const wrapper = input.closest('.input-wrapper');
+        const hiddenInput = wrapper.querySelector('.artistUserId');
+        const dropdown = wrapper.querySelector('.dropdown');
 
-    feedbackElem.textContent = message;
-    feedbackElem.className = 'feedback-message'; // Reset classes
-
-    dddArtistInput.classList.remove('feedback-success', 'feedback-error'); // Reset classes
-
-    if (type === 'success') {
-        feedbackElem.classList.add('feedback-success');
-        dddArtistInput.classList.add('feedback-success');
-    } else if (type === 'error') {
-        feedbackElem.classList.add('feedback-error');
-        dddArtistInput.classList.add('feedback-error');
+        setTimeout(() => { // Delay to allow click event to register
+            if (!hiddenInput.value) {
+                input.value = ''; // Clear input if no valid selection
+                dropdown.classList.remove('active');
+            }
+        }, 200);
     }
-}
-*/
+
+    // Expose initializeSearchUsers globally
+    window.initializeSearchUsers = initializeSearchUsers;
+
+    // Initialize search on DOM load
+    document.addEventListener('DOMContentLoaded', initializeSearchUsers);
+})();
