@@ -22,86 +22,121 @@ public: false
             <ul class="user-list" id="user-profile-list">
                 <!-- User profile will be populated here -->
             </ul>
-    <!-- New Menu List -->
-    <h2>Dashboard Menu</h2>
-    <!-- Menu List -->
-    <!-- Profile Menu Item -->
-    <li class="menu-list-item">
-        <a href="/voyage/profile" class="menu-link">
-        <img src="https://media.maar.world/uploads/default/default-profile.jpg" alt="Edit Profile">
-        <div class="menu-item-details">
-            <div class="menu-item-title">Edit your profile</div>
-            <div class="menu-item-description">Update your profile information and preferences.</div>
-        </div>
-        </a>
-    </li>
-    <!-- Track Release Menu Item -->
-    <li class="menu-list-item">
-        <a href="/voyage/track-release" class="menu-link">
-        <img src="https://media.maar.world/uploads/default/default-tracks.jpg" alt="Release Track">
-        <div class="menu-item-details">
-            <div class="menu-item-title">Release a track</div>
-            <div class="menu-item-description">Upload and share your latest music tracks.</div>
-        </div>
-        </a>
-    </li>
-    <!-- Playlist Creation Menu Item -->
-    <li class="menu-list-item">
-        <a href="/voyage/playlist" class="menu-link">
-        <img src="https://media.maar.world/uploads/default/default-playlist.jpg" alt="Create Playlist">
-        <div class="menu-item-details">
-            <div class="menu-item-title">Create a playlist or album</div>
-            <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
-        </div>
-        </a>
-    </li>
-    <!-- Interplanetary Player Menu Item -->
-    <li class="menu-list-item">
-        <a href="/voyage/interplanetary-player" class="menu-link">
-        <img src="https://media.maar.world/uploads/default/default-player.jpg" alt="Create Interplanetary Player">
-        <div class="menu-item-details">
-            <div class="menu-item-title">Create an Interplanetary Player</div>
-            <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
-        </div>
-        </a>
-    </li>
-    <!-- Sound Engine Creation Menu Item -->
-    <li class="menu-list-item">
-        <a href="/voyage/soundengine" class="menu-link">
-        <img src="https://media.maar.world/uploads/default/default-soundEngine.jpg" alt="Create Sound Engine">
-        <div class="menu-item-details">
-            <div class="menu-item-title">Create a Sound Engine</div>
-            <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
-        </div>
-        </a>    
-    </li>
-    <!-- Discover Menu Item -->
-    <li class="menu-list-item">
-        <a href="/" class="menu-link">
-        <img src="https://media.maar.world/uploads/default/default-discover.jpg" alt="Discover">
-        <div class="menu-item-details">
-            <div class="menu-item-title">Discover</div>
-            <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
-        </div>
-        </a>
-    </li>
-    
-        <!-- Existing Lists -->
-        <h2>Your Released Tracks:</h2>
-        <ul id="tracks-list"></ul>
-        <h2>Your Sound Engines:</h2>
-        <ul class="soundEngine-list" id="sound-engines-list"></ul>
-        <h2>Your Interplanetary Players:</h2>
-        <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
-        <h2>Your Playlists:</h2>
-        <ul class="playlist-list" id="playlist-list"></ul>
+
+
+<!-- Dashboard Menu with Collapsible Section -->
+<div class="collapsible-section">
+    <div class="section-header">
+        <h2>Dashboard Menu</h2>
+        <button class="toggle-button" aria-expanded="true" aria-controls="menu-list">–</button>
     </div>
+    <ul id="menu-list">
+        <!-- Menu List Items -->
+        <li class="menu-list-item">
+            <a href="/voyage/profile" class="menu-link">
+                <!-- <img src="https://media.maar.world/uploads/default/default-profile.jpg" alt="Edit Profile">-->
+                <div class="menu-item-details">
+                    <h3><span class="material-symbols-large">account_circle</span></h3>
+                    <div class="menu-item-title">Edit your profile</div>
+                    <div class="menu-item-description">Update your profile information and preferences.</div>
+                </div>
+            </a>
+        </li>
+        <li class="menu-list-item">
+            <a href="/voyage/track-release" class="menu-link">
+                <!-- <img src="https://media.maar.world/uploads/default/default-tracks.jpg" alt="Release Track">-->
+                <div class="menu-item-details">
+                    <span class="material-symbols-large">diversity_1</span> <div class="menu-item-title">Release a track</div>
+                    <div class="menu-item-description">Upload and share your latest music tracks.</div>
+                </div>
+            </a>
+        </li>
+        <li class="menu-list-item">
+            <a href="/voyage/playlist" class="menu-link">
+                <!-- <img src="https://media.maar.world/uploads/default/default-playlist.jpg" alt="Create Playlist">-->
+                <div class="menu-item-details">
+                    <span class="material-symbols-large">playlist_add_circle</span><div class="menu-item-title">Create a playlist or album</div>
+                    <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
+                </div>
+            </a>
+        </li>
+        <li class="menu-list-item">
+            <a href="/voyage/interplanetary-player" class="menu-link">
+                <!-- <img src="https://media.maar.world/uploads/default/default-player.jpg" alt="Create Interplanetary Player">-->
+                <div class="menu-item-details">
+                    <span class="material-symbols-large">public</span><div class="menu-item-title">Create an Interplanetary Player</div>
+                    <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
+                </div>
+            </a>
+        </li>
+        <li class="menu-list-item">
+            <a href="/voyage/soundengine" class="menu-link">
+                <!-- <img src="https://media.maar.world/uploads/default/default-soundEngine.jpg" alt="Create Sound Engine">-->
+                <div class="menu-item-details">
+                    <span class="material-symbols-large">noise_control_on</span><div class="menu-item-title">Create a Sound Engine</div>
+                    <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
+                </div>
+            </a>
+        </li>
+        <li class="menu-list-item">
+            <a href="/" class="menu-link">
+                <!-- <img src="https://media.maar.world/uploads/default/default-discover.jpg" alt="Discover">-->
+                <div class="menu-item-details">
+                    <span class="material-symbols-large">conditions</span><div class="menu-item-title">Discover</div>
+                    <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Existing Lists with Collapsible Sections -->
+<!-- (Add other sections for tracks, sound engines, interplanetary players, playlists as needed) -->
+
+            <!-- Existing Lists with Collapsible Sections -->
+
+            <!-- Released Tracks Section -->
+            <div class="collapsible-section">
+                <div class="section-header">
+                    <h2>Your Released Tracks:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="tracks-list">–</button>
+                </div>
+                <ul class="track-list" id="tracks-list"></ul>
+            </div>
+            <!-- Playlists Section -->
+            <div class="collapsible-section">
+                <div class="section-header">
+                    <h2>Your Playlists:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="playlist-list">–</button>
+                </div>
+                <ul class="playlist-list" id="playlist-list"></ul>
+            </div>
+            <!-- Interplanetary Players Section -->
+            <div class="collapsible-section">
+                <div class="section-header">
+                    <h2>Your Interplanetary Players:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="interplanetary-players-list">–</button>
+                </div>
+                <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
+            </div>
+            <!-- Sound Engines Section -->
+            <div class="collapsible-section">
+                <div class="section-header">
+                    <h2>Your Sound Engines:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="sound-engines-list">–</button>
+                </div>
+                <ul class="soundEngine-list" id="sound-engines-list"></ul>
+            </div>
+
+
+        </div>
     </div>
 </div>
 
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="toast-container"></div>
 
+<!-- JavaScript to Handle Data Retrieval and Rendering -->
 <!-- JavaScript to Handle Data Retrieval and Rendering -->
 <script>
 /**
@@ -185,6 +220,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch user profile data
     fetchUserProfile(userId);
+
+    // Add event listeners to toggle buttons
+    const toggleButtons = document.querySelectorAll('.toggle-button');
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            const targetId = this.getAttribute('aria-controls');
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                if (isExpanded) {
+                    targetElement.style.display = 'none';
+                    this.setAttribute('aria-expanded', 'false');
+                    this.textContent = '+';
+                } else {
+                    targetElement.style.display = '';
+                    this.setAttribute('aria-expanded', 'true');
+                    this.textContent = '–';
+                }
+            }
+        });
+    });
 });
 
 /**
@@ -232,9 +289,9 @@ function populateUserProfile(profileData) {
         document.querySelector('.interplanetaryPlayer-list').innerHTML = '<li>No interplanetary players found.</li>';
     }
 
-    // Display Tracks
+    // Display Tracks using Batch Fetching
     if (Array.isArray(profileData.tracksOwned)) {
-        displayTracks(profileData.tracksOwned);
+        displayTracksBatch(profileData.tracksOwned);
     } else {
         console.warn('tracksOwned is not an array:', profileData.tracksOwned);
         document.getElementById('tracks-list').innerHTML = '<li>No tracks found.</li>';
@@ -299,33 +356,110 @@ function populateUserProfileList(profileData) {
 }
 
 /**
- * Function to display tracks on the page
- * @param {Array} tracks - Array of track objects owned by the user.
+ * Function to display tracks on the page using batch fetching with caching.
+ * Consolidates action buttons into a single "More Options" button with a dropdown menu.
+ * @param {Array<string>} trackIds - Array of track IDs owned by the user.
  */
-function displayTracks(tracks) {
-    const tracksListElement = document.getElementById('tracks-list');
+async function displayTracksBatch(trackIds) {
+    console.log('Starting displayTracksBatch with IDs:', trackIds);
 
-    if (!tracks || tracks.length === 0) {
+    const tracksListElement = document.getElementById('tracks-list');
+    tracksListElement.innerHTML = ''; // Clear existing list
+
+    if (!trackIds || trackIds.length === 0) {
         tracksListElement.innerHTML = '<li>No tracks found.</li>';
         console.log('No tracks to display.');
         return;
     }
 
-    tracksListElement.innerHTML = ''; // Clear existing list
+    // Validate and filter track IDs
+    const validTrackIds = trackIds.filter(id => isValidObjectId(id));
+    if (validTrackIds.length === 0) {
+        tracksListElement.innerHTML = '<li>No valid track IDs found.</li>';
+        console.warn('No valid track IDs to fetch.');
+        return;
+    }
 
-    tracks.forEach(track => {
-        const artistNames = track.artistNames.map(artist => artist.name).join(', ');
+    // Create a cache key based on sorted IDs for consistency
+    const sortedIds = [...validTrackIds].sort();
+    const cacheKey = `tracks_batch_${sortedIds.join('_')}`;
+    const batchUrl = `http://media.maar.world:3001/api/tracks/batch?ids=${sortedIds.join(',')}`;
 
-        const trackElement = document.createElement('li');
-        trackElement.innerHTML = `
-            <strong>Artist Name:</strong> ${artistNames}<br>
-            <strong>Song Name:</strong> ${track.trackName}<br>
-            <strong>Privacy:</strong> ${track.privacy}<br>
-            <strong>Release Date:</strong> ${new Date(track.releaseDate).toLocaleDateString()}
-        `;
-        tracksListElement.appendChild(trackElement);
-    });
-    console.log(`${tracks.length} tracks displayed.`);
+    try {
+        const data = await fetchDataWithCache(
+            batchUrl,
+            cacheKey,
+            10 // Cache for 10 minutes
+        );
+
+        if (data.success && Array.isArray(data.tracks)) {
+            console.log(`Fetched ${data.tracks.length} tracks.`);
+            data.tracks.forEach(track => {
+                if (!track || typeof track !== 'object') {
+                    console.warn('Invalid track data:', track);
+                    return;
+                }
+
+                const imageUrl = track.soundEngineId?.soundEngineImage
+                    ? `https://media.maar.world${encodeURI(track.soundEngineId.soundEngineImage)}`
+                    : 'https://media.maar.world/uploads/default/default-track.jpg'; // Provide a default image path
+
+                const trackName = track.trackName || 'Unnamed Track';
+                const privacy = track.privacy || 'Private';
+                const releaseDate = track.releaseDate ? new Date(track.releaseDate).toLocaleDateString() : 'Unknown';
+
+                const ownerName = track.owner?.displayName || 'Unknown';
+                const artistNames = track.artists.map(artist => artist.displayName || 'Unknown').join(', ');
+
+                // Create DOM elements
+                const trackDiv = document.createElement('li');
+                // trackDiv.classList.add('track-list-item');
+
+                trackDiv.innerHTML = `
+                    <div class="track-list-item" onclick="handleCardClick('${track._id}', event)" style="cursor: pointer;">
+                        <div class="track-profile-pic">
+                            <img src="${imageUrl}" alt="${trackName}" loading="lazy">
+                        </div>
+                        <div class="track-details">
+                            <div class="track-name"><strong>Track Name:</strong> ${trackName}</div>
+                            <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
+                            <div class="track-owner"><strong>Owner:</strong> ${ownerName}</div>
+                            <div class="track-privacy"><strong>Privacy:</strong> ${privacy}</div>
+                            <div class="track-release-date"><strong>Release Date:</strong> ${releaseDate}</div>
+                        </div>
+                        <div class="track-actions">
+                            <div class="more-options-container">
+                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                </button>
+                                <div class="more-options-dropdown">
+                                    <button class="option-button" onclick="editTrack('${track._id}')">
+                                        <span class="material-symbols-outlined">edit</span> Edit
+                                    </button>
+                                    <button class="option-button" onclick="shareTrack('${track._id}')">
+                                        <span class="material-symbols-outlined">share</span> Share
+                                    </button>
+                                    <button class="option-button" onclick="deleteTrack('${track._id}', this)">
+                                        <span class="material-symbols-outlined">delete</span> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                tracksListElement.appendChild(trackDiv);
+            });
+            console.log('All tracks displayed successfully.');
+        } else {
+            console.error('Failed to fetch tracks:', data.message);
+            tracksListElement.innerHTML = '<li>Failed to load tracks.</li>';
+            showToast('Failed to load your tracks.', 'error');
+        }
+    } catch (error) {
+        console.error('Error displaying tracks:', error);
+        tracksListElement.innerHTML = '<li>An error occurred while loading tracks.</li>';
+        showToast('An error occurred while loading your tracks.', 'error');
+    }
 }
 
 /**
@@ -383,43 +517,43 @@ async function displaySoundEnginesBatch(engineIds) {
                 const soundEngineDiv = document.createElement('li');
                // soundEngineDiv.classList.add('soundEngine-list-item');
 
-soundEngineDiv.innerHTML = `
-    <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
-        <div class="soundEngine-profile-pic">
-            <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
-        </div>
-        <div class="soundEngine-details">
-            <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
-            <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
-            <div class="soundEngine-params">
-                <strong>Parameters:</strong> 
-                X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
-                Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
-                Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
-            </div>
-        </div>
-        <div class="soundEngine-actions">
-            <div class="more-options-container">
-                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                    <span class="material-symbols-outlined">more_horiz</span>
-                </button>
-                <div class="more-options-dropdown">
-                    <button class="option-button" onclick="editSoundEngine('${engine._id}')">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                    <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
-                        <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                    <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
-                        <span class="material-symbols-outlined">delete</span> Delete
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-`;
-soundEnginesListElement.appendChild(soundEngineDiv);
-
+                soundEngineDiv.innerHTML = `
+                    <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
+                        <div class="soundEngine-profile-pic">
+                            <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
+                        </div>
+                        <div class="soundEngine-details">
+                            <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
+                            <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                            <div class="soundEngine-params">
+                                <strong>Parameters:</strong> 
+                                X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
+                                Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
+                                Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
+                            </div>
+                        </div>
+                        <div class="soundEngine-actions">
+                            <div class="more-options-container">
+                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                </button>
+                                <div class="more-options-dropdown">
+                                    <button class="option-button" onclick="editSoundEngine('${engine._id}')">
+                                        <span class="material-symbols-outlined">edit</span> Edit
+                                    </button>
+                                    <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
+                                        <span class="material-symbols-outlined">share</span> Share
+                                    </button>
+                                    <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
+                                        <span class="material-symbols-outlined">delete</span> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                // **FIXED**: Corrected variable name from soundEngineListElement to soundEnginesListElement
+                soundEnginesListElement.appendChild(soundEngineDiv);
             });
             console.log('All sound engines displayed successfully.');
         } else {
@@ -489,38 +623,38 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                 const playerDiv = document.createElement('li');
              //   playerDiv.classList.add('interplanetaryPlayer-list-item');
 
-playerDiv.innerHTML = `
-    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
-        <div class="interplanetaryPlayer-profile-pic">
-            <img src="${imageUrl}" alt="${playerName}" loading="lazy">
-        </div>
-        <div class="interplanetaryPlayer-details">
-            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
-            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
-            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
-            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
-        </div>
-        <div class="interplanetaryPlayer-actions">
-            <div class="more-options-container">
-                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                    <span class="material-symbols-outlined">more_horiz</span>
-                </button>
-                <div class="more-options-dropdown">
-                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
-                        <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
-                        <span class="material-symbols-outlined">delete</span> Delete
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-`;
-playersListElement.appendChild(playerDiv);
+                playerDiv.innerHTML = `
+                    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
+                        <div class="interplanetaryPlayer-profile-pic">
+                            <img src="${imageUrl}" alt="${playerName}" loading="lazy">
+                        </div>
+                        <div class="interplanetaryPlayer-details">
+                            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
+                            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
+                            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
+                            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
+                        </div>
+                        <div class="interplanetaryPlayer-actions">
+                            <div class="more-options-container">
+                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                </button>
+                                <div class="more-options-dropdown">
+                                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                                        <span class="material-symbols-outlined">edit</span> Edit
+                                    </button>
+                                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
+                                        <span class="material-symbols-outlined">share</span> Share
+                                    </button>
+                                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
+                                        <span class="material-symbols-outlined">delete</span> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                playersListElement.appendChild(playerDiv);
             });
             console.log('All interplanetary players displayed successfully.');
         } else {
@@ -552,11 +686,37 @@ function displayPlaylists(playlists) {
 
     playlists.forEach(playlist => {
         const playlistElement = document.createElement('li');
+        playlistElement.classList.add('playlist-list-item'); // Ensure consistent class naming
         playlistElement.innerHTML = `
-            <strong>Playlist Name:</strong> ${playlist.playlistName}<br>
-            <strong>Description:</strong> ${playlist.description || 'No description provided.'}<br>
-            <strong>Privacy:</strong> ${playlist.privacy}<br>
-            <strong>Created On:</strong> ${new Date(playlist.createdAt).toLocaleDateString()}
+            <div class="playlist-list-item" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
+                <div class="playlist-profile-pic">
+                    <img src="${playlist.playlistImage || 'https://media.maar.world/uploads/default/default-playlist.jpg'}" alt="${playlist.playlistName}" loading="lazy">
+                </div>
+                <div class="playlist-details">
+                    <div class="playlist-name"><strong>Playlist Name:</strong> ${playlist.playlistName}</div>
+                    <div class="playlist-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
+                    <div class="playlist-privacy"><strong>Privacy:</strong> ${playlist.privacy}</div>
+                    <div class="playlist-created-on"><strong>Created On:</strong> ${new Date(playlist.createdAt).toLocaleDateString()}</div>
+                </div>
+                <div class="playlist-actions">
+                    <div class="more-options-container">
+                        <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </button>
+                        <div class="more-options-dropdown">
+                            <button class="option-button" onclick="editPlaylist('${playlist._id}')">
+                                <span class="material-symbols-outlined">edit</span> Edit
+                            </button>
+                            <button class="option-button" onclick="sharePlaylist('${playlist._id}')">
+                                <span class="material-symbols-outlined">share</span> Share
+                            </button>
+                            <button class="option-button" onclick="deletePlaylist('${playlist._id}', this)">
+                                <span class="material-symbols-outlined">delete</span> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         `;
         playlistListElement.appendChild(playlistElement);
     });
@@ -625,6 +785,162 @@ function shareInterplanetaryPlayer(playerId) {
 }
 
 /**
+ * Function to handle editing a track.
+ * @param {string} trackId - The ID of the track to edit.
+ */
+function editTrack(trackId) {
+    console.log(`Editing track with ID: ${trackId}`);
+    window.location.href = `/voyage/track-edit?mode=edit&id=${trackId}`;
+}
+
+/**
+ * Function to handle sharing a track.
+ * @param {string} trackId - The ID of the track to share.
+ */
+function shareTrack(trackId) {
+    const shareUrl = `http://maar.world/xplorer/track/?trackId=${trackId}`;
+    console.log(`Sharing track with URL: ${shareUrl}`);
+    navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+            showToast('Track link copied to clipboard!', 'success');
+        })
+        .catch(err => {
+            console.error('Failed to copy track link:', err);
+            showToast('Failed to copy the track link. Please try again.', 'error');
+        });
+}
+
+/**
+ * Function to handle editing a playlist.
+ * @param {string} playlistId - The ID of the playlist to edit.
+ */
+function editPlaylist(playlistId) {
+    console.log(`Editing playlist with ID: ${playlistId}`);
+    window.location.href = `/voyage/playlist-edit?mode=edit&id=${playlistId}`;
+}
+
+/**
+ * Function to handle sharing a playlist.
+ * @param {string} playlistId - The ID of the playlist to share.
+ */
+function sharePlaylist(playlistId) {
+    const shareUrl = `http://maar.world/xplorer/playlist/?playlistId=${playlistId}`;
+    console.log(`Sharing playlist with URL: ${shareUrl}`);
+    navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+            showToast('Playlist link copied to clipboard!', 'success');
+        })
+        .catch(err => {
+            console.error('Failed to copy playlist link:', err);
+            showToast('Failed to copy the playlist link. Please try again.', 'error');
+        });
+}
+
+/**
+ * Function to handle the deletion of a track
+ * @param {string} trackId - The ID of the track to delete
+ * @param {HTMLElement} button - The delete button that was clicked
+ */
+async function deleteTrack(trackId, button) {
+    const userId = localStorage.getItem('userId');
+    const cacheKey = `profile_${userId}`;
+
+    // Confirm deletion with the user
+    const confirmation = confirm('Are you sure you want to delete this Track? This action cannot be undone.');
+    if (!confirmation) return;
+
+    // Disable the delete button to prevent multiple clicks
+    button.disabled = true;
+    button.textContent = 'Deleting...';
+
+    try {
+        const response = await fetch(`http://media.maar.world:3001/api/tracks/${trackId}`, {
+            method: 'DELETE',
+            credentials: 'include', // Include cookies
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Failed to delete the Track.');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            showToast('Track deleted successfully!', 'success');
+            // Remove the track from the DOM
+            const trackListItem = button.closest('.track-list-item');
+            if (trackListItem) {
+                trackListItem.remove();
+            }
+            // Clear the profile cache after deletion
+            lscache.remove(cacheKey);
+        } else {
+            throw new Error(data.message || 'Failed to delete the Track.');
+        }
+    } catch (error) {
+        console.error('Error deleting Track:', error);
+        showToast(`Error: ${error.message}`, 'error');
+        button.disabled = false;
+        button.textContent = 'Delete';
+    }
+}
+
+/**
+ * Function to handle the deletion of a playlist
+ * @param {string} playlistId - The ID of the playlist to delete
+ * @param {HTMLElement} button - The delete button that was clicked
+ */
+async function deletePlaylist(playlistId, button) {
+    const userId = localStorage.getItem('userId');
+    const cacheKey = `profile_${userId}`;
+
+    // Confirm deletion with the user
+    const confirmation = confirm('Are you sure you want to delete this Playlist? This action cannot be undone.');
+    if (!confirmation) return;
+
+    // Disable the delete button to prevent multiple clicks
+    button.disabled = true;
+    button.textContent = 'Deleting...';
+
+    try {
+        const response = await fetch(`http://media.maar.world:3001/api/playlists/${playlistId}`, {
+            method: 'DELETE',
+            credentials: 'include', // Include cookies
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Failed to delete the Playlist.');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            showToast('Playlist deleted successfully!', 'success');
+            // Remove the playlist from the DOM
+            const playlistListItem = button.closest('.playlist-list-item');
+            if (playlistListItem) {
+                playlistListItem.remove();
+            }
+            // Clear the profile cache after deletion
+            lscache.remove(cacheKey);
+        } else {
+            throw new Error(data.message || 'Failed to delete the Playlist.');
+        }
+    } catch (error) {
+        console.error('Error deleting Playlist:', error);
+        showToast(`Error: ${error.message}`, 'error');
+        button.disabled = false;
+        button.textContent = 'Delete';
+    }
+}
+
+/**
  * Function to display Toast Notifications
  * @param {string} message - The message to display
  * @param {string} type - The type of message ('success' or 'error')
@@ -668,12 +984,12 @@ function showToast(message, type = 'success') {
 
 /**
  * Function to handle the card click and toggle the dropdown.
- * @param {string} engineId - The ID of the sound engine.
+ * @param {string} itemId - The ID of the item (sound engine, track, or interplanetary player).
  * @param {Event} event - The click event.
  */
-function handleCardClick(engineId, event) {
+function handleCardClick(itemId, event) {
     event.preventDefault(); // Prevent default link behavior
-    console.log(`Card clicked for Sound Engine ID: ${engineId}`);
+    console.log(`Card clicked for ID: ${itemId}`);
 
     // Find the dropdown inside the clicked card and toggle it
     const card = event.currentTarget;
@@ -694,9 +1010,7 @@ function handleCardClick(engineId, event) {
     }
 }
 
-
 function toggleMoreOptions(event) {
-
     console.log(event);
     event.stopPropagation(); // Prevent event from bubbling up.
     const dropdown = event.currentTarget.nextElementSibling;
@@ -717,13 +1031,13 @@ function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.more-options-dropdown');
     dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
 
-    const cards = document.querySelectorAll('.soundEngine-list-item, .interplanetaryPlayer-list-item');
+    const cards = document.querySelectorAll('.soundEngine-list-item, .interplanetaryPlayer-list-item, .track-list-item, .playlist-list-item');
     cards.forEach(card => card.setAttribute('aria-expanded', 'false'));
 }
 
 // Event listener to close dropdowns when clicking outside
 document.addEventListener('click', function(event) {
-    if (!event.target.closest('.soundEngine-list-item, .interplanetaryPlayer-list-item')) {
+    if (!event.target.closest('.soundEngine-list-item, .interplanetaryPlayer-list-item, .track-list-item, .playlist-list-item')) {
         closeAllDropdowns();
     }
 });
@@ -846,6 +1160,4 @@ window.addEventListener('scroll', () => {
     // Save the current scroll position to local storage
     localStorage.setItem('lastScrollY', window.scrollY);
 });
-
-
 </script>
