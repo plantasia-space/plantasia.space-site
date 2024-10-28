@@ -14,6 +14,7 @@ public: false
 ---
 
 <!-- Voyage Page Container -->
+<!-- Voyage Page Container -->
 <div id="voyage-content">
     <h1>Voyage</h1>
     <div class="world-form">
@@ -26,80 +27,82 @@ public: false
             <!-- Dashboard Menu with Collapsible Section -->
             <div class="collapsible-section" data-section-id="dashboard-menu">
                 <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="menu-list">
-                    <h2 class="section-title">Dashboard Menu</h2>
+                    <h2 class="section-title">Dashboard</h2>
                     <button class="toggle-button" aria-expanded="true" aria-controls="menu-list" aria-label="Toggle Dashboard Menu">
                         <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
                     </button>
                 </div>
-                <ul id="menu-list">
-                    <!-- Menu List Items -->
-                    <li class="menu-list-item">
-                        <a href="/voyage/profile" class="menu-link">
-                            <div class="menu-item-details">
-                                <span class="material-symbols-large">account_circle</span>
-                                <div>
-                                    <div class="menu-item-title">Edit your profile</div>
-                                    <div class="menu-item-description">Update your profile information and preferences.</div>
+                <div class="section-content" id="menu-list">
+                    <ul>
+                        <!-- Menu List Items -->
+                        <li class="menu-list-item">
+                            <a href="/voyage/profile" class="menu-link">
+                                <div class="menu-item-details">
+                                    <span class="material-symbols-large">account_circle</span>
+                                    <div>
+                                        <div class="menu-item-title">Edit your profile</div>
+                                        <div class="menu-item-description">Update your profile information and preferences.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-list-item">
-                        <a href="/voyage/track-release" class="menu-link">
-                            <div class="menu-item-details">
-                                <span class="material-symbols-large">diversity_1</span>
-                                <div>
-                                    <div class="menu-item-title">Release a track</div>
-                                    <div class="menu-item-description">Upload and share your latest music tracks.</div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="/voyage/track-release" class="menu-link">
+                                <div class="menu-item-details">
+                                    <span class="material-symbols-large">diversity_1</span>
+                                    <div>
+                                        <div class="menu-item-title">Release a track</div>
+                                        <div class="menu-item-description">Upload and share your latest music tracks.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-list-item">
-                        <a href="/voyage/playlist" class="menu-link">
-                            <div class="menu-item-details">
-                                <span class="material-symbols-large">playlist_add_circle</span>
-                                <div>
-                                    <div class="menu-item-title">Create a playlist or album</div>
-                                    <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="/voyage/playlist" class="menu-link">
+                                <div class="menu-item-details">
+                                    <span class="material-symbols-large">playlist_add_circle</span>
+                                    <div>
+                                        <div class="menu-item-title">Create a playlist or album</div>
+                                        <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-list-item">
-                        <a href="/voyage/interplanetary-player" class="menu-link">
-                            <div class="menu-item-details">
-                                <span class="material-symbols-large">public</span>
-                                <div>
-                                    <div class="menu-item-title">Create an Interplanetary Player</div>
-                                    <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="/voyage/interplanetary-player" class="menu-link">
+                                <div class="menu-item-details">
+                                    <span class="material-symbols-large">public</span>
+                                    <div>
+                                        <div class="menu-item-title">Create an Interplanetary Player</div>
+                                        <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-list-item">
-                        <a href="/voyage/soundengine" class="menu-link">
-                            <div class="menu-item-details">
-                                <span class="material-symbols-large">noise_control_on</span>
-                                <div>
-                                    <div class="menu-item-title">Create a Sound Engine</div>
-                                    <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="/voyage/soundengine" class="menu-link">
+                                <div class="menu-item-details">
+                                    <span class="material-symbols-large">noise_control_on</span>
+                                    <div>
+                                        <div class="menu-item-title">Create a Sound Engine</div>
+                                        <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-list-item">
-                        <a href="/" class="menu-link">
-                            <div class="menu-item-details">
-                                <span class="material-symbols-large">conditions</span>
-                                <div>
-                                    <div class="menu-item-title">Discover</div>
-                                    <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
+                            </a>
+                        </li>
+                        <li class="menu-list-item">
+                            <a href="/" class="menu-link">
+                                <div class="menu-item-details">
+                                    <span class="material-symbols-large">conditions</span>
+                                    <div>
+                                        <div class="menu-item-title">Discover</div>
+                                        <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Released Tracks Section -->
@@ -110,9 +113,11 @@ public: false
                         <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
                     </button>
                 </div>
-                <ul class="track-list" id="tracks-list">
-                    <!-- Track items will be populated here -->
-                </ul>
+                <div class="section-content" id="tracks-list">
+                    <ul class="track-list">
+                        <!-- Track items will be populated here -->
+                    </ul>
+                </div>
             </div>
 
             <!-- Playlists Section -->
@@ -123,22 +128,26 @@ public: false
                         <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
                     </button>
                 </div>
-                <ul class="playlist-list" id="playlist-list">
-                    <!-- Playlist items will be populated here -->
-                </ul>
+                <div class="section-content" id="playlist-list">
+                    <ul class="playlist-list">
+                        <!-- Playlist items will be populated here -->
+                    </ul>
+                </div>
             </div>
 
             <!-- Interplanetary Players Section -->
-<div class="collapsible-section" data-section-id="interplanetary-players">
-    <div class="section-header" tabindex="0" role="button" aria-expanded="false" aria-controls="interplanetary-players-list">
-        <h2 class="section-title">Your Interplanetary Players:</h2>
-        <button class="toggle-button" aria-expanded="false" aria-controls="interplanetary-players-list" aria-label="Toggle Interplanetary Players">
-            <span class="material-symbols-outlined toggle-icon">keyboard_arrow_down</span>
-        </button>
-    </div>
-    <ul class="interplanetaryPlayer-list" id="interplanetary-players-list">
-                    <!-- Interplanetary Player items will be populated here -->
-                </ul>
+            <div class="collapsible-section" data-section-id="interplanetary-players">
+                <div class="section-header" tabindex="0" role="button" aria-expanded="false" aria-controls="interplanetary-players-list">
+                    <h2 class="section-title">Your Interplanetary Players:</h2>
+                    <button class="toggle-button" aria-expanded="false" aria-controls="interplanetary-players-list" aria-label="Toggle Interplanetary Players">
+                        <span class="material-symbols-outlined toggle-icon">keyboard_arrow_down</span>
+                    </button>
+                </div>
+                <div class="section-content" id="interplanetary-players-list">
+                    <ul class="interplanetaryPlayer-list">
+                        <!-- Interplanetary Player items will be populated here -->
+                    </ul>
+                </div>
             </div>
 
             <!-- Sound Engines Section -->
@@ -149,14 +158,15 @@ public: false
                         <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
                     </button>
                 </div>
-                <ul class="soundEngine-list" id="sound-engines-list">
-                    <!-- Sound Engine items will be populated here -->
-                </ul>
+                <div class="section-content" id="sound-engines-list">
+                    <ul class="soundEngine-list">
+                        <!-- Sound Engine items will be populated here -->
+                    </ul>
+                </div>
             </div>
 
         </div>
     </div>
-
 </div>
 
 <!-- Toast Notification Container -->
@@ -166,6 +176,14 @@ public: false
 <!-- Ensure lscache is loaded before this script -->
 
 <script>
+// Ensure lscache is loaded before this script
+// Include collapsible.js via include directive
+{%- include scripts/collapsible.js -%}
+
+/**
+ * Your existing JavaScript code
+ */
+
 /**
  * Fetches data from the API with caching using lscache.
  * Specifically used for Sound Engines and other data.
@@ -253,107 +271,6 @@ document.addEventListener('DOMContentLoaded', function() {
     restoreScrollPosition();
 });
 
-
-/**
- * Function to handle all collapsible sections.
- */
-function handleCollapsibleSections() {
-    const collapsibleSections = document.querySelectorAll('.collapsible-section');
-
-    collapsibleSections.forEach(section => {
-        const header = section.querySelector('.section-header');
-        const toggleButton = section.querySelector('.toggle-button');
-        const content = section.querySelector('ul');
-        const icon = toggleButton.querySelector('.toggle-icon');
-        const sectionId = section.getAttribute('data-section-id');
-
-        if (!sectionId) {
-            console.warn('Collapsible section missing data-section-id:', section);
-            return;
-        }
-
-        // Retrieve the saved state from localStorage
-        const savedState = localStorage.getItem(`collapsible_${sectionId}`);
-        let isExpanded;
-
-        if (savedState !== null) {
-            isExpanded = savedState === 'true';
-            console.log(`Section "${sectionId}" retrieved from localStorage as: ${isExpanded}`);
-        } else {
-            // On first load, only Dashboard Menu is expanded
-            isExpanded = (sectionId === 'dashboard-menu');
-            console.log(`Section "${sectionId}" set to default state: ${isExpanded}`);
-        }
-
-        // Initialize state based on saved state or default rule
-        toggleButton.setAttribute('aria-expanded', isExpanded);
-        header.setAttribute('aria-expanded', isExpanded);
-        section.classList.toggle('collapsed', !isExpanded);
-        icon.textContent = isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
-
-        if (isExpanded) {
-            // Initially expanded, set max-height based on content's current scrollHeight
-            content.style.maxHeight = content.scrollHeight + 'px';
-        } else {
-            // Initially collapsed, ensure max-height is 0
-            content.style.maxHeight = '0px';
-        }
-
-        // Toggle function
-        const toggleSection = () => {
-            const currentlyExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
-            const newExpandedState = !currentlyExpanded;
-
-            console.log(`Toggling section "${sectionId}" from ${currentlyExpanded} to ${newExpandedState}`);
-
-            // Update aria-expanded attributes
-            toggleButton.setAttribute('aria-expanded', newExpandedState);
-            header.setAttribute('aria-expanded', newExpandedState);
-
-            // Toggle collapsed class
-            section.classList.toggle('collapsed', !newExpandedState);
-
-            // Update icon
-            icon.textContent = newExpandedState ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
-
-            // Set max-height for smooth transition
-            if (newExpandedState) {
-                // Temporarily set max-height to 'none' to calculate scrollHeight
-                content.style.maxHeight = 'none';
-                const height = content.scrollHeight + 'px';
-                content.style.maxHeight = height;
-            } else {
-                content.style.maxHeight = '0px';
-            }
-
-            // Save the new state to localStorage
-            localStorage.setItem(`collapsible_${sectionId}`, newExpandedState);
-            console.log(`Section "${sectionId}" state saved as: ${newExpandedState}`);
-        };
-
-        // Click event on header (excluding the toggle button)
-        header.addEventListener('click', function (e) {
-            // If the toggle button itself is clicked, do nothing here
-            if (e.target.closest('.toggle-button')) return;
-            toggleSection();
-        });
-
-        // Click event on toggle button
-        toggleButton.addEventListener('click', function (e) {
-            e.stopPropagation(); // Prevent event from bubbling to header
-            toggleSection();
-        });
-
-        // Keyboard accessibility: toggle on Enter or Space key when header is focused
-        header.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleSection();
-            }
-        });
-    });
-}
-
 /**
  * Function to fetch user profile data
  * @param {string} userId
@@ -368,27 +285,13 @@ async function fetchUserProfile(userId) {
         );
         await populateUserProfile(data);
         // After data is fetched and all sections are populated, handle collapsible sections
-        handleCollapsibleSections();
+        await window.handleCollapsibleSections(); // Call global function
         // Then recalculate max-height for expanded sections
-        recalculateMaxHeight();
+        await window.recalculateMaxHeight(); // Call global function
     } catch (error) {
         console.error('Error fetching user data:', error);
         showToast('Error fetching user data. Please try again.', 'error');
     }
-}
-
-/**
- * Function to recalculate max-height for all expanded sections after content is loaded
- */
-function recalculateMaxHeight() {
-    const expandedSections = document.querySelectorAll('.collapsible-section:not(.collapsed)');
-    expandedSections.forEach(section => {
-        const content = section.querySelector('ul');
-        if (content) {
-            content.style.maxHeight = content.scrollHeight + 'px';
-            console.log(`Recalculated max-height for section "${section.getAttribute('data-section-id')}"`);
-        }
-    });
 }
 
 /**
@@ -447,6 +350,8 @@ function populateUserProfileList(profileData) {
     }
 
     userProfileList.innerHTML = `
+    <div class="parent-container">
+
         <li class="voyage-profile">
             <!-- Profile Image -->
             <div class="voyage-profile-pic">
@@ -480,6 +385,8 @@ function populateUserProfileList(profileData) {
                 }
             </div>
         </li>
+    </div>
+
     `;
 }
 
@@ -529,8 +436,8 @@ async function displayTracksBatch(trackIds) {
                 }
 
                 const imageUrl = track.soundEngineId?.soundEngineImage
-                    ? `https://media.maar.world${encodeURI(track.soundEngineId.soundEngineImage)}`
-                    : 'https://media.maar.world/uploads/default/default-track.jpg'; // Provide a default image path
+                    ? `https://media.maar.world${encodeURI(track.coverImage)}`
+                    : 'https://media.maar.world/uploads/default/default-tracks.jpg'; // Provide a default image path
 
                 const trackName = track.trackName || 'Unnamed Track';
                 const privacy = track.privacy || 'Private';
@@ -584,8 +491,8 @@ async function displayTracksBatch(trackIds) {
         }
     } catch (error) {
         console.error('Error displaying tracks:', error);
-        tracksListElement.innerHTML = '<li>An error occurred while loading tracks.</li>';
-        showToast('An error occurred while loading your tracks.', 'error');
+        tracksListElement.innerHTML = '<li>No tracks found.</li>';
+        //showToast('No tracks found.', 'error');
     }
 }
 
@@ -726,12 +633,12 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         if (data.success && Array.isArray(data.interplanetaryPlayers)) {
             console.log(`Fetched ${data.interplanetaryPlayers.length} interplanetary players.`);
             
-            data.interplanetaryPlayers.forEach(player => {
+            for (const player of data.interplanetaryPlayers) {
                 console.log('Interplanetary Player Object:', player); // Debugging Line
 
                 if (!player || typeof player !== 'object') {
                     console.warn('Invalid interplanetary player data:', player);
-                    return;
+                    continue;
                 }
 
                 // Fetch image from ddd.textureURL, and fall back to a default image
@@ -779,7 +686,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                     </div>
                 `;
                 playersListElement.appendChild(playerDiv);
-            });
+            }
             console.log('All interplanetary players displayed successfully.');
         } else {
             console.error('Failed to fetch interplanetary players:', data.message);
@@ -914,7 +821,7 @@ function shareInterplanetaryPlayer(playerId) {
  */
 function editTrack(trackId) {
     console.log(`Editing track with ID: ${trackId}`);
-    window.location.href = `/voyage/track-edit?mode=edit&id=${trackId}`;
+    window.location.href = `/voyage/track-release?mode=edit&trackId=${trackId}`;
 }
 
 /**
@@ -1294,7 +1201,7 @@ function restoreScrollPosition() {
             top: parseInt(lastScrollY, 10),
             behavior: 'smooth' // This will apply smooth scrolling
         });
-        console.log(`Restored scroll position to: ${lastScrollY}`);
+       // console.log(`Restored scroll position to: ${lastScrollY}`);
     }
 }
 
@@ -1304,6 +1211,6 @@ function restoreScrollPosition() {
 window.addEventListener('scroll', () => {
     // Save the current scroll position to local storage
     localStorage.setItem('lastScrollY', window.scrollY);
-    console.log(`Scroll position saved: ${window.scrollY}`);
+   // console.log(`Scroll position saved: ${window.scrollY}`);
 });
 </script>
