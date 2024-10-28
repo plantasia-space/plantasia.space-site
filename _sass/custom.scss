@@ -1206,19 +1206,6 @@ input[type="number"] {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Success and error states for artName input */
   #artName.success {
     border-color: green;
@@ -1301,8 +1288,8 @@ input[type="number"] {
 /* Form title */
 .form-box h2 {
   margin-bottom: 20px;
-  font-size: 2em;
-  color: #33ffff; /* Accent color for titles */
+  font-size: 1.5em;
+  color: #ffffff; /* Accent color for titles */
   text-align: center;
   font-weight: 700;
 }
@@ -1329,42 +1316,97 @@ input[type="number"] {
 }
 
 
-////////////////////////////////////////////////////////////////////
-/// 
+/* Variables */
+:root {
+  --collapsible-toggle-button-size: 40px; /* Size for toggle buttons */
+  --collapsible-toggle-icon-size: 24px; /* Size for toggle icons */
+  --collapsible-header-bg-color: #000000; /* Background color for section headers */
+  --collapsible-header-hover-bg-color: #ffffff; /* Hover background color */
+  --collapsible-title-color: #ffffff; /* Color for section titles */
+  --collapsible-border-color: #dddddd; /* Border color for sections */
+  --collapsible-title-font-size: 1.5em; /* Font size for section titles */
+}
+
+/* Import Material Icons */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
+
+
 /* Styles for Collapsible Sections */
 .collapsible-section {
   margin-bottom: 20px;
+  border: 0px solid var(--collapsible-border-color);
+  border-radius: 5px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
 }
 
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--collapsible-header-bg-color);
+  padding: 1em 1em 0em 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.section-header h2 {
+.section-header:hover {
+  background-color: var(--collapsible-header-hover-bg-color);
+  color: #000000; /* Sets the color for direct text within the header */
+}
+
+.section-header:hover .section-title {
+  color: #000000; /* Specifically target the title to change its color on hover */
+}
+
+.section-title {
   margin: 0;
-  font-size: 1.5em;
-  color: #fff; /* Adjust text color as needed */
+  font-size: var(--collapsible-title-font-size);
+  color: var(--collapsible-title-color);
+  flex-grow: 1;
+  margin-left: 10px;
 }
 
 .toggle-button {
-  width: $button-size; /* Adjust the size as needed */
-  height: $button-size; /* Ensure both buttons are the same size */
-  padding: 0; /* Ensure padding doesn't affect the size */
-  border-radius: 50%; /* Ensures the button remains circular */
-  font-size: $button-size*.5; /* Adjust to ensure the icons are the same size */
-
+  width: var(--collapsible-toggle-button-size);
+  height: var(--collapsible-toggle-button-size);
+  padding: 0;
+  border: none; /* Remove default border */
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .toggle-button:focus {
   outline: none;
 }
 
+.toggle-icon {
+  font-size: var(--collapsible-toggle-icon-size);
+  color: var(--collapsible-title-color);
+  transition: transform 0.3s ease;
+}
+
+/* Collapsible Content */
 .collapsible-section ul {
+  list-style: none;
   margin: 0;
   padding: 0;
+  max-height: 1000px; /* Initial max-height, will be overridden by JavaScript */
+  transition: max-height 0.3s ease;
 }
+
+/* When collapsed, set max-height to 0 */
+.collapsible-section.collapsed ul {
+  max-height: 0;
+  overflow: hidden;
+}
+
 
 
 /* Base style */

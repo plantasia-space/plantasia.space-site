@@ -23,121 +23,148 @@ public: false
                 <!-- User profile will be populated here -->
             </ul>
 
-
-<!-- Dashboard Menu with Collapsible Section -->
-<div class="collapsible-section">
-    <div class="section-header">
-        <h2>Dashboard Menu</h2>
-        <button class="toggle-button" aria-expanded="true" aria-controls="menu-list">–</button>
-    </div>
-    <ul id="menu-list">
-        <!-- Menu List Items -->
-        <li class="menu-list-item">
-            <a href="/voyage/profile" class="menu-link">
-                <!-- <img src="https://media.maar.world/uploads/default/default-profile.jpg" alt="Edit Profile">-->
-                <div class="menu-item-details">
-                    <h3><span class="material-symbols-large">account_circle</span></h3>
-                    <div class="menu-item-title">Edit your profile</div>
-                    <div class="menu-item-description">Update your profile information and preferences.</div>
+            <!-- Dashboard Menu with Collapsible Section -->
+            <div class="collapsible-section" data-section-id="dashboard-menu">
+                <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="menu-list">
+                    <h2 class="section-title">Dashboard Menu</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="menu-list" aria-label="Toggle Dashboard Menu">
+                        <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
+                    </button>
                 </div>
-            </a>
-        </li>
-        <li class="menu-list-item">
-            <a href="/voyage/track-release" class="menu-link">
-                <!-- <img src="https://media.maar.world/uploads/default/default-tracks.jpg" alt="Release Track">-->
-                <div class="menu-item-details">
-                    <span class="material-symbols-large">diversity_1</span> <div class="menu-item-title">Release a track</div>
-                    <div class="menu-item-description">Upload and share your latest music tracks.</div>
-                </div>
-            </a>
-        </li>
-        <li class="menu-list-item">
-            <a href="/voyage/playlist" class="menu-link">
-                <!-- <img src="https://media.maar.world/uploads/default/default-playlist.jpg" alt="Create Playlist">-->
-                <div class="menu-item-details">
-                    <span class="material-symbols-large">playlist_add_circle</span><div class="menu-item-title">Create a playlist or album</div>
-                    <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
-                </div>
-            </a>
-        </li>
-        <li class="menu-list-item">
-            <a href="/voyage/interplanetary-player" class="menu-link">
-                <!-- <img src="https://media.maar.world/uploads/default/default-player.jpg" alt="Create Interplanetary Player">-->
-                <div class="menu-item-details">
-                    <span class="material-symbols-large">public</span><div class="menu-item-title">Create an Interplanetary Player</div>
-                    <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
-                </div>
-            </a>
-        </li>
-        <li class="menu-list-item">
-            <a href="/voyage/soundengine" class="menu-link">
-                <!-- <img src="https://media.maar.world/uploads/default/default-soundEngine.jpg" alt="Create Sound Engine">-->
-                <div class="menu-item-details">
-                    <span class="material-symbols-large">noise_control_on</span><div class="menu-item-title">Create a Sound Engine</div>
-                    <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
-                </div>
-            </a>
-        </li>
-        <li class="menu-list-item">
-            <a href="/" class="menu-link">
-                <!-- <img src="https://media.maar.world/uploads/default/default-discover.jpg" alt="Discover">-->
-                <div class="menu-item-details">
-                    <span class="material-symbols-large">conditions</span><div class="menu-item-title">Discover</div>
-                    <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
-                </div>
-            </a>
-        </li>
-    </ul>
-</div>
-
-<!-- Existing Lists with Collapsible Sections -->
-<!-- (Add other sections for tracks, sound engines, interplanetary players, playlists as needed) -->
-
-            <!-- Existing Lists with Collapsible Sections -->
+                <ul id="menu-list">
+                    <!-- Menu List Items -->
+                    <li class="menu-list-item">
+                        <a href="/voyage/profile" class="menu-link">
+                            <div class="menu-item-details">
+                                <span class="material-symbols-large">account_circle</span>
+                                <div>
+                                    <div class="menu-item-title">Edit your profile</div>
+                                    <div class="menu-item-description">Update your profile information and preferences.</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-list-item">
+                        <a href="/voyage/track-release" class="menu-link">
+                            <div class="menu-item-details">
+                                <span class="material-symbols-large">diversity_1</span>
+                                <div>
+                                    <div class="menu-item-title">Release a track</div>
+                                    <div class="menu-item-description">Upload and share your latest music tracks.</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-list-item">
+                        <a href="/voyage/playlist" class="menu-link">
+                            <div class="menu-item-details">
+                                <span class="material-symbols-large">playlist_add_circle</span>
+                                <div>
+                                    <div class="menu-item-title">Create a playlist or album</div>
+                                    <div class="menu-item-description">Organize your tracks into playlists or albums.</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-list-item">
+                        <a href="/voyage/interplanetary-player" class="menu-link">
+                            <div class="menu-item-details">
+                                <span class="material-symbols-large">public</span>
+                                <div>
+                                    <div class="menu-item-title">Create an Interplanetary Player</div>
+                                    <div class="menu-item-description">Design your own Interplanetary Player for regenerative music.</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-list-item">
+                        <a href="/voyage/soundengine" class="menu-link">
+                            <div class="menu-item-details">
+                                <span class="material-symbols-large">noise_control_on</span>
+                                <div>
+                                    <div class="menu-item-title">Create a Sound Engine</div>
+                                    <div class="menu-item-description">Build and configure a custom sound engine for your tracks.</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-list-item">
+                        <a href="/" class="menu-link">
+                            <div class="menu-item-details">
+                                <span class="material-symbols-large">conditions</span>
+                                <div>
+                                    <div class="menu-item-title">Discover</div>
+                                    <div class="menu-item-description">Explore new music, albums, and playlists from other users.</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
             <!-- Released Tracks Section -->
-            <div class="collapsible-section">
-                <div class="section-header">
-                    <h2>Your Released Tracks:</h2>
-                    <button class="toggle-button" aria-expanded="true" aria-controls="tracks-list">–</button>
+            <div class="collapsible-section" data-section-id="released-tracks">
+                <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="tracks-list">
+                    <h2 class="section-title">Your Released Tracks:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="tracks-list" aria-label="Toggle Released Tracks">
+                        <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
+                    </button>
                 </div>
-                <ul class="track-list" id="tracks-list"></ul>
-            </div>
-            <!-- Playlists Section -->
-            <div class="collapsible-section">
-                <div class="section-header">
-                    <h2>Your Playlists:</h2>
-                    <button class="toggle-button" aria-expanded="true" aria-controls="playlist-list">–</button>
-                </div>
-                <ul class="playlist-list" id="playlist-list"></ul>
-            </div>
-            <!-- Interplanetary Players Section -->
-            <div class="collapsible-section">
-                <div class="section-header">
-                    <h2>Your Interplanetary Players:</h2>
-                    <button class="toggle-button" aria-expanded="true" aria-controls="interplanetary-players-list">–</button>
-                </div>
-                <ul class="interplanetaryPlayer-list" id="interplanetary-players-list"></ul>
-            </div>
-            <!-- Sound Engines Section -->
-            <div class="collapsible-section">
-                <div class="section-header">
-                    <h2>Your Sound Engines:</h2>
-                    <button class="toggle-button" aria-expanded="true" aria-controls="sound-engines-list">–</button>
-                </div>
-                <ul class="soundEngine-list" id="sound-engines-list"></ul>
+                <ul class="track-list" id="tracks-list">
+                    <!-- Track items will be populated here -->
+                </ul>
             </div>
 
+            <!-- Playlists Section -->
+            <div class="collapsible-section" data-section-id="playlists">
+                <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="playlist-list">
+                    <h2 class="section-title">Your Playlists:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="playlist-list" aria-label="Toggle Playlists">
+                        <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
+                    </button>
+                </div>
+                <ul class="playlist-list" id="playlist-list">
+                    <!-- Playlist items will be populated here -->
+                </ul>
+            </div>
+
+            <!-- Interplanetary Players Section -->
+<div class="collapsible-section" data-section-id="interplanetary-players">
+    <div class="section-header" tabindex="0" role="button" aria-expanded="false" aria-controls="interplanetary-players-list">
+        <h2 class="section-title">Your Interplanetary Players:</h2>
+        <button class="toggle-button" aria-expanded="false" aria-controls="interplanetary-players-list" aria-label="Toggle Interplanetary Players">
+            <span class="material-symbols-outlined toggle-icon">keyboard_arrow_down</span>
+        </button>
+    </div>
+    <ul class="interplanetaryPlayer-list" id="interplanetary-players-list">
+                    <!-- Interplanetary Player items will be populated here -->
+                </ul>
+            </div>
+
+            <!-- Sound Engines Section -->
+            <div class="collapsible-section" data-section-id="sound-engines">
+                <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="sound-engines-list">
+                    <h2 class="section-title">Your Sound Engines:</h2>
+                    <button class="toggle-button" aria-expanded="true" aria-controls="sound-engines-list" aria-label="Toggle Sound Engines">
+                        <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
+                    </button>
+                </div>
+                <ul class="soundEngine-list" id="sound-engines-list">
+                    <!-- Sound Engine items will be populated here -->
+                </ul>
+            </div>
 
         </div>
     </div>
+
 </div>
 
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="toast-container"></div>
 
-<!-- JavaScript to Handle Data Retrieval and Rendering -->
-<!-- JavaScript to Handle Data Retrieval and Rendering -->
+
+<!-- Ensure lscache is loaded before this script -->
+
 <script>
 /**
  * Fetches data from the API with caching using lscache.
@@ -164,7 +191,6 @@ async function fetchDataWithCache(url, cacheKey, ttl, forceRefresh = false) {
             credentials: 'include', // Include cookies in the request
             headers: {
                 'Content-Type': 'application/json'
-                // 'Authorization': `Bearer ${token}`, // Removed since token is in HTTP-only cookie
             }
         });
         if (!response.ok) {
@@ -194,7 +220,6 @@ async function fetchData(url) {
             credentials: 'include', // Include cookies in the request
             headers: {
                 'Content-Type': 'application/json'
-                // 'Authorization': `Bearer ${token}`, // Removed since token is in HTTP-only cookie
             }
         });
         if (!response.ok) {
@@ -218,31 +243,116 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Fetch user profile data
-    fetchUserProfile(userId);
+    // Fetch user profile data and initialize collapsible sections after data is loaded
+    fetchUserProfile(userId)
+        .catch(error => {
+            console.error('Failed to fetch and populate user profile:', error);
+        });
 
-    // Add event listeners to toggle buttons
-    const toggleButtons = document.querySelectorAll('.toggle-button');
-    toggleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            const targetId = this.getAttribute('aria-controls');
-            const targetElement = document.getElementById(targetId);
+    // Restore scroll position
+    restoreScrollPosition();
+});
 
-            if (targetElement) {
-                if (isExpanded) {
-                    targetElement.style.display = 'none';
-                    this.setAttribute('aria-expanded', 'false');
-                    this.textContent = '+';
-                } else {
-                    targetElement.style.display = '';
-                    this.setAttribute('aria-expanded', 'true');
-                    this.textContent = '–';
-                }
+
+/**
+ * Function to handle all collapsible sections.
+ */
+function handleCollapsibleSections() {
+    const collapsibleSections = document.querySelectorAll('.collapsible-section');
+
+    collapsibleSections.forEach(section => {
+        const header = section.querySelector('.section-header');
+        const toggleButton = section.querySelector('.toggle-button');
+        const content = section.querySelector('ul');
+        const icon = toggleButton.querySelector('.toggle-icon');
+        const sectionId = section.getAttribute('data-section-id');
+
+        if (!sectionId) {
+            console.warn('Collapsible section missing data-section-id:', section);
+            return;
+        }
+
+        // Retrieve the saved state from localStorage
+        const savedState = localStorage.getItem(`collapsible_${sectionId}`);
+        let isExpanded;
+
+        if (savedState !== null) {
+            isExpanded = savedState === 'true';
+            console.log(`Section "${sectionId}" retrieved from localStorage as: ${isExpanded}`);
+        } else {
+            // On first load, only Dashboard Menu is expanded
+            isExpanded = (sectionId === 'dashboard-menu');
+            console.log(`Section "${sectionId}" set to default state: ${isExpanded}`);
+        }
+
+        // Initialize state based on saved state or default rule
+        toggleButton.setAttribute('aria-expanded', isExpanded);
+        header.setAttribute('aria-expanded', isExpanded);
+        section.classList.toggle('collapsed', !isExpanded);
+        icon.textContent = isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+
+        if (isExpanded) {
+            // Initially expanded, set max-height based on content's current scrollHeight
+            content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+            // Initially collapsed, ensure max-height is 0
+            content.style.maxHeight = '0px';
+        }
+
+        // Toggle function
+        const toggleSection = () => {
+            const currentlyExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+            const newExpandedState = !currentlyExpanded;
+
+            console.log(`Toggling section "${sectionId}" from ${currentlyExpanded} to ${newExpandedState}`);
+
+            // Update aria-expanded attributes
+            toggleButton.setAttribute('aria-expanded', newExpandedState);
+            header.setAttribute('aria-expanded', newExpandedState);
+
+            // Toggle collapsed class
+            section.classList.toggle('collapsed', !newExpandedState);
+
+            // Update icon
+            icon.textContent = newExpandedState ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+
+            // Set max-height for smooth transition
+            if (newExpandedState) {
+                // Temporarily set max-height to 'none' to calculate scrollHeight
+                content.style.maxHeight = 'none';
+                const height = content.scrollHeight + 'px';
+                content.style.maxHeight = height;
+            } else {
+                content.style.maxHeight = '0px';
+            }
+
+            // Save the new state to localStorage
+            localStorage.setItem(`collapsible_${sectionId}`, newExpandedState);
+            console.log(`Section "${sectionId}" state saved as: ${newExpandedState}`);
+        };
+
+        // Click event on header (excluding the toggle button)
+        header.addEventListener('click', function (e) {
+            // If the toggle button itself is clicked, do nothing here
+            if (e.target.closest('.toggle-button')) return;
+            toggleSection();
+        });
+
+        // Click event on toggle button
+        toggleButton.addEventListener('click', function (e) {
+            e.stopPropagation(); // Prevent event from bubbling to header
+            toggleSection();
+        });
+
+        // Keyboard accessibility: toggle on Enter or Space key when header is focused
+        header.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSection();
             }
         });
     });
-});
+}
 
 /**
  * Function to fetch user profile data
@@ -256,7 +366,11 @@ async function fetchUserProfile(userId) {
             cacheKey,
             60 // Cache for 60 minutes
         );
-        populateUserProfile(data);
+        await populateUserProfile(data);
+        // After data is fetched and all sections are populated, handle collapsible sections
+        handleCollapsibleSections();
+        // Then recalculate max-height for expanded sections
+        recalculateMaxHeight();
     } catch (error) {
         console.error('Error fetching user data:', error);
         showToast('Error fetching user data. Please try again.', 'error');
@@ -264,10 +378,24 @@ async function fetchUserProfile(userId) {
 }
 
 /**
+ * Function to recalculate max-height for all expanded sections after content is loaded
+ */
+function recalculateMaxHeight() {
+    const expandedSections = document.querySelectorAll('.collapsible-section:not(.collapsed)');
+    expandedSections.forEach(section => {
+        const content = section.querySelector('ul');
+        if (content) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            console.log(`Recalculated max-height for section "${section.getAttribute('data-section-id')}"`);
+        }
+    });
+}
+
+/**
  * Function to populate user profile UI
  * @param {Object} profileData - The user's profile data
  */
-function populateUserProfile(profileData) {
+async function populateUserProfile(profileData) {
     // Populate the user profile list
     populateUserProfileList(profileData);
 
@@ -275,7 +403,7 @@ function populateUserProfile(profileData) {
 
     // Display Sound Engines
     if (Array.isArray(profileData.enginesOwned)) {
-        displaySoundEnginesBatch(profileData.enginesOwned);
+        await displaySoundEnginesBatch(profileData.enginesOwned);
     } else {
         console.warn('enginesOwned is not an array:', profileData.enginesOwned);
         document.getElementById('sound-engines-list').innerHTML = '<li>No sound engines found.</li>';
@@ -283,7 +411,7 @@ function populateUserProfile(profileData) {
 
     // Display Interplanetary Players
     if (Array.isArray(profileData.interplanetaryPlayersOwned)) {
-        displayInterplanetaryPlayersBatch(profileData.interplanetaryPlayersOwned);
+        await displayInterplanetaryPlayersBatch(profileData.interplanetaryPlayersOwned);
     } else {
         console.warn('interplanetaryPlayersOwned is not an array:', profileData.interplanetaryPlayersOwned);
         document.querySelector('.interplanetaryPlayer-list').innerHTML = '<li>No interplanetary players found.</li>';
@@ -291,7 +419,7 @@ function populateUserProfile(profileData) {
 
     // Display Tracks using Batch Fetching
     if (Array.isArray(profileData.tracksOwned)) {
-        displayTracksBatch(profileData.tracksOwned);
+        await displayTracksBatch(profileData.tracksOwned);
     } else {
         console.warn('tracksOwned is not an array:', profileData.tracksOwned);
         document.getElementById('tracks-list').innerHTML = '<li>No tracks found.</li>';
@@ -299,7 +427,7 @@ function populateUserProfile(profileData) {
 
     // Display Playlists
     if (Array.isArray(profileData.playlistsOwned)) {
-        displayPlaylists(profileData.playlistsOwned);
+        await displayPlaylists(profileData.playlistsOwned);
     } else {
         console.warn('playlistsOwned is not an array:', profileData.playlistsOwned);
         document.getElementById('playlist-list').innerHTML = '<li>No playlists found.</li>';
@@ -413,7 +541,6 @@ async function displayTracksBatch(trackIds) {
 
                 // Create DOM elements
                 const trackDiv = document.createElement('li');
-                // trackDiv.classList.add('track-list-item');
 
                 trackDiv.innerHTML = `
                     <div class="track-list-item" onclick="handleCardClick('${track._id}', event)" style="cursor: pointer;">
@@ -515,7 +642,6 @@ async function displaySoundEnginesBatch(engineIds) {
 
                 // Create DOM elements
                 const soundEngineDiv = document.createElement('li');
-               // soundEngineDiv.classList.add('soundEngine-list-item');
 
                 soundEngineDiv.innerHTML = `
                     <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
@@ -552,7 +678,6 @@ async function displaySoundEnginesBatch(engineIds) {
                         </div>
                     </div>
                 `;
-                // **FIXED**: Corrected variable name from soundEngineListElement to soundEnginesListElement
                 soundEnginesListElement.appendChild(soundEngineDiv);
             });
             console.log('All sound engines displayed successfully.');
@@ -621,7 +746,6 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
                 // Create DOM elements
                 const playerDiv = document.createElement('li');
-             //   playerDiv.classList.add('interplanetaryPlayer-list-item');
 
                 playerDiv.innerHTML = `
                     <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
@@ -877,6 +1001,7 @@ async function deleteTrack(trackId, button) {
             }
             // Clear the profile cache after deletion
             lscache.remove(cacheKey);
+            console.log(`Track "${trackId}" deleted and DOM updated.`);
         } else {
             throw new Error(data.message || 'Failed to delete the Track.');
         }
@@ -929,6 +1054,7 @@ async function deletePlaylist(playlistId, button) {
             }
             // Clear the profile cache after deletion
             lscache.remove(cacheKey);
+            console.log(`Playlist "${playlistId}" deleted and DOM updated.`);
         } else {
             throw new Error(data.message || 'Failed to delete the Playlist.');
         }
@@ -937,6 +1063,111 @@ async function deletePlaylist(playlistId, button) {
         showToast(`Error: ${error.message}`, 'error');
         button.disabled = false;
         button.textContent = 'Delete';
+    }
+}
+
+/**
+ * Function to handle the deletion of a sound engine
+ * @param {string} engineId - The ID of the sound engine to delete
+ * @param {HTMLElement} button - The delete button that was clicked
+ */
+async function deleteSoundEngine(engineId, button) {
+    const userId = localStorage.getItem('userId');
+    const cacheKey = `profile_${userId}`;
+
+    // Confirm deletion with the user
+    const confirmation = confirm('Are you sure you want to delete this Sound Engine? This action cannot be undone.');
+    if (!confirmation) return;
+
+    // Disable the delete button to prevent multiple clicks
+    button.disabled = true;
+    button.textContent = 'Deleting...';
+
+    try {
+        const response = await fetch(`http://media.maar.world:3001/api/soundEngines/${engineId}`, {
+            method: 'DELETE',
+            credentials: 'include', // Include cookies
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Failed to delete the Sound Engine.');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            showToast('Sound Engine deleted successfully!', 'success');
+            // Remove the sound engine from the DOM
+            const soundEngineListItem = button.closest('.soundEngine-list-item');
+            if (soundEngineListItem) {
+                soundEngineListItem.remove();
+            }
+            // Clear the profile cache after deletion
+            lscache.remove(cacheKey);
+            console.log(`Sound Engine "${engineId}" deleted and DOM updated.`);
+        } else {
+            throw new Error(data.message || 'Failed to delete the Sound Engine.');
+        }
+    } catch (error) {
+        console.error('Error deleting Sound Engine:', error);
+        showToast(`Error: ${error.message}`, 'error');
+        button.disabled = false;
+        button.textContent = 'Delete';
+    }
+}
+
+/**
+ * Function to handle the deletion of an interplanetary player
+ * @param {string} playerId - The ID of the interplanetary player to delete
+ * @param {HTMLElement} buttonElement - The delete button that was clicked
+ */
+async function deleteInterplanetaryPlayer(playerId, buttonElement) {
+    const userId = localStorage.getItem('userId');
+    const cacheKey = `profile_${userId}`;
+
+    if (!userId) {
+        alert('User not authenticated. Please log in.');
+        return;
+    }
+
+    // Display a confirmation prompt before deletion
+    const confirmation = confirm('Are you sure you want to delete this Interplanetary Player? This action cannot be undone.');
+    if (!confirmation) return;
+
+    try {
+        const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
+            method: 'DELETE',
+            credentials: 'include', // Include cookies
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+        });
+
+        if (!response.ok) {
+            const result = await response.json();
+            throw new Error(result.message || 'Failed to delete the Interplanetary Player.');
+        }
+
+        const result = await response.json();
+        if (result.success) {
+            const playerContainer = buttonElement.closest('.interplanetaryPlayer-list-item');
+            if (playerContainer) {
+                playerContainer.remove();
+                showToast('Player deleted successfully.', 'success');
+                console.log(`Interplanetary Player "${playerId}" deleted and DOM updated.`);
+            }
+            // Clear the profile cache after deletion
+            lscache.remove(cacheKey);
+        } else {
+            throw new Error(result.message || 'Failed to delete the Interplanetary Player.');
+        }
+    } catch (error) {
+        console.error('Error deleting player:', error);
+        showToast(`Error: ${error.message}`, 'error');
     }
 }
 
@@ -981,7 +1212,6 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-
 /**
  * Function to handle the card click and toggle the dropdown.
  * @param {string} itemId - The ID of the item (sound engine, track, or interplanetary player).
@@ -1007,6 +1237,9 @@ function handleCardClick(itemId, event) {
             dropdown.classList.remove('show');
             card.setAttribute('aria-expanded', 'false');
         }
+
+        // Debugging Logs
+        console.log(`Dropdown for "${itemId}" is now ${!isDisplayed ? 'shown' : 'hidden'}.`);
     }
 }
 
@@ -1020,144 +1253,57 @@ function toggleMoreOptions(event) {
         if (!isDisplayed) {
             dropdown.classList.add('show');
             event.currentTarget.setAttribute('aria-expanded', 'true');
+            console.log('Dropdown shown.');
         } else {
             dropdown.classList.remove('show');
             event.currentTarget.setAttribute('aria-expanded', 'false');
+            console.log('Dropdown hidden.');
         }
     }
 }
 
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.more-options-dropdown');
-    dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+    dropdowns.forEach(dropdown => {
+        dropdown.classList.remove('show');
+    });
 
-    const cards = document.querySelectorAll('.soundEngine-list-item, .interplanetaryPlayer-list-item, .track-list-item, .playlist-list-item');
-    cards.forEach(card => card.setAttribute('aria-expanded', 'false'));
+    const buttons = document.querySelectorAll('.more-options-button');
+    buttons.forEach(button => {
+        button.setAttribute('aria-expanded', 'false');
+    });
+
+    console.log('All dropdowns closed.');
 }
 
 // Event listener to close dropdowns when clicking outside
 document.addEventListener('click', function(event) {
-    if (!event.target.closest('.soundEngine-list-item, .interplanetaryPlayer-list-item, .track-list-item, .playlist-list-item')) {
+    if (!event.target.closest('.collapsible-section')) {
         closeAllDropdowns();
     }
 });
 
 /**
- * Function to handle the deletion of a sound engine
- * @param {string} engineId - The ID of the sound engine to delete
- * @param {HTMLElement} button - The delete button that was clicked
+ * Function to restore the scroll position.
  */
-async function deleteSoundEngine(engineId, button) {
-    const userId = localStorage.getItem('userId');
-    const cacheKey = `profile_${userId}`;
-
-    // Confirm deletion with the user
-    const confirmation = confirm('Are you sure you want to delete this Sound Engine? This action cannot be undone.');
-    if (!confirmation) return;
-
-    // Disable the delete button to prevent multiple clicks
-    button.disabled = true;
-    button.textContent = 'Deleting...';
-
-    try {
-        const response = await fetch(`http://media.maar.world:3001/api/soundEngines/${engineId}`, {
-            method: 'DELETE',
-            credentials: 'include', // Include cookies
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.message || 'Failed to delete the Sound Engine.');
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            showToast('Sound Engine deleted successfully!', 'success');
-            // Remove the sound engine from the DOM
-            const soundEngineListItem = button.closest('.soundEngine-list-item');
-            if (soundEngineListItem) {
-                soundEngineListItem.remove();
-            }
-            // Clear the profile cache after deletion
-            lscache.remove(cacheKey);
-        } else {
-            throw new Error(data.message || 'Failed to delete the Sound Engine.');
-        }
-    } catch (error) {
-        console.error('Error deleting Sound Engine:', error);
-        showToast(`Error: ${error.message}`, 'error');
-        button.disabled = false;
-        button.textContent = 'Delete';
-    }
-}
-
-/**
- * Function to handle the deletion of an interplanetary player
- * @param {string} playerId - The ID of the interplanetary player to delete
- * @param {HTMLElement} buttonElement - The delete button that was clicked
- */
-async function deleteInterplanetaryPlayer(playerId, buttonElement) {
-    const userId = localStorage.getItem('userId');
-    const cacheKey = `profile_${userId}`;
-
-    if (!userId) {
-        alert('User not authenticated. Please log in.');
-        return;
-    }
-
-    // Display a confirmation prompt before deletion
-    const confirmation = confirm('Are you sure you want to delete this Interplanetary Player? This action cannot be undone.');
-    if (!confirmation) return;
-
-    try {
-        const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
-            method: 'DELETE',
-            credentials: 'include', // Include cookies
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId }),
-        });
-
-        if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.message || 'Failed to delete the Interplanetary Player.');
-        }
-
-        const result = await response.json();
-        if (result.success) {
-            const playerContainer = buttonElement.closest('.interplanetaryPlayer-list-item');
-            if (playerContainer) {
-                playerContainer.remove();
-                showToast('Player deleted successfully.', 'success');
-            }
-            // Clear the profile cache after deletion
-            lscache.remove(cacheKey);
-        } else {
-            throw new Error(result.message || 'Failed to delete the Interplanetary Player.');
-        }
-    } catch (error) {
-        console.error('Error deleting player:', error);
-        showToast(`Error: ${error.message}`, 'error');
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+function restoreScrollPosition() {
     const lastScrollY = localStorage.getItem('lastScrollY');
     if (lastScrollY) {
         // Use a smoother scroll effect
         window.scrollTo({
-            top: lastScrollY,
+            top: parseInt(lastScrollY, 10),
             behavior: 'smooth' // This will apply smooth scrolling
         });
+        console.log(`Restored scroll position to: ${lastScrollY}`);
     }
-});
+}
 
+/**
+ * Function to handle saving the scroll position.
+ */
 window.addEventListener('scroll', () => {
     // Save the current scroll position to local storage
     localStorage.setItem('lastScrollY', window.scrollY);
+    console.log(`Scroll position saved: ${window.scrollY}`);
 });
 </script>
