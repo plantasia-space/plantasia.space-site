@@ -338,10 +338,26 @@ input[type="number"] {
 .menu-list,
 .track-list,
 .playlist-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
   margin: 0;
 }
+
+.track-list li,
+.soundEngine-list li,
+.interplanetaryPlayer-list li,
+.playlist-list li {
+    list-style: none;
+}
+
+.track-list li::marker,
+.soundEngine-list li::marker,
+.interplanetaryPlayer-list li::marker,
+.playlist-list li::marker {
+    display: none;
+}
+
+
 
 /* Common Styles for List Items */
 .soundEngine-list-item,
@@ -379,7 +395,6 @@ input[type="number"] {
 .soundEngine-list-item img,
 .interplanetaryPlayer-list-item img,
 .menu-list-item img,
-.track-list-item img,
 .playlist-list-item img {
   width: 100px;
   height: 100px;
@@ -391,6 +406,19 @@ input[type="number"] {
   z-index: 2;
   flex-shrink: 0; /* Prevent image from shrinking */
 }
+.track-list-item img{
+
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ffffff;
+  object-fit: cover;
+  margin-right: 20px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Prevent image from shrinking */
+
+}
+
 
 /* Image Containers */
 .soundEngine-profile-pic,
@@ -1006,25 +1034,45 @@ input[type="number"] {
   box-sizing: border-box;
 }
 
+/* Reset some default styles for consistency */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Parent Container to Center the Card */
+.parent-container {
+  width: 100%;                     /* Full width */
+  display: flex;
+  justify-content: center;         /* Center horizontally */
+  align-items: flex-start;         /* Align items to the top */
+  padding: 60px 20px 80px 20px;    /* Padding with extra bottom padding for the profile image */
+  background-color: #000000;       /* Optional: Background color for contrast */
+  position: relative;              /* To contain absolutely positioned children if needed */
+}
+
 /* Base Styles for Voyage Profile */
 .voyage-profile {
   display: flex;
-  flex-direction: row; /* Image on the left, details on the right */
-  align-items: center;
+  flex-direction: column;          /* Stack content vertically */
+  align-items: center;             /* Center content horizontally */
   padding: 20px;
+  padding-bottom: 100px;            /* Extra bottom padding to accommodate the overlapping image */
   border: 2px solid #ffffff;
   border-radius: 12px;
-  margin-bottom: 20px;
-  background: url('/img/lab/genesis-lab.jpg') no-repeat center center; /* Add background image */
-  background-size: cover; /* Make sure the image covers the entire area */
+  background: url('/img/lab/genesis-lab.jpg') no-repeat center center; /* Background image */
+  background-size: cover;          /* Ensure the background covers the card */
   color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
   transition: transform 0.3s ease; /* Smooth hover animation */
-  width: 100%; /* Ensure full width within parent */
-  position: relative;
-  overflow: hidden; /* Ensures that the background doesn't overflow */
+  width: 100%;                     /* Full width */
+  max-width: none;                 /* Remove max-width to allow full width */
+  position: relative;              /* To position the profile image absolutely within */
+  /* overflow: hidden; */          /* Keep overflow visible for the profile image */
 }
 
+/* Overlay for Better Text Contrast */
 .voyage-profile::before {
   content: '';
   position: absolute;
@@ -1032,67 +1080,88 @@ input[type="number"] {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Add a dark overlay for better text contrast */
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  border-radius: 12px;            /* Match the card's border radius */
   z-index: 1;
 }
 
+/* Hover Effect */
 .voyage-profile:hover {
-  transform: translateY(-5px); /* Hover effect to lift the profile card */
+  transform: translateY(-5px); /* Lift the card on hover */
 }
 
+/* Profile Picture Container */
+.voyage-profile-pic {
+  position: absolute;
+  bottom: -75px;                      /* Half of the image height to overlap */
+  left: 50%;                          /* Center horizontally */
+  transform: translateX(-50%);        /* Adjust to truly center */
+  z-index: 2;                         /* Ensure the image is above the overlay */
+}
+
+/* Profile Picture Styles */
 .voyage-profile-pic img {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #ffffff;
-  margin-right: 20px; /* Adds space between image and text */
-  position: relative;
-  z-index: 2; /* Ensure the image is on top of the overlay */
+  background-color: #ffffff; /* Optional: Adds a background if image fails to load */
 }
 
+/* Details Section */
 .voyage-details {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Center the text horizontally */
   justify-content: center;
-  text-align: left;
+  text-align: center;  /* Center the text */
   position: relative;
-  z-index: 2; /* Ensure the details are on top of the overlay */
+  z-index: 2;          /* Ensure text is above the overlay */
+  width: 100%;
 }
 
+/* Display Name */
 .voyage-display-name {
-  font-family: 'Orbitron', sans-serif; /* Apply Orbitron font */
-  font-size: 1.5em; /* Resemble h1 */
-  font-weight: 700; /* Bold */
-  color: #ffffff; /* White text */
-  background-color: #000000a6; /* Black highlight background */
-  padding: 10px 15px; /* Add padding for spacing inside the background */
-  letter-spacing: 1.5px; /* Adds spacing between letters for a more futuristic look */
-  text-transform: uppercase; /* Make the text all uppercase */
-  margin: 0.5em 0; /* Add spacing above and below */
-  border-radius: 8px; /* Rounded corners for a smoother look */
-  display: inline-block; /* Make the background fit the text content */
+  font-family: 'Orbitron', sans-serif; /* Orbitron font */
+  font-size: 1.5em;                     /* Resemble h1 */
+  font-weight: 700;                     /* Bold */
+  color: #ffffff;                       /* White text */
+  background-color: rgba(0, 0, 0, 0.6);/* Semi-transparent black background */
+  padding: 8px 12px;                    /* Padding for spacing */
+  letter-spacing: 1.5px;                /* Spacing between letters */
+  text-transform: uppercase;            /* Uppercase text */
+  margin: 0.5em 0;                      /* Spacing above and below */
+  border-radius: 8px;                   /* Rounded corners */
+  display: inline-block;                /* Fit background to text */
 }
 
+/* Username */
 .voyage-username {
   font-size: 1em;
   color: #ffffff;
-  background-color: #000000a6; /* Black highlight background */
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  padding: 5px 10px;                    /* Padding for better appearance */
+  border-radius: 4px;                   /* Rounded corners */
+  margin-bottom: 8px;                   /* Spacing below */
 }
 
+/* Bio */
 .voyage-bio {
-  font-size: 0.95em;
-  color: #dddddd;
+  font-size: 1.0em;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  color: #ffffff;
   margin-top: 8px;
 }
 
+/* Role */
 .voyage-role {
   font-size: 1em;
   color: #cccccc;
   margin-top: 8px;
 }
 
+/* Custom Link */
 .voyage-custom-link a {
   color: #33ffff;
   text-decoration: none;
@@ -1103,106 +1172,46 @@ input[type="number"] {
   text-decoration: underline;
 }
 
-/* Media Queries for Responsiveness */
-
-/* Tablets and Below */
-@media (max-width: 1024px) {
-  .voyage-profile {
-    padding: 15px;
+/* Responsive Design */
+@media (max-width: 800px) {
+  /* Adjust profile image size on medium screens */
+  .voyage-profile-pic img {
+    width: 120px;
+    height: 120px;
   }
 
-  .voyage-profile-pic img {
-    width: 90px;
-    height: 90px;
-    margin-right: 15px;
+  .voyage-profile-pic {
+    bottom: -60px; /* Adjust overlap for smaller screens */
   }
 
   .voyage-display-name {
     font-size: 1.3em;
-    padding: 8px 12px;
   }
 
-  .voyage-username {
-    font-size: 0.95em;
-  }
-
-  .voyage-bio,
-  .voyage-role {
-    font-size: 0.9em;
+  .voyage-profile {
+    padding-bottom: 75px; /* Adjust padding for image overlap */
   }
 }
 
-/* Mobile Devices */
-@media (max-width: 768px) {
-  .voyage-profile {
-    flex-direction: column; /* Stack image above details */
-    padding: 15px;
-  }
-
+@media (max-width: 500px) {
+  /* Adjust profile image size on small screens */
   .voyage-profile-pic img {
-    width: 80px;
-    height: 80px;
-    border: 1px; 
-    margin-right: 0;
-    margin-bottom: 15px; /* Space below the image */
+    width: 90px;
+    height: 90px;
   }
 
-  .voyage-details {
-    align-items: center;
-    text-align: center;
+  .voyage-profile-pic {
+    bottom: -45px; /* Adjust overlap for smaller screens */
   }
 
   .voyage-display-name {
     font-size: 1.2em;
-    padding: 8px 12px;
   }
 
-  .voyage-username {
-    font-size: 0.9em;
-  }
-
-  .voyage-bio,
-  .voyage-role {
-    font-size: 0.85em;
-  }
-
-  .voyage-custom-link a {
-    margin-top: 8px;
-  }
-}
-
-/* Small Mobile Devices */
-@media (max-width: 480px) {
   .voyage-profile {
-    padding: 10px;
-  }
-
-  .voyage-profile-pic img {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 10px;
-  }
-
-  .voyage-display-name {
-    font-size: 1.1em;
-    padding: 6px 10px;
-  }
-
-  .voyage-username {
-    font-size: 0.85em;
-  }
-
-  .voyage-bio,
-  .voyage-role {
-    font-size: 0.8em;
-  }
-
-  .voyage-custom-link a {
-    margin-top: 6px;
+    padding-bottom: 60px; /* Adjust padding for image overlap */
   }
 }
-
-
 
 
 
@@ -1324,20 +1333,20 @@ input[type="number"] {
   --collapsible-header-hover-bg-color: #ffffff; /* Hover background color */
   --collapsible-title-color: #ffffff; /* Color for section titles */
   --collapsible-border-color: #dddddd; /* Border color for sections */
-  --collapsible-title-font-size: 1.5em; /* Font size for section titles */
 }
-
-/* Import Material Icons */
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
-
-
+/* Reset some default styles for consistency */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 /* Styles for Collapsible Sections */
 .collapsible-section {
   margin-bottom: 20px;
   border: 0px solid var(--collapsible-border-color);
   border-radius: 5px;
-  overflow: hidden;
+  overflow: visible;
   transition: border-color 0.3s ease;
 }
 
@@ -1345,6 +1354,8 @@ input[type="number"] {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 8px;                   /* Rounded corners */
+
   background-color: var(--collapsible-header-bg-color);
   padding: 1em 1em 0em 1em;
   cursor: pointer;
@@ -1360,12 +1371,31 @@ input[type="number"] {
   color: #000000; /* Specifically target the title to change its color on hover */
 }
 
+/* Trigger toggle-icon hover styles when section-header is hovered */
+.section-header:hover .toggle-icon {
+  color: #000000; /* Sets the color for direct text within the header */
+}
+
 .section-title {
   margin: 0;
-  font-size: var(--collapsible-title-font-size);
+  font-size: 1.5em;
   color: var(--collapsible-title-color);
   flex-grow: 1;
   margin-left: 10px;
+}
+.section-content {
+  overflow: hidden;
+  transition: height 0.5s ease;
+  height: 0; /* Initial collapsed state */
+}
+
+.collapsible-section.collapsed .section-content {
+  height: 0; /* Collapsed state */
+}
+
+.collapsible-section:not(.collapsed) .section-content {
+  /* Height will be controlled via JavaScript */
+  height: auto;
 }
 
 .toggle-button {
@@ -1379,7 +1409,7 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .toggle-button:focus {
@@ -1391,23 +1421,27 @@ input[type="number"] {
   color: var(--collapsible-title-color);
   transition: transform 0.3s ease;
 }
-
-/* Collapsible Content */
-.collapsible-section ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 1000px; /* Initial max-height, will be overridden by JavaScript */
-  transition: max-height 0.3s ease;
-}
-
-/* When collapsed, set max-height to 0 */
-.collapsible-section.collapsed ul {
-  max-height: 0;
-  overflow: hidden;
+.toggle-icon:hover {
+  background-color: var(--collapsible-header-hover-bg-color);
+  color: #000000; /* Sets the color for direct text within the header */
 }
 
 
+/* Responsive Design */
+@media (max-width: 800px) {
+  /* Increased specificity */
+  .collapsible-section .section-header .section-title {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 500px) {
+  /* Increased specificity */
+  .collapsible-section .section-header .section-title {
+    font-size: 1.0em;
+    margin-left: 10px;
+  }
+}
 
 /* Base style */
 .material-symbols-outlined {
@@ -1419,14 +1453,57 @@ input[type="number"] {
     'opsz' 48;
   font-size: 24px; /* Default size for general use */
 }
-
-/* Larger variation for specific sections */
+/* Base style */
 .material-symbols-large {
   font-family: 'Material Symbols Outlined';
-  font-size: 48px; /* Adjust this size as needed */
   font-variation-settings:
-    'FILL' 1,    /* Filled style for added emphasis */
-    'wght' 600,  /* Bolder weight */
-    'GRAD' 100,  /* Higher gradient for visibility */
-    'opsz' 72;   /* Larger optical size */
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 48;
+  font-size: 4rem; /* Default size for general use */
+}
+
+/* Centered Footer Text */
+.footer {
+  display: flex;               /* Enable Flexbox */
+  justify-content: center;     /* Center content horizontally */
+  align-items: center;         /* Center content vertically within padding */
+  width: 100%;                 /* Full width */
+  text-align: center;          /* Center text within its container */
+  padding: 20px;               /* Optional: Add padding */
+  background-color: #00000000;   /* Optional: Background color */
+  font-family: 'Orbitron', sans-serif; /* Optional font */
+  font-size: 1em;              /* Base font size */
+  color: #ffffff;              /* Text color */
+  margin-top: auto;            /* Push footer to the bottom if using Flexbox in body */
+}
+
+/* Responsive Design for Footer Text */
+@media (max-width: 800px) {
+  .footer {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer {
+    font-size: 0.8em;
+  }
+}
+/* Remove default list styles for all lists */
+/* More specific selectors */
+.collapsible-section ul,
+.collapsible-section ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.collapsible-section li {
+  list-style: none;
+}
+
+.collapsible-section li::marker {
+  display: none;
 }
