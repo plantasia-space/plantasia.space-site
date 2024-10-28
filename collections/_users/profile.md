@@ -19,7 +19,7 @@ key: xPlorer
         <div class="back-button-container">
             <a href="/voyage" title="Voyage">
                 <button id="backButton" class="btn button--outline-primary button--circle">
-                    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                    <span class="material-symbols-outlined">brightness_6</span>
                 </button>
             </a>
         </div>
