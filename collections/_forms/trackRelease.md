@@ -30,9 +30,7 @@ public: false
             </button>
         </div>
     </div>
-    <h3 id="formTitle">Track Release Form</h3>
-    <p>Fill the form with details about your track.</p>
-
+    <h3 id="formTitle">Track Release</h3>
     <!-- View Mode -->
     <div id="trackReleaseView" style="display: none;">
         <!-- Details will be populated here in view mode -->
@@ -53,35 +51,29 @@ public: false
         <p id="viewReleaseDate"></p>
         <p id="viewEnableDirectDownloads"></p>
     </div>
-    
     <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Hidden ownerId input -->
         <input type="hidden" id="ownerId" name="ownerId" value="">
-        
         <!-- Cover Image Preview -->
         <div id="coverImagePreviewContainer" class="cover-image-container">
             <img id="coverImagePreview" src="" alt="Cover Image Preview" style="display: none;">
         </div><br>
-        
         <!-- Cover Image Upload -->
         <label for="uploadCoverImage">Upload the cover image for your release (Best Size: 800x800 pixels, Max: 2MB, JPG or PNG):<span id="coverImageRequired">*</span></label>
         <input type="file" id="uploadCoverImage" name="coverImage" accept=".jpg, .jpeg, .png"><br><br>
-        
         <!-- Interplanetary Player Selection -->
         <label for="playerId">Which Interplanetary Player would you like to choose for this release?*</label>
         <select id="playerId" name="playerId" required>
             <option value="">Please select an Interplanetary player</option>
         </select><br><br>
         <div id="interplanetaryPlayerView"></div>
-        
         <!-- Sound Engine Selection -->
         <label for="soundEngineId">Which sonic engine would you like to use as the default for your Interplanetary Player?</label>
         <select id="soundEngineId" name="soundEngineId">
             <option value="">Please select a sound engine</option>
         </select><br><br>
         <ul class="soundEngine-list" id="sound-engines-list"></ul>
-        
         <!-- Artists -->
         <label>Artists*</label>
         <div id="artistsContainer">
@@ -94,18 +86,15 @@ public: false
                 </div>
                 <!-- Remove button removed from the first artistEntry -->
             </div>
-            <button type="button" id="addArtistButton">Add Another Artist</button>
+            <button type="button" id="addArtistButton" class="btn button--outline-primary button--small">Add Another Artist</button>
             <br><br>
         </div>
-        
         <!-- Track Name -->
         <label for="trackName">What is the name of the track?*</label>
         <input type="text" id="trackName" name="trackName" required><br><br>
-        
         <!-- Audio File Upload -->
-        <label for="uploadAudio">Please upload your audio file (WAV, AIFF, or MP3 up to 256kbps, Max 10 minutes):<span id="audioFileRequired">*</span></label>
+        <label for="uploadAudio">Please upload your audio file (WAV, AIFF, if you choose MP3 up to 256kbps, Max 200MB):<span id="audioFileRequired">*</span></label>
         <input type="file" id="uploadAudio" name="audioFile" accept=".wav, .aif, .aiff, .mp3"><br><br>
-        
         <!-- License Selection -->
         <label for="licence">Which license would you like to apply to this work?*</label>
         <select id="licence" name="licence" required>
@@ -113,91 +102,130 @@ public: false
             <option value="NIBBLE-1.0">Regenerative Music Copy Nibble 1.0</option>
             <option value="CC-BY-SA-4.0">CC BY-SA 4.0</option>
         </select><br><br>
-        
         <!-- Release Date -->
         <label for="releaseDate">When would you like this track to be released?*</label>
         <input type="date" id="releaseDate" name="releaseDate" required><br><br>
-        
-        <!-- Rights Confirmation Checkbox -->
-        <label>
-            <input type="checkbox" id="confirmRights" name="confirmRights" required>
-            I confirm that I own the rights to all uploaded content.
-        </label><br><br>
-        
-        <!-- Optional Fields in Collapsible Section -->
-        <div class="collapsible-section" data-section-id="optional-information">
-            <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="optional-fields">
-                    <h2 class="section-title">Add optional information:</h2>
-                 <button class="toggle-button" aria-expanded="true" aria-controls="optional-fields" aria-label="Toggle Optional Information">
-                        <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
-                </button>
-            </div><br>
-            <div class="section-content" id="optional-fields">
-                <!-- Categories -->
-                <label for="type">Given the following categories, what type of content is this?</label>
-                <select id="type" name="type">
-                    <option value="">Please select a type</option>
-                    <option value="Music">Music</option>
-                    <option value="Spoken Voice">Spoken Voice</option>
-                    <option value="Soundscape">Soundscape</option>
-                    <option value="Other">Other</option>
-                </select><br><br>
-    
-                <!-- Genre -->
-                <label for="genre">Does this track belong to any genre? If yes, which ones?</label>
-                <input type="text" id="genre" name="genre"><br><br>
-    
-                <!-- Mood -->
-                <label for="mood">What mood does this track inspire?</label>
-                <input type="text" id="mood" name="mood"><br><br>
-    
-                <!-- Additional Tags -->
-                <label for="additionalTags">Would you like to add any additional tags for this release?</label>
-                <input type="text" id="additionalTags" name="additionalTags"><br><br>
-    
-                <!-- Description -->
-                <label for="description">Please provide a description for this release.</label>
-                <textarea id="description" name="description" rows="4" style="width: 100%;"></textarea><br><br>
-    
-                <!-- Collaborators -->
-                <label for="credits">Who should be credited for this work?</label>
-                <input type="text" id="credits" name="credits"><br><br>
-    
-                <!-- Privacy -->
-                <label for="privacy">Would you like to make this release public or private?</label>
-                <select id="privacy" name="privacy">
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                </select><br><br>
-    
-                <!-- Enable Direct Downloads -->
-                <label for="enableDirectDownloads">Would you like to enable free direct downloads for this release?</label>
-                <input type="checkbox" id="enableDirectDownloads" name="enableDirectDownloads"><br><br>
-            </div>
-        </div>
-        <br>
-        <button type="submit" id="submitButton">Submit</button>
-        <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
-    </form>
 
+    <!-- Optional Fields in Collapsible Section -->
+    <div class="collapsible-section form-collapsible">
+        <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="optional-fields-form">
+            <h2 class="section-title">Add optional information:</h2>
+            <button type="button" class="toggle-button" aria-expanded="true" aria-controls="optional-fields-form" aria-label="Toggle Optional Information">
+                <span class="material-symbols-outlined toggle-icon">keyboard_arrow_up</span>
+            </button>
+        </div><br>
+        <div class="section-content" id="optional-fields-form">
+            <!-- Categories -->
+            <label for="type">Given the following categories, what type of content is this?</label>
+            <select id="type" name="type">
+                <option value="">Please select a type</option>
+                <option value="Music">Music</option>
+                <option value="Spoken Voice">Spoken Voice</option>
+                <option value="Soundscape">Soundscape</option>
+                <option value="Other">Other</option>
+            </select><br><br>
+
+            <!-- Genre -->
+            <label for="genre">Does this track belong to any genre? If yes, which ones?</label>
+            <input type="text" id="genre" name="genre"><br><br>
+
+            <!-- Mood -->
+            <label for="mood">What mood does this track inspire?</label>
+            <input type="text" id="mood" name="mood"><br><br>
+
+            <!-- Additional Tags -->
+            <label for="additionalTags">Would you like to add any additional tags for this release?</label>
+            <input type="text" id="additionalTags" name="additionalTags"><br><br>
+
+            <!-- Description -->
+            <label for="description">Please provide a description for this release.</label>
+            <textarea id="description" name="description" rows="4" style="width: 100%;"></textarea><br><br>
+
+            <!-- Collaborators -->
+            <label for="credits">Who should be credited for this work?</label>
+            <input type="text" id="credits" name="credits"><br><br>
+
+            <!-- Privacy -->
+            <label for="privacy">Would you like to make this release public or private?</label>
+            <select id="privacy" name="privacy">
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select><br><br>
+
+            <!-- Enable Direct Downloads -->
+                <div class="checkbox-wrapper">
+            <label class="checkbox-container">
+                <input type="checkbox" id="enableDirectDownloads" name="enableDirectDownloads">
+                <span class="checkmark"></span>
+                Would you like to enable free direct downloads for this release?
+            </label><br><br>
+                </div>
+
+        </div>
+    </div>
+
+    <!-- Rights Confirmation Checkbox Moved Here -->
+    <div class="checkbox-wrapper">
+        <label class="checkbox-container">
+            <input type="checkbox" id="confirmRights" name="confirmRights" required>
+            <span class="checkmark"></span>
+            I confirm that I own the rights to all uploaded content.
+        </label>
+    </div>
+    <br><br>
+
+    <!-- Submit Button -->
+    <button type="submit" id="submitButton">Submit</button>
+    <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
+
+    </form>
     <!-- Loading Message -->
     <div id="loadingMessage" style="display: none; text-align: center;">
         <p>Uploading your track, please wait...</p>
-        <div class="progress-bar" style="width: 100%; background-color: lightgray;">
-            <div id="progress" style="width: 0%; height: 20px; background-color: green;"></div>
-        </div>
+        <!-- Loading Spinner -->
+        <div class="spinner"></div>
     </div>
     <!-- Toast Container -->
-    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <div id="toastContainer"></div>
 </div>
+
 
 
 <!-- JavaScript Code -->
 
-
 <script>
 
-{%- include scripts/collapsible.js -%}
+// Include your searchUsers.js script
+{%- include scripts/searchUsers.js -%}
+
+// Function to initialize collapsible sections
+function initializeFormCollapsibleSection() {
+    const collapsibleSections = document.querySelectorAll('.collapsible-section.form-collapsible');
+
+    collapsibleSections.forEach(section => {
+        const header = section.querySelector('.section-header');
+        const toggleButton = header.querySelector('.toggle-button');
+        const content = section.querySelector('.section-content');
+        const icon = toggleButton.querySelector('.toggle-icon');
+
+        // Set initial state
+        let isExpanded = false;
+        content.style.display = 'none';
+
+        // Click event on header and toggle button
+        header.addEventListener('click', function (e) {
+            e.preventDefault();
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                content.style.display = 'block';
+                icon.textContent = 'keyboard_arrow_up';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = 'keyboard_arrow_down';
+            }
+        });
+    });
+}
 
 // Define global variables
 let playersData = [];
@@ -208,17 +236,13 @@ let userId = localStorage.getItem('userId'); // Ensure this is set correctly
 let isOwner = false; // Indicates if the current user is the owner of the track
 let trackData = null; // Holds the current track data
 
-
-
 // Initialize the form once the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeForm();
-    // Initialize collapsible sections
-        handleCollapsibleSections();
-        // Then recalculate max-height for expanded sections
-        recalculateMaxHeight();
+    initializeFormCollapsibleSection();
 });
 
+// Main initialization function
 async function initializeForm() {
     const urlParams = new URLSearchParams(window.location.search);
     let initialMode = urlParams.get('mode');
@@ -261,7 +285,7 @@ async function initializeForm() {
     history.replaceState({ mode: currentMode, trackId }, '', window.location.href);
 }
 
-
+// Function to attach all necessary event listeners
 function attachEventListeners() {
     document.getElementById('soundEngineId').addEventListener('change', updateSoundEngineDetails);
     document.getElementById('playerId').addEventListener('change', updatePlayerDetails);
@@ -298,13 +322,40 @@ function attachEventListeners() {
             setFormMode('view');
         }
     });
+
+    // **Add File Size Checks Here**
+    // Define maximum file sizes
+    const MAX_AUDIO_FILE_SIZE = 200 * 1024 * 1024; // 200MB
+    const MAX_COVER_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+    // Audio File Size Check
+    const uploadAudioInput = document.getElementById('uploadAudio');
+    uploadAudioInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.size > MAX_AUDIO_FILE_SIZE) {
+            showToast('The audio file is too large. Maximum allowed size is 200MB.', 'error');
+            // Clear the file input
+            uploadAudioInput.value = '';
+        }
+    });
+
+    // Cover Image Size Check
+    const uploadCoverImageInput = document.getElementById('uploadCoverImage');
+    uploadCoverImageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.size > MAX_COVER_IMAGE_SIZE) {
+            showToast('The cover image is too large. Maximum allowed size is 2MB.', 'error');
+            // Clear the file input
+            uploadCoverImageInput.value = '';
+        }
+    });
 }
 
 /**
  * Fetch Players Data and Populate Dropdown
  */
 function fetchPlayersData(userId) {
-    fetch(`http://media.maar.world:3001/api/interplanetaryplayers/getAvailableInterplanetaryPlayers/${userId}`)
+    return fetch(`http://media.maar.world:3001/api/interplanetaryplayers/getAvailableInterplanetaryPlayers/${userId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -360,7 +411,7 @@ function populatePlayerDropdown(players) {
  * Fetch Sound Engines Data and Populate Dropdown
  */
 function fetchSoundEnginesData(userId) {
-    fetch(`http://media.maar.world:3001/api/soundEngines/getAvailableSoundEngines/${userId}`)
+    return fetch(`http://media.maar.world:3001/api/soundEngines/getAvailableSoundEngines/${userId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -531,11 +582,18 @@ function clearFormFields() {
             </div>
             <!-- Remove button removed from the first artistEntry -->
         </div>
-        <button type="button" id="addArtistButton">Add Another Artist</button>
+        <button type="button" id="addArtistButton" class="btn button--outline-primary button--small">Add Another Artist</button>
         <br><br>
     `;
     // Reattach event listener for addArtistButton
     document.getElementById('addArtistButton').addEventListener('click', addArtistField);
+        // **Initialize search on the new input field**
+    if (typeof initializeSearchUsers === 'function') {
+        initializeSearchUsers();
+        console.log('Initialized search on the initial input field after clearing form.');
+    } else {
+        console.error('initializeSearchUsers function is not defined.');
+    }
 }
 
 /**
@@ -551,7 +609,7 @@ function setFormMode(newMode) {
     const articleForm = document.getElementById('articleForm');
     const trackReleaseView = document.getElementById('trackReleaseView');
     const editButton = document.getElementById('editButton');
-    
+
     if (isViewMode) {
         trackReleaseView.style.display = 'block';
         articleForm.style.display = 'none';
@@ -611,6 +669,7 @@ function setFormMode(newMode) {
         const submitButton = document.getElementById('submitButton');
         if (submitButton) {
             submitButton.disabled = false;
+            submitButton.textContent = 'Submit'; // Ensure the button text is correct
         }
     }
 }
@@ -693,10 +752,12 @@ function populateEditMode(trackData) {
 
         // Display existing cover image
         const coverImagePreview = document.getElementById('coverImagePreview');
-        if (trackData.coverImage) {
-            coverImagePreview.src = `https://media.maar.world${trackData.coverImage}`;
-            coverImagePreview.style.display = 'block';
+        if (trackData.coverImageURL) {
+            console.log('Setting cover image source to:', trackData.coverImageURL); // Debugging
+            coverImagePreview.src = trackData.coverImageURL; // Make sure to use coverImageURL
+            coverImagePreview.style.display = 'block'; // Ensure it's displayed
         } else {
+            console.log('No cover image available.'); // Debugging
             coverImagePreview.style.display = 'none';
         }
 
@@ -733,12 +794,15 @@ function populateEditMode(trackData) {
 function populateViewMode(trackData) {
     if (currentMode === 'view') {
         const coverImageDisplay = document.getElementById('coverImageDisplay');
-        if (trackData.coverImage) {
-            coverImageDisplay.src = `https://media.maar.world${trackData.coverImage}`;
-            coverImageDisplay.style.display = 'block';
+        if (trackData.coverImageURL) {
+            console.log('Setting cover image source to:', trackData.coverImageURL); // Debugging
+            coverImagePreview.src = trackData.coverImageURL; // Make sure to use coverImageURL
+            coverImagePreview.style.display = 'block'; // Ensure it's displayed
         } else {
-            coverImageDisplay.style.display = 'none';
+            console.log('No cover image available.'); // Debugging
+            coverImagePreview.style.display = 'none';
         }
+
 
         document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
         const artistNames = trackData.artists.map(artist => artist.username).join(', ');
@@ -826,7 +890,8 @@ function handleFormSubmit(event) {
     const url = method === 'PUT'
         ? `http://media.maar.world:3001/api/tracks/${trackId}`
         : 'http://media.maar.world:3001/api/submitTrackData'; // Updated POST endpoint
-    
+    console.log('Submitting trackData:', trackDataToSend);
+
     fetch(url, {
         method: method,
         headers: {
@@ -836,8 +901,13 @@ function handleFormSubmit(event) {
     })
     .then(response => {
         if (!response.ok) {
-            // Handle error
-            throw new Error('Server returned an error');
+            // Attempt to parse error message from response
+            return response.json().then(errData => {
+                throw new Error(errData.error || 'Server returned an error');
+            }).catch(() => {
+                // If response is not JSON, throw generic error
+                throw new Error('Server returned an error');
+            });
         }
         return response.json();
     })
@@ -849,7 +919,7 @@ function handleFormSubmit(event) {
             if (hasFiles) {
                 uploadFiles(data.trackId);
             } else {
-                showToast('Track updated successfully!', 'success');
+                showToast('Track released successfully!', 'success');
                 window.location.href = `/voyage/track-release?mode=view&trackId=${data.trackId}`;
             }
         } else {
@@ -858,62 +928,172 @@ function handleFormSubmit(event) {
         }
     })
     .catch(error => {
-        console.error('Error submitting track data:', error);
-        showToast(`Failed to submit track data: ${error.message || 'Please try again.'}`, 'error');
+        console.error('Upload Failed:', error);
+
+        // Determine the type of error and set an appropriate message
+        let errorMessage = 'Failed to upload files. Please try again.';
+        if (error.message.includes('LIMIT_FILE_SIZE')) {
+            errorMessage = 'The uploaded file is too large. Please choose a smaller file.';
+        } else if (error.message.includes('Failed to fetch')) {
+            errorMessage = 'Network error: Unable to reach the server. Please check your internet connection.';
+        } else if (error.message) {
+            errorMessage = `Error: ${error.message}`;
+        }
+
+        showToast(errorMessage, 'error');
         resetForm();
     });
 }
 
 /**
  * Upload Files After Metadata Submission
+ * @param {string} trackId - The ID of the track.
+ */
+/**
+ * Upload Files After Metadata Submission
+ * @param {string} trackId - The ID of the track.
+ */
+/**
+ * Upload Files After Metadata Submission
+ * @param {string} trackId - The ID of the track.
+ */
+/**
+ * Upload Files After Metadata Submission
+ * @param {string} trackId - The ID of the track.
  */
 function uploadFiles(trackId) {
     const audioFile = document.getElementById('uploadAudio').files[0];
     const coverImage = document.getElementById('uploadCoverImage').files[0];
     
-    const formData = new FormData();
-    if (audioFile) {
-        formData.append('audioFile', audioFile);
-    }
-    if (coverImage) {
-        formData.append('coverImage', coverImage);
-    }
-    
-    console.log('FormData Entries:');
-    for (let pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
-    }
-    
-    fetch(`http://media.maar.world:3001/api/uploadTrackFiles/${trackId}`, {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => {
-        document.getElementById('loadingMessage').style.display = 'none';
-        const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
-        const submitButton = document.querySelector('#articleForm button[type="submit"]');
-        formElements.forEach(element => element.disabled = false); // Re-enable form elements
-        submitButton.textContent = 'Submit';
-    
+    const uploadPromises = [];
+    const updatedFields = {};
+
+    /**
+     * Upload a single file using a presigned URL
+     * @param {string} presignedUrl - The presigned URL to upload the file.
+     * @param {File} file - The file to be uploaded.
+     * @returns {Promise<boolean>} - Resolves to true if upload is successful.
+     */
+    async function uploadFile(presignedUrl, file) {
+        const response = await fetch(presignedUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': file.type,
+            },
+            body: file,
+        });
+
         if (!response.ok) {
-            return response.json().then(errData => { throw errData; });
+            throw new Error('File upload failed.');
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Upload Successful:', data);
-        showToast('Track released successfully!', 'success');
-        document.getElementById('articleForm').reset();
-        document.getElementById('coverImagePreview').style.display = 'none';
-        localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
-    
-        // Redirect to the track release page in view mode
-        window.location.href = `/voyage/track-release?mode=view&trackId=${trackId}`;
-    })
-    .catch(error => {
-        console.error('Upload Failed:', error);
-        showToast(`Failed to upload files: ${error.message || 'Please try again.'}`, 'error');
-    });
+
+        return true;
+    }
+
+    /**
+     * Generate presigned URL and upload the file
+     * @param {File} file - The file to upload.
+     * @param {string} fieldName - The field name (e.g., 'audioFile', 'coverImage').
+     * @returns {Promise<void>}
+     */
+    const generateAndUpload = async (file, fieldName) => {
+        try {
+            // Step 1: Request presigned URL from the server, including trackId
+            const presignedUrlResponse = await fetch('http://media.maar.world:3001/api/spaces/generate-presigned-url', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    fileName: file.name, 
+                    fileType: file.type,
+                    trackId: trackId // Include trackId
+                })
+            });
+            const presignedUrlData = await presignedUrlResponse.json();
+
+            if (!presignedUrlData.success) {
+                throw new Error(`Failed to get presigned URL for ${fieldName}: ${presignedUrlData.message}`);
+            }
+
+            const { url, key } = presignedUrlData;
+
+            // Step 2: Upload the file directly to Spaces using the presigned URL
+            await uploadFile(url, file);
+
+            // Step 3: Update the track record with the Spaces key and public URL
+            updatedFields[`${fieldName}Key`] = key;
+
+            // Use the URL provided by the backend without modifying it
+            updatedFields[`${fieldName}URL`] = url.split('?')[0]; // Extract the base URL without query parameters
+
+            // Include ownerId
+            updatedFields['ownerId'] = document.getElementById('ownerId').value;
+
+        } catch (error) {
+            console.error(`Error uploading ${fieldName}:`, error);
+            throw error;
+        }
+    };
+
+    // Prepare upload promises
+    if (audioFile) {
+        uploadPromises.push(generateAndUpload(audioFile, 'audioFile'));
+    }
+
+    if (coverImage) {
+        uploadPromises.push(generateAndUpload(coverImage, 'coverImage'));
+    }
+
+    // Execute all uploads
+    Promise.all(uploadPromises)
+        .then(async () => {
+            // Step 4: Update the track record with the file information
+            const updateResponse = await fetch(`http://media.maar.world:3001/api/tracks/${trackId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedFields)
+            });
+
+            const updateData = await updateResponse.json();
+
+            if (!updateData.success) {
+                throw new Error(`Failed to update track with file information: ${updateData.error}`);
+            }
+
+            // Success
+            showToast('Track released successfully!', 'success');
+            document.getElementById('articleForm').reset();
+            document.getElementById('coverImagePreview').style.display = 'none';
+            localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
+
+            // Redirect to the track release page in view mode
+            window.location.href = `/voyage/track-release?mode=view&trackId=${trackId}`;
+        })
+        .catch(error => {
+            console.error('File Upload Failed:', error);
+
+            // Determine the type of error and set an appropriate message
+            let errorMessage = 'Failed to upload files. Please try again.';
+            if (error.message.includes('LIMIT_FILE_SIZE')) {
+                errorMessage = 'The uploaded file is too large. Please choose a smaller file.';
+            } else if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Network error: Unable to reach the server. Please check your internet connection.';
+            } else if (error.message) {
+                errorMessage = `Error: ${error.message}`;
+            }
+
+            showToast(errorMessage, 'error');
+            resetForm();
+        })
+        .finally(() => {
+            // Regardless of success or failure, hide the loading message and re-enable the form
+            document.getElementById('loadingMessage').style.display = 'none';
+            const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
+            const submitButton = document.querySelector('#articleForm button[type="submit"]');
+            formElements.forEach(element => element.disabled = false); // Re-enable form elements
+            submitButton.textContent = 'Submit';
+        });
 }
 
 /**
@@ -1004,64 +1184,74 @@ function handleRemoveArtist(event) {
 
 /**
  * Show Toast Notifications
+ * @param {string} message - The message to display.
+ * @param {string} type - The type of toast ('success' or 'error').
  */
 function showToast(message, type = 'success') {
+    console.log(`showToast called with message: "${message}", type: "${type}"`);
     const toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) {
+        console.error('Toast container not found!');
+        return;
+    }
+
+    // Create Toast Element
     const toast = document.createElement('div');
     const toastId = `toast_${Date.now()}`;
-    toast.classList.add('toast');
+    toast.classList.add('toast', type);
     toast.setAttribute('id', toastId);
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
     toast.setAttribute('aria-atomic', 'true');
-    
-    if (type === 'success') {
-        toast.classList.add('success');
-    } else if (type === 'error') {
-        toast.classList.add('error');
-    }
-    
+    toast.setAttribute('tabindex', '0'); // Make focusable
+
     // Close Button
     const closeBtn = document.createElement('button');
     closeBtn.classList.add('close-btn');
     closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Close notification');
     closeBtn.onclick = () => {
         toast.classList.remove('show');
         setTimeout(() => {
             const toastElem = document.getElementById(toastId);
             if (toastElem) {
                 toastElem.remove();
+                console.log(`Toast "${toastId}" removed from DOM.`);
             }
         }, 500);
     };
-    
+
+    // Append Close Button and Message to Toast
     toast.appendChild(closeBtn);
     toast.appendChild(document.createTextNode(message));
     toastContainer.appendChild(toast);
-    
-    // Show the toast
+    console.log(`Toast "${toastId}" appended to #toastContainer.`);
+
+    // Show the toast with animation
     setTimeout(() => {
         toast.classList.add('show');
+        console.log(`Toast "${toastId}" shown.`);
+        if (type === 'error') {
+            toast.focus(); // Shift focus to the toast for immediate notification
+        }
     }, 100);
-    
-    // Automatically hide the toast after 3 seconds
-    setTimeout(() => {
-        toast.classList.remove('show');
+
+    // Determine auto-close behavior based on toast type
+    if (type === 'success') {
+        // Auto-close success toasts after 3 seconds
         setTimeout(() => {
-            const toastElem = document.getElementById(toastId);
-            if (toastElem) {
-                toastElem.remove();
-            }
-        }, 500);
-    }, 3000);
+            toast.classList.remove('show');
+            console.log(`Toast "${toastId}" hiding.`);
+            setTimeout(() => {
+                const toastElem = document.getElementById(toastId);
+                if (toastElem) {
+                    toastElem.remove();
+                    console.log(`Toast "${toastId}" removed from DOM.`);
+                }
+            }, 500);
+        }, 3000);
+    }
+    // Error toasts do not auto-close
 }
-
-// Placeholder for initializeSearchUsers function
-// This function should be defined elsewhere in your codebase
-function initializeSearchUsers() {
-    // Implement the user search functionality here
-}
-
 
 </script>
-

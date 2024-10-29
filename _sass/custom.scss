@@ -229,36 +229,61 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
   border-bottom: none;
 }
 
-/* Toast Styling */
-.toast {
-  visibility: hidden;
-  min-width: 250px;
-  background-color: #333;
-  color: #fff;
-  text-align: left;
-  border-radius: 10px;
-  padding: 16px;
+/* Toast Container Positioned at the Center */
+#toastContainer {
   position: fixed;
-  z-index: 1001;
+  top: 100%;
   left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Toast Styles */
+.toast {
+  min-width: 250px;
+  margin-bottom: 10px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  color: #fff;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translateY(-20px);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif; /* Ensure readability */
 }
 
+/* Show Toast */
 .toast.show {
-  visibility: visible;
-  opacity: 0.9;
+  opacity: 1;
+  transform: translateY(0);
 }
 
+/* Success Toast */
 .toast.success {
-  background-color: #28a745;
+  background-color: #4caf50; /* Green */
 }
 
+/* Error Toast */
 .toast.error {
-  background-color: #dc3545;
+  background-color: #f44336; /* Red */
 }
+
+/* Close Button */
+.toast .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 /* Updated Image Preview Container for Fixed Size */
 #playlistImagePreview,
 #playlistImagePreviewForm {
@@ -916,7 +941,7 @@ input[type="number"] {
 
 }
 
-.contact-form button[type=button] {
+.contact-form button[type=button]:not(.toggle-button) {
   background-color: rgba(255, 255, 255, 0);
   color: white;
   padding: 14px 20px;
@@ -927,12 +952,10 @@ input[type="number"] {
   width: 100%; /* Match the width of the submit button */
   box-sizing: border-box; /* Ensure padding and border don't affect width */
 }
-
-.contact-form button[type=button]:hover {
-  background-color: #ff33cc; /* Match the background color of the submit button */
-  color: white; /* Ensure text is visible */
+.contact-form button[type=button]:not(.toggle-button):hover {
+  background-color: #ff33cc;
+  color: white;
 }
-
 /* ------------------ DROPDOWN STYLING ----------------------- */
 .input-wrapper {
   position: relative;
@@ -1181,13 +1204,16 @@ input[type="number"] {
   }
 
   .voyage-profile-pic {
-    bottom: -60px; /* Adjust overlap for smaller screens */
+    bottom: -75px; /* Adjust overlap for smaller screens */
   }
 
   .voyage-display-name {
     font-size: 1.3em;
   }
-
+.voyage-bio .voyage-role {
+  font-size: 0.8em;
+  margin-top: 8px;
+}
   .voyage-profile {
     padding-bottom: 75px; /* Adjust padding for image overlap */
   }
@@ -1201,13 +1227,18 @@ input[type="number"] {
   }
 
   .voyage-profile-pic {
-    bottom: -45px; /* Adjust overlap for smaller screens */
+    bottom: -60px; /* Adjust overlap for smaller screens */
   }
 
   .voyage-display-name {
     font-size: 1.2em;
   }
 
+  .voyage-bio .voyage-role {
+    font-size: 0.8em;
+    margin-top: 8px;
+  }
+  
   .voyage-profile {
     padding-bottom: 60px; /* Adjust padding for image overlap */
   }
@@ -1357,7 +1388,7 @@ input[type="number"] {
   border-radius: 8px;                   /* Rounded corners */
 
   background-color: var(--collapsible-header-bg-color);
-  padding: 1em 1em 0em 1em;
+  padding: 1em;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -1380,8 +1411,8 @@ input[type="number"] {
   margin: 0;
   font-size: 1.5em;
   color: var(--collapsible-title-color);
-  flex-grow: 1;
-  margin-left: 10px;
+  flex: 1; /* Takes available space */
+  line-height: 1; /* Adjust line-height as needed */
 }
 .section-content {
   overflow: hidden;
@@ -1506,4 +1537,78 @@ input[type="number"] {
 
 .collapsible-section li::marker {
   display: none;
+}
+/////////////////////////////////////////////////////
+/* Outer wrapper to center the checkbox and text horizontally */
+.checkbox-wrapper {
+  display: flex;
+  justify-content: center; /* Horizontally center the checkbox and text */
+  width: 100%; /* Ensure it takes full width of the parent */
+  margin: 20px 0; /* Optional: add space above and below */
+}
+
+/* Container for checkbox and text */
+.checkbox-container {
+  display: inline-flex;
+  align-items: center; /* Center the text vertically with the checkbox */
+  gap: 10px; /* Space between checkbox and text */
+  cursor: pointer;
+}
+
+/* Hide the default checkbox */
+.checkbox-container input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+/* Custom checkbox appearance */
+.checkmark {
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff; /* Background for unchecked state */
+  border: 2px solid #ff33cc; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  position: relative;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+/* Checked state with background color change */
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+  background-color: #ff33cc; /* Pink background when checked */
+}
+
+/* Checkmark icon inside the checkbox */
+.checkbox-container input[type="checkbox"]:checked + .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg); /* Rotate to form checkmark */
+}
+
+/* Optional: Add hover effect to the checkbox */
+.checkbox-container:hover .checkmark {
+  background-color: #f0f0f0; /* Light gray on hover */
+}
+
+/* Spinner Styles */
+.spinner {
+  border: 8px solid #ffffff; 
+  border-top: 8px solid #ff33cc; 
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+/* Animation for Spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
