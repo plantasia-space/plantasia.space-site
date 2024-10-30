@@ -3,16 +3,15 @@
 /**
  * Retrieves cached data if it's still valid based on the specified expiration time.
  * @param {string} key - The cache key.
- * @param {number} expirationMinutes - Expiration time in minutes.
  * @returns {Object|null} - The cached data or null if not available/expired.
  */
-function getCachedData(key, expirationMinutes) {
+function getCachedData(key) {
     const cachedData = lscache.get(key);
     if (cachedData) {
-        console.log(`Cache hit for ${key}`);
+        console.log(`Cache hit for "${key}"`);
         return cachedData;
     }
-    console.log(`Cache miss for ${key}`);
+    console.log(`Cache miss for "${key}"`);
     return null;
 }
 
@@ -24,7 +23,7 @@ function getCachedData(key, expirationMinutes) {
  */
 function setCachedData(key, data, expirationMinutes) {
     lscache.set(key, data, expirationMinutes);
-    console.log(`Data cached under key ${key} for ${expirationMinutes} minutes.`);
+    console.log(`Data cached under key "${key}" for ${expirationMinutes} minutes.`);
 }
 
 /**
@@ -33,7 +32,7 @@ function setCachedData(key, data, expirationMinutes) {
  */
 function clearCachedData(key) {
     lscache.remove(key);
-    console.log(`Cache cleared for key ${key}.`);
+    console.log(`Cache cleared for key "${key}".`);
 }
 
 /**
@@ -46,7 +45,7 @@ function clearCachedData(key) {
  */
 async function fetchDataWithCache(url, cacheKey, cacheDurationMinutes = 5, forceRefresh = false) {
     if (!forceRefresh) {
-        const cachedData = getCachedData(cacheKey, cacheDurationMinutes);
+        const cachedData = getCachedData(cacheKey);
         if (cachedData) {
             return cachedData;
         }
@@ -61,7 +60,7 @@ async function fetchDataWithCache(url, cacheKey, cacheDurationMinutes = 5, force
         setCachedData(cacheKey, data, cacheDurationMinutes);
         return data;
     } catch (error) {
-        console.error(`Error fetching data from ${url}:`, error);
+        console.error(`Error fetching data from "${url}":`, error);
         throw error;
     }
 }
@@ -71,8 +70,18 @@ async function fetchDataWithCache(url, cacheKey, cacheDurationMinutes = 5, force
  * @param {string} userId - The user's unique identifier.
  */
 function clearUserCaches(userId) {
-    clearCachedData(`profile_${userId}`);
-    clearCachedData(`soundEngines_batch_${userId}`);
-    clearCachedData(`interplanetaryPlayers_batch_${userId}`);
-    // Add any other cache keys related to the user here
+    const cacheKeys = [
+        `profile_${userId}`,
+        `soundEngines_batch_${userId}`,
+        `interplanetaryPlayers_batch_${userId}`,
+        `tracks_batch_${userId}`
+    ];
+
+    cacheKeys.forEach(key => clearCachedData(key));
+
+    console.log(`All caches cleared for user "${userId}".`);
 }
+
+// Export functions if using ES Modules
+// Uncomment the line below if you're using ES Modules
+// export { getCachedData, setCachedData, clearCachedData, fetchDataWithCache, clearUserCaches };

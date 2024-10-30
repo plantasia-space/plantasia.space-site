@@ -50,6 +50,7 @@ public: false
         <p id="viewPrivacy"></p>
         <p id="viewReleaseDate"></p>
         <p id="viewEnableDirectDownloads"></p>
+        <br>        <div id="audioPlayerContainer"></div> <!-- Container for Audio Player -->
     </div>
     <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
@@ -195,10 +196,13 @@ public: false
 
 <script>
 
-// Include your searchUsers.js script
-{%- include scripts/searchUsers.js -%}
+// Define the API base URL
+const API_BASE_URL = 'http://media.maar.world:3001/api';
 
-// Function to initialize collapsible sections
+// Define the file category for this form
+const FILE_CATEGORY_UPLOAD = 'tracks'; // Must match the category in spacesUtils.js
+
+// Function to initialize collapsible sections (if any)
 function initializeFormCollapsibleSection() {
     const collapsibleSections = document.querySelectorAll('.collapsible-section.form-collapsible');
 
@@ -352,10 +356,10 @@ function attachEventListeners() {
 }
 
 /**
- * Fetch Players Data and Populate Dropdown
- */
+    * Fetch Players Data and Populate Dropdown
+    */
 function fetchPlayersData(userId) {
-    return fetch(`http://media.maar.world:3001/api/interplanetaryplayers/getAvailableInterplanetaryPlayers/${userId}`)
+    return fetch(`${API_BASE_URL}/interplanetaryplayers/getAvailableInterplanetaryPlayers/${userId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -374,8 +378,8 @@ function fetchPlayersData(userId) {
 }
 
 /**
- * Populate Player Dropdown with Owned and Public Players
- */
+    * Populate Player Dropdown with Owned and Public Players
+    */
 function populatePlayerDropdown(players) {
     const selectElement = document.getElementById('playerId');
     selectElement.innerHTML = '<option value="">Please select an Interplanetary player</option>';
@@ -408,10 +412,10 @@ function populatePlayerDropdown(players) {
 }
 
 /**
- * Fetch Sound Engines Data and Populate Dropdown
- */
+    * Fetch Sound Engines Data and Populate Dropdown
+    */
 function fetchSoundEnginesData(userId) {
-    return fetch(`http://media.maar.world:3001/api/soundEngines/getAvailableSoundEngines/${userId}`)
+    return fetch(`${API_BASE_URL}/soundEngines/getAvailableSoundEngines/${userId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -430,8 +434,8 @@ function fetchSoundEnginesData(userId) {
 }
 
 /**
- * Populate Sound Engine Dropdown with Owned and Public Sound Engines
- */
+    * Populate Sound Engine Dropdown with Owned and Public Sound Engines
+    */
 function populateSoundEngineDropdown(soundEngines) {
     const selectElement = document.getElementById('soundEngineId');
     selectElement.innerHTML = '<option value="">Please select a sound engine</option>';
@@ -467,8 +471,8 @@ function populateSoundEngineDropdown(soundEngines) {
 }
 
 /**
- * Update Sound Engine Details
- */
+    * Update Sound Engine Details
+    */
 function updateSoundEngineDetails() {
     const selectedEngineId = document.getElementById('soundEngineId').value;
     console.log('Selected Engine ID:', selectedEngineId);
@@ -513,8 +517,8 @@ function updateSoundEngineDetails() {
 }
 
 /**
- * Update Player Details
- */
+    * Update Player Details
+    */
 function updatePlayerDetails() {
     const selectedPlayerId = document.getElementById('playerId').value;
     console.log('Selected Player ID:', selectedPlayerId);
@@ -551,8 +555,8 @@ function updatePlayerDetails() {
 }
 
 /**
- * Clear Form Fields (Create Mode)
- */
+    * Clear Form Fields (Create Mode)
+    */
 function clearFormFields() {
     document.getElementById('playerId').value = '';
     document.getElementById('soundEngineId').value = '';
@@ -597,8 +601,8 @@ function clearFormFields() {
 }
 
 /**
- * Set the Current Mode (View, Edit, Create)
- */
+    * Set the Current Mode (View, Edit, Create)
+    */
 function setFormMode(newMode) {
     currentMode = newMode;
     const isViewMode = currentMode === 'view';
@@ -675,8 +679,8 @@ function setFormMode(newMode) {
 }
 
 /**
- * Toggle Between Edit and View Modes
- */
+    * Toggle Between Edit and View Modes
+    */
 function toggleEditMode() {
     if (currentMode === 'view') {
         if (trackData) { // Ensure trackData is loaded
@@ -694,8 +698,8 @@ function toggleEditMode() {
 }
 
 /**
- * Update the URL Without Reloading the Page
- */
+    * Update the URL Without Reloading the Page
+    */
 function updateURL(mode, trackId) {
     const newURL = `/voyage/track-release?mode=${mode}&trackId=${trackId}`;
     if (history.pushState) {
@@ -706,33 +710,34 @@ function updateURL(mode, trackId) {
     }
 }
 
-// Modify loadTrackDetails to return a Promise
-function loadTrackDetails(trackId) {
-    return fetch(`http://media.maar.world:3001/api/tracks/${trackId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                trackData = data.track;
-                isOwner = trackData.ownerId === userId;
-                console.log('Is user the owner?', isOwner);
-                console.log('Received Data', trackData);
-                populateEditMode(trackData);
-                populateViewMode(trackData);
-            } else {
-                showToast('Error loading track details.', 'error');
-                console.error('Error fetching track details:', data.message);
-            }
-        })
-        .catch(error => {
+/**
+    * Load Track Details from Backend
+    */
+async function loadTrackDetails(trackId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/tracks/${trackId}`);
+        const data = await response.json();
+
+        if (data.success) {
+            trackData = data.track;
+            isOwner = trackData.ownerId === userId;
+            console.log('Is user the owner?', isOwner);
+            console.log('Received Data', trackData);
+            populateEditMode(trackData);
+            populateViewMode(trackData);
+        } else {
             showToast('Error loading track details.', 'error');
-            console.error('Error fetching track details:', error);
-        });
+            console.error('Error fetching track details:', data.message);
+        }
+    } catch (error) {
+        showToast('Error loading track details.', 'error');
+        console.error('Error fetching track details:', error);
+    }
 }
 
-
 /**
- * Populate Edit Mode with Track Data
- */
+    * Populate Edit Mode with Track Data
+    */
 function populateEditMode(trackData) {
     if (currentMode === 'edit') {
         document.getElementById('playerId').value = trackData.playerId ? trackData.playerId._id : '';
@@ -761,9 +766,9 @@ function populateEditMode(trackData) {
             coverImagePreview.style.display = 'none';
         }
 
-        // Populate artists
+        // Populate artists (assuming artists is an array of user IDs)
         const artistsContainer = document.getElementById('artistsContainer');
-        artistsContainer.innerHTML = '';
+        artistsContainer.innerHTML = ''; // Clear existing artists
         trackData.artists.forEach((artist, index) => {
             const artistEntry = document.createElement('div');
             artistEntry.className = 'artistEntry';
@@ -778,32 +783,52 @@ function populateEditMode(trackData) {
             artistsContainer.appendChild(artistEntry);
         });
 
+        // Add a button to add more artists
         const addButton = document.createElement('button');
         addButton.type = 'button';
         addButton.id = 'addArtistButton';
         addButton.textContent = 'Add Another Artist';
-        addButton.classList.add('btn', 'button--outline-primary', 'button--small'); // Add voyage button classes
+        addButton.classList.add('btn', 'button--outline-primary', 'button--small'); // Add your button classes
         artistsContainer.appendChild(addButton);
         addButton.addEventListener('click', addArtistField);
+
+        // Initialize search on artist input fields
+        if (typeof initializeSearchUsers === 'function') {
+            initializeSearchUsers();
+        }
     }
 }
 
 /**
- * Populate View Mode with Track Data
- */
+    * Populate View Mode with Track Data
+    */
 function populateViewMode(trackData) {
     if (currentMode === 'view') {
+        // Display cover image
         const coverImageDisplay = document.getElementById('coverImageDisplay');
         if (trackData.coverImageURL) {
             console.log('Setting cover image source to:', trackData.coverImageURL); // Debugging
-            coverImagePreview.src = trackData.coverImageURL; // Make sure to use coverImageURL
-            coverImagePreview.style.display = 'block'; // Ensure it's displayed
+            coverImageDisplay.src = trackData.coverImageURL; // Use the presigned download URL
+            coverImageDisplay.style.display = 'block'; // Ensure it's displayed
         } else {
             console.log('No cover image available.'); // Debugging
-            coverImagePreview.style.display = 'none';
+            coverImageDisplay.style.display = 'none';
         }
 
+        // Handle Audio File Display
+        const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+        audioPlayerContainer.innerHTML = ''; // Clear previous content
 
+        if (trackData.audioFileMP3URL) {
+            const audioElement = document.createElement('audio');
+            audioElement.controls = true;
+            audioElement.src = trackData.audioFileMP3URL;
+            audioPlayerContainer.appendChild(audioElement);
+        } else {
+            audioPlayerContainer.innerHTML = '<p>No audio file available.</p>';
+        }
+
+        // Display other track details
         document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
         const artistNames = trackData.artists.map(artist => artist.username).join(', ');
         document.getElementById('viewArtists').innerHTML = `<strong>Artists:</strong> ${artistNames || 'N/A'}`;
@@ -821,61 +846,53 @@ function populateViewMode(trackData) {
 }
 
 /**
- * Handle Form Submission
- */
+    * Handle Form Submission
+    */
 function handleFormSubmit(event) {
     event.preventDefault();
     console.log('Form submit handler triggered');
     
     // Collect form data
-    const trackDataToSend = {
+   const trackDataToSend = {
         ownerId: document.getElementById('ownerId').value,
         playerId: document.getElementById('playerId').value,
         soundEngineId: document.getElementById('soundEngineId').value,
-        artists: collectArtistUserIds(), // Collect UUIDs
+        artists: collectArtistUserIds(),
         trackName: document.getElementById('trackName').value,
         licence: document.getElementById('licence').value,
-        // Include optional fields if they are filled
-        type: document.getElementById('type').value || null,
-        genre: document.getElementById('genre').value || null,
-        mood: document.getElementById('mood').value || null,
-        additionalTags: document.getElementById('additionalTags').value || null,
-        description: document.getElementById('description').value || null,
-        credits: document.getElementById('credits').value || null,
-        privacy: document.getElementById('privacy').value || 'public',
-        releaseDate: document.getElementById('releaseDate').value || null,
+        releaseDate: document.getElementById('releaseDate').value,
+        type: document.getElementById('type').value,
+        genre: document.getElementById('genre').value,
+        mood: document.getElementById('mood').value,
+        additionalTags: document.getElementById('additionalTags').value,
+        description: document.getElementById('description').value,
+        credits: document.getElementById('credits').value,
+        privacy: document.getElementById('privacy').value,
         enableDirectDownloads: document.getElementById('enableDirectDownloads').checked,
-        confirmRights: document.getElementById('confirmRights').checked
+        confirmRights: document.getElementById('confirmRights').checked,
     };
+    
     
     // Log the collected trackData for debugging
     console.log('Submitting trackData:', trackDataToSend);
     
     // Validation: Ensure required fields are filled
-    if (!trackDataToSend.playerId) {
-        showToast('Please select an Interplanetary Player.', 'error');
-        return;
+    const requiredFields = ['playerId', 'soundEngineId', 'trackName', 'licence', 'releaseDate'];
+    for (let field of requiredFields) {
+        if (!trackDataToSend[field]) {
+            showToast(`Please fill out the ${field} field.`, 'error');
+            return;
+        }
     }
-    if (!trackDataToSend.soundEngineId) {
-        showToast('Please select a Sound Engine.', 'error');
-        return;
-    }
-    if (!trackDataToSend.artists.length) {
+    if (trackDataToSend.artists.length === 0) {
         showToast('Please add at least one artist.', 'error');
         return;
     }
-    if (!trackDataToSend.trackName) {
-        showToast('Please enter the track name.', 'error');
-        return;
-    }
-    if (!trackDataToSend.licence) {
-        showToast('Please select a license.', 'error');
-        return;
-    }
     if (!trackDataToSend.confirmRights) {
-        showToast('Please confirm your rights to the content.', 'error');
+        showToast('You must confirm that you own the rights to all uploaded content.', 'error');
         return;
     }
+    // Add more validations as necessary
     
     // Proceed with form submission
     // Disable form elements and show loading message
@@ -886,10 +903,11 @@ function handleFormSubmit(event) {
     document.getElementById('loadingMessage').style.display = 'block';
     console.log(trackDataToSend);
     
-    const method = currentMode === 'edit' ? 'PUT' : 'POST';
-    const url = method === 'PUT'
-        ? `http://media.maar.world:3001/api/tracks/${trackId}`
-        : 'http://media.maar.world:3001/api/submitTrackData'; // Updated POST endpoint
+    const method = currentMode === 'edit' ? 'PATCH' : 'POST';
+    const url = method === 'PATCH'
+        ? `${API_BASE_URL}/tracks/${trackId}`
+        : `${API_BASE_URL}/tracks`; // Correct endpoint for creation
+    
     console.log('Submitting trackData:', trackDataToSend);
 
     fetch(url, {
@@ -912,8 +930,6 @@ function handleFormSubmit(event) {
         return response.json();
     })
     .then(data => {
-        clearCachedData(`profile_${userId}`);
-
         if (data.trackId) {
             const hasFiles = document.getElementById('uploadAudio').files.length > 0 || document.getElementById('uploadCoverImage').files.length > 0;
             if (hasFiles) {
@@ -929,9 +945,7 @@ function handleFormSubmit(event) {
     })
     .catch(error => {
         console.error('Upload Failed:', error);
-
-        // Determine the type of error and set an appropriate message
-        let errorMessage = 'Failed to upload files. Please try again.';
+        let errorMessage = 'Failed to submit track data. Please try again.';
         if (error.message.includes('LIMIT_FILE_SIZE')) {
             errorMessage = 'The uploaded file is too large. Please choose a smaller file.';
         } else if (error.message.includes('Failed to fetch')) {
@@ -939,24 +953,15 @@ function handleFormSubmit(event) {
         } else if (error.message) {
             errorMessage = `Error: ${error.message}`;
         }
-
         showToast(errorMessage, 'error');
         resetForm();
     });
 }
 
 /**
- * Upload Files After Metadata Submission
- * @param {string} trackId - The ID of the track.
- */
-/**
- * Upload Files After Metadata Submission
- * @param {string} trackId - The ID of the track.
- */
-/**
- * Upload Files After Metadata Submission
- * @param {string} trackId - The ID of the track.
- */
+    * Upload Files After Metadata Submission
+    * @param {string} trackId - The ID of the track.
+    */
 /**
  * Upload Files After Metadata Submission
  * @param {string} trackId - The ID of the track.
@@ -969,11 +974,11 @@ function uploadFiles(trackId) {
     const updatedFields = {};
 
     /**
-     * Upload a single file using a presigned URL
-     * @param {string} presignedUrl - The presigned URL to upload the file.
-     * @param {File} file - The file to be uploaded.
-     * @returns {Promise<boolean>} - Resolves to true if upload is successful.
-     */
+        * Upload a single file using a presigned URL
+        * @param {string} presignedUrl - The presigned URL to upload the file.
+        * @param {File} file - The file to be uploaded.
+        * @returns {Promise<boolean>} - Resolves to true if upload is successful.
+        */
     async function uploadFile(presignedUrl, file) {
         const response = await fetch(presignedUrl, {
             method: 'PUT',
@@ -991,23 +996,27 @@ function uploadFiles(trackId) {
     }
 
     /**
-     * Generate presigned URL and upload the file
-     * @param {File} file - The file to upload.
-     * @param {string} fieldName - The field name (e.g., 'audioFile', 'coverImage').
-     * @returns {Promise<void>}
-     */
+        * Generate presigned URL and upload the file
+        * @param {File} file - The file to upload.
+        * @param {string} fieldName - The field name (e.g., 'audioFile', 'coverImage').
+        * @returns {Promise<void>}
+        */
     const generateAndUpload = async (file, fieldName) => {
         try {
-            // Step 1: Request presigned URL from the server, including trackId
-            const presignedUrlResponse = await fetch('http://media.maar.world:3001/api/spaces/generate-presigned-url', {
+            // Prepare options with identifier
+            const options = { identifier: trackId };
+
+            // Request presigned URL from the server
+            const presignedUrlResponse = await fetch(`${API_BASE_URL}/spaces/generate-presigned-url`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ 
+                    category: FILE_CATEGORY_UPLOAD, // 'tracks'
+                    options: options,               // Pass options with identifier
                     fileName: file.name, 
-                    fileType: file.type,
-                    trackId: trackId // Include trackId
+                    fileType: file.type
                 })
             });
             const presignedUrlData = await presignedUrlResponse.json();
@@ -1018,17 +1027,15 @@ function uploadFiles(trackId) {
 
             const { url, key } = presignedUrlData;
 
-            // Step 2: Upload the file directly to Spaces using the presigned URL
+            // Upload the file using the presigned URL
             await uploadFile(url, file);
 
-            // Step 3: Update the track record with the Spaces key and public URL
-            updatedFields[`${fieldName}Key`] = key;
+            // Prepare updated fields with correct field names
+            let fieldKeyName = fieldName === 'audioFile' ? 'audioFileMP3Key' : `${fieldName}Key`;
+            let fieldURLName = fieldName === 'audioFile' ? 'audioFileMP3URL' : `${fieldName}URL`;
 
-            // Use the URL provided by the backend without modifying it
-            updatedFields[`${fieldName}URL`] = url.split('?')[0]; // Extract the base URL without query parameters
-
-            // Include ownerId
-            updatedFields['ownerId'] = document.getElementById('ownerId').value;
+            updatedFields[fieldKeyName] = key;
+            updatedFields[fieldURLName] = url.split('?')[0]; // Extract the base URL without query parameters
 
         } catch (error) {
             console.error(`Error uploading ${fieldName}:`, error);
@@ -1048,8 +1055,11 @@ function uploadFiles(trackId) {
     // Execute all uploads
     Promise.all(uploadPromises)
         .then(async () => {
-            // Step 4: Update the track record with the file information
-            const updateResponse = await fetch(`http://media.maar.world:3001/api/tracks/${trackId}`, {
+            // Log updatedFields for debugging
+            console.log('Fields to update:', updatedFields);
+
+            // Update the track record with the file information
+            const updateResponse = await fetch(`${API_BASE_URL}/tracks/${trackId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedFields)
@@ -1058,7 +1068,7 @@ function uploadFiles(trackId) {
             const updateData = await updateResponse.json();
 
             if (!updateData.success) {
-                throw new Error(`Failed to update track with file information: ${updateData.error}`);
+                throw new Error(`Failed to update track with file information: ${updateData.message}`);
             }
 
             // Success
@@ -1066,6 +1076,9 @@ function uploadFiles(trackId) {
             document.getElementById('articleForm').reset();
             document.getElementById('coverImagePreview').style.display = 'none';
             localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
+
+            // Clear relevant caches
+            clearUserCaches(userId); // Ensure this function is accessible here
 
             // Redirect to the track release page in view mode
             window.location.href = `/voyage/track-release?mode=view&trackId=${trackId}`;
@@ -1097,8 +1110,8 @@ function uploadFiles(trackId) {
 }
 
 /**
- * Reset the Form After Submission
- */
+    * Reset the Form After Submission
+    */
 function resetForm() {
     const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
     const submitButton = document.querySelector('#articleForm button[type="submit"]');
@@ -1108,9 +1121,9 @@ function resetForm() {
 }
 
 /**
- * Collect Artist UUIDs from the hidden inputs.
- * @returns {Array} Array of artist UUIDs.
- */
+    * Collect Artist UUIDs from the hidden inputs.
+    * @returns {Array} Array of artist UUIDs.
+    */
 function collectArtistUserIds() {
     const artistIdInputs = document.querySelectorAll('.artistUserId');
     const artistIds = Array.from(artistIdInputs).map(input => input.value.trim());
@@ -1119,8 +1132,8 @@ function collectArtistUserIds() {
 }
 
 /**
- * Handle Image Preview
- */
+    * Handle Image Preview
+    */
 function handleImagePreview(event) {
     const file = event.target.files[0];
     if (file) {
@@ -1139,8 +1152,8 @@ function handleImagePreview(event) {
 }
 
 /**
- * Add Another Artist Field
- */
+    * Add Another Artist Field
+    */
 function addArtistField() {
     const artistEntry = document.createElement('div');
     artistEntry.className = 'artistEntry';
@@ -1154,13 +1167,11 @@ function addArtistField() {
     `;
     const addButton = document.getElementById('addArtistButton');
     const artistsContainer = document.getElementById('artistsContainer');
-    
-    // Insert the new artistEntry before the "Add Another Artist" button
-    artistsContainer.insertBefore(artistEntry, addButton);
-    
+    artistsContainer.appendChild(artistEntry);
+
     console.log('Added new artist entry:', artistEntry);
-    
-    // Initialize autocomplete for the new artist entry by calling the globally exposed function
+
+    // Initialize search on the new artist input field
     if (typeof initializeSearchUsers === 'function') {
         initializeSearchUsers();
         console.log('Initialized search on the new input field');
@@ -1183,10 +1194,10 @@ function handleRemoveArtist(event) {
 }
 
 /**
- * Show Toast Notifications
- * @param {string} message - The message to display.
- * @param {string} type - The type of toast ('success' or 'error').
- */
+    * Show Toast Notifications
+    * @param {string} message - The message to display.
+    * @param {string} type - The type of toast ('success' or 'error').
+    */
 function showToast(message, type = 'success') {
     console.log(`showToast called with message: "${message}", type: "${type}"`);
     const toastContainer = document.getElementById('toastContainer');

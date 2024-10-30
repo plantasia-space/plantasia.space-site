@@ -397,6 +397,7 @@ function populateUserProfileList(profileData) {
  */
 async function displayTracksBatch(trackIds) {
     console.log('Starting displayTracksBatch with IDs:', trackIds);
+    const userId = localStorage.getItem('userId');
 
     const tracksListElement = document.getElementById('tracks-list');
     tracksListElement.innerHTML = ''; // Clear existing list
@@ -415,16 +416,16 @@ async function displayTracksBatch(trackIds) {
         return;
     }
 
-    // Create a cache key based on sorted IDs for consistency
-    const sortedIds = [...validTrackIds].sort();
-    const cacheKey = `tracks_batch_${sortedIds.join('_')}`;
-    const batchUrl = `http://media.maar.world:3001/api/tracks/batch?ids=${sortedIds.join(',')}`;
+    // Use a cache key based on user ID
+    const cacheKey = `tracks_batch_${userId}`;
+    const batchUrl = `http://media.maar.world:3001/api/tracks/batch?ids=${validTrackIds.join(',')}`;
 
     try {
         const data = await fetchDataWithCache(
             batchUrl,
             cacheKey,
-            10 // Cache for 10 minutes
+            10, // Cache for 10 minutes
+            false // Do not force refresh
         );
 
         if (data.success && Array.isArray(data.tracks)) {
@@ -434,10 +435,12 @@ async function displayTracksBatch(trackIds) {
                     console.warn('Invalid track data:', track);
                     return;
                 }
+                console.log('Setting cover image source to:', track.coverImageURL); // Debugging
 
-                const imageUrl = track.soundEngineId?.soundEngineImage
-                    ? `https://media.maar.world${encodeURI(track.coverImage)}`
-                    : 'https://media.maar.world/uploads/default/default-tracks.jpg'; // Provide a default image path
+                let imageUrl = 'https://media.maar.world/uploads/default/default-tracks.jpg'; // Default image
+                if (track.coverImageURL) {
+                    imageUrl = `${track.coverImageURL}`; // Append timestamp correctly
+                }
 
                 const trackName = track.trackName || 'Unnamed Track';
                 const privacy = track.privacy || 'Private';
