@@ -848,12 +848,15 @@ function populateViewMode(trackData) {
 /**
     * Handle Form Submission
     */
+/**
+ * Handle Form Submission
+ */
 function handleFormSubmit(event) {
     event.preventDefault();
     console.log('Form submit handler triggered');
     
     // Collect form data
-   const trackDataToSend = {
+    const trackDataToSend = {
         ownerId: document.getElementById('ownerId').value,
         playerId: document.getElementById('playerId').value,
         soundEngineId: document.getElementById('soundEngineId').value,
@@ -871,7 +874,6 @@ function handleFormSubmit(event) {
         enableDirectDownloads: document.getElementById('enableDirectDownloads').checked,
         confirmRights: document.getElementById('confirmRights').checked,
     };
-    
     
     // Log the collected trackData for debugging
     console.log('Submitting trackData:', trackDataToSend);
@@ -933,7 +935,7 @@ function handleFormSubmit(event) {
         if (data.trackId) {
             const hasFiles = document.getElementById('uploadAudio').files.length > 0 || document.getElementById('uploadCoverImage').files.length > 0;
             if (hasFiles) {
-                uploadFiles(data.trackId);
+                uploadFilesAndFinalize(data.trackId); // Use the new function
             } else {
                 showToast('Track released successfully!', 'success');
                 window.location.href = `/voyage/track-release?mode=view&trackId=${data.trackId}`;
@@ -966,19 +968,19 @@ function handleFormSubmit(event) {
  * Upload Files After Metadata Submission
  * @param {string} trackId - The ID of the track.
  */
-function uploadFiles(trackId) {
+async function uploadFilesAndFinalize(trackId) {
     const audioFile = document.getElementById('uploadAudio').files[0];
     const coverImage = document.getElementById('uploadCoverImage').files[0];
     
     const uploadPromises = [];
-    const updatedFields = {};
+    const fileKeys = {};
 
     /**
-        * Upload a single file using a presigned URL
-        * @param {string} presignedUrl - The presigned URL to upload the file.
-        * @param {File} file - The file to be uploaded.
-        * @returns {Promise<boolean>} - Resolves to true if upload is successful.
-        */
+     * Upload a single file using a presigned URL
+     * @param {string} presignedUrl - The presigned URL to upload the file.
+     * @param {File} file - The file to be uploaded.
+     * @returns {Promise<string>} - Resolves to the file key if upload is successful.
+     */
     async function uploadFile(presignedUrl, file) {
         const response = await fetch(presignedUrl, {
             method: 'PUT',
@@ -992,16 +994,19 @@ function uploadFiles(trackId) {
             throw new Error('File upload failed.');
         }
 
-        return true;
+        // Extract the key from the presigned URL
+        const url = new URL(presignedUrl);
+        const key = decodeURIComponent(url.pathname.substring(1)); // Remove leading '/'
+        return key;
     }
 
     /**
-        * Generate presigned URL and upload the file
-        * @param {File} file - The file to upload.
-        * @param {string} fieldName - The field name (e.g., 'audioFile', 'coverImage').
-        * @returns {Promise<void>}
-        */
-    const generateAndUpload = async (file, fieldName) => {
+     * Generate presigned URL and upload the file
+     * @param {File} file - The file to upload.
+     * @param {string} fieldName - The field name (e.g., 'audioFile', 'coverImage').
+     * @returns {Promise<void>}
+     */
+    const generateUploadAndUpload = async (file, fieldName) => {
         try {
             // Prepare options with identifier
             const options = { identifier: trackId };
@@ -1028,14 +1033,10 @@ function uploadFiles(trackId) {
             const { url, key } = presignedUrlData;
 
             // Upload the file using the presigned URL
-            await uploadFile(url, file);
+            const uploadedKey = await uploadFile(url, file);
 
-            // Prepare updated fields with correct field names
-            let fieldKeyName = fieldName === 'audioFile' ? 'audioFileMP3Key' : `${fieldName}Key`;
-            let fieldURLName = fieldName === 'audioFile' ? 'audioFileMP3URL' : `${fieldName}URL`;
-
-            updatedFields[fieldKeyName] = key;
-            updatedFields[fieldURLName] = url.split('?')[0]; // Extract the base URL without query parameters
+            // Store the key for finalization
+            fileKeys[fieldName] = uploadedKey;
 
         } catch (error) {
             console.error(`Error uploading ${fieldName}:`, error);
@@ -1045,69 +1046,74 @@ function uploadFiles(trackId) {
 
     // Prepare upload promises
     if (audioFile) {
-        uploadPromises.push(generateAndUpload(audioFile, 'audioFile'));
+        uploadPromises.push(generateUploadAndUpload(audioFile, 'audioFileMP3Key')); // Assuming MP3 upload
     }
 
     if (coverImage) {
-        uploadPromises.push(generateAndUpload(coverImage, 'coverImage'));
+        uploadPromises.push(generateUploadAndUpload(coverImage, 'coverImageKey'));
     }
 
-    // Execute all uploads
-    Promise.all(uploadPromises)
-        .then(async () => {
-            // Log updatedFields for debugging
-            console.log('Fields to update:', updatedFields);
+    try {
+        // Execute all uploads concurrently
+        await Promise.all(uploadPromises);
+        console.log('All files uploaded successfully:', fileKeys);
 
-            // Update the track record with the file information
-            const updateResponse = await fetch(`${API_BASE_URL}/tracks/${trackId}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedFields)
-            });
-
-            const updateData = await updateResponse.json();
-
-            if (!updateData.success) {
-                throw new Error(`Failed to update track with file information: ${updateData.message}`);
-            }
-
-            // Success
-            showToast('Track released successfully!', 'success');
-            document.getElementById('articleForm').reset();
-            document.getElementById('coverImagePreview').style.display = 'none';
-            localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
-
-            // Clear relevant caches
-            clearUserCaches(userId); // Ensure this function is accessible here
-
-            // Redirect to the track release page in view mode
-            window.location.href = `/voyage/track-release?mode=view&trackId=${trackId}`;
-        })
-        .catch(error => {
-            console.error('File Upload Failed:', error);
-
-            // Determine the type of error and set an appropriate message
-            let errorMessage = 'Failed to upload files. Please try again.';
-            if (error.message.includes('LIMIT_FILE_SIZE')) {
-                errorMessage = 'The uploaded file is too large. Please choose a smaller file.';
-            } else if (error.message.includes('Failed to fetch')) {
-                errorMessage = 'Network error: Unable to reach the server. Please check your internet connection.';
-            } else if (error.message) {
-                errorMessage = `Error: ${error.message}`;
-            }
-
-            showToast(errorMessage, 'error');
-            resetForm();
-        })
-        .finally(() => {
-            // Regardless of success or failure, hide the loading message and re-enable the form
-            document.getElementById('loadingMessage').style.display = 'none';
-            const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
-            const submitButton = document.querySelector('#articleForm button[type="submit"]');
-            formElements.forEach(element => element.disabled = false); // Re-enable form elements
-            submitButton.textContent = 'Submit';
+        // Finalize the track by sending file keys to the server
+        const finalizeResponse = await fetch(`${API_BASE_URL}/tracks/finalize`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                trackId,
+                coverImageKey: fileKeys.coverImageKey || null,
+                audioFileMP3Key: fileKeys.audioFileMP3Key || null,
+                audioFileWAVKey: fileKeys.audioFileWAVKey || null, // If applicable
+            })
         });
+
+        const finalizeData = await finalizeResponse.json();
+
+        if (!finalizeData.success) {
+            throw new Error(`Failed to finalize track: ${finalizeData.error}`);
+        }
+
+        // Success
+        showToast('Track released successfully!', 'success');
+        document.getElementById('articleForm').reset();
+        document.getElementById('coverImagePreview').style.display = 'none';
+        localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
+
+        // Clear relevant caches if applicable
+        clearUserCaches(userId); // Ensure this function is accessible here
+
+        // Redirect to the track release page in view mode
+        window.location.href = `/voyage/track-release?mode=view&trackId=${trackId}`;
+    } catch (error) {
+        console.error('File Upload or Finalization Failed:', error);
+
+        // Determine the type of error and set an appropriate message
+        let errorMessage = 'Failed to upload files or finalize track. Please try again.';
+        if (error.message.includes('LIMIT_FILE_SIZE')) {
+            errorMessage = 'The uploaded file is too large. Please choose a smaller file.';
+        } else if (error.message.includes('Failed to fetch')) {
+            errorMessage = 'Network error: Unable to reach the server. Please check your internet connection.';
+        } else if (error.message) {
+            errorMessage = `Error: ${error.message}`;
+        }
+
+        showToast(errorMessage, 'error');
+        resetForm();
+    } finally {
+        // Regardless of success or failure, hide the loading message and re-enable the form
+        document.getElementById('loadingMessage').style.display = 'none';
+        const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
+        const submitButton = document.querySelector('#articleForm button[type="submit"]');
+        formElements.forEach(element => element.disabled = false); // Re-enable form elements
+        submitButton.textContent = 'Submit';
+    }
 }
+
 
 /**
     * Reset the Form After Submission
