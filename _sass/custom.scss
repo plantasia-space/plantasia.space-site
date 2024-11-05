@@ -416,9 +416,7 @@ input[type="number"] {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Image Styles for All List Items */
-.soundEngine-list-item img,
-.interplanetaryPlayer-list-item img,
+/* Retain circular styling for non-soundEngine images */
 .menu-list-item img,
 .playlist-list-item img {
   width: 100px;
@@ -430,6 +428,97 @@ input[type="number"] {
   position: relative;
   z-index: 2;
   flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* 1. Decagonal Frame for interplanetaryPlayer-list-item Images */
+.interplanetaryPlayer-list-item .decagon-frame {
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+  position: relative;
+  margin-right: 20px;
+  flex-shrink: 0; /* Prevent frame from shrinking */
+  overflow: hidden; /* Hide overflow to maintain decagon shape */
+  clip-path: polygon(
+      50% 0%,
+      90% 10%,
+      100% 50%,
+      90% 90%,
+      50% 100%,
+      10% 90%,
+      0% 50%,
+      10% 10%
+  ); /* Define decagon shape */
+  border: 2px solid #ffffff; /* Decagon border */
+  box-sizing: border-box;
+  transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* 2. Image Styling within Decagonal Frame */
+.interplanetaryPlayer-list-item .decagon-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure image covers the frame */
+  display: block; /* Remove any unwanted gaps */
+  /* No border-radius needed as clip-path handles the shape */
+}
+
+/* 3. Optional: Hover Effect for Decagonal Frame */
+.interplanetaryPlayer-list-item .decagon-frame:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+
+/* Styles for the hexagonal frame wrapper */
+.soundEngine-list-item .hexagon-frame {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin-right: 20px;
+  flex-shrink: 0; /* Prevent frame from shrinking */
+  /* Optional: Add transition for hover effect */
+  transition: transform 0.3s ease;
+}
+
+/* Hexagonal shape using clip-path */
+.soundEngine-list-item .hexagon-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(
+    25% 5%,
+    75% 5%,
+    100% 50%,
+    75% 95%,
+    25% 95%,
+    0% 50%
+  );
+  border: 2px solid #ffffff; /* Hexagon border */
+  box-sizing: border-box;
+  pointer-events: none; /* Ensures the border doesn't interfere with image interactions */
+}
+
+/* Image inside the hexagon frame */
+.soundEngine-list-item .hexagon-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  clip-path: polygon(
+    25% 5%,
+    75% 5%,
+    100% 50%,
+    75% 95%,
+    25% 95%,
+    0% 50%
+  ); /* Ensures image conforms to hexagon */
+}
+
+/* Optional: Hover effect for hexagon frame */
+.soundEngine-list-item .hexagon-frame:hover {
+  transform: scale(1.05);
 }
 .track-list-item img{
 

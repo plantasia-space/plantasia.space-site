@@ -711,6 +711,46 @@ function updateURL(mode, trackId) {
 }
 
 /**
+ * Show a message indicating that the track is being processed.
+ */
+function showProcessingMessage() {
+    const trackReleaseView = document.getElementById('trackReleaseView');
+    if (trackReleaseView) {
+        trackReleaseView.innerHTML = `
+            <p>Your track is being processed. Please check back later.</p>
+        `;
+        trackReleaseView.style.display = 'block';
+    }
+    // Hide the form and any other elements as needed
+    const articleForm = document.getElementById('articleForm');
+    if (articleForm) {
+        articleForm.style.display = 'none';
+    }
+}
+/**
+ * Poll the server to check if the track is now complete.
+ */
+function pollTrackStatus(trackId) {
+    const intervalId = setInterval(async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/tracks/${trackId}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.track.isComplete) {
+                    clearInterval(intervalId);
+                    trackData = data.track;
+                    populateViewMode(trackData);
+                    setFormMode('view');
+                    showToast('Your track is now available!', 'success');
+                }
+            }
+        } catch (error) {
+            console.error('Error polling track status:', error);
+        }
+    }, 10000); // Poll every 10 seconds
+}
+
+/**
     * Load Track Details from Backend
     */
 async function loadTrackDetails(trackId) {
@@ -718,15 +758,20 @@ async function loadTrackDetails(trackId) {
         const response = await fetch(`${API_BASE_URL}/tracks/${trackId}`);
         const data = await response.json();
 
-        if (data.success) {
+        if (response.status === 200 && data.success) {
             trackData = data.track;
             isOwner = trackData.ownerId === userId;
             console.log('Is user the owner?', isOwner);
             console.log('Received Data', trackData);
             populateEditMode(trackData);
             populateViewMode(trackData);
+        } else if (response.status === 202) {
+            showProcessingMessage();
+            pollTrackStatus(trackId);
+        } else if (response.status === 404) {
+            showToast('Track not found.', 'error');
         } else {
-            showToast('Error loading track details.', 'error');
+            showToast(data.message || 'Error loading track details.', 'error');
             console.error('Error fetching track details:', data.message);
         }
     } catch (error) {
@@ -734,6 +779,17 @@ async function loadTrackDetails(trackId) {
         console.error('Error fetching track details:', error);
     }
 }
+
+function showProcessingMessage() {
+    const trackReleaseView = document.getElementById('trackReleaseView');
+    trackReleaseView.innerHTML = `
+        <p>Your track is being processed. Please check back later.</p>
+    `;
+    trackReleaseView.style.display = 'block';
+    document.getElementById('articleForm').style.display = 'none';
+}
+
+
 
 /**
     * Populate Edit Mode with Track Data
@@ -851,11 +907,17 @@ function populateViewMode(trackData) {
 /**
  * Handle Form Submission
  */
+/**
+ * Handle Form Submission
+ */
 function handleFormSubmit(event) {
     event.preventDefault();
     console.log('Form submit handler triggered');
     
     // Collect form data
+    const audioFile = document.getElementById('uploadAudio').files[0];
+    const isUploadingNewAudio = !!audioFile;
+    
     const trackDataToSend = {
         ownerId: document.getElementById('ownerId').value,
         playerId: document.getElementById('playerId').value,
@@ -875,17 +937,30 @@ function handleFormSubmit(event) {
         confirmRights: document.getElementById('confirmRights').checked,
     };
     
+    // Conditionally add audioFileName and audioFileType if a new audio file is being uploaded
+    if (isUploadingNewAudio) {
+        trackDataToSend.audioFileName = audioFile.name;
+        trackDataToSend.audioFileType = audioFile.type || getMimeTypeFromFileName(audioFile.name);
+    }
+    
     // Log the collected trackData for debugging
     console.log('Submitting trackData:', trackDataToSend);
     
     // Validation: Ensure required fields are filled
-    const requiredFields = ['playerId', 'soundEngineId', 'trackName', 'licence', 'releaseDate'];
+    const requiredFields = ['playerId', 'trackName', 'licence', 'releaseDate'];
+    
+    // Add audioFileName and audioFileType to required fields only if uploading a new audio file
+    if (isUploadingNewAudio) {
+        requiredFields.push('audioFileName', 'audioFileType');
+    }
+    
     for (let field of requiredFields) {
         if (!trackDataToSend[field]) {
             showToast(`Please fill out the ${field} field.`, 'error');
             return;
         }
     }
+    
     if (trackDataToSend.artists.length === 0) {
         showToast('Please add at least one artist.', 'error');
         return;
@@ -933,7 +1008,7 @@ function handleFormSubmit(event) {
     })
     .then(data => {
         if (data.trackId) {
-            const hasFiles = document.getElementById('uploadAudio').files.length > 0 || document.getElementById('uploadCoverImage').files.length > 0;
+            const hasFiles = isUploadingNewAudio || document.getElementById('uploadCoverImage').files.length > 0;
             if (hasFiles) {
                 uploadFilesAndFinalize(data.trackId); // Use the new function
             } else {
@@ -960,10 +1035,6 @@ function handleFormSubmit(event) {
     });
 }
 
-/**
-    * Upload Files After Metadata Submission
-    * @param {string} trackId - The ID of the track.
-    */
 /**
  * Upload Files After Metadata Submission
  * @param {string} trackId - The ID of the track.
@@ -1018,10 +1089,10 @@ async function uploadFilesAndFinalize(trackId) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ 
-                    category: FILE_CATEGORY_UPLOAD, // 'tracks'
-                    options: options,               // Pass options with identifier
+                    category: FILE_CATEGORY_UPLOAD,
+                    options: options,
                     fileName: file.name, 
-                    fileType: file.type
+                    fileType: file.type || getMimeTypeFromFileName(file.name) // Use fallback
                 })
             });
             const presignedUrlData = await presignedUrlResponse.json();
@@ -1046,7 +1117,11 @@ async function uploadFilesAndFinalize(trackId) {
 
     // Prepare upload promises
     if (audioFile) {
-        uploadPromises.push(generateUploadAndUpload(audioFile, 'audioFileMP3Key')); // Assuming MP3 upload
+        // Store the audio file type for finalization
+        fileKeys.audioFileType = audioFile.type || getMimeTypeFromFileName(audioFile.name);
+        console.log('Audio File Type:', fileKeys.audioFileType);
+
+        uploadPromises.push(generateUploadAndUpload(audioFile, 'audioFileKey'));
     }
 
     if (coverImage) {
@@ -1067,8 +1142,8 @@ async function uploadFilesAndFinalize(trackId) {
             body: JSON.stringify({ 
                 trackId,
                 coverImageKey: fileKeys.coverImageKey || null,
-                audioFileMP3Key: fileKeys.audioFileMP3Key || null,
-                audioFileWAVKey: fileKeys.audioFileWAVKey || null, // If applicable
+                audioFileKey: fileKeys.audioFileKey || null,
+                audioFileType: fileKeys.audioFileType || null,
             })
         });
 
@@ -1081,11 +1156,20 @@ async function uploadFilesAndFinalize(trackId) {
         // Success
         showToast('Track released successfully!', 'success');
         document.getElementById('articleForm').reset();
-        document.getElementById('coverImagePreview').style.display = 'none';
+        const coverImagePreview = document.getElementById('coverImagePreview');
+        if (coverImagePreview) {
+            coverImagePreview.style.display = 'none';
+        } else {
+            console.warn('coverImagePreview element not found.');
+        }
         localStorage.removeItem('trackReleaseFormData');  // Clear saved form data
 
         // Clear relevant caches if applicable
-        clearUserCaches(userId); // Ensure this function is accessible here
+        if (typeof clearUserCaches === 'function') {
+            clearUserCaches(userId); // Ensure this function is accessible here
+        } else {
+            console.warn('clearUserCaches function is not defined.');
+        }
 
         // Redirect to the track release page in view mode
         window.location.href = `/voyage/track-release?mode=view&trackId=${trackId}`;
@@ -1106,11 +1190,25 @@ async function uploadFilesAndFinalize(trackId) {
         resetForm();
     } finally {
         // Regardless of success or failure, hide the loading message and re-enable the form
-        document.getElementById('loadingMessage').style.display = 'none';
+        const loadingMessage = document.getElementById('loadingMessage');
+        if (loadingMessage) {
+            loadingMessage.style.display = 'none';
+        } else {
+            console.warn('loadingMessage element not found.');
+        }
+
         const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm button, #articleForm textarea');
         const submitButton = document.querySelector('#articleForm button[type="submit"]');
-        formElements.forEach(element => element.disabled = false); // Re-enable form elements
-        submitButton.textContent = 'Submit';
+        if (formElements.length > 0) {
+            formElements.forEach(element => element.disabled = false); // Re-enable form elements
+        } else {
+            console.warn('No form elements found to re-enable.');
+        }
+        if (submitButton) {
+            submitButton.textContent = 'Submit';
+        } else {
+            console.warn('submitButton element not found.');
+        }
     }
 }
 
@@ -1200,11 +1298,12 @@ function handleRemoveArtist(event) {
 }
 
 /**
-    * Show Toast Notifications
-    * @param {string} message - The message to display.
-    * @param {string} type - The type of toast ('success' or 'error').
-    */
-function showToast(message, type = 'success') {
+ * Show Toast Notifications
+ * @param {string} message - The message to display.
+ * @param {string} type - The type of toast ('success' or 'error').
+ * @param {boolean} disableSubmit - Whether to disable the submit button.
+ */
+function showToast(message, type = 'success', disableSubmit = false) {
     console.log(`showToast called with message: "${message}", type: "${type}"`);
     const toastContainer = document.getElementById('toastContainer');
     if (!toastContainer) {
@@ -1268,7 +1367,38 @@ function showToast(message, type = 'success') {
             }, 500);
         }, 3000);
     }
-    // Error toasts do not auto-close
+
+    // Disable the submit button if required
+    if (disableSubmit) {
+        const submitButton = document.getElementById('submitButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            console.log('Submit button disabled due to validation error.');
+        } else {
+            console.warn('submitButton element not found.');
+        }
+    }
+}
+/**
+ * Get MIME type based on file extension.
+ * @param {string} fileName - The name of the file.
+ * @returns {string} - The corresponding MIME type.
+ */
+function getMimeTypeFromFileName(fileName) {
+    const extension = fileName.split('.').pop().toLowerCase();
+    switch (extension) {
+        case 'mp3':
+            return 'audio/mpeg';
+        case 'wav':
+        case 'wave':
+            return 'audio/wav';
+        case 'aiff':
+        case 'aif':
+            return 'audio/aiff';
+        default:
+            return '';
+    }
 }
 
 </script>
+

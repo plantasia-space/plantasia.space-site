@@ -553,41 +553,43 @@ async function displaySoundEnginesBatch(engineIds) {
                 // Create DOM elements
                 const soundEngineDiv = document.createElement('li');
 
-                soundEngineDiv.innerHTML = `
-                    <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
-                        <div class="soundEngine-profile-pic">
-                            <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
-                        </div>
-                        <div class="soundEngine-details">
-                            <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
-                            <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
-                            <div class="soundEngine-params">
-                                <strong>Parameters:</strong> 
-                                X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
-                                Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
-                                Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
-                            </div>
-                        </div>
-                        <div class="soundEngine-actions">
-                            <div class="more-options-container">
-                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                                    <span class="material-symbols-outlined">more_horiz</span>
-                                </button>
-                                <div class="more-options-dropdown">
-                                    <button class="option-button" onclick="editSoundEngine('${engine._id}')">
-                                        <span class="material-symbols-outlined">edit</span> Edit
-                                    </button>
-                                    <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
-                                        <span class="material-symbols-outlined">share</span> Share
-                                    </button>
-                                    <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
-                                        <span class="material-symbols-outlined">delete</span> Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+soundEngineDiv.innerHTML = `
+    <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
+        <div class="soundEngine-profile-pic">
+            <div class="hexagon-frame">
+                <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
+            </div>
+        </div>
+        <div class="soundEngine-details">
+            <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
+            <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+            <div class="soundEngine-params">
+                <strong>Parameters:</strong> 
+                X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
+                Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
+                Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
+            </div>
+        </div>
+        <div class="soundEngine-actions">
+            <div class="more-options-container">
+                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                </button>
+                <div class="more-options-dropdown">
+                    <button class="option-button" onclick="editSoundEngine('${engine._id}')">
+                        <span class="material-symbols-outlined">edit</span> Edit
+                    </button>
+                    <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
+                    <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
+                        <span class="material-symbols-outlined">delete</span> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+`;
                 soundEnginesListElement.appendChild(soundEngineDiv);
             });
             console.log('All sound engines displayed successfully.');
@@ -657,37 +659,39 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                 // Create DOM elements
                 const playerDiv = document.createElement('li');
 
-                playerDiv.innerHTML = `
-                    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
-                        <div class="interplanetaryPlayer-profile-pic">
-                            <img src="${imageUrl}" alt="${playerName}" loading="lazy">
-                        </div>
-                        <div class="interplanetaryPlayer-details">
-                            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
-                            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
-                            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
-                            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
-                        </div>
-                        <div class="interplanetaryPlayer-actions">
-                            <div class="more-options-container">
-                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                                    <span class="material-symbols-outlined">more_horiz</span>
-                                </button>
-                                <div class="more-options-dropdown">
-                                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
-                                        <span class="material-symbols-outlined">edit</span> Edit
-                                    </button>
-                                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
-                                        <span class="material-symbols-outlined">share</span> Share
-                                    </button>
-                                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
-                                        <span class="material-symbols-outlined">delete</span> Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+playerDiv.innerHTML = `
+    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
+        <div class="interplanetaryPlayer-profile-pic">
+            <div class="decagon-frame">
+                <img src="${imageUrl}" alt="${playerName}" loading="lazy">
+            </div>
+        </div>
+        <div class="interplanetaryPlayer-details">
+            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
+            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
+            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
+            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
+        </div>
+        <div class="interplanetaryPlayer-actions">
+            <div class="more-options-container">
+                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                </button>
+                <div class="more-options-dropdown">
+                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                        <span class="material-symbols-outlined">edit</span> Edit
+                    </button>
+                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
+                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
+                        <span class="material-symbols-outlined">delete</span> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+`;
                 playersListElement.appendChild(playerDiv);
             }
             console.log('All interplanetary players displayed successfully.');
