@@ -51,7 +51,50 @@ public: false
         <p id="viewReleaseDate"></p>
         <p id="viewEnableDirectDownloads"></p>
         <br>        <div id="audioPlayerContainer"></div> <!-- Container for Audio Player -->
+        <!-- Interplanetary Player Details -->
+
+        <!-- Interplanetary Player Details -->
+        <h4>Interplanetary Player Details</h4>
+
+        <ul class="interplanetaryPlayer-list" id="interplanetaryPlayerDetailsList">
+            <li class="interplanetaryPlayer-list-item">
+                <div class="interplanetaryPlayer-profile-pic">
+                    <img id="playerImageDisplay" src="" alt="Interplanetary Player Image" />
+                </div>
+                <div class="interplanetaryPlayer-details">
+                    <p id="viewPlayerName"><strong>Name:</strong> </p>
+                    <p id="viewPlayerSciName"><strong>Scientific Name:</strong> </p>
+                    <p id="viewPlayerDescription"><strong>Description:</strong> </p>
+                    <p id="viewPlayerAvailability"><strong>Availability:</strong> </p>
+                </div>
+                <div class="interplanetaryPlayer-actions">
+                    <!-- More Options Dropdown (if needed) -->
+                </div>
+            </li>
+        </ul>
+
+        <!-- Sound Engine Details -->
+        <h4>Sound Engine Details</h4>
+
+        <ul class="soundEngine-list" id="soundEngineDetailsList">
+            <li class="soundEngine-list-item">
+                <div class="sound-engine-profile-pic">
+                    <img id="soundEngineImageDisplay" src="" alt="Sound Engine Image" />
+                </div>
+                <div class="soundEngine-details">
+                    <p id="viewSoundEngineName"><strong>Name:</strong> </p>
+                    <p id="viewSoundEngineDeveloper"><strong>Developer:</strong> </p>
+                    <p id="viewSoundEngineAvailability"><strong>Availability:</strong> </p>
+                    <p id="viewSoundEngineParams"><strong>Parameters:</strong> </p>
+                    <p id="viewSoundEngineCredits"><strong>Credits:</strong> </p>
+                </div>
+                <div class="soundEngine-actions">
+                    <!-- More Options Dropdown (if needed) -->
+                </div>
+            </li>
+        </ul>
     </div>
+  
     <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Hidden ownerId input -->
@@ -780,6 +823,7 @@ async function loadTrackDetails(trackId) {
     }
 }
 
+
 function showProcessingMessage() {
     const trackReleaseView = document.getElementById('trackReleaseView');
     trackReleaseView.innerHTML = `
@@ -858,48 +902,134 @@ function populateEditMode(trackData) {
 /**
     * Populate View Mode with Track Data
     */
-function populateViewMode(trackData) {
-    if (currentMode === 'view') {
-        // Display cover image
-        const coverImageDisplay = document.getElementById('coverImageDisplay');
-        if (trackData.coverImageURL) {
-            console.log('Setting cover image source to:', trackData.coverImageURL); // Debugging
-            coverImageDisplay.src = trackData.coverImageURL; // Use the presigned download URL
-            coverImageDisplay.style.display = 'block'; // Ensure it's displayed
-        } else {
-            console.log('No cover image available.'); // Debugging
-            coverImageDisplay.style.display = 'none';
+    function populateViewMode(trackData) {
+        if (currentMode === 'view') {
+            // Display cover image
+            const coverImageDisplay = document.getElementById('coverImageDisplay');
+            if (trackData.coverImageURL) {
+                console.log('Setting cover image source to:', trackData.coverImageURL); // Debugging
+                coverImageDisplay.src = trackData.coverImageURL; // Use the presigned download URL
+                coverImageDisplay.style.display = 'block'; // Ensure it's displayed
+            } else {
+                console.log('No cover image available.'); // Debugging
+                coverImageDisplay.style.display = 'none';
+            }
+
+            // Handle Audio File Display
+            const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+            audioPlayerContainer.innerHTML = ''; // Clear previous content
+
+            if (trackData.audioFileMP3URL) {
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.src = trackData.audioFileMP3URL;
+                audioPlayerContainer.appendChild(audioElement);
+            } else {
+                audioPlayerContainer.innerHTML = '<p>No audio file available.</p>';
+            }
+
+            // Display other track details
+            document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
+            const artistNames = trackData.artists.map(artist => artist.username).join(', ');
+            document.getElementById('viewArtists').innerHTML = `<strong>Artists:</strong> ${artistNames || 'N/A'}`;
+            document.getElementById('viewLicence').innerHTML = `<strong>License:</strong> ${trackData.licence || 'N/A'}`;
+            document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${trackData.description || 'N/A'}`;
+            document.getElementById('viewType').innerHTML = `<strong>Type:</strong> ${trackData.type || 'N/A'}`;
+            document.getElementById('viewGenre').innerHTML = `<strong>Genre:</strong> ${trackData.genre || 'N/A'}`;
+            document.getElementById('viewMood').innerHTML = `<strong>Mood:</strong> ${trackData.mood || 'N/A'}`;
+            document.getElementById('viewAdditionalTags').innerHTML = `<strong>Additional Tags:</strong> ${trackData.additionalTags || 'N/A'}`;
+            document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${trackData.credits || 'N/A'}`;
+            document.getElementById('viewPrivacy').innerHTML = `<strong>Privacy:</strong> ${trackData.privacy || 'N/A'}`;
+            document.getElementById('viewReleaseDate').innerHTML = `<strong>Release Date:</strong> ${trackData.releaseDate ? new Date(trackData.releaseDate).toLocaleDateString() : 'N/A'}`;
+            document.getElementById('viewEnableDirectDownloads').innerHTML = `<strong>Direct Downloads Enabled:</strong> ${trackData.enableDirectDownloads ? 'Yes' : 'No'}`;
+
+            // Populate Interplanetary Player Details
+            populateInterplanetaryPlayerDetails(trackData.playerId);
+
+            // Populate Sound Engine Details
+            populateSoundEngineDetails(trackData.soundEngineId);
         }
-
-        // Handle Audio File Display
-        const audioPlayerContainer = document.getElementById('audioPlayerContainer');
-        audioPlayerContainer.innerHTML = ''; // Clear previous content
-
-        if (trackData.audioFileMP3URL) {
-            const audioElement = document.createElement('audio');
-            audioElement.controls = true;
-            audioElement.src = trackData.audioFileMP3URL;
-            audioPlayerContainer.appendChild(audioElement);
-        } else {
-            audioPlayerContainer.innerHTML = '<p>No audio file available.</p>';
-        }
-
-        // Display other track details
-        document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
-        const artistNames = trackData.artists.map(artist => artist.username).join(', ');
-        document.getElementById('viewArtists').innerHTML = `<strong>Artists:</strong> ${artistNames || 'N/A'}`;
-        document.getElementById('viewLicence').innerHTML = `<strong>License:</strong> ${trackData.licence || 'N/A'}`;
-        document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${trackData.description || 'N/A'}`;
-        document.getElementById('viewType').innerHTML = `<strong>Type:</strong> ${trackData.type || 'N/A'}`;
-        document.getElementById('viewGenre').innerHTML = `<strong>Genre:</strong> ${trackData.genre || 'N/A'}`;
-        document.getElementById('viewMood').innerHTML = `<strong>Mood:</strong> ${trackData.mood || 'N/A'}`;
-        document.getElementById('viewAdditionalTags').innerHTML = `<strong>Additional Tags:</strong> ${trackData.additionalTags || 'N/A'}`;
-        document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${trackData.credits || 'N/A'}`;
-        document.getElementById('viewPrivacy').innerHTML = `<strong>Privacy:</strong> ${trackData.privacy || 'N/A'}`;
-        document.getElementById('viewReleaseDate').innerHTML = `<strong>Release Date:</strong> ${trackData.releaseDate ? new Date(trackData.releaseDate).toLocaleDateString() : 'N/A'}`;
-        document.getElementById('viewEnableDirectDownloads').innerHTML = `<strong>Direct Downloads Enabled:</strong> ${trackData.enableDirectDownloads ? 'Yes' : 'No'}`;
     }
-}
+
+
+    function populateInterplanetaryPlayerDetails(player) {
+        const playerImageDisplay = document.getElementById('playerImageDisplay');
+        const viewPlayerName = document.getElementById('viewPlayerName');
+        const viewPlayerSciName = document.getElementById('viewPlayerSciName');
+        const viewPlayerDescription = document.getElementById('viewPlayerDescription');
+        const viewPlayerAvailability = document.getElementById('viewPlayerAvailability');
+
+        if (player) {
+            const imageUrl = player.ddd && player.ddd.textureURL
+                ? `https://media.maar.world${player.ddd.textureURL}`
+                : 'https://media.maar.world/uploads/default/default-player.jpg';
+
+            playerImageDisplay.src = imageUrl;
+            playerImageDisplay.alt = player.artName || 'Interplanetary Player Image';
+
+            viewPlayerName.innerHTML = `<strong>Name:</strong> ${player.artName || 'N/A'}`;
+            viewPlayerSciName.innerHTML = `<strong>Scientific Name:</strong> ${player.sciName || 'N/A'}`;
+            viewPlayerDescription.innerHTML = `<strong>Description:</strong> ${player.description || 'N/A'}`;
+            viewPlayerAvailability.innerHTML = `<strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}`;
+        } else {
+            // If player data is not available
+            playerImageDisplay.src = 'https://media.maar.world/uploads/default/default-player.jpg';
+            playerImageDisplay.alt = 'No Interplanetary Player Selected';
+
+            viewPlayerName.innerHTML = `<strong>Name:</strong> N/A`;
+            viewPlayerSciName.innerHTML = `<strong>Scientific Name:</strong> N/A`;
+            viewPlayerDescription.innerHTML = `<strong>Description:</strong> N/A`;
+            viewPlayerAvailability.innerHTML = `<strong>Availability:</strong> N/A`;
+        }
+    }
+
+/**
+ * Populate Sound Engine Details in View Mode
+ */
+    function populateSoundEngineDetails(soundEngine) {
+        const soundEngineImageDisplay = document.getElementById('soundEngineImageDisplay');
+        const viewSoundEngineName = document.getElementById('viewSoundEngineName');
+        const viewSoundEngineDeveloper = document.getElementById('viewSoundEngineDeveloper');
+        const viewSoundEngineAvailability = document.getElementById('viewSoundEngineAvailability');
+        const viewSoundEngineParams = document.getElementById('viewSoundEngineParams');
+        const viewSoundEngineCredits = document.getElementById('viewSoundEngineCredits');
+
+        if (soundEngine) {
+            const imageUrl = soundEngine.soundEngineImage
+                ? `https://media.maar.world${soundEngine.soundEngineImage}`
+                : 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
+
+            soundEngineImageDisplay.src = imageUrl;
+            soundEngineImageDisplay.alt = soundEngine.soundEngineName || 'Sound Engine Image';
+
+            viewSoundEngineName.innerHTML = `<strong>Name:</strong> ${soundEngine.soundEngineName || 'N/A'}`;
+            viewSoundEngineDeveloper.innerHTML = `<strong>Developer:</strong> ${soundEngine.developerUsername || 'N/A'}`;
+            viewSoundEngineAvailability.innerHTML = `<strong>Availability:</strong> ${soundEngine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}`;
+
+            // Display parameters
+            const xParam = soundEngine.xParam ? `${soundEngine.xParam.label} (Min: ${soundEngine.xParam.min}, Max: ${soundEngine.xParam.max}, Init: ${soundEngine.xParam.initValue})` : 'N/A';
+            const yParam = soundEngine.yParam ? `${soundEngine.yParam.label} (Min: ${soundEngine.yParam.min}, Max: ${soundEngine.yParam.max}, Init: ${soundEngine.yParam.initValue})` : 'N/A';
+            const zParam = soundEngine.zParam ? `${soundEngine.zParam.label} (Min: ${soundEngine.zParam.min}, Max: ${soundEngine.zParam.max}, Init: ${soundEngine.zParam.initValue})` : 'N/A';
+
+            viewSoundEngineParams.innerHTML = `
+                <strong>X Parameter:</strong> ${xParam}<br>
+                <strong>Y Parameter:</strong> ${yParam}<br>
+                <strong>Z Parameter:</strong> ${zParam}
+            `;
+
+            viewSoundEngineCredits.innerHTML = `<strong>Credits:</strong> ${soundEngine.credits || 'N/A'}`;
+        } else {
+            // If sound engine data is not available
+            soundEngineImageDisplay.src = 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
+            soundEngineImageDisplay.alt = 'No Sound Engine Selected';
+
+            viewSoundEngineName.innerHTML = `<strong>Name:</strong> N/A`;
+            viewSoundEngineDeveloper.innerHTML = `<strong>Developer:</strong> N/A`;
+            viewSoundEngineAvailability.innerHTML = `<strong>Availability:</strong> N/A`;
+            viewSoundEngineParams.innerHTML = `<strong>Parameters:</strong> N/A`;
+            viewSoundEngineCredits.innerHTML = `<strong>Credits:</strong> N/A`;
+        }
+    }
 
 /**
     * Handle Form Submission
@@ -1026,7 +1156,7 @@ function handleFormSubmit(event) {
         if (error.message.includes('LIMIT_FILE_SIZE')) {
             errorMessage = 'The uploaded file is too large. Please choose a smaller file.';
         } else if (error.message.includes('Failed to fetch')) {
-            errorMessage = 'Network error: Unable to reach the server. Please check your internet connection.';
+            errorMessage = 'Network error: Unable to reach the server. Please try again.';
         } else if (error.message) {
             errorMessage = `Error: ${error.message}`;
         }

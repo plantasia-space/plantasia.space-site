@@ -330,7 +330,7 @@ async function populateUserProfile(profileData) {
 
     // Display Playlists
     if (Array.isArray(profileData.playlistsOwned)) {
-        await displayPlaylists(profileData.playlistsOwned);
+        await displayPlaylistsBatch(profileData.playlistsOwned);
     } else {
         console.warn('playlistsOwned is not an array:', profileData.playlistsOwned);
         document.getElementById('playlist-list').innerHTML = '<li>No playlists found.</li>';
@@ -707,59 +707,127 @@ playerDiv.innerHTML = `
     }
 }
 
-/**
- * Function to display playlists on the page.
- * @param {Array} playlists - Array of playlist objects owned by the user.
- */
-function displayPlaylists(playlists) {
-    const playlistListElement = document.getElementById('playlist-list');
 
-    if (!playlists || playlists.length === 0) {
-        playlistListElement.innerHTML = '<li>No playlists found.</li>';
+/**
+ * Function to display playlists on the page using batch fetching with caching.
+ * Consolidates action buttons into a single "More Options" button with a dropdown menu.
+ * @param {Array<string>} playlistIds - Array of playlist IDs owned by the user.
+ */
+async function displayPlaylistsBatch(playlistIds) {
+    console.log('Starting displayPlaylistsBatch with IDs:', playlistIds);
+    const userId = localStorage.getItem('userId');
+
+    const playlistsListElement = document.getElementById('playlist-list');
+    playlistsListElement.innerHTML = ''; // Clear existing list
+
+    if (!playlistIds || playlistIds.length === 0) {
+        playlistsListElement.innerHTML = '<li>No playlists found.</li>';
         console.log('No playlists to display.');
         return;
     }
 
-    playlistListElement.innerHTML = ''; // Clear existing list
+    // Validate and filter playlist IDs
+    const validPlaylistIds = playlistIds.filter(id => isValidObjectId(id));
+    if (validPlaylistIds.length === 0) {
+        playlistsListElement.innerHTML = '<li>No valid playlist IDs found.</li>';
+        console.warn('No valid playlist IDs to fetch.');
+        return;
+    }
 
-    playlists.forEach(playlist => {
-        const playlistElement = document.createElement('li');
-        playlistElement.classList.add('playlist-list-item'); // Ensure consistent class naming
-        playlistElement.innerHTML = `
-            <div class="playlist-list-item" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
-                <div class="playlist-profile-pic">
-                    <img src="${playlist.playlistImage || 'https://media.maar.world/uploads/default/default-playlist.jpg'}" alt="${playlist.playlistName}" loading="lazy">
-                </div>
-                <div class="playlist-details">
-                    <div class="playlist-name"><strong>Playlist Name:</strong> ${playlist.playlistName}</div>
-                    <div class="playlist-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
-                    <div class="playlist-privacy"><strong>Privacy:</strong> ${playlist.privacy}</div>
-                    <div class="playlist-created-on"><strong>Created On:</strong> ${new Date(playlist.createdAt).toLocaleDateString()}</div>
-                </div>
-                <div class="playlist-actions">
-                    <div class="more-options-container">
-                        <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                            <span class="material-symbols-outlined">more_horiz</span>
-                        </button>
-                        <div class="more-options-dropdown">
-                            <button class="option-button" onclick="editPlaylist('${playlist._id}')">
-                                <span class="material-symbols-outlined">edit</span> Edit
-                            </button>
-                            <button class="option-button" onclick="sharePlaylist('${playlist._id}')">
-                                <span class="material-symbols-outlined">share</span> Share
-                            </button>
-                            <button class="option-button" onclick="deletePlaylist('${playlist._id}', this)">
-                                <span class="material-symbols-outlined">delete</span> Delete
-                            </button>
+    // Use a cache key based on user ID
+    const cacheKey = `playlists_batch_${userId}`;
+    const batchUrl = `http://media.maar.world:3001/api/playlists/batch?ids=${validPlaylistIds.join(',')}`;
+
+    try {
+        const data = await fetchDataWithCache(
+            batchUrl,
+            cacheKey,
+            10, // Cache for 10 minutes
+            false // Do not force refresh
+        );
+
+        if (data.success && Array.isArray(data.playlists)) {
+            console.log(`Fetched`, data.playlists);
+            data.playlists.forEach(playlist => {
+                if (!playlist || typeof playlist !== 'object') {
+                    console.warn('Invalid playlist data:', playlist);
+                    return;
+                }
+
+                // Debugging: Log cover image URLs
+                console.log('Setting cover image source to:', playlist.coverImageURLSmall || playlist.coverImageURLMid || playlist.coverImageURLOriginal);
+
+                // Determine the appropriate cover image URL
+                let imageUrl = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Default image
+                if (playlist.coverImageURLSmall) {
+                    imageUrl = playlist.coverImageURLSmall;
+                } else if (playlist.coverImageURLMid) {
+                    imageUrl = playlist.coverImageURLMid;
+                } else if (playlist.coverImageURLOriginal) {
+                    imageUrl = playlist.coverImageURLOriginal;
+                }
+
+                const playlistName = playlist.playlistName || 'Unnamed Playlist';
+                const privacy = playlist.privacy || 'Private';
+                const createdOn = playlist.createdAt ? new Date(playlist.createdAt).toLocaleDateString() : 'Unknown';
+
+                const ownerName = playlist.owner?.displayName || 'Unknown';
+                const artistNames = playlist.artistNames && Array.isArray(playlist.artistNames)
+                    ? playlist.artistNames.map(artist => artist.name || 'Unknown').join(', ')
+                    : 'Unknown';
+
+                // Create DOM elements
+                const playlistDiv = document.createElement('li');
+                playlistDiv.classList.add('playlist-list-item'); // Ensure consistent class naming
+
+                playlistDiv.innerHTML = `
+                    <div class="playlist-list-item-content" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
+                        <div class="playlist-profile-pic">
+                            <img src="${imageUrl}" alt="${playlistName}" loading="lazy">
+                        </div>
+                        <div class="playlist-details">
+                            <div class="playlist-name"><strong>Playlist Name:</strong> ${playlistName}</div>
+                            <div class="playlist-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
+                            <div class="playlist-privacy"><strong>Privacy:</strong> ${privacy}</div>
+                            <div class="playlist-created-on"><strong>Created On:</strong> ${createdOn}</div>
+                            <div class="playlist-owner"><strong>Owner:</strong> ${ownerName}</div>
+                            <div class="playlist-artists"><strong>Artists:</strong> ${artistNames}</div>
+                        </div>
+                        <div class="playlist-actions">
+                            <div class="more-options-container">
+                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                </button>
+                                <div class="more-options-dropdown">
+                                    <button class="option-button" onclick="editPlaylist('${playlist._id}')">
+                                        <span class="material-symbols-outlined">edit</span> Edit
+                                    </button>
+                                    <button class="option-button" onclick="sharePlaylist('${playlist._id}')">
+                                        <span class="material-symbols-outlined">share</span> Share
+                                    </button>
+                                    <button class="option-button" onclick="deletePlaylist('${playlist._id}', this)">
+                                        <span class="material-symbols-outlined">delete</span> Delete
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        `;
-        playlistListElement.appendChild(playlistElement);
-    });
-    console.log(`${playlists.length} playlists displayed.`);
+                `;
+                playlistsListElement.appendChild(playlistDiv);
+            });
+            console.log('All playlists displayed successfully.');
+        } else {
+            console.error('Failed to fetch playlists:', data.message);
+            playlistsListElement.innerHTML = '<li>Failed to load playlists.</li>';
+            showToast('Failed to load your playlists.', 'error');
+        }
+    } catch (error) {
+        console.error('Error displaying playlists:', error);
+        playlistsListElement.innerHTML = '<li>No playlists found.</li>';
+        showToast('No playlists found.', 'error');
+    }
 }
+
 
 /**
  * Validate if a string is a valid MongoDB ObjectId.
@@ -854,7 +922,7 @@ function shareTrack(trackId) {
  */
 function editPlaylist(playlistId) {
     console.log(`Editing playlist with ID: ${playlistId}`);
-    window.location.href = `/voyage/playlist-edit?mode=edit&id=${playlistId}`;
+    window.location.href = `/voyage/playlist?mode=edit&playlistId=${playlistId}`;
 }
 
 /**
@@ -961,13 +1029,18 @@ async function deletePlaylist(playlistId, button) {
         const data = await response.json();
         if (data.success) {
             showToast('Playlist deleted successfully!', 'success');
+
             // Remove the playlist from the DOM
             const playlistListItem = button.closest('.playlist-list-item');
             if (playlistListItem) {
                 playlistListItem.remove();
+            } else {
+                console.warn("Couldn't find the playlist item in the DOM for removal.");
             }
+
             // Clear the profile cache after deletion
             lscache.remove(cacheKey);
+
             console.log(`Playlist "${playlistId}" deleted and DOM updated.`);
         } else {
             throw new Error(data.message || 'Failed to delete the Playlist.');
