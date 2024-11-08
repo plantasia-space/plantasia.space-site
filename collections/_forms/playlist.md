@@ -33,7 +33,7 @@ public: false
 
     <!-- View Mode -->
     <div id="playlistView" style="display: none;">
-        <div id="coverImageView" class="cover-image-container">
+        <div id="coverImageView" class="cover-image-container playlist">
             <img id="coverImageDisplay" src="" alt="Cover Image" style="max-width: 100%; height: auto;" />
         </div>
         <p id="viewPlaylistName"></p>
@@ -57,7 +57,7 @@ public: false
         <input type="hidden" id="playlistId" name="playlistId" value="">
         
         <!-- Cover Image Preview -->
-        <div id="coverImagePreviewContainer" class="cover-image-container">
+        <div id="coverImagePreviewContainer" class="cover-image-container playlist">
             <img id="coverImagePreview" src="" alt="Cover Image Preview" style="display: none; max-width: 100%; height: auto;">
         </div><br>
         
@@ -71,7 +71,8 @@ public: false
                 
         <!-- Description -->
         <label for="description">Please provide a description for this playlist.</label>
-        <textarea id="description" name="description" rows="4" style="width: 100%;"></textarea><br><br>
+        <textarea id="description" name="description" rows="4" style="width: 100%;" maxlength="500"></textarea>
+        <div id="descriptionCounter">500 characters remaining</div><br><br>
 
         <!-- Playlist Type -->
         <label for="playlistType">Playlist Type</label>
@@ -84,13 +85,21 @@ public: false
         </select><br><br>
 
         <!-- Playlist Privacy -->
-        <label for="playlistPrivacy">Privacy Setting</label>
+        <label for="playlistPrivacy">
+            Privacy Setting 
+            <span class=" tooltip" aria-label="Privacy Settings Info" tabindex="0" data-tooltip='Choose "Public" to allow anyone to see this playlist,<br> "Collaborative" for shared editing,<br> or "Private" to keep it to yourself.'>
+            <span class="material-symbols-outlined">
+            tooltip_2
+            </span>            </span>
+        </label>
+
+        
         <select id="playlistPrivacy" name="playlistPrivacy">
             <option value="public" selected>Public</option>
             <option value="collaborative">Collaborative</option>
             <option value="private">Private</option>
         </select>
-        <p class="hint">Choose "Public" to allow anyone to see this playlist, "Collaborative" for shared editing, or "Private" to keep it to yourself.</p><br><br>
+
         
         <!-- Tracks Management -->
         <div id="tracksManagement">
@@ -150,13 +159,61 @@ public: false
         const addTrackToEditButton = document.getElementById('addTrackToEditButton');
         const editTracksList = document.getElementById('editTracksList');
         const addTrackButton = document.getElementById('addTrackButton'); // For view mode
-        
+        // Set tooltip content
+        const tooltipElement = document.querySelector('.tooltip');
         const urlParams = new URLSearchParams(window.location.search);
         const modeParam = urlParams.get('mode');
         currentPlaylistId = urlParams.get('playlistId') || '';
         
         // Set the ownerId hidden input
         document.getElementById('ownerId').value = userId;
+        
+        // DOM Element for Description and Counter
+        const descriptionTextarea = document.getElementById('description');
+        const descriptionCounter = document.getElementById('descriptionCounter');
+
+        // Initialize counter
+        updateDescriptionCounter();
+
+        // Event Listener for Description Input
+        descriptionTextarea.addEventListener('input', updateDescriptionCounter);
+        // Event Listener for Pasting into Description
+/**
+ * Updates the description character counter.
+ */
+function updateDescriptionCounter() {
+    const maxChars = 500;
+    const currentLength = descriptionTextarea.value.length;
+    const remaining = maxChars - currentLength;
+    descriptionCounter.textContent = `${remaining} characters remaining`;
+
+    // Change color based on remaining characters
+    if (remaining < 100 && remaining >= 0) {
+        descriptionCounter.style.color = '#ff9933'; // Orange
+    } else if (remaining < 0) {
+        descriptionCounter.style.color = '#ff3333'; // Red
+    } else {
+        descriptionCounter.style.color = '#33ff33'; // Green
+    }
+}
+
+
+        /**
+         * Updates the description character counter.
+         */
+function updateDescriptionCounter() {
+    const maxChars = 500;
+    const currentLength = descriptionTextarea.value.length;
+    const remaining = maxChars - currentLength;
+    descriptionCounter.textContent = `${remaining} characters remaining`;
+
+    // Change color based on remaining characters
+    if (remaining < 100 && remaining >= 0) {
+        descriptionCounter.style.color = '#ff33cc'; // Orange
+    } else {
+        descriptionCounter.style.color = '#c3c3c3'; // 
+    }
+}
         
         // Initialize based on mode
         if (modeParam === 'edit' && currentPlaylistId) {
@@ -198,7 +255,10 @@ public: false
                 }
             });
         }
-        
+        if (tooltipElement) {
+            tooltipElement.setAttribute('data-tooltip', 'Choose "Public" to allow anyone to see this playlist, "Collaborative" for shared editing, or "Private" to keep it to yourself.');
+        }
+
         // Event Listener for Back Button
         if (backButton) {
             backButton.addEventListener('click', function() {
@@ -278,6 +338,7 @@ public: false
             document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${escapeHtml(playlist.description) || 'No description provided.'}`;
             document.getElementById('viewPlaylistType').innerHTML = `<strong>Type:</strong> ${capitalizeFirstLetter(playlist.type) || 'N/A'}`;
             document.getElementById('viewPlaylistPrivacy').innerHTML = `<strong>Privacy:</strong> ${capitalizeFirstLetter(playlist.privacy) || 'N/A'}`;
+            
             document.getElementById('viewPlaylistOwner').innerHTML = `<strong>Owner:</strong> ${
                 playlist.owner.username
                     ? `<a href="/xplorer/?username=${encodeURIComponent(playlist.owner.username)}" target="_self">@${escapeHtml(playlist.owner.username)}</a>`
