@@ -107,17 +107,34 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 /* end custom scss snippet */
 $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 
-#soundEngineImagePreviewContainer,
-#soundEngineImagePreviewFormContainer {
-  width: $profile-w;
-  height: $profile-w;
+/* Hexagon container with white border */
+#soundEngineImagePreviewContainer {
+  width: 256px; /* Set the size of the hexagon */
+  height: 256px;
   margin: 0 auto 20px auto; /* Center the container and add margin below */
-  border: 1px solid #33ffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%; /* Makes the container circular */
-  overflow: hidden; /* Ensures the image doesn't overflow out of the circle */
+  position: relative;
+  clip-path: polygon(
+    25% 5%,
+    75% 5%,
+    100% 50%,
+    75% 95%,
+    25% 95%,
+    0% 50%
+  ); /* Hexagon shape */
+  overflow: hidden; /* Ensures the image fits within the hexagon */
+}
+
+#soundEngineImagePreviewContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inherit; /* Inherits the hexagonal shape */
+  border: 4px solid #ffffff; /* White border around the hexagon */
+  box-sizing: border-box;
+  z-index: 1;
 }
 
 #soundEngineImagePreview,
@@ -125,8 +142,10 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   width: 100%;
   height: 100%;
   object-fit: cover; /* Ensures the image covers the container area without distortion */
+  display: block;
+  position: relative;
+  z-index: 2; /* Places the image above the pseudo-element */
 }
-
 /* Container Styles */
 #textureImagePreviewContainer {
   max-width: 100%; /* Container will not exceed 100% of its parent */
@@ -148,6 +167,7 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 
 }
 
+/* Base container style for cover images */
 .cover-image-container {
   width: 256px;
   height: 256px;
@@ -156,12 +176,21 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   align-items: center;
   justify-content: center;
   margin: 0 auto; /* Centers the container itself */
+  overflow: hidden; /* Ensures the image stays within container bounds */
+  border-radius: 0; /* Default - no rounded corners */
 }
 
+/* Base image style for all previews */
 .cover-image-container img {
   max-width: 100%;
   max-height: 100%;
   display: block;
+  object-fit: cover;
+}
+
+/* Specific style for playlist cover image preview */
+.cover-image-container.playlist {
+  border-radius: 12px; /* Rounded corners for playlist previews */
 }
 
 
@@ -283,14 +312,14 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
   font-size: 20px;
   cursor: pointer;
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 /* Updated Image Preview Container for Fixed Size */
 #playlistImagePreview,
 #playlistImagePreviewForm {
     width: 480px;
     height: 480px;
     object-fit: cover;
-    border-radius: 0; // Remove border radius for square image
+    border-radius: 12px; /* Rounded borders for square image */
 }
 
 input[type="number"] {
@@ -320,6 +349,7 @@ input[type="number"] {
   border-radius: 50%; /* Make the image circular */
   object-fit: cover;
   margin-right: 15px; /* Add space between the image and the text */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Added shadow for profile */
 }
 
 .user-details {
@@ -416,13 +446,38 @@ input[type="number"] {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Retain circular styling for non-soundEngine images */
-.menu-list-item img,
+/* Retain circular styling for menu item images */
+.menu-list-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Keep menu images circular */
+  border: 1px solid #ffffff;
+  object-fit: cover;
+  margin-right: 20px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* Updated Playlists Image Styling */
 .playlist-list-item img {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: 12px; /* Rounded borders for Playlists */
   border: 1px solid #ffffff;
+  object-fit: cover;
+  margin-right: 20px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* Updated Tracks Image Styling */
+.track-list-item img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ffffff;
+  border-radius: 0; /* Square frame for Tracks */
   object-fit: cover;
   margin-right: 20px;
   position: relative;
@@ -500,49 +555,36 @@ input[type="number"] {
   pointer-events: none; /* Ensures the border doesn't interfere with image interactions */
 }
 
-/* Image inside the hexagon frame */
-.soundEngine-list-item .hexagon-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  clip-path: polygon(
-    25% 5%,
-    75% 5%,
-    100% 50%,
-    75% 95%,
-    25% 95%,
-    0% 50%
-  ); /* Ensures image conforms to hexagon */
-}
+  /* Image inside the hexagon frame */
+  .soundEngine-list-item .hexagon-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    clip-path: polygon(
+      25% 5%,
+      75% 5%,
+      100% 50%,
+      75% 95%,
+      25% 95%,
+      0% 50%
+    ); /* Ensures image conforms to hexagon */
+  }
 
-/* Optional: Hover effect for hexagon frame */
-.soundEngine-list-item .hexagon-frame:hover {
-  transform: scale(1.05);
-}
-.track-list-item img{
+  /* Optional: Hover effect for hexagon frame */
+  .soundEngine-list-item .hexagon-frame:hover {
+    transform: scale(1.05);
+  }
 
-  width: 100px;
-  height: 100px;
-  border: 1px solid #ffffff;
-  object-fit: cover;
-  margin-right: 20px;
-  position: relative;
-  z-index: 2;
-  flex-shrink: 0; /* Prevent image from shrinking */
-
-}
-
-
-/* Image Containers */
-.soundEngine-profile-pic,
-.interplanetaryPlayer-profile-pic,
-.track-profile-pic,
-.playlist-profile-pic {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-}
+  /* Image Containers */
+  .soundEngine-profile-pic,
+  .interplanetaryPlayer-profile-pic,
+  .track-profile-pic,
+  .playlist-profile-pic {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
 
 /* Details Section */
 .soundEngine-details,
@@ -601,7 +643,6 @@ input[type="number"] {
   align-items: center;
   gap: 10px;
 }
-
 /* ------------------ MORE OPTIONS BUTTON ----------------------- */
 
 .more-options-container {
@@ -1347,10 +1388,13 @@ input[type="number"] {
 
   // TOOLTIP
 
-  /* Required Indicator */
-.required {
-  color: red;
-  margin-left: 5px;
+
+/* Description Counter Styles */
+#descriptionCounter {
+  text-align: right;
+  font-size: 1.1em; /* Slightly increased font size for better visibility */
+  color: #ff3333; /* Bright red for high visibility */
+  margin-top: 5px;
 }
 
 /* Tooltip Styles */
@@ -1359,31 +1403,71 @@ input[type="number"] {
   display: inline-block;
   cursor: pointer;
   margin-left: 5px;
-  color: #007bff;
+  color: #33f1ff; /* Icon color */
+  font-size: 18px; /* Icon size */
+  vertical-align: middle;
 }
 
 .tooltip::after {
-  content: attr(title);
+  content: attr(data-tooltip);
   position: absolute;
-  bottom: 125%; /* Position above the element */
+  bottom: 125%; /* Position above the icon */
   left: 50%;
   transform: translateX(-50%);
-  background-color: #555;
-  color: #fff;
-  padding: 5px 8px;
+  background-color: rgba(80, 80, 80, 0.85); /* Tooltip background */
+  color: #ffffff;
+  padding: 8px 12px; /* Padding for readability */
   border-radius: 4px;
-  white-space: nowrap;
+  font-size: 0.9em; /* Adjust font size */
+  text-transform: none; /* Prevent uppercase transformation */
+  white-space: normal; /* Allow text to wrap */
+  max-width: 600px; /* Limit tooltip width */
   opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1000;
+  text-align: center; /* Center-align text */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 115%; /* Position above the tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(36, 36, 36, 0.85) transparent transparent transparent;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 0.3s;
   pointer-events: none;
   z-index: 1000;
 }
 
-.tooltip:hover::after {
+.tooltip:hover::after,
+.tooltip:hover::before,
+.tooltip:focus::after,
+.tooltip:focus::before {
   opacity: 1;
+  visibility: visible;
 }
 
 
+/* Required Indicator */
+.required {
+  color: red;
+  margin-left: 5px;
+}
+
+/* Additional styles if needed */
+textarea#description {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 /* ------------------ MAAR.WORLD  NEUTRAL FORM CONTAINER ----------------------- */
 
 
@@ -1700,4 +1784,63 @@ input[type="number"] {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+
+//// 3d
+/// 
+/// 
+
+.viewer {
+  flex: 1;
+  position: relative;
+}
+
+.thumbnails {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.thumbnails img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.thumbnails img:hover {
+  border-color: #333;
+}
+
+.error {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+
+
+/* Define a custom class for the 3D model iframes */
+.iframe-3d-model {
+  width: 300px; /* Set width */
+  height: 300px; /* Set height */
+  background-color: transparent !important; /* Ensure transparent background */
+  border: none; /* Remove any border */
+  overflow: hidden; /* Hide scrollbars */
+}
+
+/* Set the background of the iframe’s parent container to transparent as well, if needed */
+.iframe-3d-model-container {
+  background-color: transparent;
 }
