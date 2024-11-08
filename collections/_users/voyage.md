@@ -646,52 +646,86 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                     continue;
                 }
 
-                // Fetch image from ddd.textureURL, and fall back to a default image
-                const imageUrl = player.ddd?.textureURL
-                    ? `https://media.maar.world${encodeURI(player.ddd.textureURL)}`
-                    : 'https://media.maar.world/uploads/default/default-interplanetaryPlayer.jpg'; // Default image
-
                 // Use artName for the player name
                 const playerName = player.artName || 'Unnamed Player'; 
                 const sciName = player.sciName || 'Unknown';
                 const description = player.description ? player.description.substring(0, 30) + '...' : 'No description available.';
 
+                // Build the iframe if objURL and textureURL are available
+                const baseMediaUrl = 'https://media.maar.world';
+
+                const objURL = player.ddd?.objURL ? baseMediaUrl + player.ddd.objURL : null;
+                const textureURL = player.ddd?.textureURL ? baseMediaUrl + player.ddd.textureURL : null;
+
+                let iframeHTML = '';
+                if (objURL && textureURL) {
+                    const encodedObjURL = encodeURI(objURL);
+                    const encodedTextureURL = encodeURI(textureURL);
+                    const iframeSrc = `https://preview.maar.world/?object=${encodedObjURL}&texture=${encodedTextureURL}`;
+
+                    // Log the iframeSrc and iframeHTML for debugging
+                    console.log('Generated iframeSrc:', iframeSrc);
+
+                    iframeHTML = `
+                        <div class="iframe-3d-model-container">
+                            <iframe 
+                                class="iframe-3d-model" 
+                                src="${iframeSrc}" 
+                                width="300" 
+                                height="300" 
+                                style="background: transparent; border: none;">
+                            </iframe>
+                        </div>
+                    `;
+
+                    console.log('Generated iframeHTML:', iframeHTML);
+                } else {
+                    // Fallback to default image if URLs are not available
+                    const imageUrl = player.ddd?.textureURL
+                        ? `https://media.maar.world${encodeURI(player.ddd.textureURL)}`
+                        : 'https://media.maar.world/uploads/default/default-interplanetaryPlayer.jpg'; // Default image
+
+                    iframeHTML = `
+                        <div class="interplanetaryPlayer-profile-pic">
+                            <div class="decagon-frame">
+                                <img src="${imageUrl}" alt="${playerName}" loading="lazy">
+                            </div>
+                        </div>
+                    `;
+                }
+
                 // Create DOM elements
                 const playerDiv = document.createElement('li');
 
-playerDiv.innerHTML = `
-    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
-        <div class="interplanetaryPlayer-profile-pic">
-            <div class="decagon-frame">
-                <img src="${imageUrl}" alt="${playerName}" loading="lazy">
-            </div>
-        </div>
-        <div class="interplanetaryPlayer-details">
-            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
-            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
-            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
-            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
-        </div>
-        <div class="interplanetaryPlayer-actions">
-            <div class="more-options-container">
-                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                    <span class="material-symbols-outlined">more_horiz</span>
-                </button>
-                <div class="more-options-dropdown">
-                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
-                        <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
-                        <span class="material-symbols-outlined">delete</span> Delete
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-`;
+                playerDiv.innerHTML = `
+                    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
+                        ${iframeHTML}
+                        <div class="interplanetaryPlayer-details">
+                            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
+                            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
+                            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
+                            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
+                        </div>
+                        <div class="interplanetaryPlayer-actions">
+                            <div class="more-options-container">
+                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                </button>
+                                <div class="more-options-dropdown">
+                                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                                        <span class="material-symbols-outlined">edit</span> Edit
+                                    </button>
+                                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
+                                        <span class="material-symbols-outlined">share</span> Share
+                                    </button>
+                                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
+                                        <span class="material-symbols-outlined">delete</span> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 playersListElement.appendChild(playerDiv);
             }
             console.log('All interplanetary players displayed successfully.');
@@ -706,7 +740,6 @@ playerDiv.innerHTML = `
         showToast('An error occurred while loading your interplanetary players.', 'error');
     }
 }
-
 
 /**
  * Function to display playlists on the page using batch fetching with caching.
@@ -778,10 +811,10 @@ async function displayPlaylistsBatch(playlistIds) {
 
                 // Create DOM elements
                 const playlistDiv = document.createElement('li');
-                playlistDiv.classList.add('playlist-list-item'); // Ensure consistent class naming
+                //playlistDiv.classList.add('playlist-list-item'); // Ensure consistent class naming
 
                 playlistDiv.innerHTML = `
-                    <div class="playlist-list-item-content" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
+                    <div class="playlist-list-item" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
                         <div class="playlist-profile-pic">
                             <img src="${imageUrl}" alt="${playlistName}" loading="lazy">
                         </div>
