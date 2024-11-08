@@ -36,47 +36,40 @@ public: false
     <p>Create a new Sound Engine with custom parameters for audio manipulation.</p>
     <div class="p-2"></div>
 
-    <!-- View Mode -->
-    <div id="soundEngineView">
-
-        <div id="soundEngineImagePreviewContainer">
-            <img id="soundEngineImagePreview" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
-        </div>
-        <p><strong>Developer Username:</strong> <span id="displayDeveloperUsername"></span></p>
-        <p><strong>Sound Engine Name:</strong> <span id="displaySoundEngineName"></span></p>
-        <p><strong>Color 1:</strong> <span id="displayColor1"></span></p>
-        <p><strong>Color 2:</strong> <span id="displayColor2"></span></p>
-        <p><strong>Sonification Button:</strong> <span id="displaysonificationState"></span></p>
-        <p><strong>Availability:</strong> <span id="displayAvailability"></span></p>
-        <p><strong>Credits:</strong> <span id="displayCredits"></span></p>
-
-                        <!-- Engine Owner -->
-        <div id="engineOwnerContainer">
-            <h4>Engine Owner (<span id="engineOwnerCount">0</span>)</h4>
-            <ul id="engineOwnerList"></ul>
-        </div>
+<!-- View Mode -->
+<div id="soundEngineView">
+    <div id="soundEngineImagePreviewContainer" class="sound-engine-hexagon">
+        <img id="soundEngineImagePreview" src="" alt="Sound Engine Image" style="display: none;">
     </div>
+    <p><strong>Developer Username:</strong> <span id="displayDeveloperUsername"></span></p>
+    <p><strong>Sound Engine Name:</strong> <span id="displaySoundEngineName"></span></p>
+    <p><strong>Color 1:</strong> <span id="displayColor1"></span></p>
+    <p><strong>Color 2:</strong> <span id="displayColor2"></span></p>
+    <p><strong>Sonification Button:</strong> <span id="displaysonificationState"></span></p>
+    <p><strong>Availability:</strong> <span id="displayAvailability"></span></p>
+    <p><strong>Credits:</strong> <span id="displayCredits"></span></p>
 
+    <!-- Engine Owner -->
+    <div id="engineOwnerContainer">
+        <h4>Engine Owner (<span id="engineOwnerCount">0</span>)</h4>
+        <ul id="engineOwnerList"></ul>
+    </div>
+</div>
 
+<!-- Edit/Create Mode -->
+<form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
+    <div id="soundEngineImagePreviewContainer" class="sound-engine-hexagon">
+        <img id="soundEngineImagePreviewForm" src="" alt="Sound Engine Image" style="display: none;">
+    </div>
+    <p id="existingImage" style="display: none;">
+        Current Image: <a href="" target="_blank" id="existingImageLink">View</a>
+    </p>
+    <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png"><br><br>
 
-    <!-- Edit/Create Mode -->
-    <form id="soundEngineForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
-        <!-- Sound Engine Image Upload -->
-        <div id="soundEngineImagePreviewContainer">
-            <img id="soundEngineImagePreviewForm" src="" alt="Sound Engine Image" style="display: none;" width="480" height="480">
-        </div>
-        <!-- Add a label showing the existing image path outside the image container -->
-        <p id="existingImage" style="display: none;">
-            Current Image: <a href="" target="_blank" id="existingImageLink">View</a>
-        </p>
-        <input type="file" id="soundEngineImage" name="soundEngineImage" accept=".jpg, .jpeg, .png"><br><br>
-
-
-        <!-- Sound Engine JSON Upload -->
-        <label for="soundEngineFile">Upload Sound Engine JSON File (Optional):</label>
-        <p id="existingJsonFile" style="display: none;">Current JSON File: <a href="" target="_blank" id="existingJsonLink">Download</a></p>
-        <input type="file" id="soundEngineFile" name="soundEngineFile" accept=".json"><br><br>
-
+    <!-- Sound Engine JSON Upload -->
+    <label for="soundEngineFile">Upload Sound Engine JSON File (Optional):</label>
+    <p id="existingJsonFile" style="display: none;">Current JSON File: <a href="" target="_blank" id="existingJsonLink">Download</a></p>
+    <input type="file" id="soundEngineFile" name="soundEngineFile" accept=".json"><br><br>
 
 
         <!-- Other input fields -->
@@ -200,6 +193,8 @@ public: false
 
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId'); 
+
+    const defaultImageURL = "https://mw-storage.fra1.cdn.digitaloceanspaces.com/default/default-soundEngine_thumbnail_mid.webp";
 
 
     if (!userId) {
@@ -950,6 +945,20 @@ function toggleSonificationFileInput() {
         existingSonificationFile.style.display = 'none';
     }
 }
+
+    // Check if we are in create mode
+    if (!currentSoundEngineId || mode === 'create') {
+        formTitle.innerText = 'Create a Sound Engine';
+        toggleViewMode(true); // Show the form for creation
+        isCreateMode = true;
+        isEditMode = false;
+        editButton.style.display = 'none'; // Hide edit button in create mode
+        
+        // Load default image in create mode
+        soundEngineImagePreviewForm.src = defaultImageURL;
+        soundEngineImagePreviewForm.style.display = 'block'; // Make sure the image is visible
+    }
+
 
 // Initial check on page load
 toggleSonificationFileInput();

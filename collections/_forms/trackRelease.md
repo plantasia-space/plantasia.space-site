@@ -59,8 +59,12 @@ public: false
         <ul class="interplanetaryPlayer-list" id="interplanetaryPlayerDetailsList">
             <li class="interplanetaryPlayer-list-item">
                 <div class="interplanetaryPlayer-profile-pic">
+                            <div class="decagon-frame">
+
                     <img id="playerImageDisplay" src="" alt="Interplanetary Player Image" />
                 </div>
+                                </div>
+
                 <div class="interplanetaryPlayer-details">
                     <p id="viewPlayerName"><strong>Name:</strong> </p>
                     <p id="viewPlayerSciName"><strong>Scientific Name:</strong> </p>
@@ -79,8 +83,10 @@ public: false
         <ul class="soundEngine-list" id="soundEngineDetailsList">
             <li class="soundEngine-list-item">
                 <div class="sound-engine-profile-pic">
+                            <div class="hexagon-frame">
                     <img id="soundEngineImageDisplay" src="" alt="Sound Engine Image" />
-                </div>
+                </div>                </div>
+
                 <div class="soundEngine-details">
                     <p id="viewSoundEngineName"><strong>Name:</strong> </p>
                     <p id="viewSoundEngineDeveloper"><strong>Developer:</strong> </p>
@@ -91,6 +97,7 @@ public: false
                 <div class="soundEngine-actions">
                     <!-- More Options Dropdown (if needed) -->
                 </div>
+                
             </li>
         </ul>
     </div>
@@ -282,6 +289,8 @@ let trackId = ''; // Will hold the track ID when editing/viewing
 let userId = localStorage.getItem('userId'); // Ensure this is set correctly
 let isOwner = false; // Indicates if the current user is the owner of the track
 let trackData = null; // Holds the current track data
+const defaultTrackImageURL = "https://mw-storage.fra1.cdn.digitaloceanspaces.com/default/default-tracks_thumbnail_mid.webp";
+
 
 // Initialize the form once the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -326,6 +335,17 @@ async function initializeForm() {
     } else {
         currentMode = 'create';
         clearFormFields();
+                // Load default image in create mode
+        const coverImagePreview = document.getElementById('coverImagePreview');
+        if (coverImagePreview) {
+            coverImagePreview.src = defaultTrackImageURL;
+            setTimeout(() => {
+                coverImagePreview.style.display = 'block';
+            }, 100); // Small delay to ensure load
+        } else {
+            console.error("coverImagePreview element not found.");
+        }
+
     }
 
     setFormMode(currentMode);
@@ -535,7 +555,10 @@ function updateSoundEngineDetails() {
         engineElement.classList.add('soundEngine-list-item');
         engineElement.innerHTML = `
             <div class="soundEngine-profile-pic">
+                        <div class="hexagon-frame">
+
                 <img src="${imageUrl}" alt="${soundEngine.soundEngineName}" />
+            </div>
             </div>
             <div class="soundEngine-details">
                 <div class="soundEngine-name"><strong>Name:</strong> ${soundEngine.soundEngineName}</div>
@@ -581,9 +604,13 @@ function updatePlayerDetails() {
         playerElement.classList.add('interplanetaryPlayer-list-item');
         playerElement.innerHTML = `
             <div class="player-profile-pic">
+                        <div class="decagon-frame">
+
                 <img src="${imageUrl}" alt="${player.artName}" />
             </div>
+            </div>
             <div class="player-details">
+            
                 <div class="player-name"><strong>Name:</strong> ${player.artName}</div>
                 <div class="player-owner"><strong>3D Artist:</strong> ${player.ddd.dddArtist}</div>
                 <div class="player-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Exclusive'}</div>
