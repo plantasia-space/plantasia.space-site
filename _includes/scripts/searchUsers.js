@@ -265,6 +265,7 @@
 
     // Expose initializeSearchUsers globally
     window.initializeSearchUsers = initializeSearchUsers;
+    window.debounce = debounce; // Expose debounce globally
 
     // Initialize search on DOM load
     document.addEventListener('DOMContentLoaded', initializeSearchUsers);
