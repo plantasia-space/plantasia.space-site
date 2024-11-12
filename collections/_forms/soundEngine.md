@@ -161,13 +161,14 @@ public: false
 </div>
 
 <!-- Toast Container for Notifications -->
-<div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+<div id="toastContainer"></div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const API_BASE_URL = 'http://media.maar.world:3001/api'; // Ensure this matches your backend
     const userId = localStorage.getItem('userId'); 
-    
+    const DEFAULT_SE_IMAGE_URL = 'https://mw-storage.fra1.cdn.digitaloceanspaces.com/default/default-soundEngine.jpg'; // Replace with your actual default image URL
+
     if (!userId) {
         showToast('No logged-in user found. Please log in first.', 'error');
         window.location.href = '/login';
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let canEdit = false;
 
     // Regex for soundEngineName
-    const soundEngineNameRegex = /^[a-zA-Z0-9_-]{1,30}$/;
+    const soundEngineNameRegex = /^[a-zA-Z0-9 _-]{1,30}$/;
 
     // Variable to store the original Sound Engine name
     let originalSoundEngineName = '';
@@ -415,7 +416,12 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleViewMode('form'); // Show the form for creation
         isEditMode = false;
         formInitialized = true; // For creation mode, form is initialized immediately
+
+        // Set default image in creation mode
+        soundEngineImagePreviewForm.src = DEFAULT_SE_IMAGE_URL;
+        soundEngineImagePreviewForm.style.display = 'block';
     }
+
 
     // Initialize Edit Button after determining the mode
     if (currentSoundEngineId) {
@@ -498,12 +504,13 @@ document.addEventListener('DOMContentLoaded', function() {
         displayAvailability.innerText = soundEngine.isPublic ? 'Public' : 'Private';
         displayCredits.innerText = soundEngine.credits || 'No credits provided';
 
-        // Image Display
+                // Image Display
         if (soundEngine.soundEngineImageURL) {
             soundEngineImagePreview.src = soundEngine.soundEngineImageURL;
             soundEngineImagePreview.style.display = 'block';
         } else {
-            soundEngineImagePreview.style.display = 'none';
+            soundEngineImagePreview.src = DEFAULT_SE_IMAGE_URL;
+            soundEngineImagePreview.style.display = 'block';
         }
 
         // Engine Owner Details
@@ -603,49 +610,76 @@ document.addEventListener('DOMContentLoaded', function() {
         return [0, 0, 0, 1]; // Default values if parsing fails
     }
 
-    /**
-     * Show Toast Notifications
-     * @param {string} message 
-     * @param {string} type - 'success' or 'error'
-     */
-    function showToast(message, type = 'success') {
-        const toastContainer = document.getElementById('toastContainer');
-        if (!toastContainer) {
-            console.error('Toast container not found in the DOM.');
-            return;
-        }
-
-        const toast = document.createElement('div');
-        const toastId = `toast_${Date.now()}`;
-        toast.classList.add('toast');
-        if (type === 'success') {
-            toast.classList.add('success');
-        } else if (type === 'error') {
-            toast.classList.add('error');
-        }
-        toast.setAttribute('id', toastId);
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'assertive');
-        toast.setAttribute('aria-atomic', 'true');
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-
-        // Show the toast
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 100);
-
-        // Hide the toast after 3 seconds
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                const toastElem = document.getElementById(toastId);
-                if (toastElem) {
-                    toastElem.remove();
-                }
-            }, 500);
-        }, 3000);
+/**
+ * Show Toast Notifications
+ * @param {string} message - The message to display.
+ * @param {string} type - The type of toast ('success' or 'error').
+ */
+function showToast(message, type = 'success') {
+    console.log(`showToast called with message: "${message}", type: "${type}"`);
+    const toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) {
+        console.error('Toast container not found!');
+        return;
     }
+
+    // Create Toast Element
+                const toast = document.createElement('div');
+            const toastId = `toast_${Date.now()}`;
+            toast.classList.add('toast', type);
+            toast.setAttribute('id', toastId);
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            toast.setAttribute('tabindex', '0'); // Make focusable
+
+            // Close Button
+            const closeBtn = document.createElement('button');
+            closeBtn.classList.add('close-btn');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.setAttribute('aria-label', 'Close notification');
+            closeBtn.onclick = () => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    const toastElem = document.getElementById(toastId);
+                    if (toastElem) {
+                        toastElem.remove();
+                        console.log(`Toast "${toastId}" removed from DOM.`);
+                    }
+                }, 500);
+            };
+
+            // Append Close Button and Message to Toast
+            toast.appendChild(closeBtn);
+            toast.appendChild(document.createTextNode(message));
+            toastContainer.appendChild(toast);
+            console.log(`Toast "${toastId}" appended to #toastContainer.`);
+
+            // Show the toast with animation
+            setTimeout(() => {
+                toast.classList.add('show');
+                console.log(`Toast "${toastId}" shown.`);
+                if (type === 'error') {
+                    toast.focus(); // Shift focus to the toast for immediate notification
+                }
+            }, 100);
+
+            // Determine auto-close behavior based on toast type
+            if (type === 'success') {
+                // Auto-close success toasts after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    console.log(`Toast "${toastId}" hiding.`);
+                    setTimeout(() => {
+                        const toastElem = document.getElementById(toastId);
+                        if (toastElem) {
+                            toastElem.remove();
+                            console.log(`Toast "${toastId}" removed from DOM.`);
+                        }
+                    }, 500);
+                }, 3000);
+            }
+        }
 
     /**
      * Disable or Enable Form Inputs
@@ -1164,63 +1198,56 @@ async function handleEditSubmit(event) {
     /**
      * Handle Sound Engine Name Input for Duplication Check
      */
-    soundEngineNameInput.addEventListener('input', debounce(async function(e) {
-        // Do not process input events until form is initialized
-        if (!formInitialized) return;
+soundEngineNameInput.addEventListener('input', debounce(async function(e) {
+    // Do not process input events until form is initialized
+    if (!formInitialized) return;
 
-        const soundEngineName = e.target.value.trim();
-        const soundEngineId = soundEngineIdInput.value;
+    const soundEngineName = e.target.value.trim();
+    const soundEngineId = soundEngineIdInput.value;
 
-        console.log('isEditMode:', isEditMode);
-        console.log('soundEngineName:', soundEngineName);
-        console.log('originalSoundEngineName:', originalSoundEngineName);
+    console.log('isEditMode:', isEditMode);
+    console.log('soundEngineName:', soundEngineName);
+    console.log('originalSoundEngineName:', originalSoundEngineName);
 
-        // Skip uniqueness check if the name hasn't changed
-        if (isEditMode && soundEngineName.toLowerCase() === originalSoundEngineName.toLowerCase()) {
-            nameFeedback.innerText = 'Sound Engine name is available.';
-            nameFeedback.style.color = 'green';
-            return;
-        }
+    // Skip uniqueness check if the name hasn't changed
+    if (isEditMode && soundEngineName.toLowerCase() === originalSoundEngineName.toLowerCase()) {
+        nameFeedback.innerText = 'Sound Engine name is available.';
+        nameFeedback.style.color = 'green';
+        return;
+    }
 
-        if (!soundEngineNameRegex.test(soundEngineName)) {
-            nameFeedback.innerText = 'Invalid format. Use 1-30 characters: letters, numbers, underscores, or hyphens.';
-            nameFeedback.style.color = 'red';
-            return;
-        }
+    if (!soundEngineNameRegex.test(soundEngineName)) {
+        nameFeedback.innerText = 'Invalid format. Use 1-30 characters: letters, numbers, underscores, hyphens, or spaces.';
+        nameFeedback.style.color = 'red';
+        return;
+    }
 
-        const isAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
-        if (!isAvailable) {
-            nameFeedback.innerText = 'Sound Engine name is already taken.';
-            nameFeedback.style.color = 'red';
-        } else {
-            nameFeedback.innerText = 'Sound Engine name is available.';
-            nameFeedback.style.color = 'green';
-        }
-    }, 300));
-
+    const isAvailable = await checkSoundEngineExists(soundEngineName, soundEngineId);
+    if (!isAvailable) {
+        nameFeedback.innerText = 'Sound Engine name is already taken.';
+        nameFeedback.style.color = 'red';
+    } else {
+        nameFeedback.innerText = 'Sound Engine name is available.';
+        nameFeedback.style.color = 'green';
+    }
+}, 300));
     /**
      * Handle Image Input Change for Preview
      */
-    soundEngineImageInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            // Check if the file is an image
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    soundEngineImagePreviewForm.src = e.target.result;
-                    soundEngineImagePreviewForm.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            } else {
-                showToast('Please select a valid image file.', 'error');
-                soundEngineImageInput.value = ''; // Clear the invalid file
-            }
-        } else {
-            soundEngineImagePreviewForm.src = '';
-            soundEngineImagePreviewForm.style.display = 'none';
-        }
-    });
+soundEngineImageInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            soundEngineImagePreviewForm.src = e.target.result;
+            soundEngineImagePreviewForm.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        soundEngineImagePreviewForm.src = DEFAULT_SE_IMAGE_URL;
+        soundEngineImagePreviewForm.style.display = 'block';
+    }
+});
 
     /**
      * Handle Form Submission based on Mode

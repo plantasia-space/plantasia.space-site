@@ -279,7 +279,7 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
   color: #fff;
   opacity: 0;
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-  transform: translateY(-20px);
+  transform: translate(-50%, -100%);
   position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   font-family: Arial, sans-serif; /* Ensure readability */
