@@ -9,6 +9,10 @@ suit_title: SkySounds.2
 card_title: Card III
 card_image: https://www.dropbox.com/s/2tn42l39srevydi/SkySounds2_3.png?raw=1
 card_description: Creatures from the sky, with voices as sweet as a songbird's, grace the land of Maar with their presence. They descend from the heavens, singing melodies that echo through the valleys and across the mountains. They are a reminder of the beauty and mystery of the natural world, and their songs are a call to all who hear them to come closer and listen. For the inhabitants of Maar, the creatures from the sky represent a connection to the divine and a connection to the beauty of the natural world. Their songs are a call to action. 
+descripcion_carta: Criaturas del cielo, con voces tan dulces como las de los pájaros cantores, bendicen la tierra de Maar con su presencia. Descienden de los cielos, cantando melodías que resuenan por los valles y sobre las montañas. Son un recordatorio de la belleza y el misterio del mundo natural, y sus cantos son un llamado para todos los que los escuchan a acercarse y escuchar. Para los habitantes de Maar, las criaturas del cielo representan una conexión con lo divino y con la belleza del mundo natural. Sus canciones son un llamado a la acción.
+
+
+
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io

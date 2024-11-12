@@ -9,6 +9,9 @@ suit_title: SkySounds.3
 card_title: Card VII
 card_image: https://www.dropbox.com/s/0kt97p6h3q87o60/SkySounds3_7.png?raw=1
 card_description: There exists a species with the extraordinary ability to perceive beyond the physical realm. They possess a heightened sensitivity to the subatomic realm, allowing them to see beyond the limitations of human perception. This ability is rooted in the training of their neural structure, which enables them to detect and process information beyond the typical range of human senses. They use this ability to study and understand the underlying laws of physics, delving deeper into the secrets of the multiverse. They usually are scientists, explorers, and philosophers, constantly pushing the boundaries of knowledge.
+descripcion_carta: Existe una especie con la extraordinaria capacidad de percibir más allá del reino físico. Poseen una sensibilidad aumentada hacia el reino subatómico, lo que les permite ver más allá de las limitaciones de la percepción humana. Esta habilidad se basa en el entrenamiento de su estructura neural, que les permite detectar y procesar información más allá del rango típico de los sentidos humanos. Usan esta habilidad para estudiar y comprender las leyes subyacentes de la física, adentrándose más en los secretos del multiverso. Generalmente son científicos, exploradores y filósofos, constantemente empujando los límites del conocimiento.
+
+
 ent_link: https://maarworld.gumroad.com/
 physical_link: https://maarworld.gumroad.com/l/skysound1
 digital_link: https://opensea.io
