@@ -1273,9 +1273,20 @@ soundEngineImageInput.addEventListener('change', function() {
     /**
      * Cancel Button Event Listener
      */
-    cancelButton.addEventListener('click', function() {
-        window.location.href = '/voyage/soundEngine';
-    });
+        cancelButton.addEventListener('click', function() {
+            if (isEditMode) {
+                // Switch back to view mode if in edit mode
+                isEditMode = false;
+                toggleViewMode('view');
+                updateURL('view', soundEngineIdInput.value); // Update URL to reflect view mode
+                loadSoundEngineDetails(soundEngineIdInput.value); // Reload details in view mode
+                updateEditButton(); // Adjust the edit button icon and title
+            } else {
+                // If not in edit mode, return to the main sound engine list or home page
+                window.location.href = '/voyage';
+            }
+        });
+
 
 });
 </script>
