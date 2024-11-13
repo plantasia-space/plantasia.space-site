@@ -149,7 +149,6 @@ public: false
                     </ul>
                 </div>
             </div>
-
             <!-- Sound Engines Section -->
             <div class="collapsible-section" data-section-id="sound-engines">
                 <div class="section-header" tabindex="0" role="button" aria-expanded="true" aria-controls="sound-engines-list">
@@ -549,7 +548,7 @@ async function displaySoundEnginesBatch(engineIds) {
                     : 'https://media.maar.world/uploads/default/default-soundEngine.jpg'; // Provide a default image path
 
                 const soundEngineName = engine.soundEngineName || 'Unnamed Sound Engine';
-
+                console.log(engine);
                 // Create DOM elements
                 const soundEngineDiv = document.createElement('li');
 
@@ -607,7 +606,12 @@ soundEngineDiv.innerHTML = `
 
 /**
  * Function to display interplanetary players on the page using batch fetching.
- * Consolidates action buttons into a single "More Options" button with a dropdown menu.
+ * Displays a 3D preview using iframe with the provided objURL and textureURL.
+ * @param {Array<string>} playerIds - Array of interplanetary player IDs owned by the user.
+ */
+/**
+ * Function to display interplanetary players on the page using batch fetching.
+ * Displays additional details: sciName, orbital period, moons, description (100 chars), and 3D artist with link.
  * @param {Array<string>} playerIds - Array of interplanetary player IDs owned by the user.
  */
 async function displayInterplanetaryPlayersBatch(playerIds) {
@@ -630,7 +634,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         return;
     }
 
-    const batchUrl = `http://media.maar.world:3001/api/interplanetaryPlayers/batch?ids=${validPlayerIds.join(',')}`;
+    const batchUrl = `http://media.maar.world:3001/api/interplanetaryPlayers/batch-fetch?ids=${validPlayerIds.join(',')}`;
 
     try {
         const data = await fetchData(batchUrl);
@@ -638,35 +642,42 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         if (data.success && Array.isArray(data.interplanetaryPlayers)) {
             console.log(`Fetched ${data.interplanetaryPlayers.length} interplanetary players.`);
             
-            for (const player of data.interplanetaryPlayers) {
-                console.log('Interplanetary Player Object:', player); // Debugging Line
-
+            data.interplanetaryPlayers.forEach((player) => {
                 if (!player || typeof player !== 'object') {
                     console.warn('Invalid interplanetary player data:', player);
-                    continue;
+                    return;
                 }
 
-                // Use artName for the player name
-                const playerName = player.artName || 'Unnamed Player'; 
-                const sciName = player.sciName || 'Unknown';
-                const description = player.description ? player.description.substring(0, 30) + '...' : 'No description available.';
+                // Destructure necessary fields with fallback values
+                const {
+                    _id,
+                    artName = 'Unnamed Player',
+                    sciName = 'Unknown',
+                    period = 'Unknown',
+                    moonAmount = 'Unknown',
+                    description = 'No description available.',
+                    ddd,
+                    isPublic = false,
+                    objURL,
+                    textureURL
+                } = player;
 
-                // Build the iframe if objURL and textureURL are available
-                const baseMediaUrl = 'https://media.maar.world';
+                // Truncate description to 100 characters
+                const truncatedDescription = description.length > 100 ? description.substring(0, 100) + '...' : description;
 
-                const objURL = player.ddd?.objURL ? baseMediaUrl + player.ddd.objURL : null;
-                const textureURL = player.ddd?.textureURL ? baseMediaUrl + player.ddd.textureURL : null;
+                // 3D artist link, falling back to 'N/A' if not available
+                const dddArtist = ddd?.dddArtist
+                    ? `<a href="/xplorer/?username=${encodeURIComponent(ddd.dddArtist)}" target="_self">@${ddd.dddArtist}</a>`
+                    : 'N/A';
 
-                let iframeHTML = '';
+                // Construct the iframe URL with encoded URLs for the object and texture
+                let mediaHTML = '';
                 if (objURL && textureURL) {
-                    const encodedObjURL = encodeURI(objURL);
-                    const encodedTextureURL = encodeURI(textureURL);
+                    const encodedObjURL = encodeURIComponent(objURL);
+                    const encodedTextureURL = encodeURIComponent(textureURL);
                     const iframeSrc = `https://preview.maar.world/?object=${encodedObjURL}&texture=${encodedTextureURL}`;
 
-                    // Log the iframeSrc and iframeHTML for debugging
-                    console.log('Generated iframeSrc:', iframeSrc);
-
-                    iframeHTML = `
+                    mediaHTML = `
                         <div class="iframe-3d-model-container">
                             <iframe 
                                 class="iframe-3d-model" 
@@ -677,34 +688,27 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                             </iframe>
                         </div>
                     `;
-
-                    console.log('Generated iframeHTML:', iframeHTML);
                 } else {
-                    // Fallback to default image if URLs are not available
-                    const imageUrl = player.ddd?.textureURL
-                        ? `https://media.maar.world${encodeURI(player.ddd.textureURL)}`
-                        : 'https://media.maar.world/uploads/default/default-interplanetaryPlayer.jpg'; // Default image
-
-                    iframeHTML = `
-                        <div class="interplanetaryPlayer-profile-pic">
-                            <div class="decagon-frame">
-                                <img src="${imageUrl}" alt="${playerName}" loading="lazy">
-                            </div>
+                    const imageUrl = 'https://media.maar.world/uploads/default/default-interplanetaryPlayer.jpg';
+                    mediaHTML = `
+                        <div class="interplanetaryPlayer-media">
+                            <img src="${imageUrl}" alt="${artName}" loading="lazy">
                         </div>
                     `;
                 }
 
-                // Create DOM elements
-                const playerDiv = document.createElement('li');
-
-                playerDiv.innerHTML = `
-                    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${player._id}', event)" style="cursor: pointer;">
-                        ${iframeHTML}
+                // Construct the player card HTML
+                const playerCardHTML = `
+                    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${_id}', event)" style="cursor: pointer;">
+                        ${mediaHTML}
                         <div class="interplanetaryPlayer-details">
-                            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${playerName}</div>
+                            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${artName}</div>
                             <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
-                            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${description}</div>
-                            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}</div>
+                            <div class="interplanetaryPlayer-period"><strong>Orbital Period:</strong> ${period} days</div>
+                            <div class="interplanetaryPlayer-moons"><strong>Moons:</strong> ${moonAmount}</div>
+                            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${truncatedDescription}</div>
+                            <div class="interplanetaryPlayer-credits" id="viewDddArtistName"><strong>3D Artist:</strong> ${dddArtist}</div>
+                            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${isPublic ? '🌍 Public' : '🔐 Private'}</div>
                         </div>
                         <div class="interplanetaryPlayer-actions">
                             <div class="more-options-container">
@@ -712,13 +716,13 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                                     <span class="material-symbols-outlined">more_horiz</span>
                                 </button>
                                 <div class="more-options-dropdown">
-                                    <button class="option-button" onclick="editInterplanetaryPlayer('${player._id}')">
+                                    <button class="option-button" onclick="editInterplanetaryPlayer('${_id}')">
                                         <span class="material-symbols-outlined">edit</span> Edit
                                     </button>
-                                    <button class="option-button" onclick="shareInterplanetaryPlayer('${player._id}')">
+                                    <button class="option-button" onclick="shareInterplanetaryPlayer('${_id}')">
                                         <span class="material-symbols-outlined">share</span> Share
                                     </button>
-                                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${player._id}', this)">
+                                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${_id}', this)">
                                         <span class="material-symbols-outlined">delete</span> Delete
                                     </button>
                                 </div>
@@ -726,8 +730,13 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                         </div>
                     </div>
                 `;
-                playersListElement.appendChild(playerDiv);
-            }
+
+                // Create a list item and append the player card
+                const listItem = document.createElement('li');
+                listItem.innerHTML = playerCardHTML;
+                playersListElement.appendChild(listItem);
+            });
+
             console.log('All interplanetary players displayed successfully.');
         } else {
             console.error('Failed to fetch interplanetary players:', data.message);
