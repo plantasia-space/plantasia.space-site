@@ -510,23 +510,30 @@ async function submitForm() {
     const method = currentMode === 'edit' ? 'PATCH' : 'POST';
     console.log('Submitting form to:', url);
 
+    // Get moon amount and validate range
     let moonAmount = parseInt(document.getElementById('moonAmount').value, 10);
     moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
 
-    // Define `selectedIpId` and `sciName` based on the selected exoplanet
-    const selectedIpId = document.getElementById('sciName').value;
-    const sciName = selectedIpId && exoplanetData[selectedIpId]
-        ? exoplanetData[selectedIpId].sciName
-        : 'Unknown Exoplanet';
+    // Determine sciName and ipId based on the mode
+    let sciName, selectedIpId;
 
-    // Prepare data for POST/PATCH with validated `ipId` and `sciName`
+    if (currentMode === 'create') {
+        selectedIpId = document.getElementById('sciName').value;
+        sciName = selectedIpId && exoplanetData[selectedIpId]
+            ? exoplanetData[selectedIpId].sciName
+            : 'Unknown Exoplanet';
+    } else if (currentMode === 'edit') {
+        selectedIpId = playerData.ipId; // From loaded player data
+        sciName = playerData.sciName;    // From loaded player data
+    }
+
     const initialData = {
         ownerId: userId,
         isPublic: false,
         ipId: selectedIpId,
+        sciName, // Using sciName based on mode
         artName: document.getElementById('artName').value.trim(),
         moonAmount,
-        sciName,
         ra_decimal: parseFloat(document.getElementById('ra_decimal').textContent) || 0,
         dec_decimal: parseFloat(document.getElementById('dec_decimal').textContent) || 0,
         period: parseFloat(document.getElementById('period').textContent) || 0,
@@ -536,48 +543,59 @@ async function submitForm() {
         credits: document.getElementById('credits').value.trim(),
         dddArtistName: document.getElementById('dddArtistName').value.trim(),
     };
+  const textureFile = document.getElementById('uploadTexture').files[0];
+  const objFile = document.getElementById('uploadObj').files[0];
 
-    console.log('Initial data to be sent:', initialData);
+  if (textureFile && objFile) {
+    initialData.textureFileName = textureFile.name;
+    initialData.textureFileType = textureFile.type || getMimeTypeFromFileName(textureFile.name);
+    initialData.objFileName = objFile.name;
+    initialData.objFileType = objFile.type || getMimeTypeFromFileName(objFile.name);
+  }
 
-    try {
-        const response = await fetch(url, {
-            method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(initialData)
-        });
+  console.log('Initial data to be sent:', initialData);
 
-        const dataResponse = await response.json();
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(initialData)
+    });
 
-        if (!dataResponse.success) {
-            throw new Error(dataResponse.message || 'An error occurred during submission.');
-        }
+    const dataResponse = await response.json();
 
-        const { playerId, textureUploadURL, objUploadURL, textureKey, objKey } = dataResponse;
-
-        console.log('Received presigned URLs and keys:', { playerId, textureKey, objKey });
-
-        if (method === 'POST') {
-            // Step 2: Upload files if creating
-            await uploadFiles(textureUploadURL, objUploadURL);
-            await finalizeInterplanetaryPlayer(playerId, textureKey, objKey);
-        }
-
-        handleSuccessResponse({ playerId });
-
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(`Error: ${error.message}`, 'error');
-    } finally {
-        enableFormInputs();
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Submit';
-        }
+    if (!dataResponse.success) {
+      throw new Error(dataResponse.message || 'An error occurred during submission.');
     }
-}
 
+    const { playerId: receivedPlayerId, textureUploadURL, objUploadURL, textureKey, objKey } = dataResponse;
+
+    // Check if necessary keys for uploading files are present if files were selected
+    if ((textureFile || objFile) && (!textureKey || !objKey || !textureUploadURL || !objUploadURL)) {
+      throw new Error('File upload keys or URLs missing from the server response.');
+    }
+
+    if (textureFile && objFile) {
+      console.log('Received presigned URLs and keys:', { receivedPlayerId, textureKey, objKey });
+      await uploadFiles(textureUploadURL, objUploadURL);
+      await finalizeInterplanetaryPlayer(receivedPlayerId, textureKey, objKey);
+    }
+
+    handleSuccessResponse({ playerId: receivedPlayerId });
+
+  } catch (error) {
+    console.error('Error:', error);
+    showToast(`Error: ${error.message}`, 'error');
+  } finally {
+    enableFormInputs();
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    }
+  }
+}
 /**
  * Function to Upload Files Using Presigned URLs.
  */
@@ -981,10 +999,14 @@ async function setFormMode(newMode) {
     const articleForm = document.getElementById('articleForm');
     const interplanetaryPlayerView = document.getElementById('interplanetaryPlayerView');
     const editButton = document.getElementById('editButton');
+    const formTitle = document.getElementById('formTitle'); // Reference to the form title element
 
     if (isViewMode) {
         interplanetaryPlayerView.style.display = 'block';
         articleForm.style.display = 'none';
+
+        // Update the form title for view mode
+        formTitle.textContent = 'View Interplanetary Player';
 
         // Update Edit Button to show 'Edit' icon and title
         if (editButton) {
@@ -996,6 +1018,9 @@ async function setFormMode(newMode) {
     } else if (isEditMode) {
         interplanetaryPlayerView.style.display = 'none';
         articleForm.style.display = 'block';
+
+        // Update the form title for edit mode
+        formTitle.textContent = 'Edit Interplanetary Player';
 
         // Update Edit Button to show 'View' icon and title
         if (editButton) {
@@ -1010,12 +1035,15 @@ async function setFormMode(newMode) {
     } else if (isCreateMode) {
         interplanetaryPlayerView.style.display = 'none';
         articleForm.style.display = 'block';
+
+        // Update the form title for create mode
+        formTitle.textContent = 'Create a New Interplanetary Player';
+
         if (editButton) {
             editButton.style.display = 'none';
         }
     }
 }
-
     // Function to Update the URL Without Reloading the Page
     function updateURL(mode, playerId) {
         const newURL = `/voyage/interplanetary-player?mode=${mode}&playerId=${playerId}`;
