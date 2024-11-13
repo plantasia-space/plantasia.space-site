@@ -4,13 +4,11 @@ show_title: false
 show_date: false
 permalink: /voyage/interplanetary-player
 titles:
-  # @start locale config
-  en      : &EN       interplanetary-players
-  en-GB   : *EN
-  en-US   : *EN
-  en-CA   : *EN
-  en-AU   : *EN
-  # @end locale config
+  en: &EN interplanetary-players
+  en-GB: *EN
+  en-US: *EN
+  en-CA: *EN
+  en-AU: *EN
 key: IP
 public: false
 ---
@@ -31,7 +29,6 @@ public: false
         </div>
     </div>
     <h3 id="formTitle">Create a New Interplanetary Player</h3>
-    <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
     <!-- View Mode -->
     <div id="interplanetaryPlayerView" style="display: none;">
@@ -56,8 +53,10 @@ public: false
     </div>
         
     <!-- Edit/Create Mode -->
+
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- 3D Model Upload -->
+        <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
         <!-- Texture Image Preview -->
         <div id="textureImagePreviewContainer">
@@ -68,14 +67,14 @@ public: false
             Please upload the 3D model (OBJ format): <span class="required" id="uploadObjRequired">*</span>
             <span class="tooltip" title="Ensure the file is in .obj format and does not exceed 10MB.">?</span>
         </label>
-        <input type="file" id="uploadObj" name="uploadObj" accept=".obj">
+        <input type="file" id="uploadObj" name="uploadObj" accept=".obj" required>
 
         <!-- Texture Upload -->
         <label for="uploadTexture">
             Please upload the texture file (any image format): <span class="required" id="uploadTextureRequired">*</span>
             <span class="tooltip" title="Supported formats: .jpg, .png, .gif. Maximum size: 5MB.">?</span>
         </label>
-        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*">
+        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*" required>
         <!-- Existing Texture File -->
         <div id="existingTextureFile" style="display: none;">
             Current Texture File: <a href="#" target="_blank" id="existingTextureLink">View</a>
@@ -140,6 +139,12 @@ public: false
              <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
         <div class="p-2"></div>
 
+        <!-- Loading Message -->
+        <div id="loadingMessage" style="display: none; text-align: center;">
+            <p>Uploading your interplanetary player, please wait...</p>
+            <!-- Loading Spinner -->
+            <div class="spinner"></div>
+        </div>
 
         <!-- Progress Bar -->
         <div class="progress-bar">
@@ -150,14 +155,14 @@ public: false
         <div id="statusMessage" class="status-message" style="display: none;"></div>
     </form>
 </div>
-<div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+<div id="toastContainer"></div>
 
 <script>
-    // Define submitButton globally
-    const submitButton = document.querySelector('#articleForm button[type="submit"]');
-    if (!submitButton) {
-        console.error('Submit button not found! Please check the selector.');
-    }
+    // Define the API base URL
+    const API_BASE_URL = 'http://media.maar.world:3001/api';
+
+    // Define the file category for this form
+    const FILE_CATEGORY_UPLOAD = 'interplanetaryPlayers'; // Must match the category in spacesUtils.js
 
     // Toast Function for User Notifications
     function showToast(message, type = 'success') {
@@ -224,27 +229,57 @@ public: false
     let moonAmountInput = null; // Reference to the moonAmount input
     let currentMode = 'create'; // Current mode: 'create', 'edit', 'view'
 
+    // Initialize the form once the DOM is loaded
+    document.addEventListener('DOMContentLoaded', async () => {
+        setupFormListeners();
+        await loadExoplanetData();
+        setupArtNameValidation();
+
+        // Determine initial mode based on URL parameters
+        if (initialMode === 'edit' && playerId) {
+            currentMode = 'edit';
+            await loadInterplanetaryPlayersDetails(playerId);
+        } else if (initialMode === 'view' && playerId) {
+            currentMode = 'view';
+            await loadInterplanetaryPlayersDetails(playerId);
+        } else {
+            currentMode = 'create';
+            clearFormFields();
+        }
+
+        setFormMode(currentMode);
+
+        // Push the initial state to history
+        history.replaceState({ mode: currentMode, playerId }, '', window.location.href);
+    });
+
     // Function to load exoplanet data from the server
     async function loadExoplanetData() {
         try {
             console.log('Fetching exoplanet data from server');
-            const response = await fetch('http://media.maar.world:3001/api/interplanetaryplayers/fetchExoplanetData');
+            const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/fetch-exoplanet-data`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch exoplanet data: ${response.statusText}`);
             }
             const data = await response.json();
             console.log('Exoplanet data fetched:', data);
             
-            // Check if data is an array and has at least one element
-            if (Array.isArray(data) && data.length > 0) {
-                const exoplanetArray = data[0]; // Access the first element
+            // Check if data has success and exoplanets array
+            if (data.success && Array.isArray(data.exoplanets) && data.exoplanets.length > 0) {
+                const exoplanetObject = data.exoplanets[0]; // Access the first element
+                console.log('Exoplanet Object:', exoplanetObject);
                 exoplanetData = {}; // Initialize as an empty object
-                
-                // Iterate through the exoplanetArray to build exoplanetData
-                Object.keys(exoplanetArray).forEach(ipId => {
-                    exoplanetData[ipId] = exoplanetArray[ipId];
+
+                // Iterate through the keys of the exoplanetObject to build exoplanetData
+                Object.keys(exoplanetObject).forEach(ipId => {
+                    console.log('Processing ipId:', ipId);
+                    if (ipId !== 'undefined') { // Exclude undefined keys
+                        exoplanetData[ipId] = exoplanetObject[ipId];
+                    } else {
+                        console.warn('Encountered undefined ipId:', exoplanetObject[ipId]);
+                    }
                 });
-                
+
                 console.log('Structured Exoplanet Data:', exoplanetData);
                 populateExoplanetDropdown();
             } else {
@@ -256,26 +291,26 @@ public: false
         }
     }
 
-    // Function to populate the exoplanet dropdown with data fetched from the API
-    function populateExoplanetDropdown() {
-        const selectElement = document.getElementById('sciName');
-        selectElement.innerHTML = '<option value="">Please select an exoplanet</option>';
+// Function to populate the exoplanet dropdown with data fetched from the API
+function populateExoplanetDropdown() {
+    const selectElement = document.getElementById('sciName');
+    selectElement.innerHTML = '<option value="">Please select an exoplanet</option>';
 
-        // Iterate over the keys in exoplanetData
-        Object.keys(exoplanetData).forEach(ipId => {
-            const exoplanet = exoplanetData[ipId];
+    // Iterate over the keys in exoplanetData
+    Object.keys(exoplanetData).forEach(ipId => {
+        const exoplanet = exoplanetData[ipId];
 
-            // Only add to the dropdown if artName is null or "null" (string)
-            if (!exoplanet.artName || exoplanet.artName === 'null') {
-                const option = document.createElement('option');
-                option.value = ipId; // Set ipId as the value for the option
-                option.textContent = `${ipId}: ${exoplanet.sciName}`; // Display ipId and sciName
-                selectElement.appendChild(option);
-            }
-        });
+        // Only add to the dropdown if artName is explicitly null or the string "null"
+        if (exoplanet.artName === null || exoplanet.artName === 'null') {
+            const option = document.createElement('option');
+            option.value = ipId; // Set ipId as the value for the option
+            option.textContent = `${ipId}: ${exoplanet.sciName}`; // Display ipId and sciName
+            selectElement.appendChild(option);
+        }
+    });
 
-        console.log('Exoplanet dropdown populated.');
-    }
+    console.log('Exoplanet dropdown populated with available exoplanets.');
+}
 
     // Function to Clear Form Fields (Create Mode)
     function clearFormFields() {
@@ -292,9 +327,15 @@ public: false
         document.getElementById('exoplanetDetails').style.display = 'none';
         // Clear artName feedback
         displayArtNameFeedback('', '');
+        const submitButton = document.getElementById('submitButton');
         if (submitButton) {
             submitButton.disabled = true;
         }
+
+        // Hide existing file links and previews
+        document.getElementById('existingObjFile').style.display = 'none';
+        document.getElementById('existingTextureFile').style.display = 'none';
+        document.getElementById('texturePreviewForm').style.display = 'none';
     }
 
     // Function to Set Up Form Listeners
@@ -303,8 +344,6 @@ public: false
         moonAmountInput = document.getElementById('moonAmount');
         const cancelButton = document.getElementById('cancelButton');
         const artNameInput = document.getElementById('artName');
-        const uploadObjInput = document.getElementById('uploadObj');
-        const uploadTextureInput = document.getElementById('uploadTexture');
 
         // Validate moonAmount to be between 0 and 145
         moonAmountInput.addEventListener('input', function() {
@@ -332,16 +371,9 @@ public: false
                 };
                 reader.readAsDataURL(file);
             } else {
-                if (playerData && playerData.ddd.textureURL) {
-                    const textureUrl = playerData.ddd.textureURL.startsWith('http')
-                        ? playerData.ddd.textureURL
-                        : `https://media.maar.world${playerData.ddd.textureURL}`;
-                    texturePreview.src = textureUrl;
-                    texturePreview.style.display = 'block';
-                } else {
-                    texturePreview.src = '';
-                    texturePreview.style.display = 'none';
-                }
+                const preview = document.getElementById('texturePreviewForm');
+                preview.src = '';
+                preview.style.display = 'none';
             }
         });
 
@@ -375,6 +407,13 @@ public: false
 
         // Handle change in exoplanet selection
         document.getElementById('sciName').addEventListener('change', updateDetails);
+
+        // Add event listeners to file inputs to monitor file selections
+        const uploadObjInput = document.getElementById('uploadObj');
+        const uploadTextureInput = document.getElementById('uploadTexture');
+
+        uploadObjInput.addEventListener('change', checkFileUploads);
+        uploadTextureInput.addEventListener('change', checkFileUploads);
     }
 
     // Function to Update Exoplanet Details on Selection Change
@@ -424,8 +463,8 @@ public: false
     }
 
     /**
-        * Function to Handle Form Submission with Enhanced Validation
-        */
+     * Function to Handle Form Submission with Enhanced Validation
+     */
     async function handleFormSubmission() {
         // In Create Mode, ensure both files are uploaded
         if (currentMode === 'create') {
@@ -442,235 +481,189 @@ public: false
     }
 
     /**
-        * Function to Submit the Form for Creating or Editing an Interplanetary Player.
-        */
-    async function submitForm() {
+     * Function to Submit the Form for Creating or Editing an Interplanetary Player.
+     */
+async function submitForm() {
+    disableFormInputs();
 
-                disableFormInputs();
+    const submitButton = document.querySelector('#articleForm button[type="submit"]');
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+    }
 
+    const url = `${API_BASE_URL}/interplanetaryplayers`;
+    console.log('Submitting form to:', url);
+
+    let moonAmount = parseInt(document.getElementById('moonAmount').value, 10);
+    moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
+
+    const selectedIpId = document.getElementById('sciName').value;
+
+    // Determine sciName based on selectedIpId
+    let sciName = 'Unknown Exoplanet';
+    if (selectedIpId && exoplanetData[selectedIpId]) {
+        sciName = exoplanetData[selectedIpId].sciName || 'Unknown Exoplanet';
+    }
+
+    // Prepare initialData
+    const initialData = {
+        ownerId: userId,
+        isPublic: false,
+        ipId: selectedIpId,
+        artName: document.getElementById('artName').value.trim(),
+        moonAmount,
+        sciName,
+        ra_decimal: parseFloat(document.getElementById('ra_decimal').textContent) || 0,
+        dec_decimal: parseFloat(document.getElementById('dec_decimal').textContent) || 0,
+        period: parseFloat(document.getElementById('period').textContent) || 0,
+        radius: parseFloat(document.getElementById('radius').textContent) || 0,
+        discoveryyear: parseInt(document.getElementById('discoveryyear').textContent, 10) || 0,
+        description: document.getElementById('exoplanetDescription').value.trim(),
+        credits: document.getElementById('credits').value.trim(),
+        dddArtistName: document.getElementById('dddArtistName').value.trim(),
+        isPublic: false, // Adjust as needed
+    };
+
+    console.log('Initial data to be sent:', initialData);
+
+    try {
+        // Step 1: Submit initial data
+        const initialResponse = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(initialData)
+        });
+
+        const initialDataResponse = await initialResponse.json();
+
+        if (!initialDataResponse.success) {
+            throw new Error(initialDataResponse.message || 'An error occurred during submission.');
+        }
+
+        const { playerId, textureUploadURL, objUploadURL, textureKey, objKey } = initialDataResponse;
+
+        console.log('Received presigned URLs and keys:', { playerId, textureKey, objKey });
+
+        // Step 2: Upload files using presigned URLs
+        await uploadFiles(textureUploadURL, objUploadURL);
+
+        // Step 3: Finalize the Interplanetary Player
+        await finalizeInterplanetaryPlayer(playerId, textureKey, objKey);
+
+        // Step 4: Handle success response
+        handleSuccessResponse({ playerId });
+
+    } catch (error) {
+        console.error('Error:', error);
+        showToast(`Error: ${error.message}`, 'error');
+    } finally {
+        enableFormInputs();
+
+        // Re-enable the submit button
         if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit';
         }
+    }
+}
 
-        const method = currentMode === 'edit' ? 'PUT' : 'POST';
-        const url = method === 'PUT' 
-            ? `http://media.maar.world:3001/api/interplanetaryplayers/${playerId}` 
-            : 'http://media.maar.world:3001/api/interplanetaryplayers';
+/**
+ * Function to Upload Files Using Presigned URLs.
+ */
+async function uploadFiles(textureUploadURL, objUploadURL) {
+    const objFile = document.getElementById('uploadObj').files[0];
+    const textureFile = document.getElementById('uploadTexture').files[0];
 
-        console.log('Submitting form with method:', method);
-        console.log('URL:', url);
+    /**
+     * Helper function to upload a file.
+     */
+    async function uploadFile(url, file) {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': file.type || getMimeTypeFromFileName(file.name),
+            },
+            body: file,
+        });
 
-        let moonAmount = parseInt(document.getElementById('moonAmount').value, 10);
-        moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
-
-        const selectedIpId = currentMode === 'edit' && playerData ? playerData.ipId : document.getElementById('sciName').value;
-        console.log('Selected ipId:', selectedIpId);
-
-        if (!selectedIpId && currentMode !== 'edit') {
-            showToast('Please select a valid exoplanet.', 'error');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            return;
+        if (!response.ok) {
+            throw new Error('File upload failed.');
         }
+    }
 
-        // Determine sciName based on mode
-        let sciName = 'Unknown Exoplanet';
-        if (currentMode === 'edit') {
-            sciName = document.getElementById('sciNameDisplay').textContent.trim() || 'Unknown Exoplanet';
-        } else {
-            // Create Mode: Get sciName from selectedIpId
-            if (selectedIpId && exoplanetData[selectedIpId]) {
-                sciName = exoplanetData[selectedIpId].sciName || 'Unknown Exoplanet';
-            }
-        }
-        console.log('Determined sciName:', sciName);
+    // Upload files concurrently
+    await Promise.all([
+        uploadFile(objUploadURL, objFile),
+        uploadFile(textureUploadURL, textureFile)
+    ]);
 
-        // Prepare configData
-        const configData = {
-            ownerId: userId,
-            isPublic: false,
-            ipId: selectedIpId,
-            artName: document.getElementById('artName').value.trim(),
-            moonAmount,
-            sciName,
-            ra_decimal: parseFloat(document.getElementById('ra_decimal').textContent.replace('Right Ascension (Decimal): ', '')) || 0,
-            dec_decimal: parseFloat(document.getElementById('dec_decimal').textContent.replace('Declination (Decimal): ', '')) || 0,
-            period: parseFloat(document.getElementById('period').textContent.replace('Orbital Period [days]: ', '')) || 0,
-            radius: parseFloat(document.getElementById('radius').textContent.replace('Radius [R earth]: ', '')) || 0,
-            discoveryyear: parseInt(document.getElementById('discoveryyear').textContent.replace('Discovery Year: ', ''), 10) || 0,
-            description: document.getElementById('exoplanetDescription').value.trim(),
-            credits: document.getElementById('credits').value.trim(),
-            ddd: {
-                dddArtist: document.getElementById('dddArtistName').value.trim(),
-                objURL: playerData?.ddd?.objURL || '',
-                textureURL: playerData?.ddd?.textureURL || ''
-            }
-        };
+    console.log('Files uploaded successfully.');
+}
+/**
+ * Function to Finalize the Interplanetary Player.
+ */
+async function finalizeInterplanetaryPlayer(playerId, textureKey, objKey) {
+    const finalizeUrl = `${API_BASE_URL}/interplanetaryplayers/finalize`;
 
-        console.log('Config data to be sent:', configData);
+    const finalizeData = {
+        playerId,
+        textureKey,
+        objKey
+    };
 
-        // Validate Required Fields
+    const finalizeResponse = await fetch(finalizeUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(finalizeData)
+    });
 
-        // Check if artName is available before submitting
-        const artName = document.getElementById('artName').value.trim();
-        const excludeId = currentMode === 'edit' ? playerId : '';
-        const isArtNameValid = await checkArtNameAvailability(artName, excludeId);
+    const finalizeDataResponse = await finalizeResponse.json();
 
-        if (!isArtNameValid) {
-            showToast('Please choose a different Artistic Name.', 'error');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            return;
-        }
+    if (!finalizeDataResponse.success) {
+        throw new Error(finalizeDataResponse.message || 'An error occurred during finalization.');
+    }
 
-        if (!configData.artName) {
-            showToast('Artistic Name is required.', 'error');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            return;
-        }
+    console.log('Interplanetary Player finalized successfully.');
+}
 
-        if (!configData.description) {
-            showToast('Exoplanet Description is required.', 'error');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            return;
-        }
-
-        try {
-            let fileData = {};
-
-            // Handle File Uploads
-            const objFile = document.getElementById('uploadObj').files[0];
-            const textureFile = document.getElementById('uploadTexture').files[0];
-
-            if (objFile || textureFile) {
-                const uploadFiles = new FormData();
-                uploadFiles.append('ipId', selectedIpId);
-
-                if (objFile) {
-                    uploadFiles.append('uploadObj', objFile);
-                    console.log('Appending obj file:', objFile.name);
-                } else if (playerData && playerData.ddd.objURL) {
-                    uploadFiles.append('existingObjURL', playerData.ddd.objURL);
-                    console.log('Appending existing obj URL:', playerData.ddd.objURL);
-                }
-
-                if (textureFile) {
-                    uploadFiles.append('uploadTexture', textureFile);
-                    console.log('Appending texture file:', textureFile.name);
-                } else if (playerData && playerData.ddd.textureURL) {
-                    uploadFiles.append('existingTextureURL', playerData.ddd.textureURL);
-                    console.log('Appending existing texture URL:', playerData.ddd.textureURL);
-                }
-
-                // Upload Files
-                const uploadResponse = await fetch('http://media.maar.world:3001/api/interplanetaryplayers/uploadModelFiles', {
-                    method: 'POST',
-                    body: uploadFiles
-                });
-
-                if (!uploadResponse.ok) {
-                    throw new Error(`Failed to upload files: ${uploadResponse.statusText}`);
-                }
-
-                fileData = await uploadResponse.json();
-                console.log('Files uploaded successfully:', fileData);
-
-                // Update configData with new URLs if uploaded
-                if (fileData.uploadObjURL) {
-                    configData.ddd.objURL = fileData.uploadObjURL;
-                }
-                if (fileData.uploadTextureURL) {
-                    configData.ddd.textureURL = fileData.uploadTextureURL;
-                }
-            }
-
-            // Update Exoplanet Artistic Name
-            if (configData.artName) {
-                const updateArtNameResponse = await fetch('http://media.maar.world:3001/api/interplanetaryplayers/updateExoplanet', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ ipId: selectedIpId, artName: configData.artName })
-                });
-
-                if (!updateArtNameResponse.ok) {
-                    throw new Error(`Failed to update artistic name: ${updateArtNameResponse.statusText}`);
-                }
-
-                const updateArtNameData = await updateArtNameResponse.json();
-
-                if (!updateArtNameData.artName) {
-                    throw new Error('Artistic name update failed.');
-                }
-
-                console.log('Artistic name updated successfully:', updateArtNameData);
-            }
-
-            // Submit the main form data
-            const formResponse = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(configData)
-            });
-
-            if (formResponse.status === 409) {
-                // Handle conflict during form submission if applicable
-                displayArtNameFeedback('Artistic Name is already taken.', 'error');
-                showToast('Please choose a different Artistic Name.', 'error');
-                return;
-            }
-
-            const formDataResponse = await formResponse.json();
-            console.log('Server response:', formDataResponse);
-
-            if (formDataResponse.success) {
-                handleSuccessResponse(formDataResponse);
-            } else {
-                throw new Error(formDataResponse.message || 'An error occurred during submission.');
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-            showToast(`Error: ${error.message}`, 'error');
-        } finally {
-                        enableFormInputs();
-
-            // Re-enable the submit button and reset progress bar
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            document.getElementById('progress').style.width = '0%';
-            document.getElementById('progress').textContent = '';
+    /**
+     * Helper function to get MIME type from file name
+     * @param {string} fileName - The name of the file.
+     * @returns {string} - The MIME type.
+     */
+    function getMimeTypeFromFileName(fileName) {
+        const extension = fileName.split('.').pop().toLowerCase();
+        switch (extension) {
+            case 'obj':
+                return 'application/octet-stream';
+            case 'jpg':
+            case 'jpeg':
+                return 'image/jpeg';
+            case 'png':
+                return 'image/png';
+            case 'gif':
+                return 'image/gif';
+            default:
+                return 'application/octet-stream';
         }
     }
 
     /**
-        * Function to Update the Exoplanet Artistic Name
-        */
-    async function updateExoplanetArtName(ipId, artName) {
+     * Helper function to update the artistic name
+     */
+    async function updateArtisticName(artName, selectedIpId) {
         try {
-            console.log('Updating exoplanet artistic name for ipId:', ipId, 'artName:', artName);
-            const response = await fetch('http://media.maar.world:3001/api/interplanetaryplayers/updateExoplanet', {
+            const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/updateArtName`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ ipId, artName })
+                body: JSON.stringify({ ipId: selectedIpId, artName })
             });
 
             if (!response.ok) {
@@ -684,15 +677,9 @@ public: false
             }
 
             console.log('Artistic name updated successfully:', data);
-            showToast('Interplanetary Player data updated successfully!', 'success');
-
-            // Reload the player data and switch to view mode
-            await loadInterplanetaryPlayersDetails(playerId);
-            setFormMode('view');
         } catch (error) {
             console.error('Failed to update artistic name:', error);
-            showToast('Failed to update exoplanet artistic name. Please try again.', 'error');
-            enableForm();
+            throw error;
         }
     }
 
@@ -730,41 +717,38 @@ public: false
         }
     }
 
-
     // Function to Load Interplanetary Player Details from the Server
-    async function loadInterplanetaryPlayersDetails(playerId) {
-        try {
-            const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch player details: ${response.statusText}`);
-            }
-            const data = await response.json();
-
-            if (!data.success) {
-                console.error('Error fetching player details:', data.message);
-                showToast('Failed to load player details. Please try again.', 'error');
-                return;
-            }
-
-            playerData = data.player; // Assign fetched data to playerData.
-            isOwner = playerData.ownerId === userId; // Check ownership
-            console.log('Is user the owner?', isOwner);
-
-            // Show the edit button only if the user is the owner
-            const editButton = document.getElementById('editButton');
-            if (editButton) {
-                editButton.style.display = isOwner ? 'block' : 'none';
-            }
-
-            // Populate modes with data
-            populateEditMode(playerData);
-            populateViewMode(playerData);
-        } catch (error) {
-            console.error('Error loading interplanetary player details:', error);
-            showToast('Error loading player details. Please try again.', 'error');
+async function loadInterplanetaryPlayersDetails(playerId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/${playerId}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch player details: ${response.statusText}`);
         }
-    }
+        const data = await response.json();
 
+        if (!data.success) {
+            console.error('Error fetching player details:', data.message);
+            showToast('Failed to load player details. Please try again.', 'error');
+            return;
+        }
+
+        playerData = data.player;
+        isOwner = playerData.ownerId === userId; // Check ownership directly
+
+        // Display the edit button if the current user is the owner
+        const editButton = document.getElementById('editButton');
+        if (editButton) {
+            editButton.style.display = isOwner ? 'block' : 'none';
+        }
+
+        populateEditMode(playerData);
+        populateViewMode(playerData);
+
+    } catch (error) {
+        console.error('Error loading interplanetary player details:', error);
+        showToast('Error loading player details. Please try again.', 'error');
+    }
+}
     // Function to Populate Edit Mode with Player Data
     function populateEditMode(playerData) {
         // Handle sciName: show as text and hide the selector in edit mode
@@ -783,11 +767,11 @@ public: false
             // Populate other form fields with data from playerData for editing
             document.getElementById('artName').value = playerData.artName || '';
             document.getElementById('moonAmount').value = playerData.moonAmount || '0';
-            document.getElementById('ra_decimal').textContent = playerData.ra_decimal?.$numberDecimal || 'N/A';
-            document.getElementById('dec_decimal').textContent = playerData.dec_decimal?.$numberDecimal || 'N/A';
-            document.getElementById('period').textContent = playerData.period?.$numberDecimal || 'N/A';
-            document.getElementById('radius').textContent = playerData.radius?.$numberDecimal || 'N/A';
-            document.getElementById('discoveryyear').textContent = playerData.discoveryyear?.$numberDecimal || 'N/A';
+            document.getElementById('ra_decimal').textContent = playerData.ra_decimal || 'N/A';
+            document.getElementById('dec_decimal').textContent = playerData.dec_decimal || 'N/A';
+            document.getElementById('period').textContent = playerData.period || 'N/A';
+            document.getElementById('radius').textContent = playerData.radius || 'N/A';
+            document.getElementById('discoveryyear').textContent = playerData.discoveryyear || 'N/A';
 
             // Populate 3D artist name
             const dddArtistNameField = document.getElementById('dddArtistName');
@@ -839,6 +823,7 @@ public: false
 
             // Populate artName feedback and enable submit button
             displayArtNameFeedback('', '');
+            const submitButton = document.getElementById('submitButton');
             if (submitButton) {
                 submitButton.disabled = false;
             }
@@ -850,74 +835,77 @@ public: false
     }
 
     // Function to Populate View Mode with Player Data
-    function populateViewMode(playerData) {
-        // Populate the view container with data and make labels bold
-        document.getElementById('viewSciName').innerHTML = `<strong>Scientific Name:</strong> ${playerData.sciName || 'N/A'}`;
-        document.getElementById('viewArtName').innerHTML = `<strong>Artistic Name:</strong> ${playerData.artName || 'N/A'}`;
-        document.getElementById('viewRaDecimal').innerHTML = `<strong>Right Ascension (Decimal):</strong> ${playerData.ra_decimal?.$numberDecimal || 'N/A'}`;
-        document.getElementById('viewDecDecimal').innerHTML = `<strong>Declination (Decimal):</strong> ${playerData.dec_decimal?.$numberDecimal || 'N/A'}`;
-        document.getElementById('viewPeriod').innerHTML = `<strong>Orbital Period [days]:</strong> ${playerData.period?.$numberDecimal || 'N/A'}`;
-        document.getElementById('viewRadius').innerHTML = `<strong>Radius [R earth]:</strong> ${playerData.radius?.$numberDecimal || 'N/A'}`;
-        document.getElementById('viewDiscoveryYear').innerHTML = `<strong>Discovery Year:</strong> ${playerData.discoveryyear?.$numberDecimal || 'N/A'}`;
-        
-        // **3D Artist as Clickable Handler**
-        document.getElementById('viewDddArtistName').innerHTML = `<strong>3D Artist:</strong> ${playerData.ddd?.dddArtist ? `<a href="/xplorer/?username=${encodeURIComponent(playerData.ddd.dddArtist)}" target="_self">@${playerData.ddd.dddArtist}</a>` : 'N/A'}`;
-        
-        document.getElementById('viewExoplanetDescription').innerHTML = `<strong>Description:</strong> ${playerData.description || 'N/A'}`;
-        document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${playerData.credits || 'N/A'}`;
-        
-        // Show or hide Download 3D Model link
-        const viewObjFile = document.getElementById('viewObjFile');
-        if (playerData.ddd?.objURL) {
-            viewObjFile.href = playerData.ddd.objURL.startsWith('http') ? playerData.ddd.objURL : `https://media.maar.world${playerData.ddd.objURL}`;
-            viewObjFile.textContent = 'Download 3D Model';
-            viewObjFile.style.display = 'block';
-        } else {
-            viewObjFile.style.display = 'none';
-        }
-        
-        // Show or hide Texture Image
-        const viewTextureImage = document.getElementById('viewTextureImage');
-        if (playerData.ddd?.textureURL) {
-            const textureUrl = playerData.ddd.textureURL.startsWith('http') ? playerData.ddd.textureURL : `https://media.maar.world${playerData.ddd.textureURL}`;
-            viewTextureImage.src = textureUrl;
-            viewTextureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
-            viewTextureImage.style.display = 'block';
-        } else {
-            viewTextureImage.style.display = 'none';
-        }
-        
-        // **Populate Interplanetary Player Owner Details**
-        populatePlayerOwnerDetails(playerData.ownerDetails);
+function populateViewMode(playerData) {
+    // Helper function to safely extract numberDecimal values
+    function getNumberDecimalValue(field) {
+        return field?.$numberDecimal || field || 'N/A';
     }
+
+    // Populate the view container with data and make labels bold
+    document.getElementById('viewSciName').innerHTML = `<strong>Scientific Name:</strong> ${playerData.sciName || 'N/A'}`;
+    document.getElementById('viewArtName').innerHTML = `<strong>Artistic Name:</strong> ${playerData.artName || 'N/A'}`;
+    document.getElementById('viewRaDecimal').innerHTML = `<strong>Right Ascension (Decimal):</strong> ${getNumberDecimalValue(playerData.ra_decimal)}`;
+    document.getElementById('viewDecDecimal').innerHTML = `<strong>Declination (Decimal):</strong> ${getNumberDecimalValue(playerData.dec_decimal)}`;
+    document.getElementById('viewPeriod').innerHTML = `<strong>Orbital Period [days]:</strong> ${getNumberDecimalValue(playerData.period)}`;
+    document.getElementById('viewRadius').innerHTML = `<strong>Radius [R earth]:</strong> ${getNumberDecimalValue(playerData.radius)}`;
+    document.getElementById('viewDiscoveryYear').innerHTML = `<strong>Discovery Year:</strong> ${getNumberDecimalValue(playerData.discoveryyear)}`;
+    
+    // 3D Artist with clickable link
+    document.getElementById('viewDddArtistName').innerHTML = `<strong>3D Artist:</strong> ${playerData.ddd?.dddArtist ? `<a href="/xplorer/?username=${encodeURIComponent(playerData.ddd.dddArtist)}" target="_self">@${playerData.ddd.dddArtist}</a>` : 'N/A'}`;
+    
+    document.getElementById('viewExoplanetDescription').innerHTML = `<strong>Description:</strong> ${playerData.description || 'N/A'}`;
+    document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${playerData.credits || 'N/A'}`;
+    
+    // Download 3D Model link
+    const viewObjFile = document.getElementById('viewObjFile');
+    if (playerData.ddd?.objURL) {
+        viewObjFile.href = playerData.ddd.objURL.startsWith('http') ? playerData.ddd.objURL : `https://media.maar.world${playerData.ddd.objURL}`;
+        viewObjFile.textContent = 'Download 3D Model';
+        viewObjFile.style.display = 'block';
+    } else {
+        viewObjFile.style.display = 'none';
+    }
+    
+    // Texture Image
+    const viewTextureImage = document.getElementById('viewTextureImage');
+    if (playerData.ddd?.textureURL) {
+        const textureUrl = playerData.ddd.textureURL.startsWith('http') ? playerData.ddd.textureURL : `https://media.maar.world${playerData.ddd.textureURL}`;
+        viewTextureImage.src = textureUrl;
+        viewTextureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
+        viewTextureImage.style.display = 'block';
+    } else {
+        viewTextureImage.style.display = 'none';
+    }
+    
+    // Populate Owner Details
+    populatePlayerOwnerDetails(playerData.ownerDetails);
+}
 
     /**
         * Function to Populate the Interplanetary Player Owner Details
         */
-    function populatePlayerOwnerDetails(ownerDetails) {
+        function populatePlayerOwnerDetails(ownerDetails) {
         const playerOwnerList = document.getElementById('playerOwnerList');
-        
-        console.log("Player Owner Data:", ownerDetails);
 
         if (ownerDetails) {
             playerOwnerList.innerHTML = `
-                <li class="user-list-item">
-                    <div class="user-profile-pic">
-                        <img src="https://media.maar.world${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
-                        <div class="user-username">
-                            <a href="/xplorer/?username=${encodeURIComponent(ownerDetails.username)}" target="_self">
-                                @${ownerDetails.username || 'Unknown'}
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
+            <li class="user-list-item">
+                <div class="user-profile-pic">
+                <img src="${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
+                </div>
+                <div class="user-details">
+                <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
+                <div class="user-username">
+                    <a href="/xplorer/?username=${encodeURIComponent(ownerDetails.username)}" target="_self">
+                    @${ownerDetails.username || 'Unknown'}
+                    </a>
+                </div>
+                </div>
+            </li>`;
         } else {
             playerOwnerList.innerHTML = '<li>No owner details available.</li>';
         }
-    }
+        }
 
     /**
         * Function to Clear Cached Profiles.
@@ -939,109 +927,68 @@ public: false
     }
 
     // Function to Toggle Between Edit and View Modes
-    function toggleEditMode() {
-        if (currentMode === 'view') {
-            if (playerData) { // Ensure playerData is loaded
-                updateURL('edit', playerId);
-                setFormMode('edit');
-            } else {
-                showToast('Player data is still loading. Please wait...', 'error');
-                console.warn('Attempted to switch to edit mode before playerData was loaded.');
-            }
-        } else if (currentMode === 'edit') {
-            setFormMode('view');
-            updateURL('view', playerId);
-            loadInterplanetaryPlayersDetails(playerId); // Reload data to discard changes
+function toggleEditMode() {
+    if (currentMode === 'view') {
+        if (playerData) { // Ensure playerData is loaded
+            updateURL('edit', playerId);
+            setFormMode('edit');
+        } else {
+            showToast('Player data is still loading. Please wait...', 'error');
+            console.warn('Attempted to switch to edit mode before playerData was loaded.');
         }
+    } else if (currentMode === 'edit') {
+        setFormMode('view');
+        updateURL('view', playerId);
+        loadInterplanetaryPlayersDetails(playerId); // Reload data to discard changes
     }
+}
 
     /**
         * Function to Set the Current Mode (View, Edit, Create)
         */
-    async function setFormMode(newMode) {
-        currentMode = newMode;
-        const isViewMode = currentMode === 'view';
-        const isEditMode = currentMode === 'edit';
-        const isCreateMode = currentMode === 'create';
+async function setFormMode(newMode) {
+    currentMode = newMode;
+    const isViewMode = currentMode === 'view';
+    const isEditMode = currentMode === 'edit';
+    const isCreateMode = currentMode === 'create';
 
-        // Toggle visibility of form and view sections
-        const articleForm = document.getElementById('articleForm');
-        const interplanetaryPlayerView = document.getElementById('interplanetaryPlayerView');
-        const editButton = document.getElementById('editButton');
+    const articleForm = document.getElementById('articleForm');
+    const interplanetaryPlayerView = document.getElementById('interplanetaryPlayerView');
+    const editButton = document.getElementById('editButton');
 
-        if (isViewMode) {
-            interplanetaryPlayerView.style.display = 'block';
-            articleForm.style.display = 'none';
+    if (isViewMode) {
+        interplanetaryPlayerView.style.display = 'block';
+        articleForm.style.display = 'none';
 
-            // Set Edit Button to show 'Edit' icon and title
-            if (editButton) {
-                editButton.innerHTML = `<span class="material-symbols-outlined">edit</span>`;
-                editButton.title = 'Edit Interplanetary Player';
-                editButton.style.display = isOwner ? 'block' : 'none';
-            }
+        // Update Edit Button to show 'Edit' icon and title
+        if (editButton) {
+            editButton.innerHTML = `<span class="material-symbols-outlined">edit</span>`;
+            editButton.title = 'Edit Interplanetary Player';
+            editButton.style.display = isOwner ? 'block' : 'none';
+        }
 
-            // Set form title
-            const formTitle = document.getElementById('formTitle');
-            if (formTitle) {
-                formTitle.textContent = 'Interplanetary Player Details';
-            }
-        } else if (isEditMode) {
-            interplanetaryPlayerView.style.display = 'none';
-            articleForm.style.display = 'block';
+    } else if (isEditMode) {
+        interplanetaryPlayerView.style.display = 'none';
+        articleForm.style.display = 'block';
 
-            // Set Edit Button to show 'View' icon and title
-            if (editButton) {
-                editButton.innerHTML = `<span class="material-symbols-outlined">visibility</span>`;
-                editButton.title = 'View Interplanetary Player';
-                editButton.style.display = 'block';
-            }
+        // Update Edit Button to show 'View' icon and title
+        if (editButton) {
+            editButton.innerHTML = `<span class="material-symbols-outlined">visibility</span>`;
+            editButton.title = 'View Interplanetary Player';
+            editButton.style.display = 'block';
+        }
 
-            // Set form title
-            const formTitle = document.getElementById('formTitle');
-            if (formTitle) {
-                formTitle.textContent = 'Edit Interplanetary Player';
-            }
-
-            // Load the player details again if in edit mode
-            if (playerId) {
-                await loadInterplanetaryPlayersDetails(playerId);
-            }
-        } else if (isCreateMode) {
-            interplanetaryPlayerView.style.display = 'none';
-            articleForm.style.display = 'block';
-
-            // Hide Edit Button in Create Mode
-            if (editButton) {
-                editButton.style.display = 'none';
-            }
-
-            // Set form title
-            const formTitle = document.getElementById('formTitle');
-            if (formTitle) {
-                formTitle.textContent = 'Create a New Interplanetary Player';
-            }
-
-            // Clear the form fields if in create mode
-            clearFormFields();
-
-            // In Create Mode: Make file uploads required
-            document.getElementById('uploadObj').required = true;
-            document.getElementById('uploadTexture').required = true;
-
-            // Initially disable the submit button until both files are uploaded
-            const submitButton = document.getElementById('submitButton');
-            if (submitButton) {
-                submitButton.disabled = true;
-            }
-
-            // Add event listeners to file inputs to monitor file selections
-            const uploadObjInput = document.getElementById('uploadObj');
-            const uploadTextureInput = document.getElementById('uploadTexture');
-
-            uploadObjInput.addEventListener('change', checkFileUploads);
-            uploadTextureInput.addEventListener('change', checkFileUploads);
+        if (playerId) {
+            await loadInterplanetaryPlayersDetails(playerId);
+        }
+    } else if (isCreateMode) {
+        interplanetaryPlayerView.style.display = 'none';
+        articleForm.style.display = 'block';
+        if (editButton) {
+            editButton.style.display = 'none';
         }
     }
+}
 
     // Function to Update the URL Without Reloading the Page
     function updateURL(mode, playerId) {
@@ -1073,30 +1020,6 @@ public: false
         }
     });
 
-    // Initialize the Form on Page Load
-    document.addEventListener('DOMContentLoaded', async () => {
-        setupFormListeners();
-        loadExoplanetData();
-        setupArtNameValidation();
-
-        // Determine initial mode based on URL parameters
-        if (initialMode === 'edit' && playerId) {
-            currentMode = 'edit';
-            await loadInterplanetaryPlayersDetails(playerId);
-        } else if (playerId) {
-            currentMode = 'view';
-            await loadInterplanetaryPlayersDetails(playerId);
-        } else {
-            currentMode = 'create';
-            clearFormFields();
-        }
-
-        setFormMode(currentMode);
-
-        // Push the initial state to history
-        history.replaceState({ mode: currentMode, playerId }, '', window.location.href);
-    });
-
     /**
      * Function to Check the Availability of artName.
      */
@@ -1116,8 +1039,9 @@ public: false
                 params.append('excludeId', excludeId);
             }
 
-            const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/checkArtName?${params.toString()}`);
-        
+            // Ensure the endpoint matches the backend route
+            const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/checkArtName?${params.toString()}`);
+
             if (response.status === 200) {
                 const data = await response.json();
                 if (data.success) {
@@ -1201,25 +1125,7 @@ public: false
         }
     }
 
-    /**
-     * Function to Handle Form Submission with Enhanced Validation
-     */
-    async function handleFormSubmission() {
-        // In Create Mode, ensure both files are uploaded
-        if (currentMode === 'create') {
-            const objFile = document.getElementById('uploadObj').files[0];
-            const textureFile = document.getElementById('uploadTexture').files[0];
-
-            if (!objFile || !textureFile) {
-                showToast('Please upload both the 3D model (OBJ) and the texture image before submitting.', 'error');
-                return;
-            }
-        }
-
-        submitForm(); // Proceed with form submission
-    }
-
-   // Function to Disable All Form Inputs
+    // Function to Disable All Form Inputs
     function disableFormInputs() {
         const form = document.getElementById('articleForm');
         if (form) {
@@ -1239,6 +1145,17 @@ public: false
                 input.disabled = false;
             });
         }
+    }
+
+    // Function to Reset the Form After Submission
+    function resetForm() {
+        enableFormInputs();
+        const submitButton = document.querySelector('#articleForm button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit';
+        }
+        document.getElementById('loadingMessage').style.display = 'none';
     }
 
     /**
