@@ -74,18 +74,24 @@ public: false
             <img id="texturePreviewForm" src="" alt="Texture Image" style="display: none;">
         </div>
 
-        <label for="uploadObj">
-            Please upload the 3D model (OBJ format): <span class="required" id="uploadObjRequired">*</span>
-            <span class="tooltip" title="Ensure the file is in .obj format and does not exceed 10MB.">?</span>
-        </label>
-        <input type="file" id="uploadObj" name="uploadObj" accept=".obj" required>
+<label for="uploadObj">
+    Please upload the 3D model (OBJ format): <span class="required" id="uploadObjRequired">*</span>
+    <span class="tooltip" aria-label="OBJ File Info" tabindex="0" data-tooltip="Ensure the file is in .obj format and does not exceed 10MB.">
+        <span class="material-symbols-outlined">tooltip_2</span>
+    </span>
+</label>
+<input type="file" id="uploadObj" name="uploadObj" accept=".obj" required>
 
-        <!-- Texture Upload -->
-        <label for="uploadTexture">
-            Please upload the texture file (any image format): <span class="required" id="uploadTextureRequired">*</span>
-            <span class="tooltip" title="Supported formats: .jpg, .png, .gif. Maximum size: 5MB.">?</span>
-        </label>
-        <input type="file" id="uploadTexture" name="uploadTexture" accept="image/*" required>
+<!-- Texture Upload -->
+<label for="uploadTexture">
+    Please upload the texture file (any image format): <span class="required" id="uploadTextureRequired">*</span>
+    <span class="tooltip" aria-label="Texture File Info" tabindex="0" data-tooltip="Supported formats: .jpg, .png, .gif. Maximum size: 5MB.">
+        <span class="material-symbols-outlined">tooltip_2</span>
+    </span>
+</label>
+<input type="file" id="uploadTexture" name="uploadTexture" accept="image/*" required>
+
+        
         <!-- Existing Texture File -->
         <div id="existingTextureFile" style="display: none;">
             Current Texture File: <a href="#" target="_blank" id="existingTextureLink">View</a>
@@ -95,10 +101,13 @@ public: false
             Current 3D Model File: <a href="#" target="_blank" id="existingObjLink">Download</a>
         </div>
 
-        <label for="dddArtistName">
-            Who is the 3D artist for this creation? Please introduce @username <span class="required">*</span>
-            <span class="tooltip" title="Provide the username of the 3D artist responsible for this creation.">?</span>
-        </label>
+<!-- 3D Artist -->
+<label for="dddArtistName">
+    Who is the 3D artist for this creation? Please introduce @username <span class="required">*</span>
+    <span class="tooltip" aria-label="Artist Info" tabindex="0" data-tooltip="Provide the username of the 3D artist responsible for this creation.">
+        <span class="material-symbols-outlined">tooltip_2</span>
+    </span>
+</label>
         <div class="input-wrapper">
             <input type="text" class="user-search-input" id="dddArtistName" name="dddArtistName" placeholder="Type a username..." autocomplete="off" required>
             <div class="dropdown"></div>
