@@ -32,8 +32,19 @@ public: false
 
     <!-- View Mode -->
     <div id="interplanetaryPlayerView" style="display: none;">
+
+        <div id="modelPreviewContainer" class="iframe-3d-model-container" style="display: none;">
+        <iframe 
+            id="modelPreviewIframe"
+            class="iframe-3d-model" 
+            width="100%" 
+            height="auto" 
+            style="background: transparent; border: none;">
+        </iframe>
+    </div>
+
         <a id="viewObjFile" style="display: none;" href="#" download>Download 3D Model</a>
-        <img id="viewTextureImage" style="display: none; max-width: 100%; height: auto;" alt="Texture Image" />
+        <img id="viewTextureImage" style="display: none; max-width: 50%; height: auto;" alt="Texture Image" />
         
         <p id="viewSciName"></p>
         <p id="viewArtName"></p>
@@ -492,21 +503,23 @@ async function submitForm() {
         submitButton.textContent = 'Submitting...';
     }
 
-    const url = `${API_BASE_URL}/interplanetaryplayers`;
+    const url = currentMode === 'edit'
+        ? `${API_BASE_URL}/interplanetaryplayers/${playerId}`
+        : `${API_BASE_URL}/interplanetaryplayers`;
+
+    const method = currentMode === 'edit' ? 'PATCH' : 'POST';
     console.log('Submitting form to:', url);
 
     let moonAmount = parseInt(document.getElementById('moonAmount').value, 10);
     moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
 
+    // Define `selectedIpId` and `sciName` based on the selected exoplanet
     const selectedIpId = document.getElementById('sciName').value;
+    const sciName = selectedIpId && exoplanetData[selectedIpId]
+        ? exoplanetData[selectedIpId].sciName
+        : 'Unknown Exoplanet';
 
-    // Determine sciName based on selectedIpId
-    let sciName = 'Unknown Exoplanet';
-    if (selectedIpId && exoplanetData[selectedIpId]) {
-        sciName = exoplanetData[selectedIpId].sciName || 'Unknown Exoplanet';
-    }
-
-    // Prepare initialData
+    // Prepare data for POST/PATCH with validated `ipId` and `sciName`
     const initialData = {
         ownerId: userId,
         isPublic: false,
@@ -522,38 +535,35 @@ async function submitForm() {
         description: document.getElementById('exoplanetDescription').value.trim(),
         credits: document.getElementById('credits').value.trim(),
         dddArtistName: document.getElementById('dddArtistName').value.trim(),
-        isPublic: false, // Adjust as needed
     };
 
     console.log('Initial data to be sent:', initialData);
 
     try {
-        // Step 1: Submit initial data
-        const initialResponse = await fetch(url, {
-            method: 'POST',
+        const response = await fetch(url, {
+            method,
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(initialData)
         });
 
-        const initialDataResponse = await initialResponse.json();
+        const dataResponse = await response.json();
 
-        if (!initialDataResponse.success) {
-            throw new Error(initialDataResponse.message || 'An error occurred during submission.');
+        if (!dataResponse.success) {
+            throw new Error(dataResponse.message || 'An error occurred during submission.');
         }
 
-        const { playerId, textureUploadURL, objUploadURL, textureKey, objKey } = initialDataResponse;
+        const { playerId, textureUploadURL, objUploadURL, textureKey, objKey } = dataResponse;
 
         console.log('Received presigned URLs and keys:', { playerId, textureKey, objKey });
 
-        // Step 2: Upload files using presigned URLs
-        await uploadFiles(textureUploadURL, objUploadURL);
+        if (method === 'POST') {
+            // Step 2: Upload files if creating
+            await uploadFiles(textureUploadURL, objUploadURL);
+            await finalizeInterplanetaryPlayer(playerId, textureKey, objKey);
+        }
 
-        // Step 3: Finalize the Interplanetary Player
-        await finalizeInterplanetaryPlayer(playerId, textureKey, objKey);
-
-        // Step 4: Handle success response
         handleSuccessResponse({ playerId });
 
     } catch (error) {
@@ -561,8 +571,6 @@ async function submitForm() {
         showToast(`Error: ${error.message}`, 'error');
     } finally {
         enableFormInputs();
-
-        // Re-enable the submit button
         if (submitButton) {
             submitButton.disabled = false;
             submitButton.textContent = 'Submit';
@@ -691,31 +699,30 @@ async function finalizeInterplanetaryPlayer(playerId, textureKey, objKey) {
     }
 
     // Function to Handle Success Response after Creation or Editing
-    function handleSuccessResponse(response) {
-        // Determine the success message based on the action
-        const successMessage = currentMode === 'edit'
-            ? 'Interplanetary Player updated successfully!'
-            : 'Interplanetary Player created successfully!';
-        
-        showToast(successMessage, 'success');
+function handleSuccessResponse(response) {
+    const successMessage = currentMode === 'edit'
+        ? 'Interplanetary Player updated successfully!'
+        : 'Interplanetary Player created successfully!';
+    
+    showToast(successMessage, 'success');
 
-        // Clear form data cache
-        clearProfileCache(userId);
+    // Clear form data cache
+    clearProfileCache(userId);
 
-        // Extract the new player ID from the response
-        const newPlayerId = currentMode === 'edit'
-            ? response.player._id // Access the player ID when editing
-            : response.playerId || response.config._id; // Fall back to playerId or _id when creating
+    // Use playerId or provide a fallback ID if it's missing
+    const newPlayerId = currentMode === 'edit'
+        ? (response.player ? response.player._id : playerId)  // Use the existing playerId if response is missing
+        : response.playerId || response.config._id;  // Fall back to `playerId` or `_id` when creating
 
-        if (newPlayerId) {
-            setTimeout(() => {
-                window.location.href = `/voyage/interplanetary-player?mode=view&playerId=${newPlayerId}`;
-            }, 1000);
-        } else {
-            console.error('Player ID not found in the response.');
-            showToast('Player ID missing. Please contact support.', 'error');
-        }
+    if (newPlayerId) {
+        setTimeout(() => {
+            window.location.href = `/voyage/interplanetary-player?mode=view&playerId=${newPlayerId}`;
+        }, 1000);
+    } else {
+        console.error('Player ID not found in the response.');
+        showToast('Player ID missing. Please contact support.', 'error');
     }
+}
 
     // Function to Load Interplanetary Player Details from the Server
 async function loadInterplanetaryPlayersDetails(playerId) {
@@ -749,90 +756,85 @@ async function loadInterplanetaryPlayersDetails(playerId) {
         showToast('Error loading player details. Please try again.', 'error');
     }
 }
-    // Function to Populate Edit Mode with Player Data
-    function populateEditMode(playerData) {
-        // Handle sciName: show as text and hide the selector in edit mode
-        const sciNameDisplay = document.getElementById('sciNameDisplay');
-        const sciNameSelect = document.getElementById('sciName');
+function populateEditMode(playerData) {
+    const sciNameDisplay = document.getElementById('sciNameDisplay');
+    const sciNameSelect = document.getElementById('sciName');
+    const exoplanetDetails = document.getElementById('exoplanetDetails');
+    
+    console.log('Player data received:', JSON.stringify(playerData, null, 2));
 
-        console.log('Player data received:', JSON.stringify(playerData, null, 2));
+    if (currentMode === 'edit') {
+        sciNameDisplay.textContent = playerData.sciName || 'Unknown Exoplanet';
+        sciNameDisplay.style.display = 'block';
+        sciNameSelect.style.display = 'none';
+        sciNameSelect.required = false;
 
-        if (currentMode === 'edit') {
-            // Show the scientific name as plain text and hide the dropdown
-            sciNameDisplay.textContent = playerData.sciName || 'Unknown Exoplanet';
-            sciNameDisplay.style.display = 'block';
-            sciNameSelect.style.display = 'none';
-            sciNameSelect.required = false; // Remove the required attribute when hidden
+        document.getElementById('artName').value = playerData.artName || '';
+        document.getElementById('moonAmount').value = playerData.moonAmount || '0';
+        document.getElementById('dddArtistName').value = playerData.ddd?.dddArtist || '';
+        document.getElementById('exoplanetDescription').value = playerData.description || '';
+        document.getElementById('credits').value = playerData.credits || '';
 
-            // Populate other form fields with data from playerData for editing
-            document.getElementById('artName').value = playerData.artName || '';
-            document.getElementById('moonAmount').value = playerData.moonAmount || '0';
-            document.getElementById('ra_decimal').textContent = playerData.ra_decimal || 'N/A';
-            document.getElementById('dec_decimal').textContent = playerData.dec_decimal || 'N/A';
-            document.getElementById('period').textContent = playerData.period || 'N/A';
-            document.getElementById('radius').textContent = playerData.radius || 'N/A';
-            document.getElementById('discoveryyear').textContent = playerData.discoveryyear || 'N/A';
+        // Populate Exoplanet Details fields
+        document.getElementById('ipId').textContent = playerData.ipId || 'N/A';
+        document.getElementById('ra_decimal').textContent = playerData.ra_decimal?.$numberDecimal || 'N/A';
+        document.getElementById('dec_decimal').textContent = playerData.dec_decimal?.$numberDecimal || 'N/A';
+        document.getElementById('period').textContent = playerData.period?.$numberDecimal || 'N/A';
+        document.getElementById('radius').textContent = playerData.radius?.$numberDecimal || 'N/A';
+        document.getElementById('discoveryyear').textContent = playerData.discoveryyear?.$numberDecimal || 'N/A';
+        
+        exoplanetDetails.style.display = 'block'; // Show the details section in edit mode
 
-            // Populate 3D artist name
-            const dddArtistNameField = document.getElementById('dddArtistName');
-            dddArtistNameField.value = playerData.ddd?.dddArtist || '';
+        const baseUrl = 'https://media.maar.world';
 
-            // Populate exoplanet description
-            document.getElementById('exoplanetDescription').value = playerData.description || '';
-
-            // Populate credits
-            document.getElementById('credits').value = playerData.credits || '';
-
-            const baseUrl = 'https://media.maar.world';
-
-            // Display existing OBJ file
-            const existingObjFileDiv = document.getElementById('existingObjFile');
-            const existingObjLink = document.getElementById('existingObjLink');
-            if (playerData.ddd?.objURL) {
-                const objUrl = playerData.ddd.objURL.startsWith('http')
-                    ? playerData.ddd.objURL
-                    : `${baseUrl}${playerData.ddd.objURL}`;
-                existingObjLink.href = objUrl;
-                existingObjLink.textContent = playerData.ddd.objURL.split('/').pop(); // Show file name
-                existingObjFileDiv.style.display = 'block';
-            } else {
-                existingObjFileDiv.style.display = 'none';
-            }
-
-            // Display existing Texture file
-            const existingTextureFileDiv = document.getElementById('existingTextureFile');
-            const existingTextureLink = document.getElementById('existingTextureLink');
-            const texturePreview = document.getElementById('texturePreviewForm');
-
-            if (playerData.ddd?.textureURL) {
-                const textureUrl = playerData.ddd.textureURL.startsWith('http')
-                    ? playerData.ddd.textureURL
-                    : `${baseUrl}${playerData.ddd.textureURL}`;
-                existingTextureLink.href = textureUrl;
-                existingTextureLink.textContent = playerData.ddd.textureURL.split('/').pop(); // Show file name
-                existingTextureFileDiv.style.display = 'block';
-
-                // Display texture image preview
-                texturePreview.src = textureUrl;
-                texturePreview.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
-                texturePreview.style.display = 'block';
-            } else {
-                existingTextureFileDiv.style.display = 'none';
-                texturePreview.style.display = 'none';
-            }
-
-            // Populate artName feedback and enable submit button
-            displayArtNameFeedback('', '');
-            const submitButton = document.getElementById('submitButton');
-            if (submitButton) {
-                submitButton.disabled = false;
-            }
-
-            // In Edit Mode: Make file uploads optional
-            document.getElementById('uploadObj').required = false;
-            document.getElementById('uploadTexture').required = false;
+        // Show existing OBJ file link if available
+        const existingObjFileDiv = document.getElementById('existingObjFile');
+        const existingObjLink = document.getElementById('existingObjLink');
+        if (playerData.ddd?.objURL) {
+            const objUrl = playerData.ddd.objURL.startsWith('http')
+                ? playerData.ddd.objURL
+                : `${baseUrl}${playerData.ddd.objURL}`;
+            existingObjLink.href = objUrl;
+            existingObjLink.textContent = playerData.ddd.objURL.split('/').pop(); // Show the file name
+            existingObjFileDiv.style.display = 'block';
+        } else {
+            existingObjFileDiv.style.display = 'none';
         }
+
+        // Show existing Texture file link and preview if available
+        const existingTextureFileDiv = document.getElementById('existingTextureFile');
+        const existingTextureLink = document.getElementById('existingTextureLink');
+        const texturePreview = document.getElementById('texturePreviewForm');
+
+        if (playerData.ddd?.textureURL) {
+            const textureUrl = playerData.ddd.textureURL.startsWith('http')
+                ? playerData.ddd.textureURL
+                : `${baseUrl}${playerData.ddd.textureURL}`;
+            existingTextureLink.href = textureUrl;
+            existingTextureLink.textContent = playerData.ddd.textureURL.split('/').pop();
+            existingTextureFileDiv.style.display = 'block';
+
+            // Set texture preview
+            texturePreview.src = textureUrl;
+            texturePreview.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
+            texturePreview.style.display = 'block';
+        } else {
+            existingTextureFileDiv.style.display = 'none';
+            texturePreview.style.display = 'none';
+        }
+
+        // Display initial feedback and enable submit button
+        displayArtNameFeedback('', '');
+        const submitButton = document.getElementById('submitButton');
+        if (submitButton) {
+            submitButton.disabled = false;
+        }
+
+        // Make file uploads optional in Edit Mode
+        document.getElementById('uploadObj').required = false;
+        document.getElementById('uploadTexture').required = false;
     }
+}
 
     // Function to Populate View Mode with Player Data
 function populateViewMode(playerData) {
@@ -849,17 +851,41 @@ function populateViewMode(playerData) {
     document.getElementById('viewPeriod').innerHTML = `<strong>Orbital Period [days]:</strong> ${getNumberDecimalValue(playerData.period)}`;
     document.getElementById('viewRadius').innerHTML = `<strong>Radius [R earth]:</strong> ${getNumberDecimalValue(playerData.radius)}`;
     document.getElementById('viewDiscoveryYear').innerHTML = `<strong>Discovery Year:</strong> ${getNumberDecimalValue(playerData.discoveryyear)}`;
-    
+
     // 3D Artist with clickable link
     document.getElementById('viewDddArtistName').innerHTML = `<strong>3D Artist:</strong> ${playerData.ddd?.dddArtist ? `<a href="/xplorer/?username=${encodeURIComponent(playerData.ddd.dddArtist)}" target="_self">@${playerData.ddd.dddArtist}</a>` : 'N/A'}`;
     
     document.getElementById('viewExoplanetDescription').innerHTML = `<strong>Description:</strong> ${playerData.description || 'N/A'}`;
     document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${playerData.credits || 'N/A'}`;
     
+    // Set up 3D model preview using iframe if URLs are available
+    const modelPreviewContainer = document.getElementById('modelPreviewContainer');
+    const modelPreviewIframe = document.getElementById('modelPreviewIframe');
+
+    // Prefer direct URLs if available, otherwise fallback to ddd URLs
+    const objURL = playerData.objURL || playerData.ddd?.objURL;
+    const textureURL = playerData.textureURL || playerData.ddd?.textureURL;
+
+    if (objURL && textureURL) {
+        const encodedObjURL = encodeURIComponent(objURL);
+        const encodedTextureURL = encodeURIComponent(textureURL);
+        
+        // Construct the iframe source URL with the model and texture
+        const iframeSrc = `https://preview.maar.world/?object=${encodedObjURL}&texture=${encodedTextureURL}`;
+        console.log('Setting iframe src to:', iframeSrc); // Debugging line
+        modelPreviewIframe.src = iframeSrc;
+
+        // Display the iframe container
+        modelPreviewContainer.style.display = 'block';
+    } else {
+        console.warn('OBJ or Texture URL is missing');
+        modelPreviewContainer.style.display = 'none';
+    }
+
     // Download 3D Model link
     const viewObjFile = document.getElementById('viewObjFile');
-    if (playerData.ddd?.objURL) {
-        viewObjFile.href = playerData.ddd.objURL.startsWith('http') ? playerData.ddd.objURL : `https://media.maar.world${playerData.ddd.objURL}`;
+    if (objURL) {
+        viewObjFile.href = objURL.startsWith('http') ? objURL : `https://media.maar.world${objURL}`;
         viewObjFile.textContent = 'Download 3D Model';
         viewObjFile.style.display = 'block';
     } else {
@@ -868,9 +894,9 @@ function populateViewMode(playerData) {
     
     // Texture Image
     const viewTextureImage = document.getElementById('viewTextureImage');
-    if (playerData.ddd?.textureURL) {
-        const textureUrl = playerData.ddd.textureURL.startsWith('http') ? playerData.ddd.textureURL : `https://media.maar.world${playerData.ddd.textureURL}`;
-        viewTextureImage.src = textureUrl;
+    if (textureURL) {
+        const textureUrlResolved = textureURL.startsWith('http') ? textureURL : `https://media.maar.world${textureURL}`;
+        viewTextureImage.src = textureUrlResolved;
         viewTextureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
         viewTextureImage.style.display = 'block';
     } else {
