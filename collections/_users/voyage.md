@@ -528,27 +528,28 @@ async function displaySoundEnginesBatch(engineIds) {
     const cacheKey = `soundEngines_batch_${sortedIds.join('_')}`;
     const batchUrl = `http://media.maar.world:3001/api/soundEngines/batch?ids=${sortedIds.join(',')}`;
 
-    try {
-        const data = await fetchDataWithCache(
-            batchUrl,
-            cacheKey,
-            5 // Cache for 5 minutes
-        );
+try {
+    const data = await fetchDataWithCache(
+        batchUrl,
+        cacheKey,
+        5 // Cache for 5 minutes
+    );
 
-        if (data.success && Array.isArray(data.soundEngines)) {
-            console.log(`Fetched ${data.soundEngines.length} sound engines.`);
-            data.soundEngines.forEach(engine => {
-                if (!engine || typeof engine !== 'object') {
-                    console.warn('Invalid sound engine data:', engine);
-                    return;
-                }
+    if (data.success && Array.isArray(data.soundEngines)) {
+        console.log(`Fetched ${data.soundEngines.length} sound engines.`);
+        data.soundEngines.forEach(engine => {
+            if (!engine || typeof engine !== 'object') {
+                console.warn('Invalid sound engine data:', engine);
+                return;
+            }
 
-                const imageUrl = engine.soundEngineImage
-                    ? `https://media.maar.world${encodeURI(engine.soundEngineImage)}`
-                    : 'https://media.maar.world/uploads/default/default-soundEngine.jpg'; // Provide a default image path
+            // Use soundEngineImageSmallURL or fallback to default image if not available
+            const imageUrl = engine.soundEngineImageSmallURL
+                ? engine.soundEngineImageSmallURL
+                : 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
 
-                const soundEngineName = engine.soundEngineName || 'Unnamed Sound Engine';
-                console.log(engine);
+            const soundEngineName = engine.soundEngineName || 'Unnamed Sound Engine';
+            console.log(engine);
                 // Create DOM elements
                 const soundEngineDiv = document.createElement('li');
 
@@ -561,6 +562,7 @@ soundEngineDiv.innerHTML = `
         </div>
         <div class="soundEngine-details">
             <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
+            <div class="soundEngine-created"><strong>Created At:</strong> ${new Date(engine.createdAt).toLocaleDateString()}</div>
             <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
             <div class="soundEngine-params">
                 <strong>Parameters:</strong> 
