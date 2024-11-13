@@ -111,7 +111,13 @@ public: false
             <img id="coverImagePreview" src="" alt="Cover Image Preview" style="display: none;">
         </div><br>
         <!-- Cover Image Upload -->
-        <label for="uploadCoverImage">Upload the cover image for your release (Best Size: 800x800 pixels, Max: 2MB, JPG or PNG):<span id="coverImageRequired">*</span></label>
+<label for="uploadCoverImage">
+    Upload the cover image for your release: <span class="required" id="coverImageRequired">*</span>
+    <span class="tooltip" aria-label="Cover Image Info" tabindex="0" 
+          data-tooltip="Best Size: 800x800 pixels, Max: 2MB, JPG or PNG">
+        <span class="material-symbols-outlined">tooltip_2</span>
+    </span>
+</label>
         <input type="file" id="uploadCoverImage" name="coverImage" accept=".jpg, .jpeg, .png"><br><br>
         <!-- Interplanetary Player Selection -->
         <label for="playerId">Which Interplanetary Player would you like to choose for this release?*</label>
@@ -144,7 +150,13 @@ public: false
         <label for="trackName">What is the name of the track?*</label>
         <input type="text" id="trackName" name="trackName" required><br><br>
         <!-- Audio File Upload -->
-        <label for="uploadAudio">Please upload your audio file (WAV, AIFF, if you choose MP3 up to 256kbps, Max 200MB):<span id="audioFileRequired">*</span></label>
+        <label for="uploadAudio">
+            Upload your audio file: <span class="required" id="audioFileRequired">*</span>
+            <span class="tooltip" aria-label="Audio File Info" tabindex="0" 
+                data-tooltip="Accepted formats: WAV, AIFF. If using MP3, up to 256kbps. Max file size: 200MB">
+                <span class="material-symbols-outlined">tooltip_2</span>
+            </span>
+        </label>        
         <input type="file" id="uploadAudio" name="audioFile" accept=".wav, .aif, .aiff, .mp3"><br><br>
         <!-- License Selection -->
         <label for="licence">Which license would you like to apply to this work?*</label>
@@ -422,11 +434,16 @@ function attachEventListeners() {
     * Fetch Players Data and Populate Dropdown
     */
 function fetchPlayersData(userId) {
-    return fetch(`${API_BASE_URL}/interplanetaryplayers/getAvailableInterplanetaryPlayers/${userId}`)
-        .then(response => response.json())
+    return fetch(`${API_BASE_URL}/interplanetaryplayers/get-available-interplanetary-players/${userId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status} error`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                playersData = data.interplanetaryPlayers; // Store data globally
+                playersData = data.interplanetaryPlayers;
                 console.log("fetchPlayersData", playersData);
                 populatePlayerDropdown(playersData);
             } else {
