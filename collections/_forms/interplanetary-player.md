@@ -287,12 +287,12 @@ public: false
             // Check if data has success and exoplanets array
             if (data.success && Array.isArray(data.exoplanets) && data.exoplanets.length > 0) {
                 const exoplanetObject = data.exoplanets[0]; // Access the first element
-                console.log('Exoplanet Object:', exoplanetObject);
+                //console.log('Exoplanet Object:', exoplanetObject);
                 exoplanetData = {}; // Initialize as an empty object
 
                 // Iterate through the keys of the exoplanetObject to build exoplanetData
                 Object.keys(exoplanetObject).forEach(ipId => {
-                    console.log('Processing ipId:', ipId);
+                    //console.log('Processing ipId:', ipId);
                     if (ipId !== 'undefined') { // Exclude undefined keys
                         exoplanetData[ipId] = exoplanetObject[ipId];
                     } else {

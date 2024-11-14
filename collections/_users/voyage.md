@@ -278,7 +278,7 @@ async function fetchUserProfile(userId) {
     const cacheKey = `profile_${userId}`;
     try {
         const data = await fetchDataWithCache(
-            `http://media.maar.world:3001/api/profile?userId=${userId}`,
+            `http://media.maar.world:3001/api/users/profile?userId=${userId}`,
             cacheKey,
             60 // Cache for 60 minutes
         );
@@ -348,14 +348,16 @@ function populateUserProfileList(profileData) {
         return;
     }
 
+    // Use thumbMidURL for profile image if available, else provide a default image
+    const profileImageURL = profileData.thumbMidURL || 'https://mw-storage.fra1.digitaloceanspaces.com/default/default-profile_thumbnail_mid.webp';
+
     userProfileList.innerHTML = `
     <div class="parent-container">
-
         <li class="voyage-profile">
             <!-- Profile Image -->
             <div class="voyage-profile-pic">
                 <a href="/voyage/profile">
-                    <img src="https://media.maar.world${profileData.profileImage || '/default_profile.png'}" alt="${profileData.username || 'User'}">
+                    <img src="${profileImageURL}" alt="${profileData.username || 'User'}">
                 </a>
             </div>
 
@@ -376,7 +378,7 @@ function populateUserProfileList(profileData) {
                 <div class="voyage-role"><strong>Role:</strong> ${profileData.role || 'Listener'}</div>
 
                 <!-- 1st Custom Link -->
-                ${profileData.customLinks && profileData.customLinks[0] && profileData.customLinks[0] !== '' ? 
+                ${profileData.customLinks && profileData.customLinks[0] ? 
                     `<div class="voyage-custom-link">
                         <a href="${profileData.customLinks[0]}" target="_blank">${profileData.customLinks[0]}</a>
                     </div>` 
@@ -385,7 +387,6 @@ function populateUserProfileList(profileData) {
             </div>
         </li>
     </div>
-
     `;
 }
 

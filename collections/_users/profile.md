@@ -168,20 +168,20 @@ key: xPlorer
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('userId');
     let originalProfileImage = '';
-    let currentUsername = ''; // To store the current username
-    let isEditMode = false; // State variable to track current mode
+    let currentUsername = ''; // Store the current username
+    let isEditMode = false; // Track current mode
 
-    // Fetch profile data using the global fetchDataWithCache function
+    // Fetch profile data
     fetchUserProfile(userId);
 
     async function fetchUserProfile(userId, forceRefresh = false) {
         const cacheKey = `profile_${userId}`;
         try {
             const data = await fetchDataWithCache(
-                `http://media.maar.world:3001/api/profile?userId=${userId}`,
+                `http://media.maar.world:3001/api/users/profile?userId=${userId}`,
                 cacheKey,
                 5, // Cache for 5 minutes
-                forceRefresh // Allow forcing a refresh
+                forceRefresh
             );
             populateUserProfile(data);
         } catch (error) {
@@ -190,50 +190,56 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function populateUserProfile(data) {
-        // Store the original username
-        currentUsername = data.username || '';
+function populateUserProfile(data) {
+    console.log("Received profile data:", data); // Log profile data to verify content
 
-        // Populate display fields
-        document.getElementById('displayUsername').innerText = data.username || '';
-        document.getElementById('displayUsernameForUrl').innerText = data.username || '';
-        document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username || ''}`;
-        document.getElementById('displayEmail').innerText = data.email || '';
-        document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
-        document.getElementById('displayRole').innerText = data.role || 'Not provided';
+    currentUsername = data.username || '';
 
-        // Populate form fields for edit mode
-        document.getElementById('displayName').value = data.displayName || ''; // Corrected from innerText to value
-        document.getElementById('username').value = data.username || '';
-        document.getElementById('phone').value = data.phone || '';
+    // Define the default image URL
+    const defaultImageURL = "https://mw-storage.fra1.digitaloceanspaces.com/default/default-profile_thumbnail_mid.webp";
 
-        // Handle gender identity and pronouns
-        handleCustomFields(data);
+    // Set profile image to thumbMidURL if available, or fallback to the default image
+    const previewImageURL = data.thumbMidURL || defaultImageURL;
 
-        // Display the profile image
-        if (data.profileImage) {
-            originalProfileImage = `https://media.maar.world${data.profileImage}`;
-            document.getElementById('profileImagePreview').src = originalProfileImage;
-            document.getElementById('profileImagePreviewForm').src = originalProfileImage;
-            document.getElementById('profileImagePreview').style.display = 'block';
-            document.getElementById('profileImagePreviewForm').style.display = 'block';
-        } else {
-            document.getElementById('profileImagePreview').style.display = 'none';
-            document.getElementById('profileImagePreviewForm').style.display = 'none';
-        }
+    // Assign thumbMidURL or default image URL to the profile image elements
+    const profileImageElement = document.getElementById('profileImagePreview');
+    const profileImageFormElement = document.getElementById('profileImagePreviewForm');
 
-        // Handle additional fields like city, country, bio
-        document.getElementById('displayDisplayName').innerText = data.displayName || ''; // View mode
-        document.getElementById('city').value = data.city || '';
-        document.getElementById('displayCity').innerText = data.city || '';
-        document.getElementById('country').value = data.country || '';
-        document.getElementById('displayCountry').innerText = data.country || '';
-        document.getElementById('bio').value = data.bio || '';
-        document.getElementById('displayBio').innerText = data.bio || '';
-
-        // Handle custom links
-        handleCustomLinks(data.customLinks || []);
+    if (profileImageElement) {
+        profileImageElement.src = previewImageURL;
+        profileImageElement.style.display = 'block';
     }
+    if (profileImageFormElement) {
+        profileImageFormElement.src = previewImageURL;
+        profileImageFormElement.style.display = 'block';
+    }
+
+    // Populate view mode fields
+    document.getElementById('displayUsername').innerText = data.username || '';
+    document.getElementById('displayUsernameForUrl').innerText = data.username || '';
+    document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username || ''}`;
+    document.getElementById('displayEmail').innerText = data.email || '';
+    document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
+    document.getElementById('displayRole').innerText = data.role || 'Not provided';
+
+    // Populate form fields for edit mode
+    document.getElementById('displayName').value = data.displayName || '';
+    document.getElementById('username').value = data.username || '';
+    document.getElementById('phone').value = data.phone || '';
+
+    // Handle gender identity and pronouns
+    handleCustomFields(data);
+
+    // Populate additional fields
+    document.getElementById('displayDisplayName').innerText = data.displayName || '';
+    document.getElementById('city').value = data.city || '';
+    document.getElementById('displayCity').innerText = data.city || '';
+    document.getElementById('country').value = data.country || '';
+    document.getElementById('displayCountry').innerText = data.country || '';
+    document.getElementById('bio').value = data.bio || '';
+    document.getElementById('displayBio').innerText = data.bio || '';
+    handleCustomLinks(data.customLinks || []);
+}
 
     function handleCustomFields(data) {
         // Handle custom gender identity if "Not Listed"
@@ -264,59 +270,34 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('customLink3Display').innerHTML = links[2] ? `<a href="${links[2]}" target="_blank">${links[2]}</a>` : '';
     }
 
-    // Toggle edit mode or cancel edit if already in edit mode
-    document.getElementById('editButton').addEventListener('click', function() {
-        toggleEditMode();
-    });
+    // Toggle edit mode or cancel edit
+    document.getElementById('editButton').addEventListener('click', toggleEditMode);
+    document.getElementById('cancelButton').addEventListener('click', toggleEditMode);
 
-    // Remove the separate cancel button if you want to handle cancel via the edit button
-    // If you prefer to keep it, ensure it also toggles the mode
-    document.getElementById('cancelButton').addEventListener('click', function() {
-        toggleEditMode(); 
-    });
-
-    async function toggleEditMode(forceViewMode = null) {
+    function toggleEditMode() {
+        isEditMode = !isEditMode;
         const profileForm = document.getElementById('profileForm');
         const profileView = document.getElementById('profileView');
-        const editButton = document.getElementById('editButton');
         const editButtonIcon = document.getElementById('editButtonIcon');
 
-        // Determine the new mode
-        if (forceViewMode === null) {
-            isEditMode = !isEditMode;
-        } else {
-            isEditMode = !forceViewMode;
-        }
-
         if (isEditMode) {
-            // Switch to Edit Mode
             profileView.style.display = 'none';
             profileForm.style.display = 'block';
-            editButton.setAttribute('title', 'View Profile');
-            editButtonIcon.textContent = 'visibility'; // Change to view icon
-            editButton.setAttribute('data-mode', 'edit');
+            editButtonIcon.textContent = 'visibility';
         } else {
-            // Switch to View Mode
             profileView.style.display = 'block';
             profileForm.style.display = 'none';
-            editButton.setAttribute('title', 'Edit Profile');
-            editButtonIcon.textContent = 'edit'; // Change back to edit icon
-            editButton.setAttribute('data-mode', 'view');
             resetProfileImage();
-
-            // Re-fetch and populate the profile data to ensure it's up-to-date
-            await fetchUserProfile(userId, true);
+            fetchUserProfile(userId, true);
+            editButtonIcon.textContent = 'edit';
         }
     }
 
-    // Image preview functionality during editing
-    document.getElementById('profileImage').addEventListener('change', function(event) {
+    document.getElementById('profileImage').addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profileImagePreviewForm').src = e.target.result;
-            };
+            reader.onload = (e) => document.getElementById('profileImagePreviewForm').src = e.target.result;
             reader.readAsDataURL(file);
         }
     });
@@ -326,46 +307,103 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('profileImagePreviewForm').src = originalProfileImage;
     }
 
-    // Function to show/hide custom gender identity field based on selection
-    function toggleCustomGender() {
-        const genderIdentityField = document.getElementById('genderIdentity');
-        if (genderIdentityField.value === 'Not Listed') {
-            document.getElementById('customGenderLabel').style.display = 'block';
-            document.getElementById('customGenderIdentity').style.display = 'block';
-        } else {
-            document.getElementById('customGenderLabel').style.display = 'none';
-            document.getElementById('customGenderIdentity').style.display = 'none';
+    // Submit profile form with image upload
+    document.getElementById('profileForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const isUsernameValid = await checkUsername();
+        if (!isUsernameValid) return;
+
+        const profileImageFile = document.getElementById('profileImage').files[0];
+        let profileImageKey = null;
+
+        if (profileImageFile) {
+            try {
+                profileImageKey = await uploadProfileImage(profileImageFile);
+            } catch (error) {
+                document.getElementById('messageDisplay').innerText = 'Failed to upload profile image. Please try again.';
+                return;
+            }
         }
-    }
 
-    // Function to show/hide other pronouns field based on selection
-    function toggleOtherPronouns() {
-        const pronounsField = document.getElementById('pronouns');
-        if (pronounsField.value === 'Other') {
-            document.getElementById('otherPronounsLabel').style.display = 'block';
-            document.getElementById('otherPronouns').style.display = 'block';
-        } else {
-            document.getElementById('otherPronounsLabel').style.display = 'none';
-            document.getElementById('otherPronouns').style.display = 'none';
-        }
-    }
-
-    document.getElementById('genderIdentity').addEventListener('change', toggleCustomGender);
-    document.getElementById('pronouns').addEventListener('change', toggleOtherPronouns);
-
-    // Copy URL to clipboard functionality
-    document.getElementById('copyButton').addEventListener('click', function() {
-        const profileUrl = document.getElementById('profileUrl').href;
-        const tempInput = document.createElement('input');
-        tempInput.value = profileUrl;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        alert('Profile URL copied to clipboard!');
+        finalizeUserProfileUpdate(profileImageKey);
     });
 
-    // Validate username format and uniqueness
+async function uploadProfileImage(file) {
+    const userId = localStorage.getItem('userId');
+
+    console.log("Requesting presigned URL for image upload...");
+    const presignedUrlResponse = await fetch('http://media.maar.world:3001/api/users/generate-profile-image-upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, fileName: file.name, fileType: file.type })
+    });
+    const { uploadURL, fileKey } = await presignedUrlResponse.json();
+    console.log("Presigned URL received:", { uploadURL, fileKey });
+
+    await fetch(uploadURL, { method: 'PUT', body: file });
+    return fileKey;
+}
+
+async function finalizeUserProfileUpdate(profileImageKey = null) {
+    const userId = localStorage.getItem('userId');
+    console.log("Finalizing profile with userId:", userId);
+
+    if (!userId) {
+        document.getElementById('messageDisplay').innerText = 'User ID is missing. Please log in again.';
+        return;
+    }
+
+    const profileData = {
+        userId,
+        username: document.getElementById('username').value.trim().toLowerCase(),
+        displayName: document.getElementById('displayName').value.trim(),
+        phone: document.getElementById('phone').value,
+        genderIdentity: document.getElementById('genderIdentity').value,
+        customGenderIdentity: document.getElementById('customGenderIdentity').value || null,
+        pronouns: document.getElementById('pronouns').value,
+        otherPronouns: document.getElementById('otherPronouns').value || null,
+        city: document.getElementById('city').value.trim(),
+        country: document.getElementById('country').value.trim(),
+        bio: document.getElementById('bio').value.trim(),
+        customLinks: JSON.stringify([
+            document.getElementById('customLink1').value.trim(),
+            document.getElementById('customLink2').value.trim(),
+            document.getElementById('customLink3').value.trim()
+        ])
+    };
+
+    if (profileImageKey) {
+        profileData.profileImageKey = profileImageKey;
+    }
+
+    const response = await fetch('http://media.maar.world:3001/api/users/finalize-profile-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profileData)
+    });
+
+    const result = await response.json();
+    console.log("Response from profile finalization:", result);
+
+    if (result.success) {
+        document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
+        
+        // Clear cache for the updated profile and fetch new data
+        clearCachedData(`profile_${userId}`);
+        
+        // Wait a moment before re-fetching to ensure cache is cleared
+        setTimeout(() => {
+            fetchUserProfile(userId, true).then(() => {
+                toggleEditMode(); // Switch back to view mode after refreshing profile data
+            });
+        }, 200); // Adjust delay if necessary
+    } else {
+        document.getElementById('messageDisplay').innerText = 'Failed to update profile. Please try again.';
+    }
+}
+
+    // Validate username uniqueness
     const usernameInput = document.getElementById('username');
     const feedbackElement = document.getElementById('usernameFeedback');
     const validUsername = /^[a-z0-9_.]{1,30}$/;
@@ -385,20 +423,31 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
 
-        // Pass the correct userId (UUID) here
         const isUnique = await checkUsernameUniqueness(username, userId);
-        if (!isUnique) {
-            feedbackElement.innerText = 'Username is already taken.';
-            feedbackElement.style.color = 'red';
-            return false;
-        }
-
-        feedbackElement.innerText = 'Username is available!';
-        feedbackElement.style.color = 'green';
-        return true;
+        feedbackElement.innerText = isUnique ? 'Username is available!' : 'Username is already taken.';
+        feedbackElement.style.color = isUnique ? 'green' : 'red';
+        return isUnique;
     }
 
-    // Debounce function to limit the rate of function execution
+    const debouncedCheckUsername = debounce(checkUsername, 500);
+    usernameInput.addEventListener('input', debouncedCheckUsername);
+
+    async function checkUsernameUniqueness(username, currentUserId = null) {
+        try {
+            const url = new URL('http://media.maar.world:3001/api/users/checkUsername');
+            url.searchParams.append('username', username);
+            if (currentUserId) {
+                url.searchParams.append('currentUserId', currentUserId);
+            }
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            return data.isUnique;
+        } catch (error) {
+            console.error('Error checking username uniqueness:', error);
+            return false;
+        }
+    }
+
     function debounce(func, delay) {
         let timeout;
         return function(...args) {
@@ -407,127 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // Create a debounced version of checkUsername
-    const debouncedCheckUsername = debounce(checkUsername, 500);
-
-    // Update the event listener to use the debounced function
-    usernameInput.addEventListener('input', debouncedCheckUsername);
-
-    // Function to check if the username is unique
-    async function checkUsernameUniqueness(username, currentUserId = null) {
-        try {
-            const url = new URL('http://media.maar.world:3001/api/checkUsername');
-            url.searchParams.append('username', username);
-            
-            // Include currentUserId if available (i.e., during edit)
-            if (currentUserId) {
-                url.searchParams.append('currentUserId', currentUserId);
-            }
-
-            const response = await fetch(url.toString());
-            const data = await response.json();
-            return data.isUnique; // Assuming server returns { isUnique: true/false }
-        } catch (error) {
-            console.error('Error checking username uniqueness:', error);
-            return false;
-        }
-    }
-
-    // Submit profile form
-    document.getElementById('profileForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        const isUsernameValid = await checkUsername();
-        if (!isUsernameValid) return;
-
-        const formData = new FormData();
-        populateFormData(formData);
-
-        // Handle form submission with progress
-        submitFormData(formData);
-    });
-
-    function populateFormData(formData) {
-        formData.append('userId', userId);
-        formData.append('username', usernameInput.value.trim().toLowerCase());
-        formData.append('genderIdentity', document.getElementById('genderIdentity').value);
-        if (document.getElementById('genderIdentity').value === 'Not Listed') {
-            formData.append('customGenderIdentity', document.getElementById('customGenderIdentity').value);
-        }
-        formData.append('pronouns', document.getElementById('pronouns').value);
-        if (document.getElementById('pronouns').value === 'Other') {
-            formData.append('otherPronouns', document.getElementById('otherPronouns').value);
-        }
-        formData.append('phone', document.getElementById('phone').value);
-        if (document.getElementById('profileImage').files[0]) {
-            formData.append('profileImage', document.getElementById('profileImage').files[0]);
-        }
-
-        formData.append('displayName', document.getElementById('displayName').value.trim());
-        formData.append('city', document.getElementById('city').value.trim());
-        formData.append('country', document.getElementById('country').value.trim());
-        formData.append('bio', document.getElementById('bio').value.trim());
-        formData.append('customLinks', JSON.stringify([
-            document.getElementById('customLink1').value.trim(),
-            document.getElementById('customLink2').value.trim(),
-            document.getElementById('customLink3').value.trim()
-        ]));
-    }
-
-    async function submitFormData(formData) {
-        const progressBar = document.getElementById('progress');
-        progressBar.style.width = '0%';
-        document.querySelector('.progress-bar').style.display = 'block';
-        const cacheKey = `profile_${userId}`;
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://media.maar.world:3001/api/updateUserProfile', true);
-
-        xhr.upload.onprogress = function(event) {
-            if (event.lengthComputable) {
-                const percentComplete = (event.loaded / event.total) * 100;
-                progressBar.style.width = percentComplete + '%';
-            }
-        };
-
-        xhr.onload = async function() {
-            try {
-                const response = JSON.parse(xhr.responseText);
-                if (xhr.status === 200 && response.success) {
-                    // Invalidate cached data after successful update
-                    lscache.remove(cacheKey);
-                    console.log(`Cache removed for key ${cacheKey}`);
-                    document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
-                    document.getElementById('messageDisplay').style.color = 'green';
-                    
-                    // Re-fetch the updated profile data
-                    await fetchUserProfile(userId, true);
-
-                    // Switch back to view mode after successful update
-                    toggleEditMode(); 
-                } else {
-                    document.getElementById('messageDisplay').innerText = `Failed to update profile: ${response.message}`;
-                    document.getElementById('messageDisplay').style.color = 'red';
-                }
-            } catch (error) {
-                console.error('Error parsing server response:', error);
-                document.getElementById('messageDisplay').innerText = 'An unexpected error occurred.';
-                document.getElementById('messageDisplay').style.color = 'red';
-            }
-        };
-
-        xhr.onerror = function() {
-            document.getElementById('messageDisplay').innerText = 'An error occurred while updating your profile.';
-            document.getElementById('messageDisplay').style.color = 'red';
-        };
-
-        xhr.send(formData);
-    }
-
-    // Initial call to fetch profile
+    // Initialize profile view on page load
     fetchUserProfile(userId);
 });
-
-
-
 </script>
