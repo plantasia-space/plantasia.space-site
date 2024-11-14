@@ -420,6 +420,7 @@ input[type="number"] {
 .menu-list-item,
 .track-list-item,
 .playlist-list-item {
+  z-index: 2; /* Higher than the iframe to appear on top */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -481,7 +482,7 @@ input[type="number"] {
   object-fit: cover;
   margin-right: 20px;
   position: relative;
-  z-index: 2;
+  z-index: 1;
   flex-shrink: 0; /* Prevent image from shrinking */
 }
 
@@ -644,6 +645,8 @@ input[type="number"] {
   gap: 10px;
 }
 /* ------------------ MORE OPTIONS BUTTON ----------------------- */
+/* Style for the main options container */
+
 
 .more-options-container {
   position: absolute;
@@ -652,7 +655,7 @@ input[type="number"] {
   display: inline-block;
   cursor: pointer;
   font-size: 14px;
-  z-index: 1001;
+  z-index: 999;
 }
 
 .more-options-button {
@@ -671,14 +674,15 @@ input[type="number"] {
   color: #ccc;
 }
 
+/* Style for the dropdown menu */
 .more-options-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #000;
+  color: #fff;
   min-width: 150px;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   border-radius: 8px;
   padding: 10px;
   display: none;
@@ -710,9 +714,57 @@ input[type="number"] {
 }
 
 .more-options-dropdown .option-button:hover {
-  background-color: #333333;
+  background-color: #333;
   border-radius: 4px;
 }
+
+.option-button-container {
+  position: relative;
+}
+
+.option-button.has-submenu {
+  position: relative;
+  padding-right: 20px; /* Space for the submenu arrow */
+}
+
+.option-button.has-submenu .submenu-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.add-to-playlist-menu {
+  position: absolute;
+  top: 0;
+  left: -100%; /* Default position to the right */
+  background-color: #000;
+  color: #fff;
+  min-width: 150px;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  padding: 10px;
+  display: none;
+  z-index: 1001;
+  white-space: nowrap;
+}
+
+.add-to-playlist-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-to-playlist-menu button:hover {
+  color: #ccc;
+}
+
 
 /* ------------------ MENU LIST STYLES ----------------------- */
 
@@ -1833,14 +1885,19 @@ textarea#description {
 
 /* Define a custom class for the 3D model iframes */
 .iframe-3d-model {
-  width: 300px; /* Set width */
-  height: 300px; /* Set height */
-  background-color: transparent !important; /* Ensure transparent background */
+  width: 100%; /* Full width of the card */
+  height: 100%; /* Full height of the card */
+  z-index: 1; /* Lower than the card to appear behind */
   border: none; /* Remove any border */
   overflow: hidden; /* Hide scrollbars */
+  position: relative; /* Ensure positioning for z-index to take effect */
+  z-index: 10; /* Adjust z-index as needed */
 }
 
 /* Set the background of the iframe’s parent container to transparent as well, if needed */
 .iframe-3d-model-container {
   background-color: transparent;
+  z-index: 1; /* Match the iframe's z-index */
+  position: relative; /* Positioning required for z-index */
+  z-index: 5; /* Adjust z-index as needed */
 }

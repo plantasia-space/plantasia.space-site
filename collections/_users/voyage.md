@@ -390,15 +390,9 @@ function populateUserProfileList(profileData) {
     `;
 }
 
-/**
- * Function to display tracks on the page using batch fetching with caching.
- * Consolidates action buttons into a single "More Options" button with a dropdown menu.
- * @param {Array<string>} trackIds - Array of track IDs owned by the user.
- */
 async function displayTracksBatch(trackIds) {
     console.log('Starting displayTracksBatch with IDs:', trackIds);
     const userId = localStorage.getItem('userId');
-
     const tracksListElement = document.getElementById('tracks-list');
     tracksListElement.innerHTML = ''; // Clear existing list
 
@@ -408,7 +402,6 @@ async function displayTracksBatch(trackIds) {
         return;
     }
 
-    // Validate and filter track IDs
     const validTrackIds = trackIds.filter(id => isValidObjectId(id));
     if (validTrackIds.length === 0) {
         tracksListElement.innerHTML = '<li>No valid track IDs found.</li>';
@@ -416,42 +409,20 @@ async function displayTracksBatch(trackIds) {
         return;
     }
 
-    // Use a cache key based on user ID
     const cacheKey = `tracks_batch_${userId}`;
     const batchUrl = `http://media.maar.world:3001/api/tracks/batch?ids=${validTrackIds.join(',')}`;
 
     try {
-        const data = await fetchDataWithCache(
-            batchUrl,
-            cacheKey,
-            10, // Cache for 10 minutes
-            false // Do not force refresh
-        );
+        const data = await fetchDataWithCache(batchUrl, cacheKey, 10, false);
 
         if (data.success && Array.isArray(data.tracks)) {
             console.log(`Fetched ${data.tracks.length} tracks.`);
             data.tracks.forEach(track => {
-                if (!track || typeof track !== 'object') {
-                    console.warn('Invalid track data:', track);
-                    return;
-                }
-                console.log('Setting cover image source to:', track.coverImageURL); // Debugging
-
-                let imageUrl = 'https://media.maar.world/uploads/default/default-tracks.jpg'; // Default image
-                if (track.coverImageURL) {
-                    imageUrl = `${track.coverImageURL}`; // Append timestamp correctly
-                }
-
+                const imageUrl = track.coverImageURL || 'https://media.maar.world/uploads/default/default-tracks.jpg';
                 const trackName = track.trackName || 'Unnamed Track';
-                const privacy = track.privacy || 'Private';
-                const releaseDate = track.releaseDate ? new Date(track.releaseDate).toLocaleDateString() : 'Unknown';
-
-                const ownerName = track.owner?.displayName || 'Unknown';
                 const artistNames = track.artists.map(artist => artist.displayName || 'Unknown').join(', ');
 
-                // Create DOM elements
                 const trackDiv = document.createElement('li');
-
                 trackDiv.innerHTML = `
                     <div class="track-list-item" onclick="handleCardClick('${track._id}', event)" style="cursor: pointer;">
                         <div class="track-profile-pic">
@@ -460,26 +431,35 @@ async function displayTracksBatch(trackIds) {
                         <div class="track-details">
                             <div class="track-name"><strong>Track Name:</strong> ${trackName}</div>
                             <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
-                            <div class="track-owner"><strong>Owner:</strong> ${ownerName}</div>
-                            <div class="track-privacy"><strong>Privacy:</strong> ${privacy}</div>
-                            <div class="track-release-date"><strong>Release Date:</strong> ${releaseDate}</div>
                         </div>
                         <div class="track-actions">
                             <div class="more-options-container">
-                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);">
                                     <span class="material-symbols-outlined">more_horiz</span>
                                 </button>
-                                <div class="more-options-dropdown">
-                                    <button class="option-button" onclick="editTrack('${track._id}')">
-                                        <span class="material-symbols-outlined">edit</span> Edit
-                                    </button>
-                                    <button class="option-button" onclick="shareTrack('${track._id}')">
-                                        <span class="material-symbols-outlined">share</span> Share
-                                    </button>
-                                    <button class="option-button" onclick="deleteTrack('${track._id}', this)">
-                                        <span class="material-symbols-outlined">delete</span> Delete
-                                    </button>
+                        <div class="more-options-dropdown">
+ 
+
+                            <!-- Option with submenu -->
+                            <div class="option-button-container">
+                                <button class="option-button has-submenu" onclick="event.stopPropagation(); toggleAddToPlaylistMenu(event);">
+                                    <span class="material-symbols-outlined">playlist_add</span> Add to Playlist
+                                    <span class="submenu-arrow">&#9654;</span>
+                                </button>
+                                <div id="add-to-playlist-menu-${track._id}" class="add-to-playlist-menu">
+                                    <!-- Playlist options will be populated here -->
+                                    </div>
                                 </div>
+                                                           <!-- Other options -->
+                            <button class="option-button" onclick="editTrack('${track._id}')">
+                                <span class="material-symbols-outlined">edit</span> Edit
+                            </button>
+                            <button class="option-button" onclick="shareTrack('${track._id}')">
+                                <span class="material-symbols-outlined">share</span> Share
+                            </button>
+                            <button class="option-button" onclick="deleteTrack('${track._id}', this)">
+                                <span class="material-symbols-outlined">delete</span> Delete
+                            </button>
                             </div>
                         </div>
                     </div>
@@ -487,6 +467,9 @@ async function displayTracksBatch(trackIds) {
                 tracksListElement.appendChild(trackDiv);
             });
             console.log('All tracks displayed successfully.');
+
+            // Fetch playlists and populate each track's "Add to Playlist" menu
+            await populatePlaylistsForTracks(userId, data.tracks);
         } else {
             console.error('Failed to fetch tracks:', data.message);
             tracksListElement.innerHTML = '<li>Failed to load tracks.</li>';
@@ -495,8 +478,87 @@ async function displayTracksBatch(trackIds) {
     } catch (error) {
         console.error('Error displaying tracks:', error);
         tracksListElement.innerHTML = '<li>No tracks found.</li>';
-        //showToast('No tracks found.', 'error');
     }
+}
+
+/**
+ * Populate each track's "Add to Playlist" menu with available playlists.
+ */
+async function populatePlaylistsForTracks(userId, tracks) {
+    const playlistsUrl = `http://media.maar.world:3001/api/playlists?ownerId=${userId}`;
+    const cacheKey = `user_playlists_${userId}`;
+
+    try {
+const playlistsData = await fetchDataWithCache(playlistsUrl, cacheKey, 10, true);
+
+        if (playlistsData.success && Array.isArray(playlistsData.playlists)) {
+            playlistsData.playlists.forEach(playlist => {
+                tracks.forEach(track => {
+                    const playlistMenu = document.getElementById(`add-to-playlist-menu-${track._id}`);
+                    if (playlistMenu) {
+                        playlistMenu.innerHTML += `
+                            <button onclick="addTrackToPlaylist('${playlist._id}', '${track._id}')">
+                                ${playlist.playlistName}
+                            </button>`;
+                    }
+                });
+            });
+        } else {
+            console.error('Failed to fetch playlists:', playlistsData.message);
+            showToast('Failed to load playlists.', 'error');
+        }
+    } catch (error) {
+        console.error('Error fetching playlists:', error);
+        showToast('Error loading playlists.', 'error');
+    }
+}
+// Function to add a track to a playlist
+async function addTrackToPlaylist(playlistId, trackId) {
+    try {
+        const response = await fetch('http://media.maar.world:3001/api/playlists/add-track', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ playlistId, trackId }),
+        });
+        const data = await response.json();
+        if (data.success) {
+            showToast('Track added to playlist successfully!', 'success');
+        } else {
+            showToast(`Failed to add track to playlist: ${data.message}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error adding track to playlist:', error);
+        showToast('Failed to add track to playlist.', 'error');
+    }
+}
+function toggleAddToPlaylistMenu(event) {
+    const button = event.currentTarget;
+    const menu = button.nextElementSibling;
+
+    if (!menu) {
+        console.error(`Add to Playlist menu not found.`);
+        return;
+    }
+
+    // Close other open menus
+    document.querySelectorAll('.add-to-playlist-menu').forEach(otherMenu => {
+        if (otherMenu !== menu) {
+            otherMenu.style.display = 'none';
+        }
+    });
+
+    // Toggle the menu display
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+
+    // Close menu if clicking outside
+    document.addEventListener('click', function handleClickOutside(event) {
+        if (!menu.contains(event.target) && !button.contains(event.target)) {
+            menu.style.display = 'none';
+            document.removeEventListener('click', handleClickOutside);
+        }
+    });
 }
 
 /**
@@ -1338,4 +1400,6 @@ window.addEventListener('scroll', () => {
     localStorage.setItem('lastScrollY', window.scrollY);
    // console.log(`Scroll position saved: ${window.scrollY}`);
 });
+
+
 </script>
