@@ -14,18 +14,20 @@ public: false
 ---
 
 <!-- Playlist Management Container -->
+<div class="p-5"></div>
+
 <div class="form-container">
     <div class="button-container">
         <div class="back-button-container">
-            <a href="/voyage" title="Back to Voyage">
+            <a href="/voyage" title="Voyage">
                 <button id="backButton" class="btn button--outline-primary button--circle">
                     <span class="material-symbols-outlined">brightness_6</span>
                 </button>
             </a>
         </div>
         <div class="edit-button-container">
-            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Playlist" style="display: none;">
-                <span class="material-symbols-outlined">edit</span>
+            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile" data-mode="view">
+                <span class="material-symbols-outlined" id="editButtonIcon">edit</span> 
             </button>
         </div>
     </div>
@@ -43,13 +45,9 @@ public: false
         <p id="viewPlaylistOwner"></p>
         <p id="viewPlaylistTracks"></p>
         <!-- Tracks List -->
-        <div id="tracksListContainer">
-            <h4>Tracks</h4>
-            <ul id="tracksList"></ul>
-            <button id="addTrackButton" class="btn btn-success">Add Track</button>
-        </div>
+
     </div>
-  
+
     <!-- Edit/Create Mode -->
     <form id="playlistForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Hidden ownerId input -->
@@ -87,28 +85,23 @@ public: false
         <!-- Playlist Privacy -->
         <label for="playlistPrivacy">
             Privacy Setting 
-            <span class=" tooltip" aria-label="Privacy Settings Info" tabindex="0" data-tooltip='Choose "Public" to allow anyone to see this playlist,<br> "Collaborative" for shared editing,<br> or "Private" to keep it to yourself.'>
-            <span class="material-symbols-outlined">
-            tooltip_2
-            </span>            </span>
+            <span class="tooltip" aria-label="Privacy Settings Info" tabindex="0" data-tooltip='Choose "Public" to allow anyone to see this playlist,<br> "Collaborative" for shared editing,<br> or "Private" to keep it to yourself.'>
+                <span class="material-symbols-outlined">tooltip_2</span>
+            </span>
         </label>
 
-        
         <select id="playlistPrivacy" name="playlistPrivacy">
             <option value="public" selected>Public</option>
             <option value="collaborative">Collaborative</option>
             <option value="private">Private</option>
         </select>
 
-        
-        <!-- Tracks Management -->
+        <!-- Tracks Management (Only in Edit/Create Mode) -->
         <div id="tracksManagement">
             <h4>Manage Tracks</h4>
             <ul id="editTracksList"></ul>
-            <button type="button" id="addTrackToEditButton" class="btn btn-success">Add Track</button>
         </div>
-        <br>
-        
+
         <!-- Submit Button -->
         <button type="submit" id="submitButton">Submit</button>
         <button type="button" id="cancelButton" class="btn button--outline-primary button--circle">Cancel</button>
@@ -126,6 +119,10 @@ public: false
 </div>
 
 <!-- JavaScript Code -->
+<!-- Include SortableJS once -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const API_BASE_URL = 'http://media.maar.world:3001/api'; // Update if different
@@ -156,10 +153,8 @@ public: false
         const coverImagePreview = document.getElementById('coverImagePreview');
         const submitButton = document.getElementById('submitButton');
         const toastContainer = document.getElementById('toastContainer');
-        const addTrackToEditButton = document.getElementById('addTrackToEditButton');
-        const editTracksList = document.getElementById('editTracksList');
-        const addTrackButton = document.getElementById('addTrackButton'); // For view mode
-        // Set tooltip content
+        const tracksManagementElement = document.getElementById('tracksManagement');
+        const editTracksListElement = document.getElementById('editTracksList');
         const tooltipElement = document.querySelector('.tooltip');
         const urlParams = new URLSearchParams(window.location.search);
         const modeParam = urlParams.get('mode');
@@ -177,43 +172,25 @@ public: false
 
         // Event Listener for Description Input
         descriptionTextarea.addEventListener('input', updateDescriptionCounter);
-        // Event Listener for Pasting into Description
-/**
- * Updates the description character counter.
- */
-function updateDescriptionCounter() {
-    const maxChars = 500;
-    const currentLength = descriptionTextarea.value.length;
-    const remaining = maxChars - currentLength;
-    descriptionCounter.textContent = `${remaining} characters remaining`;
-
-    // Change color based on remaining characters
-    if (remaining < 100 && remaining >= 0) {
-        descriptionCounter.style.color = '#ff9933'; // Orange
-    } else if (remaining < 0) {
-        descriptionCounter.style.color = '#ff3333'; // Red
-    } else {
-        descriptionCounter.style.color = '#33ff33'; // Green
-    }
-}
-
-
+        
         /**
          * Updates the description character counter.
          */
-function updateDescriptionCounter() {
-    const maxChars = 500;
-    const currentLength = descriptionTextarea.value.length;
-    const remaining = maxChars - currentLength;
-    descriptionCounter.textContent = `${remaining} characters remaining`;
+        function updateDescriptionCounter() {
+            const maxChars = 500;
+            const currentLength = descriptionTextarea.value.length;
+            const remaining = maxChars - currentLength;
+            descriptionCounter.textContent = `${remaining} characters remaining`;
 
-    // Change color based on remaining characters
-    if (remaining < 100 && remaining >= 0) {
-        descriptionCounter.style.color = '#ff33cc'; // Orange
-    } else {
-        descriptionCounter.style.color = '#c3c3c3'; // 
-    }
-}
+            // Change color based on remaining characters
+            if (remaining < 100 && remaining >= 0) {
+                descriptionCounter.style.color = '#ff33cc'; // Orange
+            } else if (remaining < 0) {
+                descriptionCounter.style.color = '#ff3333'; // Red
+            } else {
+                descriptionCounter.style.color = '#c3c3c3'; // Default color
+            }
+        }
         
         // Initialize based on mode
         if (modeParam === 'edit' && currentPlaylistId) {
@@ -238,13 +215,6 @@ function updateDescriptionCounter() {
             });
         }
 
-        // Event Listener for Add Track Button in View Mode
-        if (addTrackButton) {
-            addTrackButton.addEventListener('click', function() {
-                openAddTrackModal(false); // false indicates it's not in edit mode
-            });
-        }
-        
         // Event Listener for Cancel Button
         if (cancelButton) {
             cancelButton.addEventListener('click', function() {
@@ -255,6 +225,8 @@ function updateDescriptionCounter() {
                 }
             });
         }
+
+        // Set tooltip content
         if (tooltipElement) {
             tooltipElement.setAttribute('data-tooltip', 'Choose "Public" to allow anyone to see this playlist, "Collaborative" for shared editing, or "Private" to keep it to yourself.');
         }
@@ -277,19 +249,15 @@ function updateDescriptionCounter() {
             handleFormSubmit();
         });
         
-        // Event Listener for Add Track Button in Edit Mode
-        if (addTrackToEditButton) {
-            addTrackToEditButton.addEventListener('click', function() {
-                openAddTrackModal(true); // true indicates it's in edit mode
-            });
-        }
-        
         /**
          * Load Playlist Details from Backend
          * @param {string} playlistId 
          */
         async function loadPlaylistDetails(playlistId) {
             try {
+                // **Updated Cache Key to Include Playlist ID**
+                const cacheKey = `playlist_details_${userId}_${playlistId}`;
+                
                 const response = await fetch(`${API_BASE_URL}/playlists/${encodeURIComponent(playlistId)}?userId=${encodeURIComponent(userId)}`, {
                     method: 'GET',
                     credentials: 'include', // Sends HTTP-only cookies for authentication
@@ -302,11 +270,7 @@ function updateDescriptionCounter() {
                 if (data.success && data.playlist) {
                     playlistData = data.playlist;
                     // Determine ownership based on ownerId structure and privacy setting
-                    if (typeof playlistData.ownerId === 'object' && playlistData.ownerId.userId) {
-                        isOwner = playlistData.ownerId.userId === userId;
-                    } else {
-                        isOwner = playlistData.ownerId === userId;
-                    }
+                    isOwner = (playlistData.owner.userId === userId);
                     canEdit = isOwner || (playlistData.privacy === 'collaborative');
                     console.log('Is user the owner?', isOwner);
                     console.log('Can user edit?', canEdit);
@@ -338,14 +302,14 @@ function updateDescriptionCounter() {
             document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${escapeHtml(playlist.description) || 'No description provided.'}`;
             document.getElementById('viewPlaylistType').innerHTML = `<strong>Type:</strong> ${capitalizeFirstLetter(playlist.type) || 'N/A'}`;
             document.getElementById('viewPlaylistPrivacy').innerHTML = `<strong>Privacy:</strong> ${capitalizeFirstLetter(playlist.privacy) || 'N/A'}`;
-            
+
             document.getElementById('viewPlaylistOwner').innerHTML = `<strong>Owner:</strong> ${
                 playlist.owner.username
                     ? `<a href="/xplorer/?username=${encodeURIComponent(playlist.owner.username)}" target="_self">@${escapeHtml(playlist.owner.username)}</a>`
                     : 'Unknown'
             }`;            
             document.getElementById('viewPlaylistTracks').innerHTML = `<strong>Number of Tracks:</strong> ${playlist.tracks.length}`;
-        
+
             const coverImageDisplay = document.getElementById('coverImageDisplay');
             if (playlist.coverImageOriginalURL) {
                 coverImageDisplay.src = playlist.coverImageOriginalURL;
@@ -354,29 +318,15 @@ function updateDescriptionCounter() {
             }
             coverImageDisplay.style.display = 'block';
             
-            populateTracksList(playlist.tracks);
+            // Correct Extraction of Track IDs
+            const trackIds = playlist.tracks.map(track => track.trackId._id).filter(Boolean);
+            console.log('Extracted Track IDs:', trackIds);
+            
+            displayTracksBatch(trackIds, 'view');
         }
         
         /**
-         * Populate Tracks List in View Mode
-         * @param {Array} tracks 
-         */
-        function populateTracksList(tracks) {
-            const tracksList = document.getElementById('tracksList');
-            tracksList.innerHTML = '';
-            if (tracks.length === 0) {
-                tracksList.innerHTML = '<li>No tracks in this playlist.</li>';
-                return;
-            }
-            tracks.forEach((track, index) => {
-                const li = document.createElement('li');
-                li.textContent = `${index + 1}. ${escapeHtml(track.title)} by ${escapeHtml(track.artist)} (${escapeHtml(track.duration)})`;
-                tracksList.appendChild(li);
-            });
-        }
-        
-        /**
-         * Populate Form Mode with Playlist Data for Editing
+         * Populate Form Mode (Edit/Create) with Playlist Data
          * @param {object} playlist 
          */
         function populateFormMode(playlist) {
@@ -385,7 +335,7 @@ function updateDescriptionCounter() {
             document.getElementById('description').value = playlist.description || '';
             document.getElementById('playlistType').value = playlist.type || 'Playlist';
             document.getElementById('playlistPrivacy').value = playlist.privacy || 'public';
-        
+
             if (playlist.coverImageOriginalURL) {
                 coverImagePreview.src = playlist.coverImageOriginalURL;
                 coverImagePreview.style.display = 'block';
@@ -394,11 +344,12 @@ function updateDescriptionCounter() {
                 coverImagePreview.style.display = 'block';
             }
             
-            // Populate tracks
-            tracks = playlist.tracks || [];
-            populateEditTracksList();
+            // Correct Extraction of Track IDs
+            const trackIds = playlist.tracks.map(track => track.trackId._id).filter(Boolean);
+            console.log('Extracted Track IDs:', trackIds);
+            displayTracksBatch(trackIds, currentMode);
         }
-        
+                
         /**
          * Handle Cover Image Change Event
          * @param {Event} event 
@@ -427,102 +378,83 @@ function updateDescriptionCounter() {
         /**
          * Handle Form Submission for Creating/Editing Playlist
          */
-        async function handleFormSubmit() {
-            const playlistId = document.getElementById('playlistId').value;
-            const coverImageFile = coverImageInput.files[0];
-            const isEdit = currentMode === 'edit';
-            const userId = localStorage.getItem('userId');
-        
-            const playlistName = document.getElementById('playlistName').value.trim();
-            const description = document.getElementById('description').value.trim();
-            const type = document.getElementById('playlistType').value;
-            const privacy = document.getElementById('playlistPrivacy').value;
-        
-            // Validation
-            if (!playlistName) {
-                showToast('Please enter the playlist name.', 'error');
-                return;
+/**
+ * Handle Form Submission for Creating/Editing Playlist
+ */
+async function handleFormSubmit() {
+    const playlistId = document.getElementById('playlistId').value;
+    const coverImageFile = coverImageInput.files[0];
+    const isEdit = currentMode === 'edit';
+    const userId = localStorage.getItem('userId');
+
+    const playlistName = document.getElementById('playlistName').value.trim();
+    const description = document.getElementById('description').value.trim();
+    const type = document.getElementById('playlistType').value;
+    const privacy = document.getElementById('playlistPrivacy').value;
+
+    // Validation
+    if (!playlistName) {
+        showToast('Please enter the playlist name.', 'error');
+        return;
+    }
+
+    // Prepare JSON payload
+    const payload = {
+        ownerId: userId,
+        playlistName,
+        description,
+        type: type || 'Playlist',
+        privacy: privacy || 'public',
+        trackOrder: tracks.map(track => track.trackId._id)  // Send reordered track IDs
+    };
+
+    // Include cover image details only if a new image is uploaded
+    if (coverImageFile) {
+        payload.coverImageFileName = coverImageFile.name;
+        payload.coverImageFileType = coverImageFile.type || getMimeTypeFromFileName(coverImageFile.name);
+    }
+
+    // Disable form elements and show loading
+    setFormState(false);
+    showLoading(true);
+
+    try {
+        const url = isEdit 
+            ? `${API_BASE_URL}/playlists/${encodeURIComponent(playlistId)}`
+            : `${API_BASE_URL}/playlists`;
+        const method = isEdit ? 'PATCH' : 'POST';
+
+        const response = await fetch(url, {
+            method: method,
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log('Response:', data);
+
+        if (response.ok && data.success) {
+            showToast(data.message || 'Playlist saved successfully!', 'success');
+            if (isEdit) {
+                loadPlaylistDetails(playlistId);  // Reload to reflect new order
+                setFormMode('view');
+            } else {
+                window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(data.playlistId)}`;
             }
-        
-            // Prepare JSON payload
-            const payload = {
-                ownerId: userId,
-                playlistName,
-                description,
-                type: type || 'Playlist', // Default to 'Playlist' if not provided
-                privacy: privacy || 'public', // Default to 'Public' if not provided
-            };
-        
-            // Include cover image details only if a new image is uploaded
-            if (coverImageFile) {
-                payload.coverImageFileName = coverImageFile.name;
-                payload.coverImageFileType = coverImageFile.type || getMimeTypeFromFileName(coverImageFile.name);
-            }
-        
-            // Disable form elements and show loading
-            setFormState(false);
-            showLoading(true);
-        
-            try {
-                const url = isEdit 
-                    ? `${API_BASE_URL}/playlists/${encodeURIComponent(playlistId)}`
-                    : `${API_BASE_URL}/playlists`;
-                const method = isEdit ? 'PATCH' : 'POST';
-        
-                const response = await fetch(url, {
-                    method: method,
-                    credentials: 'include', // Use HTTP-only cookies for authentication
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-        
-                const data = await response.json();
-                console.log('Response:', data);
-        
-                if (response.ok && data.success) {
-                    if (data.coverImageURL && data.coverImageKey && coverImageFile) {
-                        // Proceed to upload cover image only if new image data is returned
-                        await uploadCoverImage(data.coverImageURL, coverImageFile, data.coverImageKey, isEdit ? playlistId : data.playlistId);
-                        await finalizePlaylist(isEdit ? playlistId : data.playlistId, data.coverImageKey);
-                    } else {
-                        showToast(data.message || 'Playlist saved successfully!', 'success');
-                        if (isEdit) {
-                            loadPlaylistDetails(playlistId);
-                            setFormMode('view');
-                        } else {
-                            window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(data.playlistId)}`;
-                        }
-                    }
-        
-                    // Clear cache after successful creation
-                    if (typeof lscache !== 'undefined') { // Check if lscache is available
-                        lscache.remove(`profile_${userId}`);
-                        lscache.remove(`playlists_batch_${userId}`);
-                    }
-        
-                    // Handle tracks
-                    if (tracks.length > 0) {
-                        for (const track of tracks) {
-                            const createdTrack = await createTrack(track);
-                            if (createdTrack && createdTrack.trackId) {
-                                await addTrackToPlaylistAPI(isEdit ? playlistId : data.playlistId, createdTrack.trackId);
-                            }
-                        }
-                    }
-                } else {
-                    const errorMsg = data.error || data.message || 'Failed to save playlist.';
-                    showToast(errorMsg, 'error');
-                }
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                showToast('An error occurred while saving the playlist.', 'error');
-            } finally {
-                setFormState(true);
-                showLoading(false);
-            }
+        } else {
+            showToast(data.error || 'Failed to save playlist.', 'error');
         }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showToast('An error occurred while saving the playlist.', 'error');
+    } finally {
+        setFormState(true);
+        showLoading(false);
+    }
+}
         
         /**
          * Upload Cover Image After Playlist Creation/Editing
@@ -563,65 +495,6 @@ function updateDescriptionCounter() {
         }
         
         /**
-         * Create a Track via Backend API
-         * @param {object} track - { title, artist, duration }
-         * @returns {object} - Created track data
-         */
-        async function createTrack(track) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/tracks`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`,
-                    },
-                    body: JSON.stringify(track)
-                });
-        
-                const data = await response.json();
-                if (response.ok && data.success) {
-                    showToast(`Track "${track.title}" created successfully!`, 'success');
-                    return data.track; // Assuming backend returns the created track
-                } else {
-                    showToast(data.error || `Failed to create track "${track.title}".`, 'error');
-                    return null;
-                }
-            } catch (error) {
-                console.error('Error creating track:', error);
-                showToast(`An error occurred while creating track "${track.title}".`, 'error');
-                return null;
-            }
-        }
-        
-        /**
-         * Add a Track to a Playlist via Backend API
-         * @param {string} playlistId 
-         * @param {string} trackId 
-         */
-        async function addTrackToPlaylistAPI(playlistId, trackId) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/playlists/addTrackToPlaylist`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`,
-                    },
-                    body: JSON.stringify({ playlistId, trackId })
-                });
-        
-                const data = await response.json();
-                if (response.ok && data.success) {
-                    showToast('Track added to playlist successfully!', 'success');
-                } else {
-                    showToast(data.error || 'Failed to add track to playlist.', 'error');
-                }
-            } catch (error) {
-                console.error('Error adding track to playlist:', error);
-                showToast('An error occurred while adding track to playlist.', 'error');
-            }
-        }
-        
-        /**
          * Finalizes the playlist by notifying the backend that the cover image has been uploaded.
          * This may trigger additional processing like thumbnail generation.
          * @param {string} playlistId - The ID of the playlist to finalize.
@@ -651,8 +524,13 @@ function updateDescriptionCounter() {
         
                 if (response.ok && data.success) {
                     showToast('Playlist finalized successfully!', 'success');
-                    // Redirect to view mode after finalization
-                    window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(playlistId)}`;
+                    // **Invalidate Cache for This Playlist**
+                    if (typeof lscache !== 'undefined') {
+                        lscache.remove(`playlist_details_${userId}_${playlistId}`);
+                        lscache.remove(`tracks_batch_${userId}_${playlistId}`);
+                    }
+                    // Reload playlist details to reflect any final changes
+                    await loadPlaylistDetails(playlistId);
                 } else {
                     const errorMsg = data.error || data.message || 'Failed to finalize playlist.';
                     showToast(errorMsg, 'error'); // Display specific error message from backend
@@ -717,6 +595,11 @@ function updateDescriptionCounter() {
             
                 // Set form title
                 formTitle.textContent = 'Edit Playlist';
+                
+                // Show Tracks Management Section
+                if (tracksManagementElement) {
+                    tracksManagementElement.style.display = 'block';
+                }
             } else if (isCreateMode) {
                 playlistView.style.display = 'none';
                 playlistForm.style.display = 'block';
@@ -731,6 +614,11 @@ function updateDescriptionCounter() {
             
                 // Clear the form fields if in create mode
                 clearFormFields();
+            
+                // Show Tracks Management Section
+                if (tracksManagementElement) {
+                    tracksManagementElement.style.display = 'block';
+                }
             
                 // Ensure the submit button is enabled
                 if (submitButton) {
@@ -752,16 +640,8 @@ function updateDescriptionCounter() {
             coverImagePreview.src = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Default image
             coverImagePreview.style.display = 'block';
             coverImageInput.value = ''; // Clear the file input
-            clearEditTracksList();
             tracks = [];
-        }
-        
-        /**
-         * Clear Edit Tracks List
-         */
-        function clearEditTracksList() {
-            const editTracksList = document.getElementById('editTracksList');
-            editTracksList.innerHTML = '';
+            refreshTracksList(); // Clear the tracks list
         }
         
         /**
@@ -790,9 +670,8 @@ function updateDescriptionCounter() {
          * Show Toast Notifications
          * @param {string} message - The message to display.
          * @param {string} type - The type of toast ('success' or 'error').
-         * @param {boolean} disableSubmit - Whether to disable the submit button.
          */
-        function showToast(message, type = 'success', disableSubmit = false) {
+        function showToast(message, type = 'success') {
             console.log(`showToast called with message: "${message}", type: "${type}"`);
             const toastContainer = document.getElementById('toastContainer');
             if (!toastContainer) {
@@ -856,17 +735,6 @@ function updateDescriptionCounter() {
                     }, 500);
                 }, 3000);
             }
-        
-            // Disable the submit button if required
-            if (disableSubmit) {
-                const submitButton = document.getElementById('submitButton');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    console.log('Submit button disabled due to validation error.');
-                } else {
-                    console.warn('submitButton element not found.');
-                }
-            }
         }
         
         /**
@@ -908,204 +776,354 @@ function updateDescriptionCounter() {
             playlistForm.style.display = 'none';
         }
         
-        /**
-         * Open Add Track Modal
-         * @param {boolean} isEditMode - Indicates if the modal is opened in edit mode.
-         */
-        function openAddTrackModal(isEditMode = false) {
-            // Create Modal Elements
-            const modal = document.createElement('div');
-            modal.classList.add('modal');
-            modal.setAttribute('id', 'addTrackModal');
-            modal.style.display = 'block'; // Show the modal
-            modal.style.position = 'fixed';
-            modal.style.zIndex = '1000';
-            modal.style.left = '0';
-            modal.style.top = '0';
-            modal.style.width = '100%';
-            modal.style.height = '100%';
-            modal.style.overflow = 'auto';
-            modal.style.backgroundColor = 'rgba(0,0,0,0.4)';
+/**
+ * Display Tracks in Batch
+ * @param {Array} trackIds 
+ * @param {string} mode - 'view' or 'edit'
+ */
+/**
+ * Display Tracks in Batch
+ * @param {Array} trackIds 
+ * @param {string} mode - 'view' or 'edit'
+ */
+async function displayTracksBatch(trackIds, mode) {
+    console.log('Starting displayTracksBatch with IDs:', trackIds);
+    let tracksListElement;
+    
+    if (mode === 'view') {
+        // Handle view mode tracks display if needed
+    } else if (mode === 'edit') {
+        tracksListElement = document.getElementById('editTracksList'); // Edit Mode Tracks List
+    } else {
+        console.error(`Unknown mode: ${mode}`);
+        return;
+    }
+    
+    // Clear existing list to prevent duplication
+    tracksListElement.innerHTML = ''; 
+    
+    if (!trackIds || trackIds.length === 0) {
+        tracksListElement.innerHTML = '<li>No tracks found.</li>';
+        console.log('No tracks to display.');
+        return;
+    }
+
+    const cacheKey = `tracks_batch_${userId}_${currentPlaylistId}`;
+    const batchUrl = `${API_BASE_URL}/tracks/batch?ids=${trackIds.join(',')}`;
+
+    try {
+        const data = await fetchDataWithCache(batchUrl, cacheKey, 10, false); // Force refresh
+
+        if (data.success && Array.isArray(data.tracks)) {
+            console.log(`Fetched ${data.tracks.length} tracks.`);
             
-            const modalContent = document.createElement('div');
-            modalContent.classList.add('modal-content');
-            modalContent.style.backgroundColor = '#fefefe';
-            modalContent.style.margin = '15% auto';
-            modalContent.style.padding = '20px';
-            modalContent.style.border = '1px solid #888';
-            modalContent.style.width = '80%';
-            
-            const closeButton = document.createElement('span');
-            closeButton.classList.add('close-btn-modal');
-            closeButton.innerHTML = '&times;';
-            closeButton.style.color = '#aaa';
-            closeButton.style.float = 'right';
-            closeButton.style.fontSize = '28px';
-            closeButton.style.fontWeight = 'bold';
-            closeButton.style.cursor = 'pointer';
-            closeButton.onclick = () => {
-                modal.style.display = 'none';
-                modal.remove();
-            };
-            
-            const modalHeader = document.createElement('h4');
-            modalHeader.innerText = 'Add New Track';
-            
-            const form = document.createElement('form');
-            form.setAttribute('id', 'addTrackForm');
-            
-            // Track Title
-            const titleLabel = document.createElement('label');
-            titleLabel.setAttribute('for', 'trackTitle');
-            titleLabel.innerText = 'Track Title*';
-            const titleInput = document.createElement('input');
-            titleInput.setAttribute('type', 'text');
-            titleInput.setAttribute('id', 'trackTitle');
-            titleInput.setAttribute('name', 'trackTitle');
-            titleInput.setAttribute('required', 'required');
-            titleInput.style.width = '100%';
-            
-            // Track Artist
-            const artistLabel = document.createElement('label');
-            artistLabel.setAttribute('for', 'trackArtist');
-            artistLabel.innerText = 'Artist*';
-            const artistInput = document.createElement('input');
-            artistInput.setAttribute('type', 'text');
-            artistInput.setAttribute('id', 'trackArtist');
-            artistInput.setAttribute('name', 'trackArtist');
-            artistInput.setAttribute('required', 'required');
-            artistInput.style.width = '100%';
-            
-            // Track Duration
-            const durationLabel = document.createElement('label');
-            durationLabel.setAttribute('for', 'trackDuration');
-            durationLabel.innerText = 'Duration (MM:SS)*';
-            const durationInput = document.createElement('input');
-            durationInput.setAttribute('type', 'text');
-            durationInput.setAttribute('id', 'trackDuration');
-            durationInput.setAttribute('name', 'trackDuration');
-            durationInput.setAttribute('required', 'required');
-            durationInput.setAttribute('pattern', '^([0-5]?[0-9]):([0-5][0-9])$');
-            durationInput.setAttribute('title', 'Enter duration in MM:SS format');
-            durationInput.style.width = '100%';
-            
-            // Submit Button
-            const submitTrackButton = document.createElement('button');
-            submitTrackButton.setAttribute('type', 'submit');
-            submitTrackButton.classList.add('btn', 'btn-primary');
-            submitTrackButton.innerText = 'Add Track';
-            submitTrackButton.style.marginTop = '10px';
-            
-            // Append elements to form
-            form.appendChild(titleLabel);
-            form.appendChild(document.createElement('br'));
-            form.appendChild(titleInput);
-            form.appendChild(document.createElement('br'));
-            form.appendChild(document.createElement('br'));
-            
-            form.appendChild(artistLabel);
-            form.appendChild(document.createElement('br'));
-            form.appendChild(artistInput);
-            form.appendChild(document.createElement('br'));
-            form.appendChild(document.createElement('br'));
-            
-            form.appendChild(durationLabel);
-            form.appendChild(document.createElement('br'));
-            form.appendChild(durationInput);
-            form.appendChild(document.createElement('br'));
-            form.appendChild(document.createElement('br'));
-            
-            form.appendChild(submitTrackButton);
-            
-            // Form Submission Handler
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const title = titleInput.value.trim();
-                const artist = artistInput.value.trim();
-                const duration = durationInput.value.trim();
-                
-                // Simple validation
-                if (!title || !artist || !duration) {
-                    showToast('Please fill in all required fields for the track.', 'error');
-                    return;
-                }
-                
-                // Validate duration format
-                const durationPattern = /^([0-5]?[0-9]):([0-5][0-9])$/;
-                if (!durationPattern.test(duration)) {
-                    showToast('Please enter duration in MM:SS format.', 'error');
-                    return;
-                }
-                
-                // Add track to tracks array
-                tracks.push({ title, artist, duration });
-                showToast('Track added successfully!', 'success');
-                modal.style.display = 'none';
-                modal.remove();
-                
-                // Update UI
-                if (isEditMode) {
-                    populateEditTracksList();
-                } else {
-                    populateTracksList(tracks);
-                }
-            });
-            
-            // Append elements to modal
-            modalContent.appendChild(closeButton);
-            modalContent.appendChild(modalHeader);
-            modalContent.appendChild(form);
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-            
-            // Close modal when clicking outside of the modal content
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                    modal.remove();
-                }
-            };
-        }
-        
-        /**
-         * Populate Tracks List in Edit Mode
-         */
-        function populateEditTracksList() {
-            const editTracksList = document.getElementById('editTracksList');
-            editTracksList.innerHTML = '';
-            if (tracks.length === 0) {
-                editTracksList.innerHTML = '<li>No tracks in this playlist.</li>';
-                return;
-            }
-            tracks.forEach((track, index) => {
+            // Display tracks in the correct order and update numbers
+            trackIds.forEach((id, index) => {
+                const track = data.tracks.find(track => track._id === id);
+                if (!track) return;
+
+                const imageUrl = track.coverImageURL || 'https://media.maar.world/uploads/default/default-tracks.jpg';
+                const trackName = track.trackName || 'Untitled';
+                const artistNames = (track.artists && track.artists.length > 0) 
+                    ? track.artists.map(artist => artist.displayName || 'Unknown Artist').join(', ') 
+                    : 'Unknown Artist';
+                const duration = track.duration || 'N/A';
+
                 const li = document.createElement('li');
-                li.textContent = `${index + 1}. ${escapeHtml(track.title)} by ${escapeHtml(track.artist)} (${escapeHtml(track.duration)}) `;
-                
-                const removeBtn = document.createElement('button');
-                removeBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                removeBtn.innerText = 'Remove';
-                removeBtn.style.marginLeft = '10px';
-                removeBtn.addEventListener('click', function() {
-                    removeTrack(index);
-                });
-                
-                li.appendChild(removeBtn);
-                editTracksList.appendChild(li);
+                li.setAttribute('data-track-id', track._id);
+                li.innerHTML = `
+                    <div class="track-item">
+                        <span class="track-number">${index + 1}.</span>
+                        <img src="${imageUrl}" alt="${trackName}" class="track-thumbnail">
+                        <div class="track-details">
+                            <span class="track-name">${escapeHtml(trackName)}</span>
+                            <span class="track-artist">${escapeHtml(artistNames)}</span>
+                            <span class="track-duration">${escapeHtml(duration)}</span>
+                        </div>
+                        ${mode === 'edit' ? `   <button type="option-button" class="option-button" onclick="removeTrack('${track._id}', this)">
+                                            <span class="material-symbols-outlined">delete</span> 
+                                        </button>` : ''}
+                    </div>
+                `;
+                tracksListElement.appendChild(li);
             });
+            console.log('All tracks displayed successfully.');
+
+            if (mode === 'edit') {
+                initializeSortable(); // Make tracks sortable in edit mode
+            }
+        } else {
+            console.error('Failed to fetch tracks:', data.message);
+            tracksListElement.innerHTML = '<li>Failed to load tracks.</li>';
+            showToast('Failed to load your tracks.', 'error');
+        }
+    } catch (error) {
+        console.error('Error displaying tracks:', error);
+        tracksListElement.innerHTML = '<li>No tracks found.</li>';
+        showToast('An error occurred while loading your tracks.', 'error');
+    }
+}
+
+        /**
+         * Check if a string is a valid ObjectId (simple check)
+         * @param {string} id 
+         * @returns {boolean}
+         */
+        function isValidObjectId(id) {
+            return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id);
+        }
+
+        /**
+         * Fetch Data with Caching
+         * @param {string} url 
+         * @param {string} cacheKey 
+         * @param {number} ttlMinutes 
+         * @param {boolean} useCache 
+         * @returns {object}
+         */
+        async function fetchDataWithCache(url, cacheKey, ttlMinutes = 10, useCache = true) {
+            if (useCache) {
+                const cachedData = lscache.get(cacheKey);
+                if (cachedData) {
+                    console.log('Using cached data for:', cacheKey);
+                    return cachedData;
+                }
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include', // Sends HTTP-only cookies for authentication
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            if (useCache && data.success) {
+                lscache.set(cacheKey, data, ttlMinutes);
+                console.log('Data cached for:', cacheKey);
+            }
+
+            return data;
         }
         
-        /**
-         * Remove Track from Tracks Array
-         * @param {number} index 
-         */
-        function removeTrack(index) {
-            if (index >= 0 && index < tracks.length) {
-                tracks.splice(index, 1);
-                showToast('Track removed successfully!', 'success');
-                populateEditTracksList();
-            } else {
-                showToast('Invalid track index.', 'error');
+/**
+ * Remove Track by ID
+ * @param {string} trackId 
+ */
+window.removeTrack = async function(trackId) {
+    if (!trackId || !currentPlaylistId) {
+        showToast('Invalid track or playlist ID.', 'error');
+        return;
+    }
+
+    console.log('Removing track:', trackId, 'from playlist:', currentPlaylistId);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/playlists/remove-track`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId, // Pass userId in the request body
+                playlistId: currentPlaylistId,
+                trackId: trackId
+            })
+        });
+
+        const data = await response.json();
+        console.log('Response from remove-track:', data); // Debugging
+
+        if (data.success) {
+            showToast('Track removed successfully!', 'success');
+            // Update the local tracks array
+            tracks = tracks.filter(track => track.trackId._id !== trackId);
+            // **Invalidate Cache for This Playlist**
+            if (typeof lscache !== 'undefined') {
+                lscache.remove(`playlist_details_${userId}_${currentPlaylistId}`);
+                lscache.remove(`tracks_batch_${userId}_${currentPlaylistId}`);
             }
+            // Refresh the tracks list
+            displayTracksBatch(tracks.map(t => t.trackId._id).filter(Boolean), 'edit');
+        } else {
+            console.warn('Failed to remove track:', data.error || data.message);
+            showToast(data.error || 'Failed to remove the track.', 'error');
+        }
+    } catch (error) {
+        console.error('Error removing track:', error);
+        showToast('An error occurred while removing the track.', 'error');
+    }
+};
+/**
+ * Initialize SortableJS for Edit Mode
+ */
+/**
+ * Initialize SortableJS for Edit Mode
+ */
+function initializeSortable() {
+    const sortable = new Sortable(editTracksListElement, {
+        animation: 150,
+        handle: '.track-name',
+        onEnd: function (evt) {
+            // Update local `tracks` order based on new order in the DOM
+            const reorderedTrackIds = Array.from(editTracksListElement.children)
+                .map(child => child.getAttribute('data-track-id'));
+
+            // Reorder `tracks` array to match reorderedTrackIds
+            tracks = reorderedTrackIds.map(id => tracks.find(track => track.trackId._id === id));
+
+            // Update the displayed track numbers in edit mode to reflect new order
+            Array.from(editTracksListElement.children).forEach((child, index) => {
+                child.querySelector('.track-number').textContent = `${index + 1}.`;
+            });
+
+            console.log('Local tracks reordered:', tracks);
+            showToast('Tracks reordered locally. Save changes to update.', 'info');
+        }
+    });
+}
+
+
+/**
+ * Function to update track numbers in the UI
+ * @param {HTMLElement} trackListElement - The list element containing track items
+ */
+function updateTrackNumbers(trackListElement) {
+    Array.from(trackListElement.children).forEach((item, index) => {
+        const trackNumber = item.querySelector('.track-number');
+        if (trackNumber) {
+            trackNumber.textContent = `${index + 1}.`; // Update track number in UI
+        }
+    });
+}
+
+    
+        /**
+         * Refresh Tracks List (Clear)
+         */
+        function refreshTracksList() {
+            editTracksListElement.innerHTML = '';
         }
     });
 </script>
+
+<style>
+/* ... [Your existing CSS remains unchanged] ... */
+
+/* Consolidated Tracks List Styles */
+#tracksListContainer, #tracksManagement {
+    margin-top: 20px;
+}
+
+#tracksList, #tracksListContainer ul, #tracksManagement ul {
+    list-style: none;
+    padding: 0;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.track-thumbnail {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.track-details {
+    flex-grow: 1;
+}
+
+.track-name {
+    font-weight: bold;
+    margin-right: 5px;
+    cursor: move; /* Indicate draggable area */
+}
+
+.track-artist {
+    color: #555;
+    margin-right: 5px;
+}
+
+.track-duration {
+    color: #777;
+    margin-right: 10px;
+}
+
+.track-index {
+    width: 30px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.remove-track-btn {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-track-btn:hover {
+    background-color: #ff1a1a;
+}
+
+/* Toast Styles */
+.toast {
+    position: relative;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast.success {
+    background-color: #4caf50; /* Green */
+}
+
+.toast.error {
+    background-color: #f44336; /* Red */
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Optional: Spinner Styles */
+.spinner {
+    border: 8px solid #f3f3f3; /* Light gray */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
