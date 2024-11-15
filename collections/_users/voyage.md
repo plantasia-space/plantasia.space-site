@@ -423,47 +423,53 @@ async function displayTracksBatch(trackIds) {
                 const artistNames = track.artists.map(artist => artist.displayName || 'Unknown').join(', ');
 
                 const trackDiv = document.createElement('li');
-                trackDiv.innerHTML = `
-                    <div class="track-list-item" onclick="handleCardClick('${track._id}', event)" style="cursor: pointer;">
-                        <div class="track-profile-pic">
-                            <img src="${imageUrl}" alt="${trackName}" loading="lazy">
-                        </div>
-                        <div class="track-details">
-                            <div class="track-name"><strong>Track Name:</strong> ${trackName}</div>
-                            <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
-                        </div>
-                        <div class="track-actions">
-                            <div class="more-options-container">
-                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);">
-                                    <span class="material-symbols-outlined">more_horiz</span>
-                                </button>
-                        <div class="more-options-dropdown">
- 
+trackDiv.innerHTML = `
+    <div class="track-card" onclick="handleCardClick('${track._id}', event)" style="cursor: pointer;">
+        <!-- Track Details -->
+        <div class="track-list-item">
+            <div class="track-profile-pic">
+                <img src="${imageUrl}" alt="${trackName}" loading="lazy">
+            </div>
+            <div class="track-details">
+                <div class="track-name"><strong>Track Name:</strong> ${trackName}</div>
+                <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
+            </div>
+        </div>
 
-                            <!-- Option with submenu -->
-                            <div class="option-button-container">
-                                <button class="option-button has-submenu" onclick="event.stopPropagation(); toggleAddToPlaylistMenu(event);">
-                                    <span class="material-symbols-outlined">playlist_add</span> Add to Playlist
-                                    <span class="submenu-arrow">&#9654;</span>
-                                </button>
-                                <div id="add-to-playlist-menu-${track._id}" class="add-to-playlist-menu">
-                                    <!-- Playlist options will be populated here -->
-                                    </div>
-                                </div>
-                                                           <!-- Other options -->
-                            <button class="option-button" onclick="editTrack('${track._id}')">
-                                <span class="material-symbols-outlined">edit</span> Edit
-                            </button>
-                            <button class="option-button" onclick="shareTrack('${track._id}')">
-                                <span class="material-symbols-outlined">share</span> Share
-                            </button>
-                            <button class="option-button" onclick="deleteTrack('${track._id}', this)">
-                                <span class="material-symbols-outlined">delete</span> Delete
-                            </button>
-                            </div>
+        <!-- Options Menu -->
+        <div class="track-actions">
+            <div class="more-options-container">
+                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                </button>
+                <div class="more-options-dropdown">
+                    <!-- Option with submenu -->
+                    <div class="option-button-container">
+                        <button class="option-button has-submenu" onclick="event.stopPropagation(); toggleAddToPlaylistMenu(event);">
+                            <span class="material-symbols-outlined">playlist_add</span> Add to Playlist
+                            <span class="submenu-arrow">&#9654;</span>
+                        </button>
+                        <div id="add-to-playlist-menu-${track._id}" class="add-to-playlist-menu">
+                            <!-- Playlist options dynamically populated -->
+                            <button onclick="addTrackToPlaylist('playlist1', '${track._id}')">Playlist 1</button>
+                            <button onclick="addTrackToPlaylist('playlist2', '${track._id}')">Playlist 2</button>
                         </div>
                     </div>
-                `;
+                    <!-- Other options -->
+                    <button class="option-button" onclick="editTrack('${track._id}')">
+                        <span class="material-symbols-outlined">edit</span> Edit
+                    </button>
+                    <button class="option-button" onclick="shareTrack('${track._id}')">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
+                    <button class="option-button" onclick="deleteTrack('${track._id}', this)">
+                        <span class="material-symbols-outlined">delete</span> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+`;
                 tracksListElement.appendChild(trackDiv);
             });
             console.log('All tracks displayed successfully.');
@@ -534,31 +540,16 @@ async function addTrackToPlaylist(playlistId, trackId) {
     }
 }
 function toggleAddToPlaylistMenu(event) {
+    event.stopPropagation(); // Prevent event from closing the parent dropdown
     const button = event.currentTarget;
-    const menu = button.nextElementSibling;
+    const submenu = button.nextElementSibling;
 
-    if (!menu) {
-        console.error(`Add to Playlist menu not found.`);
-        return;
+    if (submenu) {
+        submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        console.log('Toggled Add to Playlist menu.');
+    } else {
+        console.error('Add to Playlist menu not found.');
     }
-
-    // Close other open menus
-    document.querySelectorAll('.add-to-playlist-menu').forEach(otherMenu => {
-        if (otherMenu !== menu) {
-            otherMenu.style.display = 'none';
-        }
-    });
-
-    // Toggle the menu display
-    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-
-    // Close menu if clicking outside
-    document.addEventListener('click', function handleClickOutside(event) {
-        if (!menu.contains(event.target) && !button.contains(event.target)) {
-            menu.style.display = 'none';
-            document.removeEventListener('click', handleClickOutside);
-        }
-    });
 }
 
 /**
@@ -1315,60 +1306,60 @@ function handleCardClick(itemId, event) {
     event.preventDefault(); // Prevent default link behavior
     console.log(`Card clicked for ID: ${itemId}`);
 
-    // Find the dropdown inside the clicked card and toggle it
+    // Locate the dropdown relative to the clicked card
     const card = event.currentTarget;
     const dropdown = card.querySelector('.more-options-dropdown');
 
     if (dropdown) {
         const isDisplayed = dropdown.classList.contains('show');
-        closeAllDropdowns(); // Close any other open dropdowns.
+        closeAllDropdowns(); // Close any other open dropdowns
 
-        // Toggle the dropdown visibility
+        // Toggle dropdown visibility
         if (!isDisplayed) {
             dropdown.classList.add('show');
-            card.setAttribute('aria-expanded', 'true');
+            dropdown.setAttribute('aria-expanded', 'true');
         } else {
             dropdown.classList.remove('show');
-            card.setAttribute('aria-expanded', 'false');
+            dropdown.setAttribute('aria-expanded', 'false');
         }
-
-        // Debugging Logs
         console.log(`Dropdown for "${itemId}" is now ${!isDisplayed ? 'shown' : 'hidden'}.`);
+    } else {
+        console.error('Dropdown not found for card:', card);
     }
 }
 
 function toggleMoreOptions(event) {
-    console.log(event);
-    event.stopPropagation(); // Prevent event from bubbling up.
-    const dropdown = event.currentTarget.nextElementSibling;
+    event.stopPropagation(); // Prevent event from bubbling up
+    const button = event.currentTarget;
+    const dropdown = button.closest('.track-card').querySelector('.more-options-dropdown');
+
     if (dropdown) {
         const isDisplayed = dropdown.classList.contains('show');
-        closeAllDropdowns(); // Close any other open dropdowns.
+        closeAllDropdowns(); // Close any other open dropdowns
+
+        // Toggle dropdown visibility
         if (!isDisplayed) {
             dropdown.classList.add('show');
-            event.currentTarget.setAttribute('aria-expanded', 'true');
+            dropdown.setAttribute('aria-expanded', 'true');
             console.log('Dropdown shown.');
         } else {
             dropdown.classList.remove('show');
-            event.currentTarget.setAttribute('aria-expanded', 'false');
+            dropdown.setAttribute('aria-expanded', 'false');
             console.log('Dropdown hidden.');
         }
+    } else {
+        console.error('Dropdown not found for button:', button);
     }
 }
-
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.more-options-dropdown');
     dropdowns.forEach(dropdown => {
         dropdown.classList.remove('show');
+        dropdown.setAttribute('aria-expanded', 'false');
     });
-
-    const buttons = document.querySelectorAll('.more-options-button');
-    buttons.forEach(button => {
-        button.setAttribute('aria-expanded', 'false');
-    });
-
     console.log('All dropdowns closed.');
 }
+
 
 // Event listener to close dropdowns when clicking outside
 document.addEventListener('click', function(event) {

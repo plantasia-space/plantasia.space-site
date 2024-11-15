@@ -425,7 +425,6 @@ input[type="number"] {
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  border: 2px solid #ffffff;
   border-radius: 12px;
   margin-bottom: 20px;
   background-color: #000;
@@ -643,126 +642,6 @@ input[type="number"] {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-/* ------------------ MORE OPTIONS BUTTON ----------------------- */
-/* Style for the main options container */
-
-
-.more-options-container {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 14px;
-  z-index: 999;
-}
-
-.more-options-button {
-  background-color: transparent;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.5em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.more-options-container:hover .more-options-button {
-  color: #ccc;
-}
-
-/* Style for the dropdown menu */
-.more-options-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #000;
-  color: #fff;
-  min-width: 150px;
-  border: 1px solid #fff;
-  border-radius: 8px;
-  padding: 10px;
-  display: none;
-  flex-direction: column;
-  z-index: 1000;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.more-options-dropdown.show {
-  display: flex;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.more-options-dropdown .option-button {
-  background-color: transparent;
-  border: none;
-  color: #fff;
-  text-align: left;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 1em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.more-options-dropdown .option-button:hover {
-  background-color: #333;
-  border-radius: 4px;
-}
-
-.option-button-container {
-  position: relative;
-}
-
-.option-button.has-submenu {
-  position: relative;
-  padding-right: 20px; /* Space for the submenu arrow */
-}
-
-.option-button.has-submenu .submenu-arrow {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.add-to-playlist-menu {
-  position: absolute;
-  top: 0;
-  left: -100%; /* Default position to the right */
-  background-color: #000;
-  color: #fff;
-  min-width: 150px;
-  border: 1px solid #fff;
-  border-radius: 8px;
-  padding: 10px;
-  display: none;
-  z-index: 1001;
-  white-space: nowrap;
-}
-
-.add-to-playlist-menu button {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  text-align: left;
-  background: none;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.add-to-playlist-menu button:hover {
-  color: #ccc;
 }
 
 
@@ -1901,3 +1780,227 @@ textarea#description {
   position: relative; /* Positioning required for z-index */
   z-index: 5; /* Adjust z-index as needed */
 }
+
+
+
+
+///////////////////////////////////////////
+/// 
+/// 
+/* Card container */
+.track-card {
+  position: relative; /* Create a stacking context for dropdown */
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  background: #000000;
+  overflow: visible; /* Ensure menu-dropdown is not clipped */
+}
+
+/* Menu container at the top of the card */
+.menu-container {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  background: #00000000;
+  z-index: 100; /* Ensure it stays above other content */
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 8px 8px 0 0; /* Rounded top edges */
+}
+
+/* Menu button styling */
+.menu-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: #000000;
+  font-size: 18px;
+}
+
+/* Dropdown menu */
+.menu-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #000000;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 200; /* Ensure it's above other elements */
+  padding: 10px;
+  flex-direction: column;
+}
+
+/* Show dropdown when toggled */
+.menu-dropdown.show {
+  display: flex;
+}
+
+/* Dropdown options */
+.menu-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-align: left;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.menu-option:hover {
+  background-color: #f1f1f1;
+}
+
+/* Ensure submenu aligns properly and doesn't overflow */
+
+/* Submenu container */
+.add-to-playlist-menu {
+  position: absolute;
+  top: 0;
+  left: auto; /* Default to the left side of the parent menu */
+  right: 100%; /* Ensure it stays aligned to the parent dropdown */
+  background: #000000; /* Same as parent dropdown */
+  color: #ffffff;
+  min-width: 150px;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  display: none; /* Hidden by default */
+  z-index: 1001;
+  white-space: nowrap; /* Prevent line breaks */
+}
+
+/* Ensure submenu shows when parent option is hovered */
+.option-button-container:hover .add-to-playlist-menu {
+  display: block;
+}
+
+/* Submenu button styles */
+.add-to-playlist-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Highlight hovered submenu item */
+.add-to-playlist-menu button:hover {
+  background-color: #f1f1f1; /* Grey background */
+  color: #000000; /* Black text */
+}
+
+
+
+.option-button-container {
+  position: relative;
+}
+.option-button-container:hover .add-to-playlist-menu {
+  display: block;
+
+  
+}
+.option-button.has-submenu {
+  position: relative;
+  padding-right: 20px; /* Space for the submenu arrow */
+}
+
+.option-button.has-submenu .submenu-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+
+
+
+
+
+
+/* ------------------ MORE OPTIONS BUTTON ----------------------- */
+/* Style for the main options container */
+
+
+
+
+.more-options-container {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 999;
+}
+
+.more-options-button {
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more-options-container:hover .more-options-button {
+  color: #ccc;
+}
+
+/* Style for the dropdown menu */
+.more-options-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #000;
+  color: #fff;
+  min-width: 150px;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.more-options-dropdown.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.more-options-dropdown .option-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  text-align: left;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.more-options-dropdown .option-button:hover {
+  background-color: #000000;
+  border-radius: 4px;
+}
+
