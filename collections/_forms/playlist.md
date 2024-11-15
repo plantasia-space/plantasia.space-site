@@ -1097,40 +1097,6 @@ function updateTrackNumbers(trackListElement) {
     background-color: #ff1a1a;
 }
 
-/* Toast Styles */
-.toast {
-    position: relative;
-    padding: 15px 20px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    color: #fff;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.toast.show {
-    opacity: 1;
-}
-
-.toast.success {
-    background-color: #4caf50; /* Green */
-}
-
-.toast.error {
-    background-color: #f44336; /* Red */
-}
-
-.close-btn {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-}
-
 /* Optional: Spinner Styles */
 .spinner {
     border: 8px solid #f3f3f3; /* Light gray */
