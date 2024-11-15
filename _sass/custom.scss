@@ -417,7 +417,6 @@ input[type="number"] {
 /* Common Styles for List Items */
 .soundEngine-list-item,
 .interplanetaryPlayer-list-item,
-.menu-list-item,
 .track-list-item,
 .playlist-list-item {
   z-index: 2; /* Higher than the iframe to appear on top */
@@ -436,13 +435,32 @@ input[type="number"] {
   text-align: center; /* Center text */
 }
 
+/* Common Styles for List Items */
+
+.menu-list-item{
+  z-index: 2; /* Higher than the iframe to appear on top */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #ffffff;
+  background-color: #000;
+  color: #fff;
+  position: relative;
+  overflow: visible;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  flex-direction: column; /* Stack items vertically */
+  text-align: center; /* Center text */
+}
+
 /* Hover Effect for List Items */
 .soundEngine-list-item:hover,
 .interplanetaryPlayer-list-item:hover,
 .menu-list-item:hover,
 .track-list-item:hover,
 .playlist-list-item:hover {
-  background-color: #1a1a1a;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -1809,7 +1827,9 @@ textarea#description {
   z-index: 100; /* Ensure it stays above other content */
   padding: 5px;
 }
-
+.menu-container:hover {
+  background-color: #8282822f;
+}
 /* Align menu button to the left */
 .left-menu {
   justify-content: flex-start;
@@ -1860,6 +1880,7 @@ textarea#description {
 .menu-option:hover {
   background-color: #f1f1f1;
   color: #000000;
+  
 }
 
 /* Submenu container */
