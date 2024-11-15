@@ -12,6 +12,10 @@
     </script>
     {%- include scripts/variables.html -%}
     {%- include scripts/cookie-consent.html -%}
+    <script>
+      // Inject the `public` variable from the front matter
+      const isPublicPage = {{ page.public | json }};
+    </script>
   </head>
   <body>
     <div class="root" data-is-touch="false">
@@ -27,7 +31,5 @@
       // Removed redundant authentication scripts to prevent duplication
       // {%- include scripts/searchUsers.js -%}
     </script>
-
-
   </body>
 </html>
