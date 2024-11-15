@@ -185,12 +185,18 @@ async function getCsrfToken() {
 /**
  * Function to initialize authentication checks on page load
  */
-function initializeAuth() {
-    checkAuth();
+async function initializeAuth() {
+    const isAuthenticated = await checkAuth();
+    updateAuthLink(isAuthenticated);
+    if (!isAuthenticated) {
+        // Redirect to login page if not authenticated
+        window.location.href = '/login';
+    }
 }
 
 // Initialize authentication when the script loads
 document.addEventListener('DOMContentLoaded', initializeAuth);
+
 
 // Expose functions globally if needed
 window.loginUser = loginUser;
