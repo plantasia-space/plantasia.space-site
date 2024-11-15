@@ -439,8 +439,7 @@ trackDiv.innerHTML = `
                         <span class="submenu-arrow">&#9654;</span>
                     </button>
                     <div id="add-to-playlist-menu-${track._id}" class="add-to-playlist-menu">
-                        <button onclick="addTrackToPlaylist('playlist1', '${track._id}')">Playlist 1</button>
-                        <button onclick="addTrackToPlaylist('playlist2', '${track._id}')">Playlist 2</button>
+
                     </div>
                 </div>
                 <!-- Other options -->
