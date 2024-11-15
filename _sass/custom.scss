@@ -1785,29 +1785,34 @@ textarea#description {
 
 
 ///////////////////////////////////////////
-/// 
+///
 /// 
 /* Card container */
+/* Card container */
 .track-card {
-  position: relative; /* Create a stacking context for dropdown */
+  position: relative;
   margin: 15px 0;
   padding: 10px;
   border: 1px solid #ffffff;
   border-radius: 8px;
   background: #000000;
-  overflow: visible; /* Ensure menu-dropdown is not clipped */
+  overflow: visible; /* Ensure dropdown is not clipped */
 }
 
-/* Menu container at the top of the card */
+/* Menu container */
 .menu-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start; /* Align to the left */
   position: relative;
-  background: #00000000;
+  background: transparent;
+  border-bottom: 1px solid #ddd;
   z-index: 100; /* Ensure it stays above other content */
   padding: 5px;
-  border-bottom: 1px solid #ddd;
-  border-radius: 8px 8px 0 0; /* Rounded top edges */
+}
+
+/* Align menu button to the left */
+.left-menu {
+  justify-content: flex-start;
 }
 
 /* Menu button styling */
@@ -1817,21 +1822,22 @@ textarea#description {
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
-  color: #000000;
+  color: #ffffff;
   font-size: 18px;
 }
+
 
 /* Dropdown menu */
 .menu-dropdown {
   display: none;
   position: absolute;
-  top: 100%;
-  right: 0;
+  top: 100%; /* Align below the button */
+  left: 0; /* Align the left edge with the left edge of the container */
   background: #000000;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 200; /* Ensure it's above other elements */
+  z-index: 200;
   padding: 10px;
   flex-direction: column;
 }
@@ -1845,7 +1851,6 @@ textarea#description {
 .menu-option {
   padding: 8px 12px;
   cursor: pointer;
-  border: none;
   background: none;
   text-align: left;
   background-color: #000000;
@@ -1854,28 +1859,26 @@ textarea#description {
 
 .menu-option:hover {
   background-color: #f1f1f1;
+  color: #000000;
 }
-
-/* Ensure submenu aligns properly and doesn't overflow */
 
 /* Submenu container */
 .add-to-playlist-menu {
   position: absolute;
   top: 0;
-  left: auto; /* Default to the left side of the parent menu */
-  right: 100%; /* Ensure it stays aligned to the parent dropdown */
-  background: #000000; /* Same as parent dropdown */
+  left: 100%; /* Align to the right of the main menu */
+  background: #000000;
   color: #ffffff;
   min-width: 150px;
   border: 1px solid #ffffff;
   border-radius: 8px;
   padding: 10px;
-  display: none; /* Hidden by default */
+  display: none;
   z-index: 1001;
   white-space: nowrap; /* Prevent line breaks */
 }
 
-/* Ensure submenu shows when parent option is hovered */
+/* Show submenu when parent option is hovered */
 .option-button-container:hover .add-to-playlist-menu {
   display: block;
 }
@@ -1893,47 +1896,16 @@ textarea#description {
   transition: background-color 0.2s ease;
 }
 
-/* Highlight hovered submenu item */
 .add-to-playlist-menu button:hover {
-  background-color: #f1f1f1; /* Grey background */
-  color: #000000; /* Black text */
+  background-color: #f1f1f1;
+  color: #000000;
 }
 
-
-
+/* Align submenu properly */
 .option-button-container {
   position: relative;
 }
-.option-button-container:hover .add-to-playlist-menu {
-  display: block;
-
-  
-}
-.option-button.has-submenu {
-  position: relative;
-  padding-right: 20px; /* Space for the submenu arrow */
-}
-
-.option-button.has-submenu .submenu-arrow {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-
-
-
-
-
-
-
-/* ------------------ MORE OPTIONS BUTTON ----------------------- */
-/* Style for the main options container */
-
-
-
-
+/* Ensure more-options dropdown aligns properly */
 .more-options-container {
   position: absolute;
   top: 15px;
@@ -1960,11 +1932,10 @@ textarea#description {
   color: #ccc;
 }
 
-/* Style for the dropdown menu */
 .more-options-dropdown {
   position: absolute;
   top: 100%;
-  right: 0;
+  right: 0; /* Align the right edge with the right edge of the button */
   background-color: #000;
   color: #fff;
   min-width: 150px;
@@ -2004,3 +1975,25 @@ textarea#description {
   border-radius: 4px;
 }
 
+#global-dropdown-container .menu-dropdown {
+  max-width: 300px;
+  width: auto;
+  background-color: #000000;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+}
+
+#global-dropdown-container .menu-dropdown .option-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

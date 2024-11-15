@@ -171,6 +171,7 @@ public: false
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="toast-container"></div>
 
+<div id="global-dropdown-container"></div>
 
 <!-- Ensure lscache is loaded before this script -->
 
@@ -425,6 +426,36 @@ async function displayTracksBatch(trackIds) {
                 const trackDiv = document.createElement('li');
 trackDiv.innerHTML = `
     <div class="track-card" onclick="handleCardClick('${track._id}', event)" style="cursor: pointer;">
+        <!-- Menu Container -->
+        <div class="menu-container left-menu" onclick="toggleMoreOptions(event)">
+            <button class="menu-button">
+                <span class="material-symbols-outlined">more_horiz</span>
+            </button>
+            <div class="menu-dropdown">
+                <!-- Dropdown options -->
+                <div class="option-button-container">
+                    <button class="option-button has-submenu" onclick="event.stopPropagation(); toggleAddToPlaylistMenu(event);">
+                        <span class="material-symbols-outlined">playlist_add</span> Add to Playlist
+                        <span class="submenu-arrow">&#9654;</span>
+                    </button>
+                    <div id="add-to-playlist-menu-${track._id}" class="add-to-playlist-menu">
+                        <button onclick="addTrackToPlaylist('playlist1', '${track._id}')">Playlist 1</button>
+                        <button onclick="addTrackToPlaylist('playlist2', '${track._id}')">Playlist 2</button>
+                    </div>
+                </div>
+                <!-- Other options -->
+                <button class="menu-option" onclick="editTrack('${track._id}')">
+                    <span class="material-symbols-outlined">edit</span> Edit
+                </button>
+                <button class="menu-option" onclick="shareTrack('${track._id}')">
+                    <span class="material-symbols-outlined">share</span> Share
+                </button>
+                <button class="menu-option" onclick="deleteTrack('${track._id}', this)">
+                    <span class="material-symbols-outlined">delete</span> Delete
+                </button>
+            </div>
+        </div>
+
         <!-- Track Details -->
         <div class="track-list-item">
             <div class="track-profile-pic">
@@ -435,41 +466,9 @@ trackDiv.innerHTML = `
                 <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
             </div>
         </div>
-
-        <!-- Options Menu -->
-        <div class="track-actions">
-            <div class="more-options-container">
-                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);">
-                    <span class="material-symbols-outlined">more_horiz</span>
-                </button>
-                <div class="more-options-dropdown">
-                    <!-- Option with submenu -->
-                    <div class="option-button-container">
-                        <button class="option-button has-submenu" onclick="event.stopPropagation(); toggleAddToPlaylistMenu(event);">
-                            <span class="material-symbols-outlined">playlist_add</span> Add to Playlist
-                            <span class="submenu-arrow">&#9654;</span>
-                        </button>
-                        <div id="add-to-playlist-menu-${track._id}" class="add-to-playlist-menu">
-                            <!-- Playlist options dynamically populated -->
-                            <button onclick="addTrackToPlaylist('playlist1', '${track._id}')">Playlist 1</button>
-                            <button onclick="addTrackToPlaylist('playlist2', '${track._id}')">Playlist 2</button>
-                        </div>
-                    </div>
-                    <!-- Other options -->
-                    <button class="option-button" onclick="editTrack('${track._id}')">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                    <button class="option-button" onclick="shareTrack('${track._id}')">
-                        <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                    <button class="option-button" onclick="deleteTrack('${track._id}', this)">
-                        <span class="material-symbols-outlined">delete</span> Delete
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 `;
+
                 tracksListElement.appendChild(trackDiv);
             });
             console.log('All tracks displayed successfully.');
@@ -1303,67 +1302,75 @@ function showToast(message, type = 'success') {
  * @param {Event} event - The click event.
  */
 function handleCardClick(itemId, event) {
-    event.preventDefault(); // Prevent default link behavior
+    if (event.target.closest('.menu-container')) {
+        // Skip handling clicks inside the menu-container
+        return;
+    }
+
+    // General card click behavior
+    event.preventDefault();
     console.log(`Card clicked for ID: ${itemId}`);
+    // Example action: Navigate to details page
+    // window.location.href = `/track/${itemId}`;
+}function toggleMoreOptions(event) {
+    event.stopPropagation(); // Prevent click propagation
 
-    // Locate the dropdown relative to the clicked card
-    const card = event.currentTarget;
-    const dropdown = card.querySelector('.more-options-dropdown');
+    const menuContainer = event.currentTarget.closest('.menu-container');
+    const dropdown = menuContainer.querySelector('.menu-dropdown');
+    const globalDropdownContainer = document.getElementById('global-dropdown-container');
 
-    if (dropdown) {
-        const isDisplayed = dropdown.classList.contains('show');
-        closeAllDropdowns(); // Close any other open dropdowns
+    if (!dropdown || !globalDropdownContainer) {
+        console.error('Dropdown or global container not found.');
+        return;
+    }
 
-        // Toggle dropdown visibility
-        if (!isDisplayed) {
-            dropdown.classList.add('show');
-            dropdown.setAttribute('aria-expanded', 'true');
-        } else {
-            dropdown.classList.remove('show');
-            dropdown.setAttribute('aria-expanded', 'false');
-        }
-        console.log(`Dropdown for "${itemId}" is now ${!isDisplayed ? 'shown' : 'hidden'}.`);
+    const isDisplayed = dropdown.classList.contains('show');
+
+    // Close all open dropdowns first
+    closeAllDropdowns();
+
+    if (!isDisplayed) {
+        // Clone the dropdown
+        const dropdownClone = dropdown.cloneNode(true);
+        dropdownClone.classList.add('show');
+        dropdownClone.style.position = 'absolute';
+
+        // Get the card's bounding rectangle
+        const rect = menuContainer.getBoundingClientRect();
+
+        // Position the dropdown
+        const topPosition = rect.bottom + window.scrollY; // Align to bottom of the container
+        const leftPosition = rect.left + window.scrollX; // Align the left edge of the dropdown with the left edge of the card
+
+        // Apply styles to the cloned dropdown
+        dropdownClone.style.top = `${topPosition}px`;
+        dropdownClone.style.left = `${leftPosition}px`;
+
+        // Append the cloned dropdown to the global container
+        globalDropdownContainer.innerHTML = ''; // Clear previous content
+        globalDropdownContainer.appendChild(dropdownClone);
+
+        console.log('Dropdown positioned and shown.');
     } else {
-        console.error('Dropdown not found for card:', card);
+        // Clear the global dropdown container
+        globalDropdownContainer.innerHTML = '';
+        console.log('Dropdown hidden.');
     }
 }
 
-function toggleMoreOptions(event) {
-    event.stopPropagation(); // Prevent event from bubbling up
-    const button = event.currentTarget;
-    const dropdown = button.closest('.track-card').querySelector('.more-options-dropdown');
-
-    if (dropdown) {
-        const isDisplayed = dropdown.classList.contains('show');
-        closeAllDropdowns(); // Close any other open dropdowns
-
-        // Toggle dropdown visibility
-        if (!isDisplayed) {
-            dropdown.classList.add('show');
-            dropdown.setAttribute('aria-expanded', 'true');
-            console.log('Dropdown shown.');
-        } else {
-            dropdown.classList.remove('show');
-            dropdown.setAttribute('aria-expanded', 'false');
-            console.log('Dropdown hidden.');
-        }
-    } else {
-        console.error('Dropdown not found for button:', button);
-    }
-}
+/**
+ * Function to close all dropdowns.
+ */
 function closeAllDropdowns() {
-    const dropdowns = document.querySelectorAll('.more-options-dropdown');
-    dropdowns.forEach(dropdown => {
-        dropdown.classList.remove('show');
-        dropdown.setAttribute('aria-expanded', 'false');
-    });
+    const globalDropdownContainer = document.getElementById('global-dropdown-container');
+    if (globalDropdownContainer) {
+        globalDropdownContainer.innerHTML = ''; // Clear the global container
+    }
     console.log('All dropdowns closed.');
 }
 
-
-// Event listener to close dropdowns when clicking outside
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('.collapsible-section')) {
+document.addEventListener('click', function (event) {
+    if (!event.target.closest('.menu-container')) {
         closeAllDropdowns();
     }
 });
