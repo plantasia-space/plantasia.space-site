@@ -1323,7 +1323,8 @@ function handleCardClick(itemId, event) {
     console.log(`Card clicked for ID: ${itemId}`);
     // Example action: Navigate to details page
     // window.location.href = `/track/${itemId}`;
-}function toggleMoreOptions(event) {
+}
+function toggleMoreOptions(event) {
     event.stopPropagation(); // Prevent click propagation
 
     const menuContainer = event.currentTarget.closest('.menu-container');
