@@ -466,12 +466,13 @@ input[type="number"] {
 
 /* Retain circular styling for menu item images */
 .menu-list-item img {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%; /* Keep menu images circular */
   border: 1px solid #ffffff;
   object-fit: cover;
   margin-right: 20px;
+  margin-bottom: 20px;
   position: relative;
   z-index: 2;
   flex-shrink: 0; /* Prevent image from shrinking */
@@ -479,12 +480,13 @@ input[type="number"] {
 
 /* Updated Playlists Image Styling */
 .playlist-list-item img {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border-radius: 12px; /* Rounded borders for Playlists */
   border: 1px solid #ffffff;
   object-fit: cover;
   margin-right: 20px;
+  margin-bottom: 20px;
   position: relative;
   z-index: 2;
   flex-shrink: 0; /* Prevent image from shrinking */
@@ -492,12 +494,13 @@ input[type="number"] {
 
 /* Updated Tracks Image Styling */
 .track-list-item img {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border: 1px solid #ffffff;
   border-radius: 0; /* Square frame for Tracks */
   object-fit: cover;
   margin-right: 20px;
+  margin-bottom: 20px;
   position: relative;
   z-index: 1;
   flex-shrink: 0; /* Prevent image from shrinking */
@@ -505,10 +508,11 @@ input[type="number"] {
 
 /* 1. Decagonal Frame for interplanetaryPlayer-list-item Images */
 .interplanetaryPlayer-list-item .decagon-frame {
-  width: 100px; /* Adjust as needed */
-  height: 100px; /* Adjust as needed */
+  width: 140px; /* Adjust as needed */
+  height: 140px; /* Adjust as needed */
   position: relative;
   margin-right: 20px;
+  margin-bottom: 20px;
   flex-shrink: 0; /* Prevent frame from shrinking */
   overflow: hidden; /* Hide overflow to maintain decagon shape */
   clip-path: polygon(
@@ -543,10 +547,11 @@ input[type="number"] {
 
 /* Styles for the hexagonal frame wrapper */
 .soundEngine-list-item .hexagon-frame {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   position: relative;
   margin-right: 20px;
+  margin-bottom: 20px;
   flex-shrink: 0; /* Prevent frame from shrinking */
   /* Optional: Add transition for hover effect */
   transition: transform 0.3s ease;
@@ -710,9 +715,8 @@ input[type="number"] {
   .menu-list-item img,
   .track-list-item img,
   .playlist-list-item img {
-    width: 70px;
-    height: 70px;
-    margin-right: 12px;
+    width: 100px;
+    height: 100px;    
     flex-direction: column; /* Stack items vertically */
     align-items: center; /* Center align the content */
     text-align: center; /* Center text */
