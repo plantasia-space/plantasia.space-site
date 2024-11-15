@@ -63,6 +63,7 @@ public: false
         <label for="uploadCoverImage">Upload the cover image for your playlist (Best Size: 800x800 pixels, Max: 5MB, JPG or PNG):</label>
         <input type="file" id="uploadCoverImage" name="coverImage" accept=".jpg, .jpeg, .png"><br><br>
 
+
         <!-- Playlist Name -->
         <label for="playlistName">What is the name of the playlist?*</label>
         <input type="text" id="playlistName" name="playlistName" required><br><br>
@@ -253,45 +254,36 @@ public: false
          * Load Playlist Details from Backend
          * @param {string} playlistId 
          */
-        async function loadPlaylistDetails(playlistId) {
-            try {
-                // **Updated Cache Key to Include Playlist ID**
-                const cacheKey = `playlist_details_${userId}_${playlistId}`;
-                
-                const response = await fetch(`${API_BASE_URL}/playlists/${encodeURIComponent(playlistId)}?userId=${encodeURIComponent(userId)}`, {
-                    method: 'GET',
-                    credentials: 'include', // Sends HTTP-only cookies for authentication
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const data = await response.json();
-                console.log('Load Playlist Details Response:', data); // Debugging
-                if (data.success && data.playlist) {
-                    playlistData = data.playlist;
-                    // Determine ownership based on ownerId structure and privacy setting
-                    isOwner = (playlistData.owner.userId === userId);
-                    canEdit = isOwner || (playlistData.privacy === 'collaborative');
-                    console.log('Is user the owner?', isOwner);
-                    console.log('Can user edit?', canEdit);
-                    
-                    populateViewMode(data.playlist);
-                    populateFormMode(data.playlist);
-                    tracks = data.playlist.tracks || [];
-                    setFormMode(currentMode);
-                } else if (data.success === false && data.message === 'Playlist is being processed.') {
-                    showProcessingMessage();
-                    // Optionally, implement polling to check when the playlist is ready
-                } else {
-                    // Display detailed error if available
-                    const errorMsg = data.error || 'Failed to load playlist details.';
-                    showToast(errorMsg, 'error');
-                }
-            } catch (error) {
-                console.error('Error fetching playlist details:', error);
-                showToast('An error occurred while loading playlist details.', 'error');
+async function loadPlaylistDetails(playlistId, keepMode = false) {
+    try {
+        // Add a timestamp to the request URL to bypass any caching
+        const response = await fetch(`${API_BASE_URL}/playlists/${encodeURIComponent(playlistId)}?userId=${encodeURIComponent(userId)}&timestamp=${new Date().getTime()}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        
+        if (data.success && data.playlist) {
+            playlistData = data.playlist;
+            isOwner = (playlistData.owner.userId === userId);
+            canEdit = isOwner || (playlistData.privacy === 'collaborative');
+            
+            populateViewMode(data.playlist);
+            populateFormMode(data.playlist);
+            tracks = data.playlist.tracks || [];
+            
+            if (!keepMode) {
+                setFormMode(currentMode);
             }
+        } else {
+            showToast(data.error || 'Failed to load playlist details.', 'error');
         }
+    } catch (error) {
+        console.error('Error fetching playlist details:', error);
+        showToast('An error occurred while loading playlist details.', 'error');
+    }
+}
         
         /**
          * Populate View Mode with Playlist Data
@@ -322,7 +314,7 @@ public: false
             const trackIds = playlist.tracks.map(track => track.trackId._id).filter(Boolean);
             console.log('Extracted Track IDs:', trackIds);
             
-            displayTracksBatch(trackIds, 'view');
+          //  displayTracksBatch(trackIds, 'view');
         }
         
         /**
@@ -347,7 +339,7 @@ public: false
             // Correct Extraction of Track IDs
             const trackIds = playlist.tracks.map(track => track.trackId._id).filter(Boolean);
             console.log('Extracted Track IDs:', trackIds);
-            displayTracksBatch(trackIds, currentMode);
+            displayTracksBatch(trackIds);
         }
                 
         /**
@@ -375,9 +367,6 @@ public: false
             }
         }
         
-        /**
-         * Handle Form Submission for Creating/Editing Playlist
-         */
 /**
  * Handle Form Submission for Creating/Editing Playlist
  */
@@ -405,7 +394,7 @@ async function handleFormSubmit() {
         description,
         type: type || 'Playlist',
         privacy: privacy || 'public',
-        trackOrder: tracks.map(track => track.trackId._id)  // Send reordered track IDs
+        // Removed 'trackOrder' from here
     };
 
     // Include cover image details only if a new image is uploaded
@@ -426,9 +415,11 @@ async function handleFormSubmit() {
 
         const response = await fetch(url, {
             method: method,
-            credentials: 'include',
+            credentials: 'include', // Use HTTP-only cookies for authentication
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                // Include auth headers if necessary
+                'Authorization': `Bearer ${authToken}` // Adjust based on your auth implementation
             },
             body: JSON.stringify(payload)
         });
@@ -438,14 +429,31 @@ async function handleFormSubmit() {
 
         if (response.ok && data.success) {
             showToast(data.message || 'Playlist saved successfully!', 'success');
-            if (isEdit) {
-                loadPlaylistDetails(playlistId);  // Reload to reflect new order
-                setFormMode('view');
+
+            if (data.coverImageURL && data.coverImageKey && coverImageFile) {
+                // Proceed to upload cover image only if new image data is returned
+                await uploadCoverImage(data.coverImageURL, coverImageFile, data.coverImageKey, isEdit ? playlistId : data.playlistId);
+                await finalizePlaylist(isEdit ? playlistId : data.playlistId, data.coverImageKey);
             } else {
-                window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(data.playlistId)}`;
+                if (isEdit) {
+                    loadPlaylistDetails(playlistId, true);
+                    setFormMode('view');
+                } else {
+                 //   window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(data.playlistId)}`;
+                }
             }
+
+            // Clear cache after successful creation
+            if (typeof lscache !== 'undefined') { // Check if lscache is available
+                lscache.remove(`profile_${userId}`);
+                lscache.remove(`playlists_batch_${userId}`);
+            }
+
+            // Optionally, send the reordered tracks if necessary
+             await reorderTracks(isEdit ? playlistId : data.playlistId, tracks.map(t => t._id));
         } else {
-            showToast(data.error || 'Failed to save playlist.', 'error');
+            const errorMsg = data.error || data.message || 'Failed to save playlist.';
+            showToast(errorMsg, 'error');
         }
     } catch (error) {
         console.error('Error submitting form:', error);
@@ -560,7 +568,10 @@ async function handleFormSubmit() {
          * Set the Current Mode (View, Edit, Create)
          */
         function setFormMode(newMode) {
+                            console.log(`setFormMode called with newMode: ${newMode}`);
+
             currentMode = newMode;
+
             const isViewMode = currentMode === 'view';
             const isEditMode = currentMode === 'edit';
             const isCreateMode = currentMode === 'create';
@@ -779,26 +790,18 @@ async function handleFormSubmit() {
 /**
  * Display Tracks in Batch
  * @param {Array} trackIds 
- * @param {string} mode - 'view' or 'edit'
  */
-/**
- * Display Tracks in Batch
- * @param {Array} trackIds 
- * @param {string} mode - 'view' or 'edit'
- */
-async function displayTracksBatch(trackIds, mode) {
+async function displayTracksBatch(trackIds) {
     console.log('Starting displayTracksBatch with IDs:', trackIds);
-    let tracksListElement;
-    
-    if (mode === 'view') {
-        // Handle view mode tracks display if needed
-    } else if (mode === 'edit') {
-        tracksListElement = document.getElementById('editTracksList'); // Edit Mode Tracks List
-    } else {
-        console.error(`Unknown mode: ${mode}`);
+
+    const tracksListElement = document.getElementById('editTracksList'); // Only use editTracksList
+
+    // Check if the tracksListElement exists
+    if (!tracksListElement) {
+        console.error("tracksListElement is undefined. Ensure 'editTracksList' exists in the DOM.");
         return;
     }
-    
+
     // Clear existing list to prevent duplication
     tracksListElement.innerHTML = ''; 
     
@@ -816,7 +819,8 @@ async function displayTracksBatch(trackIds, mode) {
 
         if (data.success && Array.isArray(data.tracks)) {
             console.log(`Fetched ${data.tracks.length} tracks.`);
-            
+            tracks = trackIds.map(id => data.tracks.find(track => track._id === id));
+
             // Display tracks in the correct order and update numbers
             trackIds.forEach((id, index) => {
                 const track = data.tracks.find(track => track._id === id);
@@ -840,18 +844,17 @@ async function displayTracksBatch(trackIds, mode) {
                             <span class="track-artist">${escapeHtml(artistNames)}</span>
                             <span class="track-duration">${escapeHtml(duration)}</span>
                         </div>
-                        ${mode === 'edit' ? `   <button type="option-button" class="option-button" onclick="removeTrack('${track._id}', this)">
-                                            <span class="material-symbols-outlined">delete</span> 
-                                        </button>` : ''}
+                        <button type="option-button" class="option-button" onclick="removeTrack('${track._id}', this)">
+                            <span class="material-symbols-outlined">delete</span> 
+                        </button>
                     </div>
                 `;
                 tracksListElement.appendChild(li);
             });
             console.log('All tracks displayed successfully.');
 
-            if (mode === 'edit') {
-                initializeSortable(); // Make tracks sortable in edit mode
-            }
+            // Make tracks sortable in edit mode
+            initializeSortable();
         } else {
             console.error('Failed to fetch tracks:', data.message);
             tracksListElement.innerHTML = '<li>Failed to load tracks.</li>';
@@ -881,32 +884,32 @@ async function displayTracksBatch(trackIds, mode) {
          * @param {boolean} useCache 
          * @returns {object}
          */
-        async function fetchDataWithCache(url, cacheKey, ttlMinutes = 10, useCache = true) {
-            if (useCache) {
-                const cachedData = lscache.get(cacheKey);
-                if (cachedData) {
-                    console.log('Using cached data for:', cacheKey);
-                    return cachedData;
-                }
-            }
-
-            const response = await fetch(url, {
-                method: 'GET',
-                credentials: 'include', // Sends HTTP-only cookies for authentication
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const data = await response.json();
-
-            if (useCache && data.success) {
-                lscache.set(cacheKey, data, ttlMinutes);
-                console.log('Data cached for:', cacheKey);
-            }
-
-            return data;
+async function fetchDataWithCache(url, cacheKey, ttlMinutes = 10, useCache = true) {
+    if (useCache) {
+        const cachedData = lscache.get(cacheKey);
+        if (cachedData) {
+            console.log(`Using cached data for: ${cacheKey}`);
+            return cachedData;
         }
+    }
+    
+    const response = await fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    const data = await response.json();
+    
+    if (useCache && data.success) {
+        lscache.set(cacheKey, data, ttlMinutes);
+        console.log(`Data cached for: ${cacheKey}`);
+    }
+    
+    return data;
+}
         
 /**
  * Remove Track by ID
@@ -923,36 +926,32 @@ window.removeTrack = async function(trackId) {
     try {
         const response = await fetch(`${API_BASE_URL}/playlists/remove-track`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                userId: userId, // Pass userId in the request body
+                userId: userId,
                 playlistId: currentPlaylistId,
                 trackId: trackId
             })
         });
 
         const data = await response.json();
-        console.log('Response from remove-track:', data); // Debugging
+        console.log('Response from remove-track:', data);
 
         if (data.success) {
             showToast('Track removed successfully!', 'success');
-            // Update the local tracks array
             tracks = tracks.filter(track => track.trackId._id !== trackId);
-            // **Invalidate Cache for This Playlist**
+
             if (typeof lscache !== 'undefined') {
                 lscache.remove(`playlist_details_${userId}_${currentPlaylistId}`);
                 lscache.remove(`tracks_batch_${userId}_${currentPlaylistId}`);
             }
-            // Refresh the tracks list
-            displayTracksBatch(tracks.map(t => t.trackId._id).filter(Boolean), 'edit');
+
+            displayTracksBatch(tracks.map(t => t.trackId._id).filter(Boolean));
+            setFormMode('edit'); // Keep the mode in 'edit'
         } else {
-            console.warn('Failed to remove track:', data.error || data.message);
             showToast(data.error || 'Failed to remove the track.', 'error');
         }
     } catch (error) {
-        console.error('Error removing track:', error);
         showToast('An error occurred while removing the track.', 'error');
     }
 };
@@ -966,24 +965,43 @@ function initializeSortable() {
     const sortable = new Sortable(editTracksListElement, {
         animation: 150,
         handle: '.track-name',
-        onEnd: function (evt) {
-            // Update local `tracks` order based on new order in the DOM
+        onEnd: async function () {
             const reorderedTrackIds = Array.from(editTracksListElement.children)
                 .map(child => child.getAttribute('data-track-id'));
+    
+            // Update the `tracks` array with the new order
+            tracks = reorderedTrackIds.map(id => tracks.find(track => track._id === id));
+    
+            // Update track numbers in the UI
+            updateTrackNumbers(editTracksListElement);
+    
 
-            // Reorder `tracks` array to match reorderedTrackIds
-            tracks = reorderedTrackIds.map(id => tracks.find(track => track.trackId._id === id));
-
-            // Update the displayed track numbers in edit mode to reflect new order
-            Array.from(editTracksListElement.children).forEach((child, index) => {
-                child.querySelector('.track-number').textContent = `${index + 1}.`;
-            });
-
-            console.log('Local tracks reordered:', tracks);
-            showToast('Tracks reordered locally. Save changes to update.', 'info');
         }
     });
 }
+/**
+ * Sends the reordered track IDs to the backend to update the playlist order.
+ * @param {string} playlistId - The ID of the playlist.
+ * @param {Array<string>} reorderedTrackIds - The new ordered array of track IDs.
+ */
+async function reorderTracks(playlistId, trackIds) {
+    try {
+    console.log ("sending",playlistId, trackIds );
+        const response = await fetch(`${API_BASE_URL}/playlists/${encodeURIComponent(playlistId)}/reorder-tracks`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ trackIds }),
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error reordering tracks:', error);
+        return { success: false, message: 'An error occurred while reordering tracks.' };
+    }
+}
+
 
 
 /**
