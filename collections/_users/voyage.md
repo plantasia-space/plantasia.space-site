@@ -607,38 +607,42 @@ try {
                 const soundEngineDiv = document.createElement('li');
 
 soundEngineDiv.innerHTML = `
-    <div class="soundEngine-list-item" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
-        <div class="soundEngine-profile-pic">
-            <div class="hexagon-frame">
-                <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
-            </div>
-        </div>
-        <div class="soundEngine-details">
-            <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
-            <div class="soundEngine-created"><strong>Created At:</strong> ${new Date(engine.createdAt).toLocaleDateString()}</div>
-            <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
-            <div class="soundEngine-params">
-                <strong>Parameters:</strong> 
-                X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
-                Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
-                Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
-            </div>
-        </div>
-        <div class="soundEngine-actions">
-            <div class="more-options-container">
-                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                    <span class="material-symbols-outlined">more_horiz</span>
+    <div class="track-card" onclick="handleCardClick('${engine._id}', event)" style="cursor: pointer;">
+        <!-- Menu Container -->
+        <div class="menu-container left-menu" onclick="toggleMoreOptions(event)">
+            <button class="menu-button">
+                <span class="material-symbols-outlined">more_horiz</span>
+            </button>
+            <div class="menu-dropdown">
+                <!-- Dropdown options -->
+                <button class="menu-option" onclick="editSoundEngine('${engine._id}')">
+                    <span class="material-symbols-outlined">edit</span> Edit
                 </button>
-                <div class="more-options-dropdown">
-                    <button class="option-button" onclick="editSoundEngine('${engine._id}')">
-                        <span class="material-symbols-outlined">edit</span> Edit
-                    </button>
-                    <button class="option-button" onclick="shareSoundEngine('${engine._id}')">
-                        <span class="material-symbols-outlined">share</span> Share
-                    </button>
-                    <button class="option-button" onclick="deleteSoundEngine('${engine._id}', this)">
-                        <span class="material-symbols-outlined">delete</span> Delete
-                    </button>
+                <button class="menu-option" onclick="shareSoundEngine('${engine._id}')">
+                    <span class="material-symbols-outlined">share</span> Share
+                </button>
+                <button class="menu-option" onclick="deleteSoundEngine('${engine._id}', this)">
+                    <span class="material-symbols-outlined">delete</span> Delete
+                </button>
+            </div>
+        </div>
+
+        <!-- Sound Engine Details -->
+        <div class="track-list-item">
+            <div class="track-profile-pic">
+                <div class="hexagon-frame">
+                    <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
+                </div>
+            </div>
+            <div class="track-details">
+                <div class="track-name"><strong>Name:</strong> ${soundEngineName}</div>
+                <div class="track-created"><strong>Created At:</strong> ${new Date(engine.createdAt).toLocaleDateString()}</div>
+                <div class="track-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                <div class="track-params">
+                    <strong>Parameters:</strong> 
+                    X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
+                    Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
+                    Z: ${engine.zParam.label} (${engine.zParam.min} to ${engine.zParam.max}, Init: ${engine.zParam.initValue})
                 </div>
             </div>
         </div>
@@ -696,7 +700,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
         if (data.success && Array.isArray(data.interplanetaryPlayers)) {
             console.log(`Fetched ${data.interplanetaryPlayers.length} interplanetary players.`);
-            
+
             data.interplanetaryPlayers.forEach((player) => {
                 if (!player || typeof player !== 'object') {
                     console.warn('Invalid interplanetary player data:', player);
@@ -725,14 +729,14 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                     ? `<a href="/xplorer/?username=${encodeURIComponent(ddd.dddArtist)}" target="_self">@${ddd.dddArtist}</a>`
                     : 'N/A';
 
-                // Construct the iframe URL with encoded URLs for the object and texture
-                let mediaHTML = '';
+                // Construct the iframe or fallback image
+                let modelHTML = '';
                 if (objURL && textureURL) {
                     const encodedObjURL = encodeURIComponent(objURL);
                     const encodedTextureURL = encodeURIComponent(textureURL);
                     const iframeSrc = `https://preview.maar.world/?object=${encodedObjURL}&texture=${encodedTextureURL}`;
 
-                    mediaHTML = `
+                    modelHTML = `
                         <div class="iframe-3d-model-container">
                             <iframe 
                                 class="iframe-3d-model" 
@@ -745,42 +749,46 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                     `;
                 } else {
                     const imageUrl = 'https://media.maar.world/uploads/default/default-interplanetaryPlayer.jpg';
-                    mediaHTML = `
+                    modelHTML = `
                         <div class="interplanetaryPlayer-media">
                             <img src="${imageUrl}" alt="${artName}" loading="lazy">
                         </div>
                     `;
                 }
 
-                // Construct the player card HTML
+                // Construct the player card using `track-card`
                 const playerCardHTML = `
-                    <div class="interplanetaryPlayer-list-item" onclick="handleCardClick('${_id}', event)" style="cursor: pointer;">
-                        ${mediaHTML}
-                        <div class="interplanetaryPlayer-details">
-                            <div class="interplanetaryPlayer-name"><strong>Name:</strong> ${artName}</div>
-                            <div class="interplanetaryPlayer-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
-                            <div class="interplanetaryPlayer-period"><strong>Orbital Period:</strong> ${period} days</div>
-                            <div class="interplanetaryPlayer-moons"><strong>Moons:</strong> ${moonAmount}</div>
-                            <div class="interplanetaryPlayer-description"><strong>Description:</strong> ${truncatedDescription}</div>
-                            <div class="interplanetaryPlayer-credits" id="viewDddArtistName"><strong>3D Artist:</strong> ${dddArtist}</div>
-                            <div class="interplanetaryPlayer-availability"><strong>Availability:</strong> ${isPublic ? '🌍 Public' : '🔐 Private'}</div>
-                        </div>
-                        <div class="interplanetaryPlayer-actions">
-                            <div class="more-options-container">
-                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                                    <span class="material-symbols-outlined">more_horiz</span>
+                    <div class="track-card" onclick="handleCardClick('${_id}', event)" style="cursor: pointer;">
+                        <!-- Menu Container -->
+                        <div class="menu-container left-menu" onclick="toggleMoreOptions(event)">
+                            <button class="menu-button">
+                                <span class="material-symbols-outlined">more_horiz</span>
+                            </button>
+                            <div class="menu-dropdown">
+                                <!-- Dropdown options -->
+                                <button class="menu-option" onclick="editInterplanetaryPlayer('${_id}')">
+                                    <span class="material-symbols-outlined">edit</span> Edit
                                 </button>
-                                <div class="more-options-dropdown">
-                                    <button class="option-button" onclick="editInterplanetaryPlayer('${_id}')">
-                                        <span class="material-symbols-outlined">edit</span> Edit
-                                    </button>
-                                    <button class="option-button" onclick="shareInterplanetaryPlayer('${_id}')">
-                                        <span class="material-symbols-outlined">share</span> Share
-                                    </button>
-                                    <button class="option-button" onclick="deleteInterplanetaryPlayer('${_id}', this)">
-                                        <span class="material-symbols-outlined">delete</span> Delete
-                                    </button>
-                                </div>
+                                <button class="menu-option" onclick="shareInterplanetaryPlayer('${_id}')">
+                                    <span class="material-symbols-outlined">share</span> Share
+                                </button>
+                                <button class="menu-option" onclick="deleteInterplanetaryPlayer('${_id}', this)">
+                                    <span class="material-symbols-outlined">delete</span> Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Player Details -->
+                        <div class="track-list-item">
+                            ${modelHTML} <!-- 3D model or fallback image -->
+                            <div class="track-details">
+                                <div class="track-name"><strong>Name:</strong> ${artName}</div>
+                                <div class="track-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
+                                <div class="track-period"><strong>Orbital Period:</strong> ${period} days</div>
+                                <div class="track-moons"><strong>Moons:</strong> ${moonAmount}</div>
+                                <div class="track-description"><strong>Description:</strong> ${truncatedDescription}</div>
+                                <div class="track-credits"><strong>3D Artist:</strong> ${dddArtist}</div>
+                                <div class="track-availability"><strong>Availability:</strong> ${isPublic ? '🌍 Public' : '🔐 Private'}</div>
                             </div>
                         </div>
                     </div>
@@ -877,39 +885,43 @@ async function displayPlaylistsBatch(playlistIds) {
                 const playlistDiv = document.createElement('li');
                 //playlistDiv.classList.add('playlist-list-item'); // Ensure consistent class naming
 
-                playlistDiv.innerHTML = `
-                    <div class="playlist-list-item" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
-                        <div class="playlist-profile-pic">
-                            <img src="${imageUrl}" alt="${playlistName}" loading="lazy">
-                        </div>
-                        <div class="playlist-details">
-                            <div class="playlist-name"><strong>Playlist Name:</strong> ${playlistName}</div>
-                            <div class="playlist-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
-                            <div class="playlist-privacy"><strong>Privacy:</strong> ${privacy}</div>
-                            <div class="playlist-created-on"><strong>Created On:</strong> ${createdOn}</div>
-                            <div class="playlist-owner"><strong>Owner:</strong> ${ownerName}</div>
-                            <div class="playlist-artists"><strong>Artists:</strong> ${artistNames}</div>
-                        </div>
-                        <div class="playlist-actions">
-                            <div class="more-options-container">
-                                <button class="more-options-button" onclick="event.stopPropagation(); toggleMoreOptions(event);" aria-haspopup="true" aria-expanded="false" aria-label="More options">
-                                    <span class="material-symbols-outlined">more_horiz</span>
-                                </button>
-                                <div class="more-options-dropdown">
-                                    <button class="option-button" onclick="editPlaylist('${playlist._id}')">
-                                        <span class="material-symbols-outlined">edit</span> Edit
-                                    </button>
-                                    <button class="option-button" onclick="sharePlaylist('${playlist._id}')">
-                                        <span class="material-symbols-outlined">share</span> Share
-                                    </button>
-                                    <button class="option-button" onclick="deletePlaylist('${playlist._id}', this)">
-                                        <span class="material-symbols-outlined">delete</span> Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+playlistDiv.innerHTML = `
+    <div class="track-card" onclick="handleCardClick('${playlist._id}', event)" style="cursor: pointer;">
+        <!-- Menu Container -->
+        <div class="menu-container left-menu" onclick="toggleMoreOptions(event)">
+            <button class="menu-button">
+                <span class="material-symbols-outlined">more_horiz</span>
+            </button>
+            <div class="menu-dropdown">
+                <!-- Other options -->
+                <button class="menu-option" onclick="editPlaylist('${playlist._id}')">
+                    <span class="material-symbols-outlined">edit</span> Edit
+                </button>
+                <button class="menu-option" onclick="sharePlaylist('${playlist._id}')">
+                    <span class="material-symbols-outlined">share</span> Share
+                </button>
+                <button class="menu-option" onclick="deletePlaylist('${playlist._id}', this)">
+                    <span class="material-symbols-outlined">delete</span> Delete
+                </button>
+            </div>
+        </div>
+
+        <!-- Playlist Details -->
+        <div class="track-list-item">
+            <div class="track-profile-pic">
+                <img src="${imageUrl}" alt="${playlistName}" loading="lazy">
+            </div>
+            <div class="track-details">
+                <div class="track-name"><strong>Playlist Name:</strong> ${playlistName}</div>
+                <div class="track-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
+                <div class="track-privacy"><strong>Privacy:</strong> ${privacy}</div>
+                <div class="track-created-on"><strong>Created On:</strong> ${createdOn}</div>
+                <div class="track-owner"><strong>Owner:</strong> ${ownerName}</div>
+                <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
+            </div>
+        </div>
+    </div>
+`;
                 playlistsListElement.appendChild(playlistDiv);
             });
             console.log('All playlists displayed successfully.');
