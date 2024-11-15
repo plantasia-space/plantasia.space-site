@@ -8,15 +8,11 @@
  */
 async function loginUser(email, password) {
     try {
-       // const csrfToken = await getCsrfToken(); // If implementing CSRF protection
         const response = await fetch('http://media.maar.world:3001/api/auth/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // 'CSRF-Token': csrfToken, // Uncomment if using CSRF tokens
-            },
-            credentials: 'include', // Include cookies in the request
-            body: JSON.stringify({ email, password }),  // Send login details in request body
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email, password }),
         });
 
         if (!response.ok) {
@@ -27,20 +23,65 @@ async function loginUser(email, password) {
         const data = await response.json();
         console.log('Login response:', data);
 
-        // Optionally store non-sensitive user info if needed
-        localStorage.setItem('userId', data.userId);  // Assuming `data.userId` contains the user ID
-
-        // Update the auth link to reflect logged-in status
-        updateAuthLink(true);
-
-        // Redirect to voyage page after successful login
-        //window.location.href = '/voyage';
+        if (data.userId) {
+            localStorage.setItem('userId', data.userId); // Set userId in localStorage
+            console.log('UserId set to localStorage:', data.userId);
+            window.location.href = '/voyage'; // Redirect to voyage
+        } else {
+            throw new Error('Login response does not contain userId.');
+        }
     } catch (error) {
         console.error('Login error:', error);
         const messageElement = document.getElementById('message');
         if (messageElement) {
             messageElement.innerText = error.message;
             messageElement.style.color = 'red';
+        }
+    }
+}
+
+async function initializeAuth() {
+    try {
+        if (isPublicPage) {
+            console.log('Public page detected. No authentication required.');
+            return;
+        }
+
+        // Check if userId is already stored
+        const existingUserId = localStorage.getItem('userId');
+        if (existingUserId) {
+            console.log('UserId already in localStorage:', existingUserId);
+            return; // No need to perform session validation
+        }
+
+        // Perform session validation for protected pages
+        const response = await fetch('http://media.maar.world:3001/api/auth/check-session', {
+            method: 'GET',
+            credentials: 'include', // Include cookies for session
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.user) {
+            const userId = data.user.id;
+            localStorage.setItem('userId', userId); // Set userId only if not already present
+            console.log('Authenticated user added to localStorage:', userId);
+
+            if (window.location.pathname === '/login') {
+                window.location.href = '/voyage';
+            }
+        } else {
+            console.warn('Session invalid. Clearing userId.');
+            localStorage.removeItem('userId');
+            if (window.location.pathname !== '/login') {
+                window.location.href = '/login';
+            }
+        }
+    } catch (error) {
+        console.error('Error during authentication:', error);
+        if (window.location.pathname !== '/login') {
+            window.location.href = '/login';
         }
     }
 }
@@ -138,25 +179,25 @@ async function logoutUser() {
     }
 }
 
-/**
- * Function to update the login/logout link in the header based on authentication status
- * @param {boolean} isLoggedIn - Whether the user is logged in
- */
 function updateAuthLink(isLoggedIn) {
+    console.log('updateAuthLink called with isLoggedIn:', isLoggedIn);
     const authLink = document.getElementById('auth-link');
     if (authLink) {
+        console.log('Auth link element found. Updating...');
         if (isLoggedIn) {
             authLink.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
             authLink.onclick = (event) => {
                 event.preventDefault();
                 logoutUser();
             };
-            authLink.href = '#'; // Prevent default navigation
+            authLink.href = '#';
         } else {
             authLink.innerHTML = '<span class="material-symbols-outlined">login</span> Login';
             authLink.onclick = null;
             authLink.href = '/login';
         }
+    } else {
+        console.error('Auth link element not found!');
     }
 }
 
@@ -182,17 +223,6 @@ async function getCsrfToken() {
     }
 }
  */
-/**
- * Function to initialize authentication checks on page load
- */
-async function initializeAuth() {
-    const isAuthenticated = await checkAuth();
-    updateAuthLink(isAuthenticated);
-    if (!isAuthenticated) {
-        // Redirect to login page if not authenticated
-        window.location.href = '/login';
-    }
-}
 
 // Initialize authentication when the script loads
 document.addEventListener('DOMContentLoaded', initializeAuth);
