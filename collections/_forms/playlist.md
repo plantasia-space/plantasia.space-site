@@ -125,6 +125,9 @@ public: false
 
 
 <script>
+
+const COVER_IMAGE_DEFAULT= "https://mw-storage.fra1.digitaloceanspaces.com/default/default-playlist_thumbnail_mid.webp"; 
+
     document.addEventListener('DOMContentLoaded', function() {
         const API_BASE_URL = 'http://media.maar.world:3001/api'; // Update if different
         const userId = localStorage.getItem('userId'); 
@@ -266,9 +269,8 @@ async function loadPlaylistDetails(playlistId, keepMode = false) {
         
         if (data.success && data.playlist) {
             playlistData = data.playlist;
-            isOwner = (playlistData.owner.userId === userId);
-            canEdit = isOwner || (playlistData.privacy === 'collaborative');
-            
+            console.log("aaa", data );
+            canEdit = data.canEdit;
             populateViewMode(data.playlist);
             populateFormMode(data.playlist);
             tracks = data.playlist.tracks || [];
@@ -303,16 +305,16 @@ async function loadPlaylistDetails(playlistId, keepMode = false) {
             document.getElementById('viewPlaylistTracks').innerHTML = `<strong>Number of Tracks:</strong> ${playlist.tracks.length}`;
 
             const coverImageDisplay = document.getElementById('coverImageDisplay');
-            if (playlist.coverImageOriginalURL) {
-                coverImageDisplay.src = playlist.coverImageOriginalURL;
+            if (playlist.coverImageMidURL) {
+                coverImageDisplay.src = playlist.coverImageMidURL;
             } else {
-                coverImageDisplay.src = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Default image URL
+                coverImageDisplay.src = COVER_IMAGE_DEFAULT; // Default image URL
             }
             coverImageDisplay.style.display = 'block';
             
             // Correct Extraction of Track IDs
             const trackIds = playlist.tracks.map(track => track.trackId._id).filter(Boolean);
-            console.log('Extracted Track IDs:', trackIds);
+          //console.log('Extracted Track IDs:', trackIds);
             
           //  displayTracksBatch(trackIds, 'view');
         }
@@ -328,11 +330,11 @@ async function loadPlaylistDetails(playlistId, keepMode = false) {
             document.getElementById('playlistType').value = playlist.type || 'Playlist';
             document.getElementById('playlistPrivacy').value = playlist.privacy || 'public';
 
-            if (playlist.coverImageOriginalURL) {
-                coverImagePreview.src = playlist.coverImageOriginalURL;
+            if (playlist.coverImageMidURL) {
+                coverImagePreview.src = playlist.coverImageMidURL;
                 coverImagePreview.style.display = 'block';
             } else {
-                coverImagePreview.src = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Default image URL
+                coverImagePreview.src = COVER_IMAGE_DEFAULT; // Default image URL
                 coverImagePreview.style.display = 'block';
             }
             
@@ -352,7 +354,7 @@ async function loadPlaylistDetails(playlistId, keepMode = false) {
                 if (file.size > 5 * 1024 * 1024) { // 5MB
                     showToast('The cover image is too large. Maximum allowed size is 5MB.', 'error');
                     coverImageInput.value = '';
-                    coverImagePreview.src = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Revert to default
+                    coverImagePreview.src = COVER_IMAGE_DEFAULT; // Revert to default
                     return;
                 }
                 const reader = new FileReader();
@@ -362,7 +364,7 @@ async function loadPlaylistDetails(playlistId, keepMode = false) {
                 };
                 reader.readAsDataURL(file);
             } else {
-                coverImagePreview.src = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Default image URL
+                coverImagePreview.src = COVER_IMAGE_DEFAULT; // Default image URL
                 coverImagePreview.style.display = 'block';
             }
         }
@@ -439,7 +441,7 @@ async function handleFormSubmit() {
                     loadPlaylistDetails(playlistId, true);
                     setFormMode('view');
                 } else {
-                 //   window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(data.playlistId)}`;
+                    window.location.href = `/voyage/playlist?mode=view&playlistId=${encodeURIComponent(data.playlistId)}`;
                 }
             }
 
@@ -648,7 +650,7 @@ async function handleFormSubmit() {
             document.getElementById('description').value = '';
             document.getElementById('playlistType').value = 'Playlist'; // Set to default
             document.getElementById('playlistPrivacy').value = 'public'; // Set to default
-            coverImagePreview.src = 'https://media.maar.world/uploads/default/default-playlist.jpg'; // Default image
+            coverImagePreview.src = COVER_IMAGE_DEFAULT; // Default image
             coverImagePreview.style.display = 'block';
             coverImageInput.value = ''; // Clear the file input
             tracks = [];
@@ -826,7 +828,7 @@ async function displayTracksBatch(trackIds) {
                 const track = data.tracks.find(track => track._id === id);
                 if (!track) return;
 
-                const imageUrl = track.coverImageURL || 'https://media.maar.world/uploads/default/default-tracks.jpg';
+                const imageUrl = track.coverImageURL || 'https://mw-storage.fra1.digitaloceanspaces.com/default/default-texture_thumbnail_small.webp';
                 const trackName = track.trackName || 'Untitled';
                 const artistNames = (track.artists && track.artists.length > 0) 
                     ? track.artists.map(artist => artist.displayName || 'Unknown Artist').join(', ') 
