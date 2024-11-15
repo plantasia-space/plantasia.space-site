@@ -627,17 +627,17 @@ soundEngineDiv.innerHTML = `
         </div>
 
         <!-- Sound Engine Details -->
-        <div class="track-list-item">
-            <div class="track-profile-pic">
+        <div class="soundEngine-list-item">
+            <div class="soundEngine-profile-pic">
                 <div class="hexagon-frame">
                     <img src="${imageUrl}" alt="${soundEngineName}" loading="lazy">
                 </div>
             </div>
-            <div class="track-details">
-                <div class="track-name"><strong>Name:</strong> ${soundEngineName}</div>
-                <div class="track-created"><strong>Created At:</strong> ${new Date(engine.createdAt).toLocaleDateString()}</div>
-                <div class="track-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
-                <div class="track-params">
+            <div class="soundEngine-details">
+                <div class="soundEngine-name"><strong>Name:</strong> ${soundEngineName}</div>
+                <div class="soundEngine-created"><strong>Created At:</strong> ${new Date(engine.createdAt).toLocaleDateString()}</div>
+                <div class="soundEngine-availability"><strong>Availability:</strong> ${engine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}</div>
+                <div class="soundEngine-params">
                     <strong>Parameters:</strong> 
                     X: ${engine.xParam.label} (${engine.xParam.min} to ${engine.xParam.max}, Init: ${engine.xParam.initValue}) |
                     Y: ${engine.yParam.label} (${engine.yParam.min} to ${engine.yParam.max}, Init: ${engine.yParam.initValue}) |
@@ -906,17 +906,17 @@ playlistDiv.innerHTML = `
         </div>
 
         <!-- Playlist Details -->
-        <div class="track-list-item">
-            <div class="track-profile-pic">
+        <div class="playlist-list-item">
+            <div class="playlist-profile-pic">
                 <img src="${imageUrl}" alt="${playlistName}" loading="lazy">
             </div>
-            <div class="track-details">
-                <div class="track-name"><strong>Playlist Name:</strong> ${playlistName}</div>
-                <div class="track-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
-                <div class="track-privacy"><strong>Privacy:</strong> ${privacy}</div>
-                <div class="track-created-on"><strong>Created On:</strong> ${createdOn}</div>
-                <div class="track-owner"><strong>Owner:</strong> ${ownerName}</div>
-                <div class="track-artists"><strong>Artists:</strong> ${artistNames}</div>
+            <div class="playlist-details">
+                <div class="playlist-name"><strong>Playlist Name:</strong> ${playlistName}</div>
+                <div class="playlist-description"><strong>Description:</strong> ${playlist.description || 'No description provided.'}</div>
+                <div class="playlist-privacy"><strong>Privacy:</strong> ${privacy}</div>
+                <div class="playlist-created-on"><strong>Created On:</strong> ${createdOn}</div>
+                <div class="playlist-owner"><strong>Owner:</strong> ${ownerName}</div>
+                <div class="playlist-artists"><strong>Artists:</strong> ${artistNames}</div>
             </div>
         </div>
     </div>
