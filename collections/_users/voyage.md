@@ -279,7 +279,7 @@ async function fetchUserProfile(userId) {
     const cacheKey = `profile_${userId}`;
     try {
         const data = await fetchDataWithCache(
-            `http://media.maar.world:3001/api/users/profile?userId=${userId}`,
+            `https://media.maar.world:443/api/users/profile?userId=${userId}`,
             cacheKey,
             60 // Cache for 60 minutes
         );
@@ -411,7 +411,7 @@ async function displayTracksBatch(trackIds) {
     }
 
     const cacheKey = `tracks_batch_${userId}`;
-    const batchUrl = `http://media.maar.world:3001/api/tracks/batch?ids=${validTrackIds.join(',')}`;
+    const batchUrl = `https://media.maar.world:443/api/tracks/batch?ids=${validTrackIds.join(',')}`;
 
     try {
         const data = await fetchDataWithCache(batchUrl, cacheKey, 10, false);
@@ -489,7 +489,7 @@ trackDiv.innerHTML = `
  * Populate each track's "Add to Playlist" menu with available playlists.
  */
 async function populatePlaylistsForTracks(userId, tracks) {
-    const playlistsUrl = `http://media.maar.world:3001/api/playlists?ownerId=${userId}`;
+    const playlistsUrl = `https://media.maar.world:443/api/playlists?ownerId=${userId}`;
     const cacheKey = `user_playlists_${userId}`;
 
     try {
@@ -519,7 +519,7 @@ const playlistsData = await fetchDataWithCache(playlistsUrl, cacheKey, 10, true)
 // Function to add a track to a playlist
 async function addTrackToPlaylist(playlistId, trackId) {
     try {
-        const response = await fetch('http://media.maar.world:3001/api/playlists/add-track', {
+        const response = await fetch('https://media.maar.world:443/api/playlists/add-track', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -578,7 +578,7 @@ async function displaySoundEnginesBatch(engineIds) {
     // Create a cache key based on sorted IDs for consistency
     const sortedIds = [...validEngineIds].sort();
     const cacheKey = `soundEngines_batch_${sortedIds.join('_')}`;
-    const batchUrl = `http://media.maar.world:3001/api/soundEngines/batch?ids=${sortedIds.join(',')}`;
+    const batchUrl = `https://media.maar.world:443/api/soundEngines/batch?ids=${sortedIds.join(',')}`;
 
 try {
     const data = await fetchDataWithCache(
@@ -692,7 +692,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         return;
     }
 
-    const batchUrl = `http://media.maar.world:3001/api/interplanetaryPlayers/batch-fetch?ids=${validPlayerIds.join(',')}`;
+    const batchUrl = `https://media.maar.world:443/api/interplanetaryPlayers/batch-fetch?ids=${validPlayerIds.join(',')}`;
 
     try {
         const data = await fetchData(batchUrl);
@@ -840,7 +840,7 @@ async function displayPlaylistsBatch(playlistIds) {
 
     // Use a cache key based on user ID
     const cacheKey = `playlists_batch_${userId}`;
-    const batchUrl = `http://media.maar.world:3001/api/playlists/batch?ids=${validPlaylistIds.join(',')}`;
+    const batchUrl = `https://media.maar.world:443/api/playlists/batch?ids=${validPlaylistIds.join(',')}`;
 
     try {
         const data = await fetchDataWithCache(
@@ -1068,7 +1068,7 @@ async function deleteTrack(trackId, button) {
     button.textContent = 'Deleting...';
 
     try {
-        const response = await fetch(`http://media.maar.world:3001/api/tracks/${trackId}`, {
+        const response = await fetch(`https://media.maar.world:443/api/tracks/${trackId}`, {
             method: 'DELETE',
             credentials: 'include', // Include cookies
             headers: {
@@ -1121,7 +1121,7 @@ async function deletePlaylist(playlistId, button) {
     button.textContent = 'Deleting...';
 
     try {
-        const response = await fetch(`http://media.maar.world:3001/api/playlists/${playlistId}`, {
+        const response = await fetch(`https://media.maar.world:443/api/playlists/${playlistId}`, {
             method: 'DELETE',
             credentials: 'include', // Include cookies
             headers: {
@@ -1179,7 +1179,7 @@ async function deleteSoundEngine(engineId, button) {
     button.textContent = 'Deleting...';
 
     try {
-        const response = await fetch(`http://media.maar.world:3001/api/soundEngines/${engineId}`, {
+        const response = await fetch(`https://media.maar.world:443/api/soundEngines/${engineId}`, {
             method: 'DELETE',
             credentials: 'include', // Include cookies
             headers: {
@@ -1233,7 +1233,7 @@ async function deleteInterplanetaryPlayer(playerId, buttonElement) {
     if (!confirmation) return;
 
     try {
-        const response = await fetch(`http://media.maar.world:3001/api/interplanetaryplayers/${playerId}`, {
+        const response = await fetch(`https://media.maar.world:443/api/interplanetaryplayers/${playerId}`, {
             method: 'DELETE',
             credentials: 'include', // Include cookies
             headers: {

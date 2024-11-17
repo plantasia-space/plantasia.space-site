@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {string} playerId - The ID of the Interplanetary Player
      */
     function loadInterplanetaryPlayerDetails(playerId) {
-        fetch(`http://media.maar.world:3001/api/interplanetaryPlayers/${playerId}`)
+        fetch(`https://media.maar.world:443/api/interplanetaryPlayers/${playerId}`)
             .then(response => {
                 console.log('Response status:', response.status);
                 return response.json();

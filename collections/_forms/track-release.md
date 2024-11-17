@@ -259,7 +259,7 @@ public: false
 <script>
 
 // Define the API base URL
-const API_BASE_URL = 'http://media.maar.world:3001/api';
+const API_BASE_URL = 'https://media.maar.world:443/api';
 
 // Define the file category for this form
 const FILE_CATEGORY_UPLOAD = 'tracks'; // Must match the category in spacesUtils.js

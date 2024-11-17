@@ -51,7 +51,7 @@ public: true
       }
 
       try {
-        const response = await fetch('http://media.maar.world:3001/api/auth/logout', {
+        const response = await fetch('https://media.maar.world:443/api/auth/logout', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -138,7 +138,7 @@ public: true
 
       // Proceed with registration
       try {
-        const response = await fetch('http://media.maar.world:3001/api/auth/register', {
+        const response = await fetch('https://media.maar.world:443/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

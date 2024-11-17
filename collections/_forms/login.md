@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
-      const response = await fetch('http://media.maar.world:3001/api/auth/reset-password', {
+      const response = await fetch('https://media.maar.world:443/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
