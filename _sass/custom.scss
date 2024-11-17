@@ -1442,7 +1442,7 @@ textarea#description {
 .form-box {
   background: rgba(0, 0, 0, 0.95);
   padding: 30px 40px;
-  border: 1px solid #ffffff; /* Subtle accent color */
+  border: 2px solid #ffffff; /* Subtle accent color */
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(236, 236, 236, 0.824);
   position: relative;
@@ -1815,7 +1815,7 @@ textarea#description {
   position: relative;
   margin: 15px 0;
   padding: 10px;
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
   border-radius: 8px;
   background: #000000;
   overflow: visible; /* Ensure dropdown is not clipped */
@@ -1827,7 +1827,7 @@ textarea#description {
   justify-content: flex-start; /* Align to the left */
   position: relative;
   background: transparent;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ffffff;
   z-index: 100; /* Ensure it stays above other content */
   padding: 5px;
 }

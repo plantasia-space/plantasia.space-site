@@ -39,18 +39,15 @@ article_header:
     function loadItems(page) {
       // Supongamos que cada página tiene 5 elementos
       const items = [
-        { c: 0, g: 401 },
-        { c: 1, g: 334 },
-        { c: 2, g: 334 },
-        { c: 3, g: 334 },
-        { c: 4, g: 334 },
-        { c: 5, g: 334 },
-        { c: 6, g: 334 },
-        { c: 7, g: 334 },
-        { c: 8, g: 334 },
-        { c: 9, g: 334 },
-        { c: 10, g: 334 },
-        { c: 11, g: 334 }
+        { trackId: "6722827ad2c02370b6b8c423" },
+        { trackId: "6729d2b349c2c24bbf8c67b9" },
+        { trackId: "6729f817cbc71363fd8ce90c" },
+        { trackId: "6729fa5d1ba44ea87bf49e18" },
+        { trackId: "6729fc3b6bafcb1eeac61fcc" },
+        { trackId: "672a09a0d0cfe69140ed3cc2" },
+        { trackId: "672a1a9aeab0bb9e1a3a8c21" },
+        { trackId: "672a1d5152f40314cc58bcab" },
+        { trackId: "6738c0f53af6425d6ef6ba9b" }
       ];
 
       const startIndex = (page - 1) * 5;
@@ -59,16 +56,17 @@ article_header:
       for (let i = startIndex; i < endIndex; i++) {
         if (i >= items.length) break;
 
-        const { c, g } = items[i];
+        const { trackId } = items[i];
         const container = document.createElement('div');
         container.className = 'container';
-        container.setAttribute('data-src', `http://192.168.178.121:5500/?g=${g}&s=0&c=${c}`);
-        
+        container.setAttribute('data-src', `http://app.maar.world:5500/?trackId=${trackId}&s=0`);
+        container.style.marginBottom = '333px'; // Espaciado entre iframes
+
         const info = `
           <br> 
-          𝐵𝓇𝓊𝓃𝒶 𝒢𝓊𝒶𝓇𝓃𝒾𝑒𝓇𝒾 - c=${c}
+          𝐵𝓇𝓊𝓃𝒶 𝒢𝓊𝒶𝓇𝓃𝒾𝑒𝓇𝒾 - trackId=${trackId}
           <br>
-          <a href="http://192.168.178.121:5500/?g=${g}&s=0&c=${c}" rel="Maar World Player" target="_blank">Play full screen</a>
+          <a href="http://app.maar.world:5173/?trackId=${trackId}&s=0" rel="Maar World Player" target="_blank">Play full screen</a>
           <br>
           \`#RegenerativeMusic\`{:.success}
           <hr>
@@ -137,6 +135,5 @@ window.addEventListener('scroll', () => {
     // Save the current scroll position to local storage
     localStorage.setItem('lastScrollY', window.scrollY);
 });
-
 
 </script>
