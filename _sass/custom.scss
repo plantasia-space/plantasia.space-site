@@ -1784,26 +1784,21 @@ textarea#description {
 
 
 
-/* Define a custom class for the 3D model iframes */
-.iframe-3d-model {
-  width: 100%; /* Full width of the card */
-  height: 100%; /* Full height of the card */
-  z-index: 1; /* Lower than the card to appear behind */
-  border: none; /* Remove any border */
-  overflow: hidden; /* Hide scrollbars */
-  position: relative; /* Ensure positioning for z-index to take effect */
-  z-index: 10; /* Adjust z-index as needed */
-}
-
-/* Set the background of the iframe’s parent container to transparent as well, if needed */
 .iframe-3d-model-container {
-  background-color: transparent;
-  z-index: 1; /* Match the iframe's z-index */
-  position: relative; /* Positioning required for z-index */
-  z-index: 5; /* Adjust z-index as needed */
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Replace with desired ratio, e.g., 16:9 */
+  position: relative;
+  border: none;
 }
 
+.iframe-3d-model {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1); /* Light gray for visibility */
+  display: block;
+  border: none;
 
+}
 
 
 ///////////////////////////////////////////

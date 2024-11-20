@@ -31,88 +31,79 @@ public: false
     <h3 id="formTitle">Create a New Interplanetary Player</h3>
 
     <!-- View Mode -->
-    <div id="interplanetaryPlayerView" style="display: none;">
+<div id="interplanetaryPlayerView" style="display: block;"> <!-- Ensure view is visible -->
 
-        <div id="modelPreviewContainer" class="iframe-3d-model-container" style="display: none;">
+    <!-- 3D Model Preview Container -->
+    <div id="modelPreviewContainer" class="iframe-3d-model-container">
         <iframe 
             id="modelPreviewIframe"
-            class="iframe-3d-model" 
-            width="100%" 
-            height="auto" 
-            style="background: transparent; border: none;">
-        </iframe>
+            class="iframe-3d-model"
+            src=""
+            title="3D Model Viewer"
+            allowfullscreen
+        ></iframe>
     </div>
 
-        <a id="viewObjFile" style="display: none;" href="#" download>Download 3D Model</a>
-        <img id="viewTextureImage" style="display: none; max-width: 50%; height: auto;" alt="Texture Image" />
-        
-        <p id="viewSciName"></p>
-        <p id="viewArtName"></p>
-        <p id="viewRaDecimal"></p>
-        <p id="viewDecDecimal"></p>
-        <p id="viewPeriod"></p>
-        <p id="viewRadius"></p>
-        <p id="viewDiscoveryYear"></p>
-        <p id="viewDddArtistName"></p>
-        <p id="viewExoplanetDescription"></p>
-        <p id="viewCredits"></p>
-        
-        <!-- Owner Details -->
-        <ul id="playerOwnerList" class="user-list">
-            <!-- Owner details will be injected here -->
-        </ul>
-    </div>
-        
+    <!-- Player Details -->
+    <a id="viewGlbFile" style="display: none;" href="#" download>Download 3D Model</a>
+    
+    <p id="viewSciName"></p>
+    <p id="viewArtName"></p>
+    <p id="viewRaDecimal"></p>
+    <p id="viewDecDecimal"></p>
+    <p id="viewPeriod"></p>
+    <p id="viewRadius"></p>
+    <p id="viewDiscoveryYear"></p>
+    <p id="viewDddArtistName"></p>
+    <p id="viewExoplanetDescription"></p>
+    <p id="viewCredits"></p>
+    
+    <!-- Owner Details -->
+    <ul id="playerOwnerList" class="user-list"></ul>
+</div>        
     <!-- Edit/Create Mode -->
 
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- 3D Model Upload -->
         <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
-        <!-- Texture Image Preview -->
-        <div id="textureImagePreviewContainer">
-            <img id="texturePreviewForm" src="" alt="Texture Image" style="display: none;">
+        <!-- 3D Model Preview -->
+        <div id="modelPreviewFormContainer">
+            <iframe 
+                id="modelPreviewFormIframe"
+                class="iframe-3d-model" 
+                width="100%" 
+                height="400px" 
+                style="background: transparent; border: none; display: none;">
+            </iframe>
         </div>
 
-<label for="uploadObj">
-    Please upload the 3D model (OBJ format): <span class="required" id="uploadObjRequired">*</span>
-    <span class="tooltip" aria-label="OBJ File Info" tabindex="0" data-tooltip="Ensure the file is in .obj format and does not exceed 10MB.">
-        <span class="material-symbols-outlined">tooltip_2</span>
-    </span>
-</label>
-<input type="file" id="uploadObj" name="uploadObj" accept=".obj" required>
+        <!-- GLB File Upload -->
+        <label for="uploadGlb">
+            Please upload the 3D model (GLB format): <span class="required" id="uploadGlbRequired">*</span>
+            <span class="tooltip" aria-label="GLB File Info" tabindex="0" data-tooltip="Ensure the file is in .glb format and does not exceed 50MB.">
+                <span class="material-symbols-outlined">tooltip_2</span>
+            </span>
+        </label>
+        <input type="file" id="uploadGlb" name="uploadGlb" accept=".glb" required>
 
-<!-- Texture Upload -->
-<label for="uploadTexture">
-    Please upload the texture file (any image format): <span class="required" id="uploadTextureRequired">*</span>
-    <span class="tooltip" aria-label="Texture File Info" tabindex="0" data-tooltip="Supported formats: .jpg, .png, .gif. Maximum size: 5MB.">
-        <span class="material-symbols-outlined">tooltip_2</span>
-    </span>
-</label>
-<input type="file" id="uploadTexture" name="uploadTexture" accept="image/*" required>
-
-        
-        <!-- Existing Texture File -->
-        <div id="existingTextureFile" style="display: none;">
-            Current Texture File: <a href="#" target="_blank" id="existingTextureLink">View</a>
-        </div>
-        <!-- Existing OBJ File -->
-        <div id="existingObjFile" style="display: none;">
-            Current 3D Model File: <a href="#" target="_blank" id="existingObjLink">Download</a>
+        <!-- Existing GLB File -->
+        <div id="existingGlbFile" style="display: none;">
+            Current 3D Model File: <a href="#" target="_blank" id="existingGlbLink">Download</a>
         </div>
 
-<!-- 3D Artist -->
-<label for="dddArtistName">
-    Who is the 3D artist for this creation? Please introduce @username <span class="required">*</span>
-    <span class="tooltip" aria-label="Artist Info" tabindex="0" data-tooltip="Provide the username of the 3D artist responsible for this creation.">
-        <span class="material-symbols-outlined">tooltip_2</span>
-    </span>
-</label>
-<div class="input-wrapper">
-    <input type="text" class="user-search-input" name="artistUsernames[]" placeholder="Type a username..." autocomplete="off" required>
-    <input type="hidden" class="artistUserId" name="artistUserIds[]" value="">
-    <div class="dropdown"></div>
-</div>
+        <!-- 3D Artist -->
+        <label for="dddArtistName">
+            Who is the 3D artist for this creation? Please introduce @username <span class="required">*</span>
+            <span class="tooltip" aria-label="Artist Info" tabindex="0" data-tooltip="Provide the username of the 3D artist responsible for this creation.">
+                <span class="material-symbols-outlined">tooltip_2</span>
+            </span>
+        </label>
+        <div class="input-wrapper">
+            <input type="text" class="user-search-input" name="artistUsernames[]" placeholder="Type a username..." autocomplete="off" required>
+            <input type="hidden" class="artistUserId" name="artistUserIds[]" value="">
+            <div class="dropdown"></div>
+        </div>
         <span id="dddArtistFeedback" class="feedback-message"></span><br><br>
 
         <!-- Scientific Exoplanet Name -->
@@ -356,11 +347,8 @@ function clearFormFields() {
     const credits = document.getElementById('credits');
     if (credits) credits.value = '';
 
-    const uploadObj = document.getElementById('uploadObj');
-    if (uploadObj) uploadObj.value = '';
-
-    const uploadTexture = document.getElementById('uploadTexture');
-    if (uploadTexture) uploadTexture.value = '';
+    const uploadGlb = document.getElementById('uploadGlb');
+    if (uploadGlb) uploadGlb.value = '';
 
     const moonAmount = document.getElementById('moonAmount');
     if (moonAmount) moonAmount.value = '0';
@@ -373,16 +361,17 @@ function clearFormFields() {
     const submitButton = document.getElementById('submitButton');
     if (submitButton) submitButton.disabled = true;
 
-    const existingObjFile = document.getElementById('existingObjFile');
-    if (existingObjFile) existingObjFile.style.display = 'none';
+    const existingGlbFile = document.getElementById('existingGlbFile');
+    if (existingGlbFile) existingGlbFile.style.display = 'none';
 
-    const existingTextureFile = document.getElementById('existingTextureFile');
-    if (existingTextureFile) existingTextureFile.style.display = 'none';
-
-    const texturePreviewForm = document.getElementById('texturePreviewForm');
-    if (texturePreviewForm) texturePreviewForm.style.display = 'none';
+    const modelPreviewFormIframe = document.getElementById('modelPreviewFormIframe');
+    if (modelPreviewFormIframe) {
+        modelPreviewFormIframe.src = '';
+        modelPreviewFormIframe.style.display = 'none';
+    }
 }
-    // Function to Set Up Form Listeners
+
+// Function to Set Up Form Listeners
 function setupFormListeners() {
     // Reference to moonAmount input
     moonAmountInput = document.getElementById('moonAmount');
@@ -403,35 +392,23 @@ function setupFormListeners() {
         });
     }
 
-    // Texture Upload Preview
-    const uploadTextureInput = document.getElementById('uploadTexture');
-    if (uploadTextureInput) {
-        uploadTextureInput.addEventListener('change', function(event) {
-            const texturePreview = document.getElementById('texturePreviewForm');
+    // GLB Upload Preview
+    const uploadGlbInput = document.getElementById('uploadGlb');
+    if (uploadGlbInput) {
+        uploadGlbInput.addEventListener('change', function(event) {
+            const modelPreviewIframe = document.getElementById('modelPreviewFormIframe');
             const file = event.target.files[0];
 
-            if (file && texturePreview) {
+            if (file && modelPreviewIframe) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    texturePreview.src = e.target.result;
-                    texturePreview.style.display = 'block';
+                    modelPreviewIframe.src = e.target.result;
+                    modelPreviewIframe.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
-            } else if (texturePreview) {
-                texturePreview.src = '';
-                texturePreview.style.display = 'none';
-            }
-        });
-    }
-
-    // OBJ Upload Preview
-    const uploadObjInput = document.getElementById('uploadObj');
-    if (uploadObjInput) {
-        uploadObjInput.addEventListener('change', function(event) {
-            const objFile = event.target.files[0];
-            if (objFile) {
-                console.log(`OBJ file selected: ${objFile.name}`);
-                // Additional preview or validation can be added here if needed
+            } else if (modelPreviewIframe) {
+                modelPreviewIframe.src = '';
+                modelPreviewIframe.style.display = 'none';
             }
         });
     }
@@ -467,15 +444,13 @@ function setupFormListeners() {
     }
 
     // Add event listeners to file inputs to monitor file selections
-    if (uploadObjInput) {
-        uploadObjInput.addEventListener('change', checkFileUploads);
-    }
-    if (uploadTextureInput) {
-        uploadTextureInput.addEventListener('change', checkFileUploads);
+    if (uploadGlbInput) {
+        uploadGlbInput.addEventListener('change', checkFileUploads);
     }
 }
-    // Function to Update Exoplanet Details on Selection Change
-    function updateDetails() {
+
+// Function to Update Exoplanet Details on Selection Change
+function updateDetails() {
     const sciNameSelect = document.getElementById('sciName');
     if (!sciNameSelect) {
         console.error('sciName select element not found');
@@ -531,194 +506,190 @@ function saveFormData() {
 }
 
 // Function to Load Saved Form Data (Optional)
-    function loadFormData() {
-        const savedData = JSON.parse(localStorage.getItem('protoFormData'));
-        if (savedData) {
-            document.getElementById('sciName').value = savedData.sciName || '';
-            document.getElementById('artName').value = savedData.artName || '';
-            document.getElementById('moonAmount').value = savedData.moonAmount || '0';
-            document.getElementById('dddArtistName').value = savedData.dddArtistName || '';
-            document.getElementById('exoplanetDescription').value = savedData.exoplanetDescription || '';
-            document.getElementById('credits').value = savedData.credits || '';
-        }
+function loadFormData() {
+    const savedData = JSON.parse(localStorage.getItem('protoFormData'));
+    if (savedData) {
+        document.getElementById('sciName').value = savedData.sciName || '';
+        document.getElementById('artName').value = savedData.artName || '';
+        document.getElementById('moonAmount').value = savedData.moonAmount || '0';
+        document.getElementById('dddArtistName').value = savedData.dddArtistName || '';
+        document.getElementById('exoplanetDescription').value = savedData.exoplanetDescription || '';
+        document.getElementById('credits').value = savedData.credits || '';
     }
+}
 
-    /**
-     * Function to Handle Form Submission with Enhanced Validation
-     */
-    async function handleFormSubmission() {
-        // In Create Mode, ensure both files are uploaded
-        if (currentMode === 'create') {
-            const objFile = document.getElementById('uploadObj').files[0];
-            const textureFile = document.getElementById('uploadTexture').files[0];
-
-            if (!objFile || !textureFile) {
-                showToast('Please upload both the 3D model (OBJ) and the texture image before submitting.', 'error');
-                return;
-            }
-        }
-
-        submitForm(); // Proceed with form submission
-    }
-
-    /**
-     * Function to Submit the Form for Creating or Editing an Interplanetary Player.
-     */
-async function submitForm() {
-    disableFormInputs();
-
-    const submitButton = document.querySelector('#articleForm button[type="submit"]');
-    if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Submitting...';
-    }
-
-    const url = currentMode === 'edit'
-        ? `${API_BASE_URL}/interplanetaryplayers/${playerId}`
-        : `${API_BASE_URL}/interplanetaryplayers`;
-
-    const method = currentMode === 'edit' ? 'PATCH' : 'POST';
-    console.log('Submitting form to:', url);
-
-    // Get moon amount and validate range
-    let moonAmount = 0;
-    const moonAmountInput = document.getElementById('moonAmount');
-    if (moonAmountInput) {
-        moonAmount = parseInt(moonAmountInput.value, 10);
-        moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
-    }
-
-    // Determine sciName and ipId based on the mode
-    let sciName = '';
-    let selectedIpId = '';
-
-    if (currentMode === 'create') {
-        const sciNameSelect = document.getElementById('sciName');
-        if (sciNameSelect) {
-            selectedIpId = sciNameSelect.value;
-            sciName = selectedIpId && exoplanetData[selectedIpId]
-                ? exoplanetData[selectedIpId].sciName
-                : 'Unknown Exoplanet';
-        }
-    } else if (currentMode === 'edit') {
-        selectedIpId = playerData.ipId; // From loaded player data
-        sciName = playerData.sciName;    // From loaded player data
-    }
-
-    // Collect form data with null checks
-    const artNameInput = document.getElementById('artName');
-    const artName = artNameInput ? artNameInput.value.trim() : '';
-
-    const raDecimalElement = document.getElementById('ra_decimal');
-    const ra_decimal = raDecimalElement ? parseFloat(raDecimalElement.textContent) || 0 : 0;
-
-    const decDecimalElement = document.getElementById('dec_decimal');
-    const dec_decimal = decDecimalElement ? parseFloat(decDecimalElement.textContent) || 0 : 0;
-
-    const periodElement = document.getElementById('period');
-    const period = periodElement ? parseFloat(periodElement.textContent) || 0 : 0;
-
-    const radiusElement = document.getElementById('radius');
-    const radius = radiusElement ? parseFloat(radiusElement.textContent) || 0 : 0;
-
-    const discoveryYearElement = document.getElementById('discoveryyear');
-    const discoveryyear = discoveryYearElement ? parseInt(discoveryYearElement.textContent, 10) || 0 : 0;
-
-    const exoplanetDescriptionElement = document.getElementById('exoplanetDescription');
-    const description = exoplanetDescriptionElement ? exoplanetDescriptionElement.value.trim() : '';
-
-    const creditsElement = document.getElementById('credits');
-    const credits = creditsElement ? creditsElement.value.trim() : '';
-
-    // Collect artist user IDs
-    const dddArtistIds = collectArtistUserIds();
-
-    // Ensure we have at least one artist ID
-    if (dddArtistIds.length === 0) {
-        showToast('Please select a valid 3D artist.', 'error');
-        enableFormInputs();
-        return;
-    }
-
-    const initialData = {
-        ownerId: userId,
-        isPublic: false,
-        ipId: selectedIpId,
-        sciName,
-        artName,
-        moonAmount,
-        ra_decimal,
-        dec_decimal,
-        period,
-        radius,
-        discoveryyear,
-        description,
-        credits,
-        dddArtistId: dddArtistIds[0], // Since we have only one artist field
-    };
-
-    const textureFileInput = document.getElementById('uploadTexture');
-    const objFileInput = document.getElementById('uploadObj');
-
-    const textureFile = textureFileInput ? textureFileInput.files[0] : null;
-    const objFile = objFileInput ? objFileInput.files[0] : null;
-
-    if (textureFile && objFile) {
-        initialData.textureFileName = textureFile.name;
-        initialData.textureFileType = textureFile.type || getMimeTypeFromFileName(textureFile.name);
-        initialData.objFileName = objFile.name;
-        initialData.objFileType = objFile.type || getMimeTypeFromFileName(objFile.name);
-    }
-
-    console.log('Initial data to be sent:', initialData);
-
-    try {
-        const response = await fetch(url, {
-            method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(initialData)
-        });
-
-        const dataResponse = await response.json();
-
-        if (!dataResponse.success) {
-            throw new Error(dataResponse.message || 'An error occurred during submission.');
-        }
-
-        const { playerId: receivedPlayerId, textureUploadURL, objUploadURL, textureKey, objKey } = dataResponse;
-
-        // Check if necessary keys for uploading files are present if files were selected
-        if ((textureFile || objFile) && (!textureKey || !objKey || !textureUploadURL || !objUploadURL)) {
-            throw new Error('File upload keys or URLs missing from the server response.');
-        }
-
-        if (textureFile && objFile) {
-            console.log('Received presigned URLs and keys:', { receivedPlayerId, textureKey, objKey });
-            await uploadFiles(textureUploadURL, objUploadURL);
-            await finalizeInterplanetaryPlayer(receivedPlayerId, textureKey, objKey);
-        }
-
-        handleSuccessResponse({ playerId: receivedPlayerId });
-
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(`Error: ${error.message}`, 'error');
-    } finally {
-        enableFormInputs();
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Submit';
-        }
-    }
-}/**
- * Function to Upload Files Using Presigned URLs.
+/**
+ * Function to Handle Form Submission with Enhanced Validation
  */
-async function uploadFiles(textureUploadURL, objUploadURL) {
-    const objFile = document.getElementById('uploadObj').files[0];
-    const textureFile = document.getElementById('uploadTexture').files[0];
+async function handleFormSubmission() {
+    // In Create Mode, ensure GLB file is uploaded
+    if (currentMode === 'create') {
+        const glbFile = document.getElementById('uploadGlb').files[0];
 
+        if (!glbFile) {
+            showToast('Please upload the 3D model (GLB) before submitting.', 'error');
+            return;
+        }
+    }
+
+    submitForm(); // Proceed with form submission
+}
+
+/**
+ * Function to Submit the Form for Creating or Editing an Interplanetary Player.
+ */
+// Frontend JavaScript
+
+async function submitForm() {
+  disableFormInputs();
+
+  const submitButton = document.querySelector('#articleForm button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
+  }
+
+  const url = currentMode === 'edit'
+    ? `${API_BASE_URL}/interplanetaryplayers/${playerId}`
+    : `${API_BASE_URL}/interplanetaryplayers`;
+
+  const method = currentMode === 'edit' ? 'PATCH' : 'POST';
+  console.log('Submitting form to:', url);
+
+  // Collect moon amount and validate range
+  let moonAmount = 0;
+  const moonAmountInput = document.getElementById('moonAmount');
+  if (moonAmountInput) {
+    moonAmount = parseInt(moonAmountInput.value, 10);
+    moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
+  }
+
+  // Determine sciName and ipId based on the mode
+  let sciName = '';
+  let selectedIpId = '';
+
+  if (currentMode === 'create') {
+    const sciNameSelect = document.getElementById('sciName');
+    if (sciNameSelect) {
+      selectedIpId = sciNameSelect.value;
+      sciName = selectedIpId && exoplanetData[selectedIpId]
+        ? exoplanetData[selectedIpId].sciName
+        : 'Unknown Exoplanet';
+    }
+  } else if (currentMode === 'edit') {
+    selectedIpId = playerData.ipId; // From loaded player data
+    sciName = playerData.sciName;    // From loaded player data
+  }
+
+  // Collect form data with null checks
+  const artNameInput = document.getElementById('artName');
+  const artName = artNameInput ? artNameInput.value.trim() : '';
+
+  const raDecimalElement = document.getElementById('ra_decimal');
+  const ra_decimal = raDecimalElement ? parseFloat(raDecimalElement.textContent) || 0 : 0;
+
+  const decDecimalElement = document.getElementById('dec_decimal');
+  const dec_decimal = decDecimalElement ? parseFloat(decDecimalElement.textContent) || 0 : 0;
+
+  const periodElement = document.getElementById('period');
+  const period = periodElement ? parseFloat(periodElement.textContent) || 0 : 0;
+
+  const radiusElement = document.getElementById('radius');
+  const radius = radiusElement ? parseFloat(radiusElement.textContent) || 0 : 0;
+
+  const discoveryYearElement = document.getElementById('discoveryyear');
+  const discoveryyear = discoveryYearElement ? parseInt(discoveryYearElement.textContent, 10) || 0 : 0;
+
+  const exoplanetDescriptionElement = document.getElementById('exoplanetDescription');
+  const description = exoplanetDescriptionElement ? exoplanetDescriptionElement.value.trim() : '';
+
+  const creditsElement = document.getElementById('credits');
+  const credits = creditsElement ? creditsElement.value.trim() : '';
+
+  // Collect artist user IDs
+  const dddArtistIds = collectArtistUserIds();
+
+  // Ensure we have at least one artist ID
+  if (dddArtistIds.length === 0) {
+    showToast('Please select a valid 3D artist.', 'error');
+    enableFormInputs();
+    return;
+  }
+
+  const initialData = {
+    ownerId: userId,
+    isPublic: false,
+    ipId: selectedIpId,
+    sciName,
+    artName,
+    moonAmount,
+    ra_decimal,
+    dec_decimal,
+    period,
+    radius,
+    discoveryyear,
+    description,
+    credits,
+    dddArtistId: dddArtistIds[0], // Since we have only one artist field
+  };
+
+  const glbFileInput = document.getElementById('uploadGlb');
+  const glbFile = glbFileInput ? glbFileInput.files[0] : null;
+
+  if (glbFile) {
+    initialData.glbFileName = glbFile.name;
+    initialData.glbFileType = glbFile.type || getMimeTypeFromFileName(glbFile.name);
+  }
+
+  console.log('Initial data to be sent:', initialData);
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(initialData)
+    });
+
+    const dataResponse = await response.json();
+
+    if (!dataResponse.success) {
+      throw new Error(dataResponse.message || 'An error occurred during submission.');
+    }
+
+    const { playerId: receivedPlayerId, glbUploadURL, glbKey } = dataResponse;
+
+    // Check if necessary keys for uploading files are present if files were selected
+    if (glbFile) {
+      if (!glbKey || !glbUploadURL) {
+        throw new Error('GLB upload key or URL missing from the server response.');
+      }
+
+      console.log('Received presigned URLs and keys:', { receivedPlayerId, glbKey });
+      await uploadGlbFile(glbUploadURL, glbFile);
+      await finalizeInterplanetaryPlayer(receivedPlayerId, glbKey);
+    }
+
+    handleSuccessResponse({ playerId: receivedPlayerId });
+
+  } catch (error) {
+    console.error('Error:', error);
+    showToast(`Error: ${error.message}`, 'error');
+  } finally {
+    enableFormInputs();
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    }
+  }
+}
+
+
+/**
+ * Function to Upload GLB File Using Presigned URL.
+ */
+async function uploadGlbFile(glbUploadURL, glbFile) {
     /**
      * Helper function to upload a file.
      */
@@ -736,24 +707,21 @@ async function uploadFiles(textureUploadURL, objUploadURL) {
         }
     }
 
-    // Upload files concurrently
-    await Promise.all([
-        uploadFile(objUploadURL, objFile),
-        uploadFile(textureUploadURL, textureFile)
-    ]);
+    // Upload the GLB file
+    await uploadFile(glbUploadURL, glbFile);
 
-    console.log('Files uploaded successfully.');
+    console.log('GLB file uploaded successfully.');
 }
+
 /**
  * Function to Finalize the Interplanetary Player.
  */
-async function finalizeInterplanetaryPlayer(playerId, textureKey, objKey) {
+async function finalizeInterplanetaryPlayer(playerId, glbKey) {
     const finalizeUrl = `${API_BASE_URL}/interplanetaryplayers/finalize`;
 
     const finalizeData = {
         playerId,
-        textureKey,
-        objKey
+        glbKey
     };
 
     const finalizeResponse = await fetch(finalizeUrl, {
@@ -781,8 +749,8 @@ async function finalizeInterplanetaryPlayer(playerId, textureKey, objKey) {
     function getMimeTypeFromFileName(fileName) {
         const extension = fileName.split('.').pop().toLowerCase();
         switch (extension) {
-            case 'obj':
-                return 'application/octet-stream';
+            case 'glb':
+                return 'model/gltf-binary';
             case 'jpg':
             case 'jpeg':
                 return 'image/jpeg';
@@ -834,31 +802,32 @@ async function finalizeInterplanetaryPlayer(playerId, textureKey, objKey) {
 
     // Function to Handle Success Response after Creation or Editing
 function handleSuccessResponse(response) {
-    const successMessage = currentMode === 'edit'
-        ? 'Interplanetary Player updated successfully!'
-        : 'Interplanetary Player created successfully!';
-    
-    showToast(successMessage, 'success');
+  const successMessage = currentMode === 'edit'
+    ? 'Interplanetary Player updated successfully!'
+    : 'Interplanetary Player created successfully!';
 
-    // Clear form data cache
-    clearProfileCache(userId);
+  showToast(successMessage, 'success');
 
-    // Use playerId or provide a fallback ID if it's missing
-    const newPlayerId = currentMode === 'edit'
-        ? (response.player ? response.player._id : playerId)  // Use the existing playerId if response is missing
-        : response.playerId || response.config._id;  // Fall back to `playerId` or `_id` when creating
+  // Clear form data cache
+  clearProfileCache(userId);
 
-    if (newPlayerId) {
-        setTimeout(() => {
-            window.location.href = `/voyage/interplanetary-player?mode=view&playerId=${newPlayerId}`;
-        }, 1000);
-    } else {
-        console.error('Player ID not found in the response.');
-        showToast('Player ID missing. Please contact support.', 'error');
-    }
+  // Use playerId or provide a fallback ID if it's missing
+  const newPlayerId = currentMode === 'edit'
+    ? (response.player ? response.player._id : playerId)  // Use the existing playerId if response is missing
+    : response.playerId || response.config._id;  // Fall back to `playerId` or `_id` when creating
+
+  if (newPlayerId) {
+    setTimeout(() => {
+      window.location.href = `/voyage/interplanetary-player?mode=view&playerId=${newPlayerId}`;
+    }, 1000);
+  } else {
+    console.error('Player ID not found in the response.');
+    showToast('Player ID missing. Please contact support.', 'error');
+  }
 }
 
-    // Function to Load Interplanetary Player Details from the Server
+
+// Function to Load Interplanetary Player Details from the Server
 async function loadInterplanetaryPlayersDetails(playerId) {
     try {
         const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/${playerId}`);
@@ -921,40 +890,26 @@ function populateEditMode(playerData) {
 
         const baseUrl = 'https://media.maar.world';
 
-        // Show existing OBJ file link if available
-        const existingObjFileDiv = document.getElementById('existingObjFile');
-        const existingObjLink = document.getElementById('existingObjLink');
-        if (playerData.ddd?.objURL) {
-            const objUrl = playerData.ddd.objURL.startsWith('http')
-                ? playerData.ddd.objURL
-                : `${baseUrl}${playerData.ddd.objURL}`;
-            existingObjLink.href = objUrl;
-            existingObjLink.textContent = playerData.ddd.objURL.split('/').pop(); // Show the file name
-            existingObjFileDiv.style.display = 'block';
+        // Show existing GLB file link if available
+        const existingGlbFileDiv = document.getElementById('existingGlbFile');
+        const existingGlbLink = document.getElementById('existingGlbLink');
+        if (playerData.ddd?.glbURL) {
+            const glbUrl = playerData.ddd.glbURL.startsWith('http')
+                ? playerData.ddd.glbURL
+                : `${baseUrl}${playerData.ddd.glbURL}`;
+            existingGlbLink.href = glbUrl;
+            existingGlbLink.textContent = playerData.ddd.glbURL.split('/').pop(); // Show the file name
+            existingGlbFileDiv.style.display = 'block';
+
+            // Set GLB model preview
+            const modelPreviewFormIframe = document.getElementById('modelPreviewFormIframe');
+            modelPreviewFormIframe.src = glbUrl;
+            modelPreviewFormIframe.style.display = 'block';
         } else {
-            existingObjFileDiv.style.display = 'none';
-        }
-
-        // Show existing Texture file link and preview if available
-        const existingTextureFileDiv = document.getElementById('existingTextureFile');
-        const existingTextureLink = document.getElementById('existingTextureLink');
-        const texturePreview = document.getElementById('texturePreviewForm');
-
-        if (playerData.ddd?.textureURL) {
-            const textureUrl = playerData.ddd.textureURL.startsWith('http')
-                ? playerData.ddd.textureURL
-                : `${baseUrl}${playerData.ddd.textureURL}`;
-            existingTextureLink.href = textureUrl;
-            existingTextureLink.textContent = playerData.ddd.textureURL.split('/').pop();
-            existingTextureFileDiv.style.display = 'block';
-
-            // Set texture preview
-            texturePreview.src = textureUrl;
-            texturePreview.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
-            texturePreview.style.display = 'block';
-        } else {
-            existingTextureFileDiv.style.display = 'none';
-            texturePreview.style.display = 'none';
+            existingGlbFileDiv.style.display = 'none';
+            const modelPreviewFormIframe = document.getElementById('modelPreviewFormIframe');
+            modelPreviewFormIframe.src = '';
+            modelPreviewFormIframe.style.display = 'none';
         }
 
         // Display initial feedback and enable submit button
@@ -965,19 +920,18 @@ function populateEditMode(playerData) {
         }
 
         // Make file uploads optional in Edit Mode
-        document.getElementById('uploadObj').required = false;
-        document.getElementById('uploadTexture').required = false;
+        document.getElementById('uploadGlb').required = false;
     }
 }
 
-    // Function to Populate View Mode with Player Data
+// Populate View Mode with Player Data
 function populateViewMode(playerData) {
     // Helper function to safely extract numberDecimal values
     function getNumberDecimalValue(field) {
         return field?.$numberDecimal || field || 'N/A';
     }
 
-    // Populate the view container with data and make labels bold
+    // Populate the view container with data
     document.getElementById('viewSciName').innerHTML = `<strong>Scientific Name:</strong> ${playerData.sciName || 'N/A'}`;
     document.getElementById('viewArtName').innerHTML = `<strong>Artistic Name:</strong> ${playerData.artName || 'N/A'}`;
     document.getElementById('viewRaDecimal').innerHTML = `<strong>Right Ascension (Decimal):</strong> ${getNumberDecimalValue(playerData.ra_decimal)}`;
@@ -985,108 +939,88 @@ function populateViewMode(playerData) {
     document.getElementById('viewPeriod').innerHTML = `<strong>Orbital Period [days]:</strong> ${getNumberDecimalValue(playerData.period)}`;
     document.getElementById('viewRadius').innerHTML = `<strong>Radius [R earth]:</strong> ${getNumberDecimalValue(playerData.radius)}`;
     document.getElementById('viewDiscoveryYear').innerHTML = `<strong>Discovery Year:</strong> ${getNumberDecimalValue(playerData.discoveryyear)}`;
-
-    // 3D Artist with clickable link
     document.getElementById('viewDddArtistName').innerHTML = `<strong>3D Artist:</strong> ${playerData.ddd?.dddArtist ? `<a href="/xplorer/?username=${encodeURIComponent(playerData.ddd.dddArtist)}" target="_self">@${playerData.ddd.dddArtist}</a>` : 'N/A'}`;
-    
     document.getElementById('viewExoplanetDescription').innerHTML = `<strong>Description:</strong> ${playerData.description || 'N/A'}`;
     document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${playerData.credits || 'N/A'}`;
-    
-    // Set up 3D model preview using iframe if URLs are available
+
+    // Set up 3D model preview using iframe
     const modelPreviewContainer = document.getElementById('modelPreviewContainer');
     const modelPreviewIframe = document.getElementById('modelPreviewIframe');
+    const glbURL = playerData.glbURL;
 
-    // Prefer direct URLs if available, otherwise fallback to ddd URLs
-    const objURL = playerData.objURL || playerData.ddd?.objURL;
-    const textureURL = playerData.textureURL || playerData.ddd?.textureURL;
-
-    if (objURL && textureURL) {
-        const encodedObjURL = encodeURIComponent(objURL);
-        const encodedTextureURL = encodeURIComponent(textureURL);
-        
-        // Construct the iframe source URL with the model and texture
-        const iframeSrc = `https://preview.maar.world/?object=${encodedObjURL}&texture=${encodedTextureURL}`;
+    if (glbURL) {
+        const iframeSrc = `https://preview.maar.world/?model=${encodeURIComponent(glbURL)}`;
         console.log('Setting iframe src to:', iframeSrc); // Debugging line
         modelPreviewIframe.src = iframeSrc;
-
-        // Display the iframe container
-        modelPreviewContainer.style.display = 'block';
+        modelPreviewContainer.style.display = 'block'; // Display the iframe container
     } else {
-        console.warn('OBJ or Texture URL is missing');
-        modelPreviewContainer.style.display = 'none';
+        console.warn('GLB URL is missing');
+        modelPreviewContainer.style.display = 'none'; // Hide the container if no GLB URL
     }
 
-    // Download 3D Model link
-    const viewObjFile = document.getElementById('viewObjFile');
-    if (objURL) {
-        viewObjFile.href = objURL.startsWith('http') ? objURL : `https://media.maar.world${objURL}`;
-        viewObjFile.textContent = 'Download 3D Model';
-        viewObjFile.style.display = 'block';
+    // Set up the download link
+    const viewGlbFile = document.getElementById('viewGlbFile');
+    if (glbURL) {
+        viewGlbFile.href = glbURL.startsWith('http') ? glbURL : `https://media.maar.world${glbURL}`;
+        viewGlbFile.textContent = 'Download 3D Model';
+        viewGlbFile.style.display = 'block';
     } else {
-        viewObjFile.style.display = 'none';
+        viewGlbFile.style.display = 'none';
     }
-    
-    // Texture Image
-    const viewTextureImage = document.getElementById('viewTextureImage');
-    if (textureURL) {
-        const textureUrlResolved = textureURL.startsWith('http') ? textureURL : `https://media.maar.world${textureURL}`;
-        viewTextureImage.src = textureUrlResolved;
-        viewTextureImage.alt = `Texture of ${playerData.sciName || 'Exoplanet'}`;
-        viewTextureImage.style.display = 'block';
-    } else {
-        viewTextureImage.style.display = 'none';
-    }
-    
+
     // Populate Owner Details
     populatePlayerOwnerDetails(playerData.ownerDetails);
 }
 
-    /**
-        * Function to Populate the Interplanetary Player Owner Details
-        */
-        function populatePlayerOwnerDetails(ownerDetails) {
-        const playerOwnerList = document.getElementById('playerOwnerList');
-
-        if (ownerDetails) {
-            playerOwnerList.innerHTML = `
-            <li class="user-list-item">
-                <div class="user-profile-pic">
+// Populate Owner Details
+function populatePlayerOwnerDetails(ownerDetails) {
+    const playerOwnerList = document.getElementById('playerOwnerList');
+    if (ownerDetails) {
+        playerOwnerList.innerHTML = `
+        <li class="user-list-item">
+            <div class="user-profile-pic">
                 <img src="${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
-                </div>
-                <div class="user-details">
+            </div>
+            <div class="user-details">
                 <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>
                 <div class="user-username">
                     <a href="/xplorer/?username=${encodeURIComponent(ownerDetails.username)}" target="_self">
-                    @${ownerDetails.username || 'Unknown'}
+                        @${ownerDetails.username || 'Unknown'}
                     </a>
                 </div>
-                </div>
-            </li>`;
-        } else {
-            playerOwnerList.innerHTML = '<li>No owner details available.</li>';
-        }
-        }
+            </div>
+        </li>`;
+    } else {
+        playerOwnerList.innerHTML = '<li>No owner details available.</li>';
+    }
+}
 
-    /**
-        * Function to Clear Cached Profiles.
-        */
-    function clearProfileCache(userId) {
-        if (typeof lscache === 'undefined') {
-            console.warn('lscache is not available. Skipping cache clearing.');
-            return;
-        }
 
-        const cacheKey = `profile_${userId}`;
-        const cachedProfile = lscache.get(cacheKey);
-        if (cachedProfile) {
-            lscache.remove(cacheKey);
-            console.log('Profile cache cleared for user');
-        } else {
-            console.log('No cache found for user');
-        }
+
+
+
+/**
+    * Function to Clear Cached Profiles.
+    */
+function clearProfileCache(userId) {
+    if (typeof lscache === 'undefined') {
+        console.warn('lscache is not available. Skipping cache clearing.');
+        return;
     }
 
-    // Function to Toggle Between Edit and View Modes
+    const cacheKey = `profile_${userId}`;
+    const cachedProfile = lscache.get(cacheKey);
+    if (cachedProfile) {
+        lscache.remove(cacheKey);
+        console.log('Profile cache cleared for user');
+    } else {
+        console.log('No cache found for user');
+    }
+}
+
+/**
+    * Function to Toggle Between Edit and View Modes
+    */
 function toggleEditMode() {
     if (currentMode === 'view') {
         if (playerData) { // Ensure playerData is loaded
@@ -1103,9 +1037,9 @@ function toggleEditMode() {
     }
 }
 
-    /**
-        * Function to Set the Current Mode (View, Edit, Create)
-        */
+/**
+    * Function to Set the Current Mode (View, Edit, Create)
+    */
 async function setFormMode(newMode) {
     currentMode = newMode;
     const isViewMode = currentMode === 'view';
@@ -1160,197 +1094,212 @@ async function setFormMode(newMode) {
         }
     }
 }
-    // Function to Update the URL Without Reloading the Page
-    function updateURL(mode, playerId) {
-        const newURL = `/voyage/interplanetary-player?mode=${mode}&playerId=${playerId}`;
-        if (history.pushState) {
-            history.pushState({ mode, playerId }, '', newURL);
-        } else {
-            // Fallback for older browsers
-            window.location.href = newURL;
-        }
-    }
 
-    // Event Listener for Edit Button
-    const editButtonElement = document.getElementById('editButton');
-    if (editButtonElement) {
-        editButtonElement.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default button behavior
-            toggleEditMode(); // Toggle between view and edit modes
-        });
+/**
+    * Function to Update the URL Without Reloading the Page
+    */
+function updateURL(mode, playerId) {
+    const newURL = `/voyage/interplanetary-player?mode=${mode}&playerId=${playerId}`;
+    if (history.pushState) {
+        history.pushState({ mode, playerId }, '', newURL);
+    } else {
+        // Fallback for older browsers
+        window.location.href = newURL;
     }
+}
 
-    // Handle Browser Navigation (Back/Forward)
-    window.addEventListener('popstate', (event) => {
-        if (event.state) {
-            setFormMode(event.state.mode);
-        } else {
-            // Default to view mode if no state is available
-            setFormMode('view');
-        }
+// Event Listener for Edit Button
+const editButtonElement = document.getElementById('editButton');
+if (editButtonElement) {
+    editButtonElement.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default button behavior
+        toggleEditMode(); // Toggle between view and edit modes
     });
+}
 
-    /**
-     * Function to Check the Availability of artName.
-     */
-    async function checkArtNameAvailability(artName, excludeId = '') {
-        const submitButton = document.querySelector('#articleForm button[type="submit"]');
-        if (!artName.trim()) {
-            displayArtNameFeedback('Artistic Name is required.', 'error');
-            if (submitButton) {
-                submitButton.disabled = true;
-            }
-            return false;
+// Handle Browser Navigation (Back/Forward)
+window.addEventListener('popstate', (event) => {
+    if (event.state) {
+        setFormMode(event.state.mode);
+    } else {
+        // Default to view mode if no state is available
+        setFormMode('view');
+    }
+});
+
+/**
+ * Function to Check the Availability of artName.
+ */
+async function checkArtNameAvailability(artName, excludeId = '') {
+    const submitButton = document.querySelector('#articleForm button[type="submit"]');
+    if (!artName.trim()) {
+        displayArtNameFeedback('Artistic Name is required.', 'error');
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+        return false;
+    }
+
+    try {
+        const params = new URLSearchParams({ name: artName.trim() });
+        if (excludeId) {
+            params.append('excludeId', excludeId);
         }
 
-        try {
-            const params = new URLSearchParams({ name: artName.trim() });
-            if (excludeId) {
-                params.append('excludeId', excludeId);
-            }
+        // Ensure the endpoint matches the backend route
+        const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/checkArtName?${params.toString()}`);
 
-            // Ensure the endpoint matches the backend route
-            const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/checkArtName?${params.toString()}`);
-
-            if (response.status === 200) {
-                const data = await response.json();
-                if (data.success) {
-                    displayArtNameFeedback('Artistic Name is available.', 'success');
-                    if (submitButton) {
-                        submitButton.disabled = false;
-                    }
-                    return true;
-                } else {
-                    displayArtNameFeedback('Error checking name. Please try again.', 'error');
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                    }
-                    return false;
-                }
-            } else if (response.status === 409) {
-                // Handle 409 Conflict gracefully without logging
-                displayArtNameFeedback('Artistic Name is already taken.', 'error');
-                showToast('Please choose a different Artistic Name.', 'error');
-
+        if (response.status === 200) {
+            const data = await response.json();
+            if (data.success) {
+                displayArtNameFeedback('Artistic Name is available.', 'success');
                 if (submitButton) {
-                    submitButton.disabled = true;
+                    submitButton.disabled = false;
                 }
-                return false;
+                return true;
             } else {
-                // Handle other unexpected statuses
                 displayArtNameFeedback('Error checking name. Please try again.', 'error');
                 if (submitButton) {
                     submitButton.disabled = true;
                 }
                 return false;
             }
-        } catch (error) {
-            // Only log unexpected errors
-            console.error('Error checking artName availability:', error);
+        } else if (response.status === 409) {
+            // Handle 409 Conflict gracefully without logging
+            displayArtNameFeedback('Artistic Name is already taken.', 'error');
+            showToast('Please choose a different Artistic Name.', 'error');
+
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+            return false;
+        } else {
+            // Handle other unexpected statuses
             displayArtNameFeedback('Error checking name. Please try again.', 'error');
             if (submitButton) {
                 submitButton.disabled = true;
             }
             return false;
         }
-    }
-
-    /**
-        * Function to Display Feedback Messages for artName.
-        */
-    function displayArtNameFeedback(message, type) {
-        const feedbackElem = document.getElementById('artNameFeedback');
-        const artNameInput = document.getElementById('artName');
-
-        feedbackElem.textContent = message;
-        feedbackElem.className = 'feedback-message'; // Reset classes
-
-        artNameInput.classList.remove('feedback-success', 'feedback-error'); // Reset classes
-
-        if (type === 'success') {
-            feedbackElem.classList.add('feedback-success');
-            artNameInput.classList.add('feedback-success');
-        } else if (type === 'error') {
-            feedbackElem.classList.add('feedback-error');
-            artNameInput.classList.add('feedback-error');
-        }
-    }
-
-    /**
-     * Function to Check if Both Files are Uploaded in Create Mode
-     */
-    function checkFileUploads() {
-        if (currentMode !== 'create') {
-            return; // Only enforce in create mode
-        }
-
-        const objFile = document.getElementById('uploadObj').files[0];
-        const textureFile = document.getElementById('uploadTexture').files[0];
-        const submitButton = document.getElementById('submitButton');
-
-        if (objFile && textureFile) {
-            submitButton.disabled = false;
-        } else {
+    } catch (error) {
+        // Only log unexpected errors
+        console.error('Error checking artName availability:', error);
+        displayArtNameFeedback('Error checking name. Please try again.', 'error');
+        if (submitButton) {
             submitButton.disabled = true;
         }
+        return false;
+    }
+}
+
+/**
+    * Function to Display Feedback Messages for artName.
+    */
+function displayArtNameFeedback(message, type) {
+    const feedbackElem = document.getElementById('artNameFeedback');
+    const artNameInput = document.getElementById('artName');
+
+    feedbackElem.textContent = message;
+    feedbackElem.className = 'feedback-message'; // Reset classes
+
+    artNameInput.classList.remove('feedback-success', 'feedback-error'); // Reset classes
+
+    if (type === 'success') {
+        feedbackElem.classList.add('feedback-success');
+        artNameInput.classList.add('feedback-success');
+    } else if (type === 'error') {
+        feedbackElem.classList.add('feedback-error');
+        artNameInput.classList.add('feedback-error');
+    }
+}
+
+// Inside checkFileUploads function
+
+function checkFileUploads() {
+  if (currentMode !== 'create' && currentMode !== 'edit') {
+    return; // Only enforce in create or edit mode
+  }
+
+  const glbFile = document.getElementById('uploadGlb').files[0];
+  const submitButton = document.getElementById('submitButton');
+
+  if (glbFile) {
+    // Validate file size (e.g., max 50MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (glbFile.size > maxSize) {
+      showToast('GLB file exceeds the maximum size of 5MB.', 'error');
+      if (submitButton) {
+        submitButton.disabled = true;
+      }
+      return;
     }
 
-    // Function to Disable All Form Inputs
-    function disableFormInputs() {
-        const form = document.getElementById('articleForm');
-        if (form) {
-            const inputs = form.querySelectorAll('input, select, textarea, button');
-            inputs.forEach(input => {
-                input.disabled = true;
-            });
-        }
+    submitButton.disabled = false;
+  } else {
+    if (currentMode === 'create') {
+      // GLB file is required in create mode
+      submitButton.disabled = true;
+    } else if (currentMode === 'edit') {
+      // GLB file is optional in edit mode
+      submitButton.disabled = false;
     }
-
-    // Function to Enable All Form Inputs
-    function enableFormInputs() {
-        const form = document.getElementById('articleForm');
-        if (form) {
-            const inputs = form.querySelectorAll('input, select, textarea, button');
-            inputs.forEach(input => {
-                input.disabled = false;
-            });
-        }
-    }
-
-    // Function to Reset the Form After Submission
-    function resetForm() {
-        enableFormInputs();
-        const submitButton = document.querySelector('#articleForm button[type="submit"]');
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Submit';
-        }
-        document.getElementById('loadingMessage').style.display = 'none';
-    }
-
-    /**
-     * Function to Set Up artName Validation with Debounce
-     */
-    function setupArtNameValidation() {
-        const artNameInput = document.getElementById('artName');
-
-        let debounceTimeout = null;
-
-        // Debounce function to limit the number of API calls
-        artNameInput.addEventListener('input', () => {
-            clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(async () => {
-                const artName = artNameInput.value;
-                const excludeId = currentMode === 'edit' ? playerId : '';
-                await checkArtNameAvailability(artName, excludeId);
-            }, 500); // Wait for 500ms after the user stops typing
+  }
+}
+// Function to Disable All Form Inputs
+function disableFormInputs() {
+    const form = document.getElementById('articleForm');
+    if (form) {
+        const inputs = form.querySelectorAll('input, select, textarea, button');
+        inputs.forEach(input => {
+            input.disabled = true;
         });
+    }
+}
 
-        // Also check on blur (when the user leaves the field)
-        artNameInput.addEventListener('blur', async () => {
+// Function to Enable All Form Inputs
+function enableFormInputs() {
+    const form = document.getElementById('articleForm');
+    if (form) {
+        const inputs = form.querySelectorAll('input, select, textarea, button');
+        inputs.forEach(input => {
+            input.disabled = false;
+        });
+    }
+}
+
+// Function to Reset the Form After Submission
+function resetForm() {
+    enableFormInputs();
+    const submitButton = document.querySelector('#articleForm button[type="submit"]');
+    if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+    }
+}
+
+/**
+ * Function to Set Up artName Validation with Debounce
+ */
+function setupArtNameValidation() {
+    const artNameInput = document.getElementById('artName');
+
+    let debounceTimeout = null;
+
+    // Debounce function to limit the number of API calls
+    artNameInput.addEventListener('input', () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
             const artName = artNameInput.value;
             const excludeId = currentMode === 'edit' ? playerId : '';
             await checkArtNameAvailability(artName, excludeId);
-        });
-    }
+        }, 500); // Wait for 500ms after the user stops typing
+    });
+
+    // Also check on blur (when the user leaves the field)
+    artNameInput.addEventListener('blur', async () => {
+        const artName = artNameInput.value;
+        const excludeId = currentMode === 'edit' ? playerId : '';
+        await checkArtNameAvailability(artName, excludeId);
+    });
+}
 </script>
