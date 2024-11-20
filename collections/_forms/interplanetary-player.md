@@ -108,10 +108,11 @@ public: false
         <span class="material-symbols-outlined">tooltip_2</span>
     </span>
 </label>
-        <div class="input-wrapper">
-            <input type="text" class="user-search-input" id="dddArtistName" name="dddArtistName" placeholder="Type a username..." autocomplete="off" required>
-            <div class="dropdown"></div>
-        </div>
+<div class="input-wrapper">
+    <input type="text" class="user-search-input" name="artistUsernames[]" placeholder="Type a username..." autocomplete="off" required>
+    <input type="hidden" class="artistUserId" name="artistUserIds[]" value="">
+    <div class="dropdown"></div>
+</div>
         <span id="dddArtistFeedback" class="feedback-message"></span><br><br>
 
         <!-- Scientific Exoplanet Name -->
@@ -332,40 +333,63 @@ function populateExoplanetDropdown() {
     console.log('Exoplanet dropdown populated with available exoplanets.');
 }
 
-    // Function to Clear Form Fields (Create Mode)
-    function clearFormFields() {
-        document.getElementById('sciName').value = '';
-        document.getElementById('artName').value = '';
-        document.getElementById('dddArtistName').value = '';
-        document.getElementById('exoplanetDescription').value = '';
-        document.getElementById('credits').value = '';
-        document.getElementById('uploadObj').value = '';
-        document.getElementById('uploadTexture').value = '';
-        document.getElementById('moonAmount').value = '0'; // Reset moonAmount to a default value
+function collectArtistUserIds() {
+    const artistIdInputs = document.querySelectorAll('.artistUserId');
+    const artistIds = Array.from(artistIdInputs).map(input => input.value.trim());
+    return artistIds.filter(id => id); // Remove empty entries
+}
 
-        // Hide exoplanet details when in create mode.
-        document.getElementById('exoplanetDetails').style.display = 'none';
-        // Clear artName feedback
-        displayArtNameFeedback('', '');
-        const submitButton = document.getElementById('submitButton');
-        if (submitButton) {
-            submitButton.disabled = true;
-        }
 
-        // Hide existing file links and previews
-        document.getElementById('existingObjFile').style.display = 'none';
-        document.getElementById('existingTextureFile').style.display = 'none';
-        document.getElementById('texturePreviewForm').style.display = 'none';
-    }
+function clearFormFields() {
+    const sciName = document.getElementById('sciName');
+    if (sciName) sciName.value = '';
 
+    const artName = document.getElementById('artName');
+    if (artName) artName.value = '';
+
+    const dddArtistName = document.getElementById('dddArtistName');
+    if (dddArtistName) dddArtistName.value = '';
+
+    const exoplanetDescription = document.getElementById('exoplanetDescription');
+    if (exoplanetDescription) exoplanetDescription.value = '';
+
+    const credits = document.getElementById('credits');
+    if (credits) credits.value = '';
+
+    const uploadObj = document.getElementById('uploadObj');
+    if (uploadObj) uploadObj.value = '';
+
+    const uploadTexture = document.getElementById('uploadTexture');
+    if (uploadTexture) uploadTexture.value = '';
+
+    const moonAmount = document.getElementById('moonAmount');
+    if (moonAmount) moonAmount.value = '0';
+
+    const exoplanetDetails = document.getElementById('exoplanetDetails');
+    if (exoplanetDetails) exoplanetDetails.style.display = 'none';
+
+    displayArtNameFeedback('', '');
+
+    const submitButton = document.getElementById('submitButton');
+    if (submitButton) submitButton.disabled = true;
+
+    const existingObjFile = document.getElementById('existingObjFile');
+    if (existingObjFile) existingObjFile.style.display = 'none';
+
+    const existingTextureFile = document.getElementById('existingTextureFile');
+    if (existingTextureFile) existingTextureFile.style.display = 'none';
+
+    const texturePreviewForm = document.getElementById('texturePreviewForm');
+    if (texturePreviewForm) texturePreviewForm.style.display = 'none';
+}
     // Function to Set Up Form Listeners
-    function setupFormListeners() {
-        // Reference to moonAmount input
-        moonAmountInput = document.getElementById('moonAmount');
-        const cancelButton = document.getElementById('cancelButton');
-        const artNameInput = document.getElementById('artName');
+function setupFormListeners() {
+    // Reference to moonAmount input
+    moonAmountInput = document.getElementById('moonAmount');
+    const cancelButton = document.getElementById('cancelButton');
 
-        // Validate moonAmount to be between 0 and 145
+    // Validate moonAmount to be between 0 and 145
+    if (moonAmountInput) {
         moonAmountInput.addEventListener('input', function() {
             let value = parseInt(moonAmountInput.value, 10);
 
@@ -377,99 +401,136 @@ function populateExoplanetDropdown() {
 
             moonAmountInput.value = value;
         });
+    }
 
-        // Texture Upload Preview
-        document.getElementById('uploadTexture').addEventListener('change', function(event) {
+    // Texture Upload Preview
+    const uploadTextureInput = document.getElementById('uploadTexture');
+    if (uploadTextureInput) {
+        uploadTextureInput.addEventListener('change', function(event) {
             const texturePreview = document.getElementById('texturePreviewForm');
             const file = event.target.files[0];
 
-            if (file) {
+            if (file && texturePreview) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     texturePreview.src = e.target.result;
                     texturePreview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
-            } else {
-                const preview = document.getElementById('texturePreviewForm');
-                preview.src = '';
-                preview.style.display = 'none';
+            } else if (texturePreview) {
+                texturePreview.src = '';
+                texturePreview.style.display = 'none';
             }
         });
+    }
 
-        // OBJ Upload Preview (Optional: Similar to Texture Upload)
-        document.getElementById('uploadObj').addEventListener('change', function(event) {
+    // OBJ Upload Preview
+    const uploadObjInput = document.getElementById('uploadObj');
+    if (uploadObjInput) {
+        uploadObjInput.addEventListener('change', function(event) {
             const objFile = event.target.files[0];
             if (objFile) {
                 console.log(`OBJ file selected: ${objFile.name}`);
                 // Additional preview or validation can be added here if needed
             }
         });
+    }
 
-        // Cancel Button Event Listener
+    // Cancel Button Event Listener
+    if (cancelButton) {
         cancelButton.addEventListener('click', function() {
             setFormMode("view");
             console.log("Canceling form editing/creation.");
         });
+    }
 
-        // Save form data on input change
-        const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm textarea');
+    // Save form data on input change
+    const formElements = document.querySelectorAll('#articleForm input, #articleForm select, #articleForm textarea');
 
-        formElements.forEach(element => {
-            element.addEventListener('input', saveFormData);
-        });
+    formElements.forEach(element => {
+        element.addEventListener('input', saveFormData);
+    });
 
-        // Handle form submission
-        document.getElementById('articleForm').addEventListener('submit', function(event) {
+    // Handle form submission
+    const articleForm = document.getElementById('articleForm');
+    if (articleForm) {
+        articleForm.addEventListener('submit', function(event) {
             event.preventDefault();
             handleFormSubmission();
         });
+    }
 
-        // Handle change in exoplanet selection
-        document.getElementById('sciName').addEventListener('change', updateDetails);
+    // Handle change in exoplanet selection
+    const sciNameSelect = document.getElementById('sciName');
+    if (sciNameSelect) {
+        sciNameSelect.addEventListener('change', updateDetails);
+    }
 
-        // Add event listeners to file inputs to monitor file selections
-        const uploadObjInput = document.getElementById('uploadObj');
-        const uploadTextureInput = document.getElementById('uploadTexture');
-
+    // Add event listeners to file inputs to monitor file selections
+    if (uploadObjInput) {
         uploadObjInput.addEventListener('change', checkFileUploads);
+    }
+    if (uploadTextureInput) {
         uploadTextureInput.addEventListener('change', checkFileUploads);
     }
-
+}
     // Function to Update Exoplanet Details on Selection Change
     function updateDetails() {
-        const selectedIpId = document.getElementById('sciName').value;
-        const detailsDiv = document.getElementById('exoplanetDetails');
-        const exoplanet = exoplanetData[selectedIpId]; // Access exoplanet by ipId
-
-        if (!selectedIpId || !exoplanet) {
-            detailsDiv.style.display = 'none';
-        } else {
-            // Populate the details section with exoplanet data
-            document.getElementById('ipId').textContent = selectedIpId;
-            document.getElementById('ra_decimal').textContent = exoplanet.ra_decimal || 'N/A';
-            document.getElementById('dec_decimal').textContent = exoplanet.dec_decimal || 'N/A';
-            document.getElementById('period').textContent = exoplanet.period || 'N/A';
-            document.getElementById('radius').textContent = exoplanet.radius || 'N/A';
-            document.getElementById('discoveryyear').textContent = exoplanet.discoveryyear || 'N/A';
-            detailsDiv.style.display = 'block';
-        }
+    const sciNameSelect = document.getElementById('sciName');
+    if (!sciNameSelect) {
+        console.error('sciName select element not found');
+        return;
     }
+
+    const selectedIpId = sciNameSelect.value;
+    const detailsDiv = document.getElementById('exoplanetDetails');
+    if (!detailsDiv) {
+        console.error('exoplanetDetails div not found');
+        return;
+    }
+
+    const exoplanet = exoplanetData[selectedIpId]; // Access exoplanet by ipId
+
+    if (!selectedIpId || !exoplanet) {
+        detailsDiv.style.display = 'none';
+    } else {
+        // Populate the details section with exoplanet data
+        document.getElementById('ipId').textContent = selectedIpId;
+        document.getElementById('ra_decimal').textContent = exoplanet.ra_decimal || 'N/A';
+        document.getElementById('dec_decimal').textContent = exoplanet.dec_decimal || 'N/A';
+        document.getElementById('period').textContent = exoplanet.period || 'N/A';
+        document.getElementById('radius').textContent = exoplanet.radius || 'N/A';
+        document.getElementById('discoveryyear').textContent = exoplanet.discoveryyear || 'N/A';
+        detailsDiv.style.display = 'block';
+    }
+}
 
     // Function to Save Form Data Locally (Optional)
-    function saveFormData() {
-        const formData = {
-            sciName: document.getElementById('sciName').value,
-            artName: document.getElementById('artName').value,
-            moonAmount: document.getElementById('moonAmount').value,
-            dddArtistName: document.getElementById('dddArtistName').value,
-            exoplanetDescription: document.getElementById('exoplanetDescription').value,
-            credits: document.getElementById('credits').value
-        };
-        localStorage.setItem('protoFormData', JSON.stringify(formData));
-    }
+function saveFormData() {
+    const formData = {};
 
-    // Function to Load Saved Form Data (Optional)
+    const sciNameElement = document.getElementById('sciName');
+    if (sciNameElement) formData.sciName = sciNameElement.value;
+
+    const artNameElement = document.getElementById('artName');
+    if (artNameElement) formData.artName = artNameElement.value;
+
+    const moonAmountElement = document.getElementById('moonAmount');
+    if (moonAmountElement) formData.moonAmount = moonAmountElement.value;
+
+    const dddArtistNameElement = document.getElementById('dddArtistName');
+    if (dddArtistNameElement) formData.dddArtistName = dddArtistNameElement.value;
+
+    const exoplanetDescriptionElement = document.getElementById('exoplanetDescription');
+    if (exoplanetDescriptionElement) formData.exoplanetDescription = exoplanetDescriptionElement.value;
+
+    const creditsElement = document.getElementById('credits');
+    if (creditsElement) formData.credits = creditsElement.value;
+
+    localStorage.setItem('protoFormData', JSON.stringify(formData));
+}
+
+// Function to Load Saved Form Data (Optional)
     function loadFormData() {
         const savedData = JSON.parse(localStorage.getItem('protoFormData'));
         if (savedData) {
@@ -520,92 +581,138 @@ async function submitForm() {
     console.log('Submitting form to:', url);
 
     // Get moon amount and validate range
-    let moonAmount = parseInt(document.getElementById('moonAmount').value, 10);
-    moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
+    let moonAmount = 0;
+    const moonAmountInput = document.getElementById('moonAmount');
+    if (moonAmountInput) {
+        moonAmount = parseInt(moonAmountInput.value, 10);
+        moonAmount = isNaN(moonAmount) || moonAmount < 0 ? 0 : moonAmount > 145 ? 145 : moonAmount;
+    }
 
     // Determine sciName and ipId based on the mode
-    let sciName, selectedIpId;
+    let sciName = '';
+    let selectedIpId = '';
 
     if (currentMode === 'create') {
-        selectedIpId = document.getElementById('sciName').value;
-        sciName = selectedIpId && exoplanetData[selectedIpId]
-            ? exoplanetData[selectedIpId].sciName
-            : 'Unknown Exoplanet';
+        const sciNameSelect = document.getElementById('sciName');
+        if (sciNameSelect) {
+            selectedIpId = sciNameSelect.value;
+            sciName = selectedIpId && exoplanetData[selectedIpId]
+                ? exoplanetData[selectedIpId].sciName
+                : 'Unknown Exoplanet';
+        }
     } else if (currentMode === 'edit') {
         selectedIpId = playerData.ipId; // From loaded player data
         sciName = playerData.sciName;    // From loaded player data
+    }
+
+    // Collect form data with null checks
+    const artNameInput = document.getElementById('artName');
+    const artName = artNameInput ? artNameInput.value.trim() : '';
+
+    const raDecimalElement = document.getElementById('ra_decimal');
+    const ra_decimal = raDecimalElement ? parseFloat(raDecimalElement.textContent) || 0 : 0;
+
+    const decDecimalElement = document.getElementById('dec_decimal');
+    const dec_decimal = decDecimalElement ? parseFloat(decDecimalElement.textContent) || 0 : 0;
+
+    const periodElement = document.getElementById('period');
+    const period = periodElement ? parseFloat(periodElement.textContent) || 0 : 0;
+
+    const radiusElement = document.getElementById('radius');
+    const radius = radiusElement ? parseFloat(radiusElement.textContent) || 0 : 0;
+
+    const discoveryYearElement = document.getElementById('discoveryyear');
+    const discoveryyear = discoveryYearElement ? parseInt(discoveryYearElement.textContent, 10) || 0 : 0;
+
+    const exoplanetDescriptionElement = document.getElementById('exoplanetDescription');
+    const description = exoplanetDescriptionElement ? exoplanetDescriptionElement.value.trim() : '';
+
+    const creditsElement = document.getElementById('credits');
+    const credits = creditsElement ? creditsElement.value.trim() : '';
+
+    // Collect artist user IDs
+    const dddArtistIds = collectArtistUserIds();
+
+    // Ensure we have at least one artist ID
+    if (dddArtistIds.length === 0) {
+        showToast('Please select a valid 3D artist.', 'error');
+        enableFormInputs();
+        return;
     }
 
     const initialData = {
         ownerId: userId,
         isPublic: false,
         ipId: selectedIpId,
-        sciName, // Using sciName based on mode
-        artName: document.getElementById('artName').value.trim(),
+        sciName,
+        artName,
         moonAmount,
-        ra_decimal: parseFloat(document.getElementById('ra_decimal').textContent) || 0,
-        dec_decimal: parseFloat(document.getElementById('dec_decimal').textContent) || 0,
-        period: parseFloat(document.getElementById('period').textContent) || 0,
-        radius: parseFloat(document.getElementById('radius').textContent) || 0,
-        discoveryyear: parseInt(document.getElementById('discoveryyear').textContent, 10) || 0,
-        description: document.getElementById('exoplanetDescription').value.trim(),
-        credits: document.getElementById('credits').value.trim(),
-        dddArtistName: document.getElementById('dddArtistName').value.trim(),
+        ra_decimal,
+        dec_decimal,
+        period,
+        radius,
+        discoveryyear,
+        description,
+        credits,
+        dddArtistId: dddArtistIds[0], // Since we have only one artist field
     };
-  const textureFile = document.getElementById('uploadTexture').files[0];
-  const objFile = document.getElementById('uploadObj').files[0];
 
-  if (textureFile && objFile) {
-    initialData.textureFileName = textureFile.name;
-    initialData.textureFileType = textureFile.type || getMimeTypeFromFileName(textureFile.name);
-    initialData.objFileName = objFile.name;
-    initialData.objFileType = objFile.type || getMimeTypeFromFileName(objFile.name);
-  }
+    const textureFileInput = document.getElementById('uploadTexture');
+    const objFileInput = document.getElementById('uploadObj');
 
-  console.log('Initial data to be sent:', initialData);
-
-  try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(initialData)
-    });
-
-    const dataResponse = await response.json();
-
-    if (!dataResponse.success) {
-      throw new Error(dataResponse.message || 'An error occurred during submission.');
-    }
-
-    const { playerId: receivedPlayerId, textureUploadURL, objUploadURL, textureKey, objKey } = dataResponse;
-
-    // Check if necessary keys for uploading files are present if files were selected
-    if ((textureFile || objFile) && (!textureKey || !objKey || !textureUploadURL || !objUploadURL)) {
-      throw new Error('File upload keys or URLs missing from the server response.');
-    }
+    const textureFile = textureFileInput ? textureFileInput.files[0] : null;
+    const objFile = objFileInput ? objFileInput.files[0] : null;
 
     if (textureFile && objFile) {
-      console.log('Received presigned URLs and keys:', { receivedPlayerId, textureKey, objKey });
-      await uploadFiles(textureUploadURL, objUploadURL);
-      await finalizeInterplanetaryPlayer(receivedPlayerId, textureKey, objKey);
+        initialData.textureFileName = textureFile.name;
+        initialData.textureFileType = textureFile.type || getMimeTypeFromFileName(textureFile.name);
+        initialData.objFileName = objFile.name;
+        initialData.objFileType = objFile.type || getMimeTypeFromFileName(objFile.name);
     }
 
-    handleSuccessResponse({ playerId: receivedPlayerId });
+    console.log('Initial data to be sent:', initialData);
 
-  } catch (error) {
-    console.error('Error:', error);
-    showToast(`Error: ${error.message}`, 'error');
-  } finally {
-    enableFormInputs();
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.textContent = 'Submit';
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(initialData)
+        });
+
+        const dataResponse = await response.json();
+
+        if (!dataResponse.success) {
+            throw new Error(dataResponse.message || 'An error occurred during submission.');
+        }
+
+        const { playerId: receivedPlayerId, textureUploadURL, objUploadURL, textureKey, objKey } = dataResponse;
+
+        // Check if necessary keys for uploading files are present if files were selected
+        if ((textureFile || objFile) && (!textureKey || !objKey || !textureUploadURL || !objUploadURL)) {
+            throw new Error('File upload keys or URLs missing from the server response.');
+        }
+
+        if (textureFile && objFile) {
+            console.log('Received presigned URLs and keys:', { receivedPlayerId, textureKey, objKey });
+            await uploadFiles(textureUploadURL, objUploadURL);
+            await finalizeInterplanetaryPlayer(receivedPlayerId, textureKey, objKey);
+        }
+
+        handleSuccessResponse({ playerId: receivedPlayerId });
+
+    } catch (error) {
+        console.error('Error:', error);
+        showToast(`Error: ${error.message}`, 'error');
+    } finally {
+        enableFormInputs();
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit';
+        }
     }
-  }
-}
-/**
+}/**
  * Function to Upload Files Using Presigned URLs.
  */
 async function uploadFiles(textureUploadURL, objUploadURL) {
