@@ -1,10 +1,14 @@
 ---
 layout: landing
 title: Maar World
+show_title: false
+
 excerpt: >
     Records from the Cygnus Constellation
 permalink: /index.html
 full_width: false
+show_excerpt: false
+
 public: true
 
 header:
