@@ -685,7 +685,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
     }
 
     // Validate and filter player IDs
-    const validPlayerIds = playerIds.filter(id => isValidObjectId(id));
+    const validPlayerIds = playerIds.filter((id) => isValidObjectId(id));
     if (validPlayerIds.length === 0) {
         playersListElement.innerHTML = '<li>No valid interplanetary player IDs found.</li>';
         console.warn('No valid interplanetary player IDs to fetch.');
@@ -696,7 +696,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
     try {
         const data = await fetchData(batchUrl);
-
+        console.log("PLAYERS DATA", data);
         if (data.success && Array.isArray(data.interplanetaryPlayers)) {
             console.log(`Fetched ${data.interplanetaryPlayers.length} interplanetary players.`);
 
@@ -716,8 +716,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                     description = 'No description available.',
                     ddd,
                     isPublic = false,
-                    objURL,
-                    textureURL
+                    glbURL,
                 } = player;
 
                 // Truncate description to 100 characters
@@ -725,15 +724,14 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
                 // 3D artist link, falling back to 'N/A' if not available
                 const dddArtist = ddd?.dddArtist
-                    ? `<a href="/xplorer/?username=${encodeURIComponent(ddd.dddArtist)}" target="_self">@${ddd.dddArtist}</a>`
+                    ? `<a href="/xplorer/?username=${encodeURIComponent(ddd.dddArtist.username)}" target="_self">@${ddd.dddArtist.username}</a>`
                     : 'N/A';
 
-                // Construct the iframe or fallback image
+                // Construct the iframe for GLB files or fallback image
                 let modelHTML = '';
-                if (objURL && textureURL) {
-                    const encodedObjURL = encodeURIComponent(objURL);
-                    const encodedTextureURL = encodeURIComponent(textureURL);
-                    const iframeSrc = `https://preview.maar.world/?object=${encodedObjURL}&texture=${encodedTextureURL}`;
+                if (glbURL) {
+                    const encodedGlbURL = encodeURIComponent(glbURL);
+                    const iframeSrc = `https://preview.maar.world/?model=${encodedGlbURL}`;
 
                     modelHTML = `
                         <div class="iframe-3d-model-container">
@@ -755,7 +753,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
                     `;
                 }
 
-                // Construct the player card using `track-card`
+                // Construct the player card
                 const playerCardHTML = `
                     <div class="track-card" onclick="handleCardClick('${_id}', event)" style="cursor: pointer;">
                         <!-- Menu Container -->
@@ -779,7 +777,7 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
 
                         <!-- Player Details -->
                         <div class="track-list-item">
-                            ${modelHTML} <!-- 3D model or fallback image -->
+                            ${modelHTML} <!-- 3D model iframe or fallback image -->
                             <div class="track-details">
                                 <div class="track-name"><strong>Name:</strong> ${artName}</div>
                                 <div class="track-sciName"><strong>Scientific Name:</strong> ${sciName}</div>
@@ -811,7 +809,6 @@ async function displayInterplanetaryPlayersBatch(playerIds) {
         showToast('An error occurred while loading your interplanetary players.', 'error');
     }
 }
-
 /**
  * Function to display playlists on the page using batch fetching with caching.
  * Consolidates action buttons into a single "More Options" button with a dropdown menu.

@@ -463,25 +463,31 @@ function fetchPlayersData(userId) {
 function populatePlayerDropdown(players) {
     const selectElement = document.getElementById('playerId');
     selectElement.innerHTML = '<option value="">Please select an Interplanetary player</option>';
+    
     if (!players || players.length === 0) {
         selectElement.innerHTML += '<option value="" disabled>No players available</option>';
         return;
     }
+
     // Create optgroups for Owned and Public
     const ownedGroup = document.createElement('optgroup');
     ownedGroup.label = 'Owned Players';
     const publicGroup = document.createElement('optgroup');
     publicGroup.label = 'Public Players';
-    players.forEach(player => {
+
+    players.forEach(({ player, canEdit }) => {
         const option = document.createElement('option');
-        option.value = player._id; // Ensure _id exists
-        option.textContent = `💡 ${player.artName} 🔭 ${player.sciName} (${player.isPublic ? 'Public' : 'Owned'})`;
-        if (player.isPublic) {
-            publicGroup.appendChild(option);
-        } else {
+        option.value = player._id; // Use player._id as the value
+        option.textContent = `💡 ${player.artName} 🔭 ${player.sciName} (${canEdit ? 'Owned' : 'Public'})`;
+        
+        // Categorize based on ownership
+        if (canEdit) {
             ownedGroup.appendChild(option);
+        } else {
+            publicGroup.appendChild(option);
         }
     });
+
     // Append optgroups to the select element
     if (ownedGroup.children.length > 0) {
         selectElement.appendChild(ownedGroup);
@@ -606,39 +612,104 @@ function updatePlayerDetails() {
     const selectedPlayerId = document.getElementById('playerId').value;
     console.log('Selected Player ID:', selectedPlayerId);
     console.log('Players Data:', playersData);
-    
-    const player = playersData.find(p => p._id === selectedPlayerId);
-    
-    const playerListElement = document.getElementById('interplanetaryPlayerView');
-    playerListElement.innerHTML = ''; // Clear previous details
-    
-    if (player) {
-        const imageUrl = player.ddd && player.ddd.textureURL
-            ? `https://media.maar.world${player.ddd.textureURL}`
-            : 'https://media.maar.world/uploads/default/default-player.jpg';
-    
-        const playerElement = document.createElement('div');
-        playerElement.classList.add('interplanetaryPlayer-list-item');
-        playerElement.innerHTML = `
-            <div class="player-profile-pic">
-                        <div class="decagon-frame">
 
-                <img src="${imageUrl}" alt="${player.artName}" />
-            </div>
-            </div>
-            <div class="player-details">
-            
-                <div class="player-name"><strong>Name:</strong> ${player.artName}</div>
-                <div class="player-owner"><strong>3D Artist:</strong> ${player.ddd.dddArtist}</div>
-                <div class="player-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Exclusive'}</div>
-                <!-- Add more player details as needed -->
-            </div>
-        `;
-    
-        playerListElement.appendChild(playerElement);
-    } else {
-        playerListElement.innerHTML = '<p>Please select an Interplanetary Player to view its details.</p>';
+    const interplanetaryPlayerView = document.getElementById('interplanetaryPlayerView');
+    const modelPreviewFormIframe = document.getElementById('modelPreviewFormIframe');
+
+    // Clear the interplanetaryPlayerView content
+    interplanetaryPlayerView.innerHTML = ''; 
+
+    if (!selectedPlayerId) {
+        // No player selected
+        interplanetaryPlayerView.innerHTML = '<p>Please select an Interplanetary Player to view its details.</p>';
+        modelPreviewFormIframe.src = '';
+        modelPreviewFormIframe.style.display = 'none';
+        return;
     }
+
+    // Find the selected player in the data
+    const selectedPlayer = playersData.find(p => p.player._id === selectedPlayerId);
+
+    if (!selectedPlayer) {
+        console.error('Selected player not found in playersData.');
+        showToast('Selected player details could not be loaded.', 'error');
+        interplanetaryPlayerView.innerHTML = '<p>Error: Player details could not be loaded.</p>';
+        modelPreviewFormIframe.src = '';
+        modelPreviewFormIframe.style.display = 'none';
+        return;
+    }
+
+    // Destructure the selected player object
+    const { player, ownerDetails, artistDetails, canEdit } = selectedPlayer;
+
+    // Check if GLB URL exists and populate the iframe for the GLB model viewer
+    if (player.glbURL) {
+        // Define the base URL for the viewer
+        const viewerBaseUrl = 'https://preview.maar.world/?model=';
+
+        // Encode the GLB URL for use in the viewer query parameter
+        const encodedGlbUrl = encodeURIComponent(player.glbURL);
+
+        // Construct the full viewer URL
+        const viewerUrl = `${viewerBaseUrl}${encodedGlbUrl}`;
+        console.log('Viewer URL:', viewerUrl);
+
+        // Update the iframe source and make it visible
+       // modelPreviewFormIframe.src = viewerUrl;
+       // modelPreviewFormIframe.style.display = 'block';
+    } else {
+        // Hide the iframe if no GLB model is available
+        console.warn('No GLB URL available for the selected player.');
+        modelPreviewFormIframe.src = '';
+        modelPreviewFormIframe.style.display = 'none';
+    }
+
+// Dynamically populate the edit mode view with the player's details
+const playerDetailsHtml = `
+    <div class="player-details">
+        <!-- Iframe for GLB Model Viewer -->
+        <div id="modelPreviewFormContainer" class="iframe-3d-model-container">
+            <iframe 
+                id="modelPreviewFormIframe"
+                class="iframe-3d-model" 
+                width="100%" 
+                height="400px" 
+                style="background: transparent; border: none; display: ${player.glbURL ? 'block' : 'none'};" 
+                src="${player.glbURL ? `https://preview.maar.world/?model=${encodeURIComponent(player.glbURL)}` : ''}">
+            </iframe>
+        </div>
+
+        <!-- Player Details -->
+        <div class="player-name"><strong>Name:</strong> ${player.artName || 'N/A'}</div>
+        <div class="player-owner"><strong>Owner:</strong> ${ownerDetails.displayName || 'Unknown'}</div>
+        <div class="player-artist"><strong>3D Artist:</strong> ${artistDetails.displayName || 'Unknown'}</div>
+        <div class="player-availability"><strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Exclusive'}</div>
+    </div>
+`;
+
+interplanetaryPlayerView.innerHTML = playerDetailsHtml;
+
+    // Populate edit mode fields with the player's data
+    document.getElementById('trackName').value = player.artName || '';
+    document.getElementById('description').value = player.description || '';
+    document.getElementById('releaseDate').value = player.releaseDate || '';
+    document.getElementById('privacy').value = player.isPublic ? 'public' : 'private';
+    document.getElementById('licence').value = player.licence || '';
+
+    // Update artists
+    const artistsContainer = document.getElementById('artistsContainer');
+    artistsContainer.innerHTML = ''; // Clear previous artists
+    if (artistDetails && artistDetails.username) {
+        const artistEntry = `
+            <div class="artistEntry">
+                <input type="text" class="user-search-input" name="artistUsernames[]" value="${artistDetails.username}" required>
+                <input type="hidden" class="artistUserId" name="artistUserIds[]" value="${artistDetails.userId}">
+            </div>`;
+        artistsContainer.innerHTML += artistEntry;
+    }
+
+    // Update sound engine selection
+    document.getElementById('soundEngineId').value = player.soundEngineId || '';
 }
 
 /**
@@ -678,7 +749,7 @@ function clearFormFields() {
     `;
     // Reattach event listener for addArtistButton
     document.getElementById('addArtistButton').addEventListener('click', addArtistField);
-        // **Initialize search on the new input field**
+    // Initialize search on the new input field
     if (typeof initializeSearchUsers === 'function') {
         initializeSearchUsers();
         console.log('Initialized search on the initial input field after clearing form.');
@@ -916,14 +987,14 @@ function populateEditMode(trackData) {
         trackData.artists.forEach((artist, index) => {
             const artistEntry = document.createElement('div');
             artistEntry.className = 'artistEntry';
-            artistEntry.innerHTML = `
-                <div class="input-wrapper">
-                    <input type="text" class="user-search-input" name="artistUsernames[]" placeholder="Type a username..." autocomplete="off" required value="${artist.username}">
-                    <input type="hidden" class="artistUserId" name="artistUserIds[]" value="${artist.userId}">
-                    <div class="dropdown"></div>
-                </div>
-                ${index > 0 ? '<button type="button" class="removeArtistButton btn button--outline-secondary button--small">Remove</button>' : ''}
-            `;
+artistEntry.innerHTML = `
+    <div class="input-wrapper">
+        <input type="text" class="user-search-input" name="artistUsernames[]" placeholder="Type a username..." autocomplete="off" required value="${artist.username}">
+        <input type="hidden" class="artistUserId" name="artistUserIds[]" value="${artist.userId}">
+        <div class="dropdown"></div>
+    </div>
+    ${index > 0 ? '<button type="button" class="removeArtistButton btn button--outline-secondary button--small">Remove</button>' : ''}
+`;
             artistsContainer.appendChild(artistEntry);
         });
 
@@ -1091,7 +1162,7 @@ function handleFormSubmit(event) {
     // Collect form data
     const audioFile = document.getElementById('uploadAudio').files[0];
     const isUploadingNewAudio = !!audioFile;
-    
+
     const trackDataToSend = {
         ownerId: document.getElementById('ownerId').value,
         playerId: document.getElementById('playerId').value,
@@ -1110,7 +1181,8 @@ function handleFormSubmit(event) {
         enableDirectDownloads: document.getElementById('enableDirectDownloads').checked,
         confirmRights: document.getElementById('confirmRights').checked,
     };
-    
+            console.log('Collected Artist IDs:', trackDataToSend.artists);
+
     // Conditionally add audioFileName and audioFileType if a new audio file is being uploaded
     if (isUploadingNewAudio) {
         trackDataToSend.audioFileName = audioFile.name;
@@ -1457,7 +1529,6 @@ function addArtistField() {
         console.error('initializeSearchUsers function is not defined.');
     }
 }
-
 /**
  * Handle Removing an Artist Field
  */

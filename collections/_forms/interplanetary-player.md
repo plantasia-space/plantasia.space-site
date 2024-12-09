@@ -62,13 +62,11 @@ public: false
     <ul id="playerOwnerList" class="user-list"></ul>
 </div>        
     <!-- Edit/Create Mode -->
-
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- 3D Model Upload -->
         <p>Please fill out the form with details about the exoplanet and your artistic representation.</p>
 
-        <!-- 3D Model Preview -->
-        <div id="modelPreviewFormContainer">
+        <div id="modelPreviewFormContainer" class="iframe-3d-model-container">
             <iframe 
                 id="modelPreviewFormIframe"
                 class="iframe-3d-model" 
@@ -77,7 +75,6 @@ public: false
                 style="background: transparent; border: none; display: none;">
             </iframe>
         </div>
-
         <!-- GLB File Upload -->
         <label for="uploadGlb">
             Please upload the 3D model (GLB format): <span class="required" id="uploadGlbRequired">*</span>
@@ -394,24 +391,36 @@ function setupFormListeners() {
 
     // GLB Upload Preview
     const uploadGlbInput = document.getElementById('uploadGlb');
+    const modelPreviewIframe = document.getElementById('modelPreviewFormIframe');
+
+    // GLB Upload Preview
     if (uploadGlbInput) {
         uploadGlbInput.addEventListener('change', function(event) {
-            const modelPreviewIframe = document.getElementById('modelPreviewFormIframe');
             const file = event.target.files[0];
 
-            if (file && modelPreviewIframe) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    modelPreviewIframe.src = e.target.result;
+            if (file) {
+                if (file.type === 'model/gltf-binary' || file.name.endsWith('.glb')) {
+                    const tempUrl = URL.createObjectURL(file);
+
+                    modelPreviewIframe.src = `https://preview.maar.world/?model=${encodeURIComponent(tempUrl)}`;
                     modelPreviewIframe.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            } else if (modelPreviewIframe) {
+
+                    // Revoke URL to free memory after iframe loads
+                    modelPreviewIframe.onload = () => {
+                        URL.revokeObjectURL(tempUrl);
+                    };
+                } else {
+                    alert('Please upload a valid GLB file.');
+                    uploadGlbInput.value = ''; // Clear input
+                    modelPreviewIframe.style.display = 'none';
+                }
+            } else {
                 modelPreviewIframe.src = '';
                 modelPreviewIframe.style.display = 'none';
             }
         });
     }
+
 
     // Cancel Button Event Listener
     if (cancelButton) {
@@ -829,8 +838,10 @@ function handleSuccessResponse(response) {
 
 // Function to Load Interplanetary Player Details from the Server
 async function loadInterplanetaryPlayersDetails(playerId) {
+
+    const userId = localStorage.getItem('userId'); // Retrieve the logged-in user's ID
     try {
-        const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/${playerId}`);
+        const response = await fetch(`${API_BASE_URL}/interplanetaryplayers/${playerId}?userId=${userId}`);
         if (!response.ok) {
             throw new Error(`Failed to fetch player details: ${response.statusText}`);
         }
@@ -841,9 +852,9 @@ async function loadInterplanetaryPlayersDetails(playerId) {
             showToast('Failed to load player details. Please try again.', 'error');
             return;
         }
+     console.log('Player data received:', JSON.stringify(data, null, 2));
 
-        playerData = data.player;
-        isOwner = playerData.ownerId === userId; // Check ownership directly
+        isOwner = data.canEdit; // Check ownership directly
 
         // Display the edit button if the current user is the owner
         const editButton = document.getElementById('editButton');
@@ -851,20 +862,24 @@ async function loadInterplanetaryPlayersDetails(playerId) {
             editButton.style.display = isOwner ? 'block' : 'none';
         }
 
-        populateEditMode(playerData);
-        populateViewMode(playerData);
+        populateEditMode(data);
+        populateViewMode(data);
 
     } catch (error) {
         console.error('Error loading interplanetary player details:', error);
         showToast('Error loading player details. Please try again.', 'error');
     }
 }
-function populateEditMode(playerData) {
+
+
+function populateEditMode(data) {
+
+    playerData = data.player;
+
     const sciNameDisplay = document.getElementById('sciNameDisplay');
     const sciNameSelect = document.getElementById('sciName');
     const exoplanetDetails = document.getElementById('exoplanetDetails');
     
-    console.log('Player data received:', JSON.stringify(playerData, null, 2));
 
     if (currentMode === 'edit') {
         sciNameDisplay.textContent = playerData.sciName || 'Unknown Exoplanet';
@@ -925,7 +940,10 @@ function populateEditMode(playerData) {
 }
 
 // Populate View Mode with Player Data
-function populateViewMode(playerData) {
+function populateViewMode(data) {
+
+    playerData = data.player;
+
     // Helper function to safely extract numberDecimal values
     function getNumberDecimalValue(field) {
         return field?.$numberDecimal || field || 'N/A';
@@ -1302,4 +1320,6 @@ function setupArtNameValidation() {
         await checkArtNameAvailability(artName, excludeId);
     });
 }
+
+
 </script>
