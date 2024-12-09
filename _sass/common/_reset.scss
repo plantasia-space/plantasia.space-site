@@ -83,7 +83,7 @@ strong {
 h1 {
   font-size: map-get($base, font-size-h1);
   color: $text-color-d;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbit', sans-serif;
   @include media-breakpoint-down(md) {
     font-size: map-get($base, font-size-h1-sm);
   }
@@ -92,7 +92,7 @@ h1 {
 h2 {
   font-size: map-get($base, font-size-h2);
   color: $text-color-d;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbit', sans-serif;
   @include media-breakpoint-down(md) {
     font-size: map-get($base, font-size-h2-sm);
   }
@@ -101,7 +101,7 @@ h2 {
 h3 {
   font-size: map-get($base, font-size-h3);
   color: $text-color-d;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbit', sans-serif;
   @include media-breakpoint-down(md) {
     font-size: map-get($base, font-size-h3-sm);
   }
@@ -110,7 +110,7 @@ h3 {
 h4 {
   font-size: map-get($base, font-size-h4);
   color: $text-color;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbit', sans-serif;
   @include media-breakpoint-down(md) {
     font-size: map-get($base, font-size-h4-sm);
   }
@@ -128,7 +128,7 @@ h5 {
 h6 {
   font-size: map-get($base, font-size-h6);
   color: $text-color-l;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbit', sans-serif;
   @include media-breakpoint-down(md) {
     font-size: map-get($base, font-size-h6-sm);
   }
