@@ -2,13 +2,13 @@ header:
 
   - titles:
       # @start locale config
-      en      : &EN     <span class="material-symbols-outlined">category</span> Collect
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
-      es-LA   : *ES
+      # en      : &EN     <span class="material-symbols-outlined">category</span> Collect
+      # en-GB   : *EN
+      # en-US   : *EN
+      # en-CA   : *EN
+      # en-AU   : *EN
+      # es-ES   : &ES   <span class="material-symbols-outlined">category</span> Coleccionar
+      #es-LA   : *ES
       # @end locale config
-    url: https://collect.maar.world
+    #url: https://collect.maar.world
 
