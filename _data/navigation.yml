@@ -8,7 +8,7 @@ header:
       en-CA   : *EN
       en-AU   : *EN
       # @end locale config
-    url: https://collect.maar.world/docs/int-players.html
+    url: /interplanetary-players
 
   - titles:
       # @start locale config
