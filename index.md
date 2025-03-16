@@ -11,7 +11,7 @@ public: true
 
 header:
   theme: dark
-  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgba(71, 255, 4, 0.56))' # Removed the extra comma
+  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgb(123, 123, 123))' # Removed the extra comma
 
 ---
 

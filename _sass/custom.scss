@@ -445,7 +445,7 @@ input[type="number"] {
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-  border: 2px solid #ffffff;
+  border: 1px solid #ffffff;
   background-color: #000;
   color: #fff;
   position: relative;
@@ -1165,7 +1165,7 @@ input[type="number"] {
   align-items: center;             /* Center content horizontally */
   padding: 20px;
   padding-bottom: 100px;            /* Extra bottom padding to accommodate the overlapping image */
-  border: 2px solid #ffffff;
+  border: 1px solid #ffffff;
   border-radius: 12px;
   background: url('/img/lab/genesis-lab.jpg') no-repeat center center; /* Background image */
   background-size: cover;          /* Ensure the background covers the card */
@@ -1211,7 +1211,7 @@ input[type="number"] {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #ffffff;
+  border: 2px solid #ffffff;
   background-color: #ffffff; /* Optional: Adds a background if image fails to load */
 }
 
@@ -1442,9 +1442,9 @@ textarea#description {
 .form-box {
   background: rgba(0, 0, 0, 0.95);
   padding: 30px 40px;
-  border: 2px solid #ffffff; /* Subtle accent color */
+  border: 1px solid #ffffff; /* Subtle accent color */
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(236, 236, 236, 0.824);
+  box-shadow: 0 1px 1px rgba(236, 236, 236, 0.824);
   position: relative;
  // z-index: 2; /* Above the CRT overlay */
   width: 100%;
@@ -1810,7 +1810,7 @@ textarea#description {
   position: relative;
   margin: 15px 0;
   padding: 10px;
-  border: 2px solid #ffffff;
+  border: 1px solid #ffffff;
   border-radius: 8px;
   background: #000000;
   overflow: visible; /* Ensure dropdown is not clipped */
@@ -1822,7 +1822,7 @@ textarea#description {
   justify-content: flex-start; /* Align to the left */
   position: relative;
   background: transparent;
-  border-bottom: 2px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
   z-index: 100; /* Ensure it stays above other content */
   padding: 5px;
 }
