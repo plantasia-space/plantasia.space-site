@@ -64,14 +64,14 @@ article_header:
         const { trackId } = items[i];
         const container = document.createElement('div');
         container.className = 'container';
-        container.setAttribute('data-src', `http://app.maar.world:5173/?trackId=${trackId}&s=0`);
+        container.setAttribute('data-src', `http://player.maar.world:5173/?trackId=${trackId}&s=0`);
         container.style.marginBottom = '333px'; // Espaciado entre iframes
 
         const info = `
           <br> 
           𝐵𝓇𝓊𝓃𝒶 𝒢𝓊𝒶𝓇𝓃𝒾𝑒𝓇𝒾 - trackId=${trackId}
           <br>
-          <a href="http://app.maar.world:5173/?trackId=${trackId}&s=0" rel="Maar World Player" target="_blank">Play full screen</a>
+          <a href="http://player.maar.world:5173/?trackId=${trackId}&s=0" rel="Maar World Player" target="_blank">Play full screen</a>
           <br>
           \`#RegenerativeMusic\`{:.success}
           <hr>
