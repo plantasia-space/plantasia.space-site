@@ -11,13 +11,8 @@ public: true
 
 header:
   theme: dark
-  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgba(255, 0, 0, .5))' # Removed the extra comma
+  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgba(71, 255, 4, 0.56))' # Removed the extra comma
 
-article_header:
-  height: 20vh
-  theme: ocean
-  background_color: '#203028' 
-  video: "/img/landing/header-1.mp4" # Corrected from `background_image`
 ---
 
 <!-- Hero Section with Video -->
@@ -27,6 +22,7 @@ article_header:
     Your browser does not support the video tag.
   </video>
 </section>
+
 
 # Releases
 
