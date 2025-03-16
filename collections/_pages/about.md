@@ -24,7 +24,7 @@ key: page-about
   </div>
   <br>
 
-  <p>Maar World is a record label for a new era of music listening and making. Currently developing new formats for music distribution of independent artists, merging physical and digital releases, music making and listening. Maar World strikes a balance between stakeholders, promoting sustainability and equitable revenue distribution. The project aims to safeguard wildlife, ensure fair recognition for artists, and facilitate a natural and intuitive approach to sound listening creation in order to reactivate auditory consciousness.</p>
+  <p>Maar World Records is a home for Regenerative Music, developing new formats by merging physical and digital releases, music creation, and listening. The project aims to establish the pillars of a conscious music ecosystem that safeguards life and ensures fair and harmonious recognition for artists, developers, and investors. We are currently developing the Interplanetary Players to promote an intuitive and playful approach to sound creation and listening; these music tools focus on encouraging movement, reducing anxiety, improving mood and memory, and creating the context for self-healing.</p>
 
 
 <h4> Founder </h4>

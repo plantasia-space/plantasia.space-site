@@ -1,0 +1,10 @@
+<!DOCTYPE html> {%- include snippets/get-lang.html -%} <html lang="{{ __return }}"> <head> {%- include analytics.html -%} {%- include head.html -%} <script> {%- include scripts/utils/utils.js -%}
+      {%- include scripts/lib/throttle.js -%}
+      {%- include scripts/lib/lazyload.js -%}
+      {%- include scripts/lib/lscache.min.js -%} </script> {%- include scripts/variables.html -%} {%- include scripts/cookie-consent.html -%} <script> // Inject the `public` variable from the front matter
+      const isPublicPage = {{ page.public | json }}; </script> </head> <body> <div class="root" data-is-touch="false"> {{ content }} </div> <script> {%- include scripts/auth.js -%}
+      {%- include scripts/common.js -%}
+      {%- include scripts/cache.js -%}
+
+      // Removed redundant authentication scripts to prevent duplication
+      // {%- include scripts/searchUsers.js -%} </script> 

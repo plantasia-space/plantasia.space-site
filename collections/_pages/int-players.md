@@ -6,7 +6,6 @@ excerpt: >
       Imagine turning your browser into a turntable from outer space. 
 permalink: /interplanetary-players.html
 full_width: false
-show_date: false
 public: true
 header:
   theme: dark

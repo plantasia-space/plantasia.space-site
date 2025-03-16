@@ -1,22 +1,21 @@
 header:
 
+  # Placeholder for login/logout button
   - titles:
-      # @start locale config
-      en      : &EN       <span class="material-symbols-outlined">digital_wellbeing</span> Interplanetary Players
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      # @end locale config
-    url: /interplanetary-players
 
-  - titles:
-      # @start locale config
-      en      : &EN       <span class="material-symbols-outlined"> science </span> Lab
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
+    en      : &EN      <span class="material-symbols-outlined">brightness_6</span> Voyage
+    es-ES   : &ES   <span class="material-symbols-outlined">brightness_6</span> Voyage
+    es-LA   : *ES
+    # @end locale config
+    url: /voyage
+    en      : &EN      <span id="auth-link"></span>
+    en-GB   : *EN
+    en-US   : *EN
+    en-CA   : *EN
+    en-AU   : *EN
+    es-ES   : &ES      <span id="auth-link"></span>
+    es-LA   : *ES
+    url: /login 
 
       # @end locale config
-    url: /lab
+   

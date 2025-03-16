@@ -52,17 +52,934 @@
 
 }
 
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 300,
+  'GRAD' 200,
+  'opsz' 40;
+  color: #33ffff;
+  font-weight: bold;
+  vertical-align: bottom;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+}
+
+#progress {
+  height: 20px;
+  background-color: #33ffff;
+  width: 0%;
+  border-radius: 5px;
+}
+
+#messageDisplay {
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+$profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
+
+#profileImagePreviewContainer,
+#profileImagePreviewFormContainer {
+  width: $profile-w;
+  height: $profile-w;
+  margin: 0 auto 20px auto; /* Center the container and add margin below */
+  border: 1px solid #ff33cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Makes the container circular */
+  overflow: hidden; /* Ensures the image doesn't overflow out of the circle */
+}
+#profileImagePreview,
+#profileImagePreviewForm {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container area without distortion */
+  /* Removed display: none; */
+}
+
+/* end custom scss snippet */
+$profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
+
+/* Hexagon container with white border */
+#soundEngineImagePreviewContainer {
+  width: 256px; /* Set the size of the hexagon */
+  height: 256px;
+  margin: 0 auto 20px auto; /* Center the container and add margin below */
+  position: relative;
+  clip-path: polygon(
+    25% 5%,
+    75% 5%,
+    100% 50%,
+    75% 95%,
+    25% 95%,
+    0% 50%
+  ); /* Hexagon shape */
+  overflow: hidden; /* Ensures the image fits within the hexagon */
+}
+
+#soundEngineImagePreviewContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inherit; /* Inherits the hexagonal shape */
+  border: 4px solid #ffffff; /* White border around the hexagon */
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+#soundEngineImagePreview,
+#soundEngineImagePreviewForm {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container area without distortion */
+  display: block;
+  position: relative;
+  z-index: 2; /* Places the image above the pseudo-element */
+}
+/* Container Styles */
+#textureImagePreviewContainer {
+  max-width: 100%; /* Container will not exceed 100% of its parent */
+
+  width: 100%; /* Container takes up 100% width of its parent */
+
+  margin-top: 10px;
+}
+
+/* Image Styles */
+#viewTextureImage,
+#texturePreviewForm {
+  max-width: 400px; /* Image will not exceed 400px in width */
+  width: 100%; /* Image takes up 100% of the container's width */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center the image horizontally */
+  border: 1px solid #33ffff;
+
+}
+
+/* Base container style for cover images */
+.cover-image-container {
+  width: 256px;
+  height: 256px;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Centers the container itself */
+  overflow: hidden; /* Ensures the image stays within container bounds */
+  border-radius: 0; /* Default - no rounded corners */
+}
+
+/* Base image style for all previews */
+.cover-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Specific style for playlist cover image preview */
+.cover-image-container.playlist {
+  border-radius: 12px; /* Rounded corners for playlist previews */
+}
+
+
+$button-size: 4rem; // Define a fixed button size (you can adjust as needed)
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust this if you need spacing below the buttons */
+}
+
+.back-button-container,
+.edit-button-container {
+  display: inline-block;
+}
+
+#backButton, #editButton {
+  width: $button-size; /* Adjust the size as needed */
+  height: $button-size; /* Ensure both buttons are the same size */
+  padding: 0; /* Ensure padding doesn't affect the size */
+  border-radius: 50%; /* Ensures the button remains circular */
+}
+
+#backButton .material-symbols-outlined,
+#editButton .material-symbols-outlined {
+  font-size: $button-size*.5; /* Adjust to ensure the icons are the same size */
+}
+
+// Existing SCSS (for reference)
+/* ... your existing SCSS ... */
+
+/* Additional SCSS for Playlist Form */
+.playlist-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.playlist-item h4 {
+  margin-top: 0;
+}
+
+.playlist-item img {
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.playlist-item .button-container {
+  display: flex;
+  gap: 10px;
+}
+
+.track-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.track-item:last-child {
+  border-bottom: none;
+}
+
+/* Toast Container Positioned at the Center */
+#toastContainer {
+  position: fixed;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Toast Styles */
+.toast {
+  min-width: 250px;
+  margin-bottom: 10px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translate(-50%, -100%);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif; /* Ensure readability */
+}
+
+/* Show Toast */
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Success Toast */
+.toast.success {
+  background-color: #4caf50; /* Green */
+}
+
+/* Error Toast */
+.toast.error {
+  background-color: #f44336; /* Red */
+}
+
+/* Close Button */
+.toast .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+///////////////////////////////////////////////////////////////////////////////////
+/* Updated Image Preview Container for Fixed Size */
+#playlistImagePreview,
+#playlistImagePreviewForm {
+    width: 480px;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 12px; /* Rounded borders for square image */
+}
+
+input[type="number"] {
+  color: black; /* Set the text color to black */
+}
+
+.user-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-list-item {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  justify-content: safe center; 
+  padding: 20px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+}
+
+.user-profile-pic img {
+  width: 60px; /* Set a fixed size for the image */
+  height: 60px;
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover;
+  margin-right: 15px; /* Add space between the image and the text */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Added shadow for profile */
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the text vertically */
+}
+
+.user-display-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.user-username {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.user-username a {
+  text-decoration: none;
+  color: #ccc;
+}
+
+.user-username a:hover {
+  text-decoration: underline;
+}
+
+
+/* Start of Adjusted CSS */
+
+/* Ensure consistent box-sizing across all elements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ------------------ LISTS ----------------------- */
+
+.soundEngine-list,
+.interplanetaryPlayer-list,
+.menu-list,
+.track-list,
+.playlist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.track-list li,
+.soundEngine-list li,
+.interplanetaryPlayer-list li,
+.playlist-list li {
+    list-style: none;
+}
+
+.track-list li::marker,
+.soundEngine-list li::marker,
+.interplanetaryPlayer-list li::marker,
+.playlist-list li::marker {
+    display: none;
+}
+
+
+
+/* Common Styles for List Items */
+.soundEngine-list-item,
+.interplanetaryPlayer-list-item,
+.track-list-item,
+.playlist-list-item {
+  z-index: 2; /* Higher than the iframe to appear on top */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background-color: #000;
+  color: #fff;
+  position: relative;
+  overflow: visible;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  flex-direction: column; /* Stack items vertically */
+  text-align: center; /* Center text */
+}
+
+/* Common Styles for List Items */
+
+.menu-list-item{
+  z-index: 2; /* Higher than the iframe to appear on top */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #ffffff;
+  background-color: #000;
+  color: #fff;
+  position: relative;
+  overflow: visible;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  flex-direction: column; /* Stack items vertically */
+  text-align: center; /* Center text */
+}
+
+/* Hover Effect for List Items */
+.soundEngine-list-item:hover,
+.interplanetaryPlayer-list-item:hover,
+.menu-list-item:hover,
+.track-list-item:hover,
+.playlist-list-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Retain circular styling for menu item images */
+.menu-list-item img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%; /* Keep menu images circular */
+  border: 1px solid #ffffff;
+  object-fit: cover;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* Updated Playlists Image Styling */
+.playlist-list-item img {
+  width: 140px;
+  height: 140px;
+  border-radius: 12px; /* Rounded borders for Playlists */
+  border: 1px solid #ffffff;
+  object-fit: cover;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* Updated Tracks Image Styling */
+.track-list-item img {
+  width: 140px;
+  height: 140px;
+  border: 1px solid #ffffff;
+  border-radius: 0; /* Square frame for Tracks */
+  object-fit: cover;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* 1. Decagonal Frame for interplanetaryPlayer-list-item Images */
+.interplanetaryPlayer-list-item .decagon-frame {
+  width: 140px; /* Adjust as needed */
+  height: 140px; /* Adjust as needed */
+  position: relative;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  flex-shrink: 0; /* Prevent frame from shrinking */
+  overflow: hidden; /* Hide overflow to maintain decagon shape */
+  clip-path: polygon(
+      50% 0%,
+      90% 10%,
+      100% 50%,
+      90% 90%,
+      50% 100%,
+      10% 90%,
+      0% 50%,
+      10% 10%
+  ); /* Define decagon shape */
+  border: 2px solid #ffffff; /* Decagon border */
+  box-sizing: border-box;
+  transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* 2. Image Styling within Decagonal Frame */
+.interplanetaryPlayer-list-item .decagon-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure image covers the frame */
+  display: block; /* Remove any unwanted gaps */
+  /* No border-radius needed as clip-path handles the shape */
+}
+
+/* 3. Optional: Hover Effect for Decagonal Frame */
+.interplanetaryPlayer-list-item .decagon-frame:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+
+/* Styles for the hexagonal frame wrapper */
+.soundEngine-list-item .hexagon-frame {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  flex-shrink: 0; /* Prevent frame from shrinking */
+  /* Optional: Add transition for hover effect */
+  transition: transform 0.3s ease;
+}
+
+/* Hexagonal shape using clip-path */
+.soundEngine-list-item .hexagon-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(
+    25% 5%,
+    75% 5%,
+    100% 50%,
+    75% 95%,
+    25% 95%,
+    0% 50%
+  );
+  border: 2px solid #ffffff; /* Hexagon border */
+  box-sizing: border-box;
+  pointer-events: none; /* Ensures the border doesn't interfere with image interactions */
+}
+
+  /* Image inside the hexagon frame */
+  .soundEngine-list-item .hexagon-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    clip-path: polygon(
+      25% 5%,
+      75% 5%,
+      100% 50%,
+      75% 95%,
+      25% 95%,
+      0% 50%
+    ); /* Ensures image conforms to hexagon */
+  }
+
+  /* Optional: Hover effect for hexagon frame */
+  .soundEngine-list-item .hexagon-frame:hover {
+    transform: scale(1.05);
+  }
+
+  /* Image Containers */
+  .soundEngine-profile-pic,
+  .interplanetaryPlayer-profile-pic,
+  .track-profile-pic,
+  .playlist-profile-pic {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+/* Details Section */
+.soundEngine-details,
+.interplanetaryPlayer-details,
+.menu-item-details,
+.track-details,
+.playlist-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  min-width: 0;
+  word-wrap: break-word;
+}
+
+/* Name Styling */
+.soundEngine-name,
+.interplanetaryPlayer-name,
+.menu-item-title,
+.track-name,
+.playlist-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Description and Availability Styling */
+.soundEngine-availability,
+.soundEngine-params,
+.interplanetaryPlayer-availability,
+.interplanetaryPlayer-sciName,
+.interplanetaryPlayer-description,
+.menu-item-description,
+.track-privacy,
+.track-release-date,
+.track-description,
+.playlist-privacy,
+.playlist-created-on,
+.playlist-description {
+  font-size: 1em;
+  color: #ccc;
+  margin-bottom: 3px;
+}
+
+/* Actions Section */
+.soundEngine-actions,
+.interplanetaryPlayer-actions,
+.menu-actions,
+.track-actions,
+.playlist-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* ------------------ MENU LIST STYLES ----------------------- */
+
+.menu-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-list-item {
+  /* Styles are already defined in common list item styles */
+}
+
+.menu-link {
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  padding: 0;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.menu-link:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ------------------ RESPONSIVE DESIGN ----------------------- */
+
+/* Tablets and Below */
+@media (max-width: 1024px) {
+  .soundEngine-list-item,
+  .interplanetaryPlayer-list-item,
+  .menu-list-item,
+  .track-list-item,
+  .playlist-list-item {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .soundEngine-list-item img,
+  .interplanetaryPlayer-list-item img,
+  .menu-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
+    width: 100px;
+    height: 100px;    
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align the content */
+    text-align: center; /* Center text */
+  }
+
+  .soundEngine-name,
+  .interplanetaryPlayer-name,
+  .menu-item-title,
+  .track-name,
+  .playlist-name {
+    font-size: 1.1em;
+  }
+
+  .soundEngine-availability,
+  .soundEngine-params,
+  .interplanetaryPlayer-availability,
+  .interplanetaryPlayer-sciName,
+  .interplanetaryPlayer-description,
+  .menu-item-description,
+  .track-privacy,
+  .track-release-date,
+  .track-description,
+  .playlist-privacy,
+  .playlist-created-on,
+  .playlist-description {
+    font-size: 0.95em;
+  }
+
+  .more-options-button {
+    font-size: 1.3em;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+  .soundEngine-list-item,
+  .interplanetaryPlayer-list-item,
+  .menu-list-item,
+  .track-list-item,
+  .playlist-list-item {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align the content */
+    text-align: center; /* Center text */
+    padding: 10px;
+  }
+
+  .menu-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
+    margin-right: 0; /* Remove margin on right */
+    margin-bottom: 10px; /* Space below the image */
+    width: 60px; /* Adjust width if needed */
+    height: 60px; /* Adjust height if needed */
+  }
+
+  .soundEngine-list-item img,
+  .interplanetaryPlayer-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
+    margin-right: 0; /* Ensure no right margin */
+    margin-bottom: 10px; /* Space below the image */
+    width: 60px; /* Uniform image width */
+    height: 60px; /* Uniform image height */
+  }
+
+  .soundEngine-details,
+  .interplanetaryPlayer-details,
+  .menu-item-details,
+  .track-details,
+  .playlist-details {
+    align-items: center; /* Center details */
+    text-align: center; /* Center text */
+  }
+  
+  .soundEngine-actions,
+  .interplanetaryPlayer-actions,
+  .menu-actions,
+  .track-actions,
+  .playlist-actions {
+    margin-top: 10px;
+    gap: 5px;
+  }
+
+  .more-options-container {
+    top: 10px;
+    right: 10px;
+  }
+
+  .more-options-dropdown {
+    right: 50%;
+    transform: translateX(50%) translateY(-10px);
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .soundEngine-list-item,
+  .interplanetaryPlayer-list-item,
+  .menu-list-item,
+  .track-list-item,
+  .playlist-list-item {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .soundEngine-list-item img,
+  .interplanetaryPlayer-list-item img,
+  .menu-list-item img,
+  .track-list-item img,
+  .playlist-list-item img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+
+  .soundEngine-name,
+  .interplanetaryPlayer-name,
+  .menu-item-title,
+  .track-name,
+  .playlist-name {
+    font-size: 1em;
+  }
+
+  .soundEngine-availability,
+  .soundEngine-params,
+  .interplanetaryPlayer-availability,
+  .interplanetaryPlayer-sciName,
+  .interplanetaryPlayer-description,
+  .menu-item-description,
+  .track-privacy,
+  .track-release-date,
+  .track-description,
+  .playlist-privacy,
+  .playlist-created-on,
+  .playlist-description {
+    font-size: 0.9em;
+  }
+
+  .more-options-button {
+    font-size: 1.2em;
+  }
+
+  .more-options-dropdown {
+    min-width: 120px;
+  }
+
+  .more-options-dropdown .option-button {
+    font-size: 0.9em;
+    padding: 6px 12px;
+  }
+}
+
+/* Preventing Overflow */
+.soundEngine-details,
+.interplanetaryPlayer-details,
+.menu-item-details,
+.track-details,
+.playlist-details {
+  word-wrap: break-word;
+}
+
+/* Ensuring Images Do Not Overflow */
+.soundEngine-list-item img,
+.interplanetaryPlayer-list-item img,
+.menu-list-item img,
+.track-list-item img,
+.playlist-list-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensuring Dropdown Stays Within Viewport */
+.more-options-dropdown {
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+/* Option Button Focus State */
+.option-button:focus {
+  outline: 2px dashed #ffffff;
+  outline-offset: 4px;
+}
+
+/* More Options Button Focus State */
+.more-options-button:focus {
+  outline: 2px dashed #ffffff;
+  outline-offset: 4px;
+}
+
+/* Rest of your styles remain unchanged */
+/* ... (Include the rest of your CSS code here) */
+
+/* End of Adjusted CSS */
+/* ------------------ GENERAL ----------------------- */
+
+.share-button {
+  background-color: #3370ff00; /* Bright color for the share button */
+  border: 2px solid #ffffff; /* Same color as the background by default */
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.share-button:disabled {
+  background-color: #000; /* Black background for disabled state */
+  cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+  opacity: 0.6; /* Slightly fade the button to indicate it's disabled */
+}
+
+
+.share-button:hover {
+  background-color: #ffffff; /* Darker shade for hover */
+  color: #000000;
+}
+
+
+.follow-button {
+    font-size: 12px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.parameter-inputs {
+  margin-bottom: 20px;
+}
+.param-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.param-range input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  width: 30%;
+}
+@media (max-width: 768px) {
+  .param-range input[type="number"] {
+      width: 100%;
+  }
+}
+
+/* ------------------ FORM CONTAINER ----------------------- */
+
+
 .form-container {
   text-align: center; /* Ensures content is centered */
   max-width: 600px;
   margin: 0 auto; /* Centers the container */
   padding: 20px;
-  box-shadow: 0 8px 16px rgba(rgb(255, 255, 255), .9), 0 2px 6px rgba(rgb(51, 255, 255), .5), 0 12px 24px rgb(192, 201, 201);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.9), 0 2px 6px rgba(51, 255, 255, 0.5), 0 12px 24px rgb(192, 201, 201);
   border-radius: 8px;
 }
 
 .contact-form {
   margin-top: 20px; /* Adds some space between the text and the form */
+  text-align: center; /* Center-align the form elements */
 }
 
 .contact-form label {
@@ -71,9 +988,14 @@
   text-align: left; /* Ensures form labels are aligned to the left for readability */
 }
 
-.contact-form input[type=email],
-.contact-form input[type=text], /* Added styles for text input */
-.contact-form textarea {
+.contact-form input[type="email"],
+.contact-form input[type="text"],
+.contact-form input[type="tel"], /* Add tel input here */
+.contact-form input[type="date"], /* Added date to the existing input styles */
+.contact-form input[type="url"], /* Added url to the existing styles */
+.contact-form textarea,
+.contact-form input[type="password"],
+.contact-form select { /* Added select to the existing styles for input and textarea */
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -83,7 +1005,6 @@
   box-sizing: border-box;
   background-color: white; /* Ensure background is white for visibility */
   color: black; /* Set text color to black for visibility */
-
 }
 
 .contact-form button[type=submit] {
@@ -91,49 +1012,1008 @@
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
-  border: none;
+  border: 2px solid #ff33cc; /* Border similar to submit button */
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
 }
 
 .contact-form button[type=submit]:hover {
-  background-color: rgb(51, 255, 255);
+  background-color: #33ffff00;
+  color: rgb(255, 255, 255);
+
 }
 
-/* end custom scss snippet */
+.contact-form button[type=button]:not(.toggle-button) {
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 2px solid #ff33cc; /* Border similar to submit button */
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; /* Match the width of the submit button */
+  box-sizing: border-box; /* Ensure padding and border don't affect width */
+}
+.contact-form button[type=button]:not(.toggle-button):hover {
+  background-color: #ff33cc;
+  color: white;
+}
+/* ------------------ DROPDOWN STYLING ----------------------- */
+.input-wrapper {
+  position: relative;
+}
 
-  
-  .material-symbols-outlined {
-    font-variation-settings:
-    'FILL' 1,
-    'wght' 300,
-    'GRAD' 200,
-    'opsz' 40;
-    color: #33ffff;
-    font-weight: bold;
-    vertical-align: bottom;
+.input-wrapper .dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1000;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin-top: 5px;
+  color: #000000;
+  display: none;
+}
+
+.input-wrapper .dropdown.active {
+  display: block;
+}
+
+.user-result {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #000000;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s ease;
+}
+
+.user-result:hover,
+.user-result.selected {
+  background-color: #33ffff;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+/* Remove border for the last result */
+.user-result:last-child {
+  border-bottom: none;
+}
+
+/* ------------------ INVITE BUTTON ----------------------- */
+.invite-button {
+  background-color: #ff33cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+}
+
+.invite-button:hover {
+  background-color: #33ffff;
+  color: #000000;
+}
+
+
+/* Add this CSS to your styles */
+.required-field::after {
+  content: " *";
+  color: red;
+}
+/* Artname check  */
+
+.feedback-message {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+.feedback-error {
+  color: red;
+}
+.feedback-success {
+  color: green;
+}
+
+
+////////////////////////////////
+/// 
+/// 
+/// 
+/// *
+/// 
+
+/* Global Box-Sizing for Consistent Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Reset some default styles for consistency */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Parent Container to Center the Card */
+.parent-container {
+  width: 100%;                     /* Full width */
+  display: flex;
+  justify-content: center;         /* Center horizontally */
+  align-items: flex-start;         /* Align items to the top */
+  padding: 60px 20px 80px 20px;    /* Padding with extra bottom padding for the profile image */
+  background-color: #000000;       /* Optional: Background color for contrast */
+  position: relative;              /* To contain absolutely positioned children if needed */
+}
+
+/* Base Styles for Voyage Profile */
+.voyage-profile {
+  display: flex;
+  flex-direction: column;          /* Stack content vertically */
+  align-items: center;             /* Center content horizontally */
+  padding: 20px;
+  padding-bottom: 100px;            /* Extra bottom padding to accommodate the overlapping image */
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  background: url('/img/lab/genesis-lab.jpg') no-repeat center center; /* Background image */
+  background-size: cover;          /* Ensure the background covers the card */
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  transition: transform 0.3s ease; /* Smooth hover animation */
+  width: 100%;                     /* Full width */
+  max-width: none;                 /* Remove max-width to allow full width */
+  position: relative;              /* To position the profile image absolutely within */
+  /* overflow: hidden; */          /* Keep overflow visible for the profile image */
+}
+
+/* Overlay for Better Text Contrast */
+.voyage-profile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  border-radius: 12px;            /* Match the card's border radius */
+  z-index: 1;
+}
+
+/* Hover Effect */
+.voyage-profile:hover {
+  transform: translateY(-5px); /* Lift the card on hover */
+}
+
+/* Profile Picture Container */
+.voyage-profile-pic {
+  position: absolute;
+  bottom: -75px;                      /* Half of the image height to overlap */
+  left: 50%;                          /* Center horizontally */
+  transform: translateX(-50%);        /* Adjust to truly center */
+  z-index: 2;                         /* Ensure the image is above the overlay */
+}
+
+/* Profile Picture Styles */
+.voyage-profile-pic img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffffff;
+  background-color: #ffffff; /* Optional: Adds a background if image fails to load */
+}
+
+/* Details Section */
+.voyage-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the text horizontally */
+  justify-content: center;
+  text-align: center;  /* Center the text */
+  position: relative;
+  z-index: 2;          /* Ensure text is above the overlay */
+  width: 100%;
+}
+
+/* Display Name */
+.voyage-display-name {
+  font-family: 'Orbit', sans-serif; /* Orbit font */
+  font-size: 1.5em;                     /* Resemble h1 */
+  font-weight: 700;                     /* Bold */
+  color: #ffffff;                       /* White text */
+  background-color: rgba(0, 0, 0, 0.6);/* Semi-transparent black background */
+  padding: 8px 12px;                    /* Padding for spacing */
+  letter-spacing: 1.5px;                /* Spacing between letters */
+  text-transform: uppercase;            /* Uppercase text */
+  margin: 0.5em 0;                      /* Spacing above and below */
+  border-radius: 8px;                   /* Rounded corners */
+  display: inline-block;                /* Fit background to text */
+}
+
+/* Username */
+.voyage-username {
+  font-size: 1em;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  padding: 5px 10px;                    /* Padding for better appearance */
+  border-radius: 4px;                   /* Rounded corners */
+  margin-bottom: 8px;                   /* Spacing below */
+}
+
+/* Bio */
+.voyage-bio {
+  font-size: 1.0em;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+/* Role */
+.voyage-role {
+  font-size: 1em;
+  color: #cccccc;
+  margin-top: 8px;
+}
+
+/* Custom Link */
+.voyage-custom-link a {
+  color: #33ffff;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.voyage-custom-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+  /* Adjust profile image size on medium screens */
+  .voyage-profile-pic img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .voyage-profile-pic {
+    bottom: -75px; /* Adjust overlap for smaller screens */
+  }
+
+  .voyage-display-name {
+    font-size: 1.3em;
+  }
+.voyage-bio .voyage-role {
+  font-size: 0.8em;
+  margin-top: 8px;
+}
+  .voyage-profile {
+    padding-bottom: 75px; /* Adjust padding for image overlap */
+  }
+}
+
+@media (max-width: 500px) {
+  /* Adjust profile image size on small screens */
+  .voyage-profile-pic img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .voyage-profile-pic {
+    bottom: -60px; /* Adjust overlap for smaller screens */
+  }
+
+  .voyage-display-name {
+    font-size: 1.2em;
+  }
+
+  .voyage-bio .voyage-role {
+    font-size: 0.8em;
+    margin-top: 8px;
   }
   
-  .logo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px; /* Espaciado entre los logos */
-    align-items: center;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.logo-grid img {
-    width: 100%;
-    max-width: 200px; /* Ajusta el ancho máximo de cada logo si lo deseas */
-    height: auto; /* Mantiene la proporción del logo */
-    object-fit: contain; /* Asegura que los logos se ajusten bien a su espacio */
+  .voyage-profile {
+    padding-bottom: 60px; /* Adjust padding for image overlap */
+  }
 }
 
 
 
-/* end custom scss snippet */
+/* Success and error states for artName input */
+  #artName.success {
+    border-color: green;
+  }
+  #artName.error {
+    border-color: red;
+  }
 
 
+
+  // TOOLTIP
+
+
+/* Description Counter Styles */
+#descriptionCounter {
+  text-align: right;
+  font-size: 1.1em; /* Slightly increased font size for better visibility */
+  color: #ff3333; /* Bright red for high visibility */
+  margin-top: 5px;
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px;
+  color: #33f1ff; /* Icon color */
+  font-size: 18px; /* Icon size */
+  vertical-align: middle;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%; /* Position above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(80, 80, 80, 0.85); /* Tooltip background */
+  color: #ffffff;
+  padding: 8px 12px; /* Padding for readability */
+  border-radius: 4px;
+  font-size: 0.9em; /* Adjust font size */
+  text-transform: none; /* Prevent uppercase transformation */
+  white-space: normal; /* Allow text to wrap */
+  max-width: 600px; /* Limit tooltip width */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1000;
+  text-align: center; /* Center-align text */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 115%; /* Position above the tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(36, 36, 36, 0.85) transparent transparent transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before,
+.tooltip:focus::after,
+.tooltip:focus::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* Required Indicator */
+.required {
+  color: red;
+  margin-left: 5px;
+}
+
+/* Additional styles if needed */
+textarea#description {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+/* ------------------ MAAR.WORLD  NEUTRAL FORM CONTAINER ----------------------- */
+
+
+/* Full-width container with retro-futuristic neutral styling */
+.world-form {
+  width: 100%;
+  min-height: auto; /* Changed from 100vh to auto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #000000, #000000);
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible; /* Changed from hidden to visible */
+}
+
+
+.form-box {
+  background: rgba(0, 0, 0, 0.95);
+  padding: 30px 40px;
+  border: 2px solid #ffffff; /* Subtle accent color */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(236, 236, 236, 0.824);
+  position: relative;
+ // z-index: 2; /* Above the CRT overlay */
+  width: 100%;
+ // max-width: 700px; /* Optimized max-width for readability */
+}
+
+/* Form title */
+.form-box h2 {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #ffffff; /* Accent color for titles */
+  text-align: center;
+  font-weight: 700;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-box {
+    padding: 20px 30px;
+  }
+
+  .form-box h2 {
+    font-size: 1.75em;
+  }
+}
+
+/* Accessibility: Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  .world-form::before,
+  .old-crt-monitor {
+    animation: none;
+    background: none;
+  }
+}
+
+
+/* Variables */
+:root {
+  --collapsible-toggle-button-size: 40px; /* Size for toggle buttons */
+  --collapsible-toggle-icon-size: 24px; /* Size for toggle icons */
+  --collapsible-header-bg-color: #000000; /* Background color for section headers */
+  --collapsible-header-hover-bg-color: #ffffff; /* Hover background color */
+  --collapsible-title-color: #ffffff; /* Color for section titles */
+  --collapsible-border-color: #dddddd; /* Border color for sections */
+}
+/* Reset some default styles for consistency */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Styles for Collapsible Sections */
+.collapsible-section {
+  margin-bottom: 20px;
+  border: 0px solid var(--collapsible-border-color);
+  border-radius: 5px;
+  overflow: visible;
+  transition: border-color 0.3s ease;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;                   /* Rounded corners */
+
+  background-color: var(--collapsible-header-bg-color);
+  padding: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.section-header:hover {
+  background-color: var(--collapsible-header-hover-bg-color);
+  color: #000000; /* Sets the color for direct text within the header */
+}
+
+.section-header:hover .section-title {
+  color: #000000; /* Specifically target the title to change its color on hover */
+}
+
+/* Trigger toggle-icon hover styles when section-header is hovered */
+.section-header:hover .toggle-icon {
+  color: #000000; /* Sets the color for direct text within the header */
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.5em;
+  color: var(--collapsible-title-color);
+  flex: 1; /* Takes available space */
+  line-height: 1; /* Adjust line-height as needed */
+}
+.section-content {
+  overflow: hidden;
+  transition: height 0.5s ease;
+  height: 0; /* Initial collapsed state */
+}
+
+.collapsible-section.collapsed .section-content {
+  height: 0; /* Collapsed state */
+}
+
+.collapsible-section:not(.collapsed) .section-content {
+  /* Height will be controlled via JavaScript */
+  height: auto;
+}
+
+.toggle-button {
+  width: var(--collapsible-toggle-button-size);
+  height: var(--collapsible-toggle-button-size);
+  padding: 0;
+  border: none; /* Remove default border */
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+
+.toggle-button:focus {
+  outline: none;
+}
+
+.toggle-icon {
+  font-size: var(--collapsible-toggle-icon-size);
+  color: var(--collapsible-title-color);
+  transition: transform 0.3s ease;
+}
+.toggle-icon:hover {
+  background-color: var(--collapsible-header-hover-bg-color);
+  color: #000000; /* Sets the color for direct text within the header */
+}
+
+
+/* Responsive Design */
+@media (max-width: 800px) {
+  /* Increased specificity */
+  .collapsible-section .section-header .section-title {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 500px) {
+  /* Increased specificity */
+  .collapsible-section .section-header .section-title {
+    font-size: 1.0em;
+    margin-left: 10px;
+  }
+}
+
+/* Base style */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+  font-size: 24px; /* Default size for general use */
+}
+/* Base style */
+.material-symbols-large {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 48;
+  font-size: 4rem; /* Default size for general use */
+}
+
+/* Centered Footer Text */
+.footer {
+  display: flex;               /* Enable Flexbox */
+  justify-content: center;     /* Center content horizontally */
+  align-items: center;         /* Center content vertically within padding */
+  width: 100%;                 /* Full width */
+  text-align: center;          /* Center text within its container */
+  padding: 20px;               /* Optional: Add padding */
+  background-color: #00000000;   /* Optional: Background color */
+  font-family: 'Orbit', sans-serif; /* Optional font */
+  font-size: 1em;              /* Base font size */
+  color: #ffffff;              /* Text color */
+  margin-top: auto;            /* Push footer to the bottom if using Flexbox in body */
+}
+
+/* Responsive Design for Footer Text */
+@media (max-width: 800px) {
+  .footer {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer {
+    font-size: 0.8em;
+  }
+}
+/* Remove default list styles for all lists */
+/* More specific selectors */
+.collapsible-section ul,
+.collapsible-section ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.collapsible-section li {
+  list-style: none;
+}
+
+.collapsible-section li::marker {
+  display: none;
+}
+/////////////////////////////////////////////////////
+/* Outer wrapper to center the checkbox and text horizontally */
+.checkbox-wrapper {
+  display: flex;
+  justify-content: center; /* Horizontally center the checkbox and text */
+  width: 100%; /* Ensure it takes full width of the parent */
+  margin: 20px 0; /* Optional: add space above and below */
+}
+
+/* Container for checkbox and text */
+.checkbox-container {
+  display: inline-flex;
+  align-items: center; /* Center the text vertically with the checkbox */
+  gap: 10px; /* Space between checkbox and text */
+  cursor: pointer;
+}
+
+/* Hide the default checkbox */
+.checkbox-container input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+/* Custom checkbox appearance */
+.checkmark {
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff; /* Background for unchecked state */
+  border: 2px solid #ff33cc; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  position: relative;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+/* Checked state with background color change */
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+  background-color: #ff33cc; /* Pink background when checked */
+}
+
+/* Checkmark icon inside the checkbox */
+.checkbox-container input[type="checkbox"]:checked + .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg); /* Rotate to form checkmark */
+}
+
+/* Optional: Add hover effect to the checkbox */
+.checkbox-container:hover .checkmark {
+  background-color: #f0f0f0; /* Light gray on hover */
+}
+
+/* Spinner Styles */
+.spinner {
+  border: 8px solid #ffffff; 
+  border-top: 8px solid #ff33cc; 
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+/* Animation for Spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+//// 3d
+/// 
+/// 
+
+.viewer {
+  flex: 1;
+  position: relative;
+}
+
+.thumbnails {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.thumbnails img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.thumbnails img:hover {
+  border-color: #333;
+}
+
+.error {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+
+
+.iframe-3d-model-container {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Replace with desired ratio, e.g., 16:9 */
+  position: relative;
+  border: none;
+}
+
+.iframe-3d-model {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1); /* Light gray for visibility */
+  display: block;
+  border: none;
+
+}
+
+
+///////////////////////////////////////////
+///
+/// 
+/* Card container */
+/* Card container */
+.track-card {
+  position: relative;
+  margin: 15px 0;
+  padding: 10px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  background: #000000;
+  overflow: visible; /* Ensure dropdown is not clipped */
+}
+
+/* Menu container */
+.menu-container {
+  display: flex;
+  justify-content: flex-start; /* Align to the left */
+  position: relative;
+  background: transparent;
+  border-bottom: 2px solid #ffffff;
+  z-index: 100; /* Ensure it stays above other content */
+  padding: 5px;
+}
+.menu-container:hover {
+  background-color: #8282822f;
+}
+/* Align menu button to the left */
+.left-menu {
+  justify-content: flex-start;
+}
+
+/* Menu button styling */
+.menu-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+
+/* Dropdown menu */
+.menu-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%; /* Align below the button */
+  left: 0; /* Align the left edge with the left edge of the container */
+  background: #000000;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  padding: 10px;
+  flex-direction: column;
+}
+
+/* Show dropdown when toggled */
+.menu-dropdown.show {
+  display: flex;
+}
+
+/* Dropdown options */
+.menu-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  background: none;
+  text-align: left;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.menu-option:hover {
+  background-color: #f1f1f1;
+  color: #000000;
+  
+}
+
+/* Submenu container */
+.add-to-playlist-menu {
+  position: absolute;
+  top: 0;
+  left: 100%; /* Align to the right of the main menu */
+  background: #000000;
+  color: #ffffff;
+  min-width: 150px;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  display: none;
+  z-index: 1001;
+  white-space: nowrap; /* Prevent line breaks */
+}
+
+/* Show submenu when parent option is hovered */
+.option-button-container:hover .add-to-playlist-menu {
+  display: block;
+}
+
+/* Submenu button styles */
+.add-to-playlist-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-to-playlist-menu button:hover {
+  background-color: #f1f1f1;
+  color: #000000;
+}
+
+/* Align submenu properly */
+.option-button-container {
+  position: relative;
+}
+/* Ensure more-options dropdown aligns properly */
+.more-options-container {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 999;
+}
+
+.more-options-button {
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more-options-container:hover .more-options-button {
+  color: #ccc;
+}
+
+.more-options-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0; /* Align the right edge with the right edge of the button */
+  background-color: #000;
+  color: #fff;
+  min-width: 150px;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.more-options-dropdown.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.more-options-dropdown .option-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  text-align: left;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.more-options-dropdown .option-button:hover {
+  background-color: #000000;
+  border-radius: 4px;
+}
+
+#global-dropdown-container .menu-dropdown {
+  max-width: 300px;
+  width: auto;
+  background-color: #000000;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+}
+
+#global-dropdown-container .menu-dropdown .option-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

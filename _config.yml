@@ -158,7 +158,8 @@ pageview:
 ## => Search
 ##############################
 search:
-  provider: # "default" (default), false, "google", "custom"
+  provider: false # "default" (default), false, "google", "custom"
+
 
   ## Google Custom Search Engine
   google:
@@ -204,6 +205,8 @@ collections_dir: collections
 collections:
   genesis:
     output: true
+  forms:
+    output: true
   lab:
     output: true
   pages:
@@ -212,7 +215,10 @@ collections:
     output: true
   stoney_way:
     output: true
-
+  ent_worlds:
+    output: true
+  users:
+    output: true
 # each time you add a folder, then need to add collections output true and name
 
 defaults:
@@ -234,7 +240,12 @@ defaults:
       type: lab
     values:
       nav_key: lab
-
+  ## ent_worlds
+  - scope:
+      path: ""
+      type: ent_worlds
+    values:
+      nav_key: ew
   - scope:
       path: ""
       type: genesis
