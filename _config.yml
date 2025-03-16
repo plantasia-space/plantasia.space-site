@@ -37,18 +37,18 @@ author:
   name      : Maar
   url       : www.maar.world
   avatar    :  # path or url of avatar image (square)
-  bio       :  🌬🌎 "Building a record label 3.0- ENTangled releases, immersive music-making and listening, from a sustainable to a regenerative music era" ❤️‍🔥🐬
-  email     : world.maar@gmail.com
+  bio       :  🌬🌎 "Home for regenerative music" ❤️‍🔥🐬
+  email     : 
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   :  # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
   weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
   googleplus: # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
-  telegram  : maar___world #"user_name" the last part of your profile url, e.g. https://t.me/user_name
+  telegram  : maar_world_ #"user_name" the last part of your profile url, e.g. https://t.me/user_name
   medium    : # "user_name" the last part of your profile url, e.g. https://medium.com/user_name
   zhihu     : # "user_name" the last part of your profile url, e.g. https://www.zhihu.com/people/user_name
   douban    : # "user_name" the last part of your profile url, e.g. https://www.douban.com/people/user_name
-  linkedin  : maar-c # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
-  github    : maar34 # "user_name" the last part of your profile url, e.g. https://github.com/user_name
+  linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
+  github    : # "user_name" the last part of your profile url, e.g. https://github.com/user_name
   npm       : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
 
 
@@ -159,6 +159,7 @@ pageview:
 ##############################
 search:
   provider: false # "default" (default), false, "google", "custom"
+
 
   ## Google Custom Search Engine
   google:

@@ -21,17 +21,10 @@ article_header:
 
 <br>
 
+<a href="https://drive.google.com/file/d/1-z60oqofBOmrz7LrSiA2_jxZWzUJVO-J/view?usp=sharing" rel="resume" target="_blank">DOWNLOAD RESUME </a> <br>
 
-<a href="https://drive.google.com/file/d/1tkrdTaOrdsDZt93cX088U7J1p89lM8kU/view?usp=sharing" rel="resume" target="_blank">DOWNLOAD RESUME </a> <br>
+<iframe src="https://drive.google.com/file/d/1-z60oqofBOmrz7LrSiA2_jxZWzUJVO-J/preview" width="100%" height="1024" allow="autoplay"></iframe>
 
-<iframe src="https://drive.google.com/file/d/1toBANfXmXCl7Dd8KSVElkuoeMwDqOvRW/preview" width="100%" height="480" allow="autoplay"></iframe>
+<a href="https://drive.google.com/file/d/1-wvj_pjcX6d4l1x_k39zg6UjZjTyzTME/view?usp=sharing" rel="portfolio" target="_blank">DOWNLOAD PORTFOLIO </a> <br>
 
-<br>
-
-
-<a href="https://drive.google.com/file/d/1tgKXXaIU0R83n6fQ_BpT-4MotxERYLMC/view?usp=sharing" rel="portfolio" target="_blank">DOWNLOAD PORTFOLIO </a> <br>
-
-
-
-<iframe src="https://drive.google.com/file/d/1-x5dzHSnx17Q-1ga2HUZJlcEqrsSNTc0/preview" width="100%" height="640" allow="autoplay"></iframe>
-
+<iframe src="https://drive.google.com/file/d/1-wvj_pjcX6d4l1x_k39zg6UjZjTyzTME/preview" width="100%" height="640" allow="autoplay"></iframe>
