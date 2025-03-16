@@ -5,14 +5,30 @@ show_title: false
 
 excerpt: >
     Home for 𝕣ꫀᧁꫀꪀꫀ𝕣ꪖ𝕥ⅈꪜꫀ ꪑꪊડⅈᥴ
-title:  Maar World
-show_title: false
-  height: 30vh
---- 
+permalink: /index.html
+full_width: false
+show_excerpt: false
+
+public: true
+
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgba(255, 0, 222, 1), rgba(255, 0, 0, .5),)'
+
+article_header:
+  height: 10vh
+  theme: ocean
+  background_color: '#203028' 
+  background_image:
+  #  gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
+    src: /img/landing/433-mw-index.gif
+    
+---
 
 # Releases
 
-
+<div id="feed">
+  <!-- Contenedores se agregarán dinámicamente aquí -->
 </div>
 <button id="load-more">Cargar más</button>
 

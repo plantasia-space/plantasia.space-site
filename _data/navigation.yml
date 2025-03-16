@@ -1,20 +1,21 @@
 header:
-      en      : &EN      <span class="material-symbols-outlined">brightness_6</span> Voyage
-      es-ES   : &ES   <span class="material-symbols-outlined">brightness_6</span> Voyage
-      es-LA   : *ES
-      # @end locale config
-    url: /voyage
 
   # Placeholder for login/logout button
   - titles:
-      en      : &EN      <span id="auth-link"></span>
-      en-GB   : *EN
-      en-US   : *EN
-      en-CA   : *EN
-      en-AU   : *EN
-      es-ES   : &ES      <span id="auth-link"></span>
-      es-LA   : *ES
+
+    en      : &EN      <span class="material-symbols-outlined">brightness_6</span> Voyage
+    es-ES   : &ES   <span class="material-symbols-outlined">brightness_6</span> Voyage
+    es-LA   : *ES
+    # @end locale config
+    url: /voyage
+    en      : &EN      <span id="auth-link"></span>
+    en-GB   : *EN
+    en-US   : *EN
+    en-CA   : *EN
+    en-AU   : *EN
+    es-ES   : &ES      <span id="auth-link"></span>
+    es-LA   : *ES
     url: /login 
 
       # @end locale config
-    url: /lab
+   
