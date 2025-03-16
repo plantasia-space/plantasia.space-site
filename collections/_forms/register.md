@@ -17,7 +17,7 @@ public: true
 <br><br>
 
 <div class="form-container">
-    <h3>Maar World Register</h3>
+    <h3>Plantasia spacE Register</h3>
     <form id="registerForm" class="contact-form">
         <input type="email" id="email" required placeholder="Enter xPlorer email" />
         <input type="password" id="password" required placeholder="Enter password" />

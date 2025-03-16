@@ -16,7 +16,7 @@ public: true
 <br><br>
 
 <div class="form-container">
-  <h3 id="loginTitle">Maar World Login</h3>
+  <h3 id="loginTitle">Plantasia spacE Login</h3>
 
   <!-- Login Form (shown if no recovery token is present) -->
   <form id="loginForm" class="contact-form">
