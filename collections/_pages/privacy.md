@@ -16,7 +16,7 @@ header:
 
 Effective Date: 05-02-2024
 
-At Maar World, we value your privacy and strive to ensure the security and confidentiality of your personal information. This Privacy and Cookies Policy explains how we collect, use, and disclose information when you visit our website and interact with our services.
+At Pantasia.spacE, we value your privacy and strive to ensure the security and confidentiality of your personal information. This Privacy and Cookies Policy explains how we collect, use, and disclose information when you visit our website and interact with our services.
 
 ### Information We Collect
 
