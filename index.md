@@ -1,10 +1,8 @@
 ---
-layout: landing
+layout: article
 title: Plantasia.spacE
 show_title: false
 
-excerpt: >
-    Home for 𝕣ꫀᧁꫀꪀꫀ𝕣ꪖ𝕥ⅈꪜꫀ ꪑꪊડⅈᥴ
 permalink: /index.html
 full_width: false
 show_excerpt: false
@@ -13,17 +11,22 @@ public: true
 
 header:
   theme: dark
-  background: 'linear-gradient(135deg, rgba(255, 0, 222, 1), rgba(255, 0, 0, .5),)'
+  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgba(255, 0, 0, .5))' # Removed the extra comma
 
 article_header:
-  height: 10vh
+  height: 20vh
   theme: ocean
   background_color: '#203028' 
-  background_image:
-  #  gradient: 'linear-gradient(135deg, rgba(0, 0, 0 , .9), rgba(139, 34, 139, .9))'
-    src: /img/landing/433-mw-index.gif
-    
+  video: "/img/landing/header-1.mp4" # Corrected from `background_image`
 ---
+
+<!-- Hero Section with Video -->
+<section class="hero hero--video">
+  <video autoplay loop muted playsinline class="hero__video">
+    <source src="/img/landing/header-1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</section>
 
 # Releases
 
