@@ -25,7 +25,7 @@ article_header:
 <div class="hero hero--center hero--bordered hero-example--linear-gradient">
   <div class="hero__content">
     <h3></h3>
-    <p class="white">maar world 2.0 coming soon. <br> <br> 
+    <p class="white">Plantasia.spacE <br> <br> 
      🌬🌎 home for 𝕣ꫀᧁꫀꪀꫀ𝕣ꪖ𝕥ⅈꪜꫀ ꪑꪊડⅈᥴ ❤️‍🔥🐬
     </p>
   </div>
