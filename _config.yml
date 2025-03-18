@@ -20,7 +20,7 @@ text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "
 highlight_theme: tomorrow-night-blue # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 url     : https://plantasia.space # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : # does not include hostname
-title   :  Plantasia.spacE
+title   :  plantasia.space
 description: Home for regenerative music. # this means to ignore newlines until "Language & timezone"
 
 
@@ -34,7 +34,7 @@ timezone: ES # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
 ##############################
 author:
   type      : # "person" (default), "organization"
-  name      : Plantasia.spacE
+  name      : plantasia.space
   url       : www.plantasia.space
   avatar    :  # path or url of avatar image (square)
   bio       :  🌬🌎 "Home for regenerative music" ❤️‍🔥🐬

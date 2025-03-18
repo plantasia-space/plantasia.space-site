@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Plantasia.spacE
+title: plantasia.space
 show_title: false
 
 permalink: /index.html
@@ -24,7 +24,6 @@ header:
 </section>
 
 
-# Releases
 
 <div id="feed">
   <!-- Contenedores se agregarán dinámicamente aquí -->
@@ -94,8 +93,8 @@ header:
             if (activePlayers < maxActivePlayers) {
               const src = container.getAttribute('data-src');
               if (src) {
-                container.innerHTML = `<iframe class="responsive-iframe" src="${src}" style="border: 0"></iframe>` + container.innerHTML;
-                container.removeAttribute('data-src');
+              container.innerHTML = `<iframe class="responsive-iframe" src="${src}" style="border: 0" allowfullscreen></iframe>` + container.innerHTML;                
+              container.removeAttribute('data-src');
                 activePlayers++;
               }
             }

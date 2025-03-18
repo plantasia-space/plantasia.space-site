@@ -1,5 +1,5 @@
 
-## Plantasia.spacE
+## plantasia.space
 
 ### Connecting artists and listeners with novel tools for future music co-creation.
 
