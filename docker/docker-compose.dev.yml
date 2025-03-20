@@ -1,15 +1,18 @@
 version: "3.5"
 
 services:
-  plantasia-space-dev:
-    image: registry.digitalocean.com/your-registry-name/plantasia-space-dev
-    environment:
-      - JEKYLL_ENV=development
-    ports:
-      - "4000:4000"
-    container_name: plantasia-space-dev
-    volumes:
-      - .:/usr/src/app  # Corrected path
-    stdin_open: true
-    tty: true
-    command: bundle exec jekyll serve --host 0.0.0.0 --watch --config ./docs/_config.dev.yml
+- name: plantasia-space-site
+  github:
+    branch: dev
+    deploy_on_push: true
+    repo: plantasia-space/plantasia.space-site
+  dockerfile_path: Dockerfile  # Use your Dockerfile
+  source_dir: /
+  http_port: 4000
+  routes:
+  - path: /
+  environment_slug: ruby
+  envs:
+  - key: JEKYLL_ENV
+    scope: RUN_AND_BUILD_TIME
+    value: development
