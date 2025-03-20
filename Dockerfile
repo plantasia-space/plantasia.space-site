@@ -1,4 +1,4 @@
-FROM ruby:3.1
+FROM ruby:3.1.6
 
 # Set environment variables
 ENV LC_ALL=C.UTF-8 \
@@ -10,9 +10,7 @@ ENV LC_ALL=C.UTF-8 \
 WORKDIR /usr/src/app
 
 # Copy dependency files
-COPY Gemfile Gemfile.lock ./
-
-# Install dependencies
+COPY . .
 RUN bundle install
 
 # Copy the full project
