@@ -1,18 +1,17 @@
 version: "3.5"
 
 services:
-- name: plantasia-space-site
-  github:
-    branch: dev
-    deploy_on_push: true
-    repo: plantasia-space/plantasia.space-site
-  dockerfile_path: Dockerfile  # Use your Dockerfile
-  source_dir: /
-  http_port: 4000
-  routes:
-  - path: /
-  environment_slug: ruby
-  envs:
-  - key: JEKYLL_ENV
-    scope: RUN_AND_BUILD_TIME
-    value: development
+  plantasia-space-site:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: plantasia-space-site_dev
+    container_name: plantasia-space-site_dev
+    environment:
+      - JEKYLL_ENV=development
+    ports:
+      - "4000:4000"
+    volumes:
+      - ..:/usr/src/app  # Mount entire repo correctly
+      - /usr/src/app/_site  # Prevents conflicts with _site
+    command: bundle exec jekyll serve --host 0.0.0.0 --watch --drafts

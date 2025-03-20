@@ -1,0 +1,18 @@
+version: "3.5"
+
+services:
+  plantasia-space-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: plantasia-space-test
+    container_name: plantasia-space-test
+    environment:
+      - JEKYLL_ENV=test
+    ports:
+      - "4001:4000"
+    volumes:
+      - .:/usr/src/app
+    stdin_open: true
+    tty: true
+    command: bundle exec jekyll serve --host 0.0.0.0 --trace --config ./docs/_config.yml
