@@ -203,19 +203,11 @@ exclude:
 
 collections_dir: collections
 collections:
-  genesis:
-    output: true
   forms:
     output: true
   lab:
     output: true
   pages:
-    output: true
-  skysounds:
-    output: true
-  stoney_way:
-    output: true
-  ent_worlds:
     output: true
   users:
     output: true
@@ -240,18 +232,7 @@ defaults:
       type: lab
     values:
       nav_key: lab
-  ## ent_worlds
-  - scope:
-      path: ""
-      type: ent_worlds
-    values:
-      nav_key: ew
-  - scope:
-      path: ""
-      type: genesis
-    values:
-      nav_key: samples
-      show_date: false
+
 
 
 ## => Plugins
