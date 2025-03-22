@@ -20,23 +20,73 @@ key: IP
 
   <!-- Login Form (shown if no recovery token is present) -->
   <form id="loginForm" class="contact-form">
-    <input type="email" id="loginEmail" required placeholder="Enter xPlorer email" />
-    <input type="password" id="loginPassword" required placeholder="Enter password" />
+    <input
+      type="email"
+      id="loginEmail"
+      name="email"
+      autocomplete="email"
+      required
+      placeholder="Enter xPlorer email"
+    />
+
+    <input
+      type="password"
+      id="loginPassword"
+      name="password"
+      autocomplete="current-password"
+      required
+      placeholder="Enter password"
+    />
+
     <label>
       <input type="checkbox" id="loginRememberMe" /> Remember Me
     </label>
+
     <button type="submit">Login</button>
-    <button type="button" id="createAccountButton" class="btn button--outline-primary button--circle">Create an account</button>
+    <button
+      type="button"
+      id="createAccountButton"
+      class="btn button--outline-primary button--circle"
+    >
+      Create an account
+    </button>
   </form>
 
   <!-- Reset Password Form (shown if recovery token is present) -->
   <form id="resetPasswordForm" class="contact-form" style="display: none;">
-    <input type="password" id="newPassword" required placeholder="Enter your new password" />
-    <input type="password" id="confirmNewPassword" required placeholder="Confirm your new password" />
+    <!-- Hidden email field for accessibility and password managers -->
+    <input
+      type="email"
+      id="resetEmail"
+      name="email"
+      autocomplete="email"
+      style="display: none;"
+      tabindex="-1"
+    />
+
+    <input
+      type="password"
+      id="resetNewPassword"
+      name="newPassword"
+      autocomplete="new-password"
+      required
+      placeholder="Enter your new password"
+    />
+
+    <input
+      type="password"
+      id="resetConfirmNewPassword"
+      name="confirmNewPassword"
+      autocomplete="new-password"
+      required
+      placeholder="Confirm your new password"
+    />
+
     <button type="submit">Reset Password</button>
   </form>
 
-  <p id="message" style="color: red;"></p> <!-- For displaying server messages -->
+  <!-- Server message display -->
+  <p id="message" style="color: red;"></p>
 
   <!-- Forgot password link -->
   <p><a href="#" id="forgotPasswordLink">Forgot your password?</a></p>
