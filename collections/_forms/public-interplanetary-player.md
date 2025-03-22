@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {string} playerId - The ID of the Interplanetary Player
      */
     function loadInterplanetaryPlayerDetails(playerId) {
-        fetch(`https://api.plantasia.space:443/api/interplanetaryPlayers/${playerId}`)
+        fetch(`https://api.plantasia.space/api/interplanetaryPlayers/${playerId}`)
             .then(response => {
                 console.log('Response status:', response.status);
                 return response.json();

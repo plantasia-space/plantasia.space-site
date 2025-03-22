@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadSoundEngineDetails(soundEngineId) {
     const userId = localStorage.getItem('userId'); // Retrieve the logged-in user's ID
 
-    fetch(`https://api.plantasia.space:443/api/soundEngines/${soundEngineId}`)
+    fetch(`https://api.plantasia.space/api/soundEngines/${soundEngineId}`)
         .then(response => {
             console.log('Response status:', response.status);
             return response.json();

@@ -168,7 +168,7 @@ public: false
 
 <script>
     // Define the API base URL
-    const API_BASE_URL = 'https://api.plantasia.space:443/api';
+    const API_BASE_URL = 'https://api.plantasia.space/api';
 
     // Define the file category for this form
     const FILE_CATEGORY_UPLOAD = 'interplanetaryPlayers'; // Must match the category in spacesUtils.js

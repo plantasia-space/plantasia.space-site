@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
-      const response = await fetch('https://api.plantasia.space:443/api/auth/reset-password', {
+      const response = await fetch('https://api.plantasia.space/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

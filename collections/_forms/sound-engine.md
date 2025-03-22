@@ -165,7 +165,7 @@ public: false
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = 'https://api.plantasia.space:443/api'; // Ensure this matches your backend
+    const API_BASE_URL = 'https://api.plantasia.space/api'; // Ensure this matches your backend
     const userId = localStorage.getItem('userId'); 
     const DEFAULT_SE_IMAGE_URL = 'https://mw-storage.fra1.cdn.digitaloceanspaces.com/default/default-soundEngine.jpg'; // Replace with your actual default image URL
 
