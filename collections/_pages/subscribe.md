@@ -4,7 +4,7 @@ title: Subscribe
 show_title: false
 excerpt: <span </span>
 show_date: false
-permalink: /subscribe
+permalink: /subscribe/
 key: lab
 cover: /img/lab.png
 public: true 

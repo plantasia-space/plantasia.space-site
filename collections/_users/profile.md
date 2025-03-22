@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/profile
+permalink: /voyage/profile/
 titles:
   en: &EN xPlorer Profile
   en-GB: *EN

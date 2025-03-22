@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /test
+permalink: /test/
 titles:
   en: &EN Voyage
   en-GB: *EN

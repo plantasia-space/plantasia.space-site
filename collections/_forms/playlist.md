@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/playlist
+permalink: /voyage/playlist/
 titles:
   en: &EN Manage Playlist
   en-GB: *EN

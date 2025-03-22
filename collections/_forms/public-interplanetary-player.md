@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /xplorer/interplanetary-player
+permalink: /xplorer/interplanetary-player/
 titles:
   en: &EN Public Interplanetary Player
   en-GB: *EN

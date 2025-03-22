@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/track-release
+permalink: /voyage/track-release/
 titles:
   en: &EN Track Release
   en-GB: *EN

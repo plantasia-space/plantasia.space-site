@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/user-relationships
+permalink: /voyage/user-relationships/
 titles:
   en: &EN User Relationships
   en-GB: *EN

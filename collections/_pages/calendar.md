@@ -4,7 +4,7 @@ title: Calendar
 show_title: false
 excerpt: <span </span>
 show_date: false
-permalink: /calendar
+permalink: /calendar/
 key: lab
 cover: /img/lab.png
 public: true

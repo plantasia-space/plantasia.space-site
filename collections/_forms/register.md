@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /register
+permalink: /register/
 titles:
   en: &EN Register
   en-GB: *EN

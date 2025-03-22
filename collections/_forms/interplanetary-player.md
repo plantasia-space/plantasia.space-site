@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/interplanetary-player
+permalink: /voyage/interplanetary-player/
 titles:
   en: &EN interplanetary-players
   en-GB: *EN

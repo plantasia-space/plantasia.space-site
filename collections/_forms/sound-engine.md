@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/soundEngine
+permalink: /voyage/soundEngine/
 titles:
   en: &EN Create Sound Engine
   en-GB: *EN

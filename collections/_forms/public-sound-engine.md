@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /xplorer/sound-engine
+permalink: /xplorer/sound-engine/
 titles:
   en: &EN Create Sound Engine
   en-GB: *EN
