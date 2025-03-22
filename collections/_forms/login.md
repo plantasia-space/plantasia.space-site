@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /login
+permalink: /login/
 public: true
 titles:
   en: &EN Login
