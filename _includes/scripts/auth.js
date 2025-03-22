@@ -44,6 +44,7 @@ async function initializeAuth() {
     try {
         if (isPublicPage) {
             console.log('Public page detected. No authentication required.');
+            updateAuthLink(false);
             return;
         }
 
@@ -51,6 +52,7 @@ async function initializeAuth() {
         const existingUserId = localStorage.getItem('userId');
         if (existingUserId) {
             console.log('UserId already in localStorage:', existingUserId);
+            updateAuthLink(true);
             return; // No need to perform session validation
         }
 
@@ -67,6 +69,7 @@ async function initializeAuth() {
             const userId = data.user.id;
             localStorage.setItem('userId', userId); // Set userId only if not already present
             console.log('Authenticated user added to localStorage:', userId);
+            updateAuthLink(true);
 
             if (window.location.pathname === '/login') {
                 window.location.href = '/voyage';
@@ -74,18 +77,19 @@ async function initializeAuth() {
         } else {
             console.warn('Session invalid. Clearing userId.');
             localStorage.removeItem('userId');
+            updateAuthLink(false);
             if (window.location.pathname !== '/login') {
                 window.location.href = '/login';
             }
         }
     } catch (error) {
         console.error('Error during authentication:', error);
+        updateAuthLink(false);
         if (window.location.pathname !== '/login') {
             window.location.href = '/login';
         }
     }
 }
-
 /**
  * Function to handle sending password reset email via backend proxy
  * @param {string} email - User's email
