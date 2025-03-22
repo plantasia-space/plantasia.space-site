@@ -96,20 +96,18 @@ async function initializeAuth() {
  */
 async function forgotPassword(email) {
     try {
-       // const csrfToken = await getCsrfToken(); // If implementing CSRF protection
         const response = await fetch('https://api.plantasia.space/api/auth/forgot-password', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                // 'CSRF-Token': csrfToken, // Uncomment if using CSRF tokens
-            },
-            credentials: 'include', // Include cookies if necessary
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ email })
         });
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Password reset failed');
+            // Combine message + error for a complete error string:
+            const fullErrorMessage = `${errorData.message || 'Password reset failed'}${errorData.error ? ': ' + errorData.error : ''}`;
+            throw new Error(fullErrorMessage);
         }
 
         console.log('Password reset email sent to:', email);
@@ -118,16 +116,17 @@ async function forgotPassword(email) {
             messageElement.innerText = "Password reset email sent! Please check your inbox.";
             messageElement.style.color = 'green';
         }
+
     } catch (error) {
         console.error('Password reset error:', error);
         const messageElement = document.getElementById('message');
         if (messageElement) {
-            messageElement.innerText = "Password reset failed. Please try again.";
+            // Show the exact error message from the server
+            messageElement.innerText = error.message;
             messageElement.style.color = 'red';
         }
     }
 }
-
 /**
  * Function to check if user is authenticated by verifying session with backend
  * Updates the auth link based on authentication status

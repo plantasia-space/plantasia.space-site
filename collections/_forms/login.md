@@ -110,39 +110,55 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Function to handle password reset
-  async function handleResetPassword(accessToken) {
-    const newPassword = document.getElementById('newPassword').value.trim();
-    const confirmPassword = document.getElementById('confirmNewPassword').value.trim();
+async function handleResetPassword(accessToken) {
+  // IMPORTANT: Match the input IDs you have in the HTML
+  const newPassword = document.getElementById('resetNewPassword').value.trim();
+  const confirmPassword = document.getElementById('resetConfirmNewPassword').value.trim();
 
-    if (newPassword !== confirmPassword) {
-      messageElement.innerText = "Passwords do not match.";
-      messageElement.style.color = 'red';
-      return;
-    }
+  if (newPassword !== confirmPassword) {
+    messageElement.innerText = "Passwords do not match.";
+    messageElement.style.color = 'red';
+    return;
+  }
 
-    try {
-      const response = await fetch('https://api.plantasia.space/api/auth/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include cookies if CSRF tokens are used
-        body: JSON.stringify({ accessToken, newPassword })
-      });
+  try {
+    const response = await fetch('https://api.plantasia.space/api/auth/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ accessToken, newPassword })
+    });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Password reset failed');
+    if (!response.ok) {
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        // If response isn't valid JSON
+        throw new Error(`Unexpected error occurred (${response.status})`);
       }
 
-      messageElement.innerText = "Password reset successful! You can now log in with your new password.";
-      messageElement.style.color = 'green';
-      setTimeout(() => window.location.href = '/login', 1500);
-    } catch (error) {
-      messageElement.innerText = error.message;
-      messageElement.style.color = 'red';
+      // Combine the server's message + error into one
+      const fullErrorMessage = `${data.message || 'Ops, password reset failed'}${data.error ? ': ' + data.error : ''}`;
+      throw new Error(fullErrorMessage);
     }
+
+    // Success
+    messageElement.innerText = "Password reset successful! You can now log in with your new password.";
+    messageElement.style.color = 'green';
+    setTimeout(() => window.location.href = '/login', 1500);
+
+  } catch (error) {
+    console.error('Password reset error:', error);
+    messageElement.innerText =
+      typeof error === 'string'
+        ? error
+        : (error.message || 'An unexpected error occurred.');
+    messageElement.style.color = 'red';
   }
+}
 
   // Setup form handlers using auth.js's functions
   function setupLoginForm() {
