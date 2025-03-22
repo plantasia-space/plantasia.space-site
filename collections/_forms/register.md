@@ -3,6 +3,7 @@ layout: articles
 show_title: false
 show_date: false
 permalink: /register/
+public: true
 titles:
   en: &EN Register
   en-GB: *EN
@@ -10,7 +11,6 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
-public: true
 
 ---
 
@@ -105,11 +105,10 @@ public: true
       console.log('Checking token in localStorage:', token);
 
       // Exclude /register and /login pages from the session check
-      if (!token && currentPage !== '/login' && currentPage !== '/register') {
+      if (!token && currentPage !== '/login' && currentPage !== '/register' && currentPage !== '/register/') {
         console.log('No valid session, redirecting to login...');
-        window.location.href = '/login';  // Redirect to login if no valid session
+        window.location.href = '/login';
       }
-    }
 
     // Initialize the page with session and auth link checks
     checkUserSession();  // Verify user session (but exclude register page)
