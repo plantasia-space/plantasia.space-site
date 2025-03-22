@@ -1,5 +1,5 @@
 # Use the latest stable Ruby image
-FROM ruby:3.2.7
+FROM ruby:3.2.6
 
 # Set environment variables
 ENV LC_ALL=C.UTF-8 \

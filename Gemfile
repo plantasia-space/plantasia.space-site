@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby "3.2.7"
+ruby "3.2.6"
 
 # Jekyll and required plugins
 gem "jekyll", "~> 4.4.1"
