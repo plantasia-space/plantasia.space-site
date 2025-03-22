@@ -109,6 +109,7 @@ key: IP
         console.log('No valid session, redirecting to login...');
         window.location.href = '/login';
       }
+    }  
 
     // Initialize the page with session and auth link checks
     checkUserSession();  // Verify user session (but exclude register page)
