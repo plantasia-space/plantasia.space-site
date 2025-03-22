@@ -13,8 +13,8 @@
     {%- include scripts/variables.html -%}
     {%- include scripts/cookie-consent.html -%}
     <script>
-      // Inject the `public` variable from the front matter
-      const isPublicPage = {{ page.public | json }};
+      // Safe inject of `public` from front matter
+      const isPublicPage = {{ page.public | default: false | json }};
     </script>
   </head>
   <body>

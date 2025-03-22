@@ -1,9 +1,11 @@
 ---
 layout: article
 title: Privacy
-permalink: /privacy
+permalink: /privacy/
 show_title: false
 key: page-sidebar-aside
+public: true
+
 aside:
   toc: true
 sidebar:

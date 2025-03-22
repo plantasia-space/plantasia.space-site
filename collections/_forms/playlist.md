@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/playlist
+permalink: /voyage/playlist/
 titles:
   en: &EN Manage Playlist
   en-GB: *EN
@@ -129,7 +129,7 @@ public: false
 const COVER_IMAGE_DEFAULT= "https://mw-storage.fra1.digitaloceanspaces.com/default/default-playlist_thumbnail_mid.webp"; 
 
     document.addEventListener('DOMContentLoaded', function() {
-        const API_BASE_URL = 'https://media.maar.world:443/api'; // Update if different
+        const API_BASE_URL = 'https://api.plantasia.space/api'; // Update if different
         const userId = localStorage.getItem('userId'); 
         const authToken = localStorage.getItem('authToken'); // Ensure this is set correctly
         

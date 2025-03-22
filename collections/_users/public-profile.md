@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Fetch the public profile data
-    fetch(`https://media.maar.world:443/api/users/getPublicProfile?username=${username}`)
+    fetch(`https://api.plantasia.space/api/users/getPublicProfile?username=${username}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (customLinks[2]) document.getElementById('customLink3Display').innerHTML = `<a href="${customLinks[2]}" target="_blank">${customLinks[2]}</a>`;
 
             // Fetching following users
-            fetch(`https://media.maar.world:443/api/userRelationships/following/${username}`)
+            fetch(`https://api.plantasia.space/api/userRelationships/following/${username}`)
                 .then(response => response.json())
                 .then(followingData => {
                     const followingList = document.getElementById('followingList');
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
             // Fetching followers
-            fetch(`https://media.maar.world:443/api/userRelationships/followers/${username}`)
+            fetch(`https://api.plantasia.space/api/userRelationships/followers/${username}`)
                 .then(response => response.json())
                 .then(followersData => {
                     const followersList = document.getElementById('followersList');
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
             // Fetching mutual followers
-fetch(`https://media.maar.world:443/api/userRelationships/mutualFollowers/${loggedUsername}/${username}`)
+fetch(`https://api.plantasia.space/api/userRelationships/mutualFollowers/${loggedUsername}/${username}`)
     .then(response => response.json())
     .then(mutualFollowersData => {
         const mutualFollowersList = document.getElementById('mutualFollowersList');
@@ -216,7 +216,7 @@ fetch(`https://media.maar.world:443/api/userRelationships/mutualFollowers/${logg
     });
 
             // Check follow/unfollow status and set button accordingly
-            fetch(`https://media.maar.world:443/api/userRelationships/checkFollowStatus`, {
+            fetch(`https://api.plantasia.space/api/userRelationships/checkFollowStatus`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ followerUsername: loggedUsername, followingUsername: username })
@@ -234,7 +234,7 @@ fetch(`https://media.maar.world:443/api/userRelationships/mutualFollowers/${logg
 
                 document.getElementById('followButton').addEventListener('click', function() {
                     const url = isFollowing ? 'unfollow' : 'follow';
-                    const endpoint = `https://media.maar.world:443/api/userRelationships/${url}`;
+                    const endpoint = `https://api.plantasia.space/api/userRelationships/${url}`;
 
                     fetch(endpoint, {
                         method: 'POST',

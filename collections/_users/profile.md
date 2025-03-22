@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/profile
+permalink: /voyage/profile/
 titles:
   en: &EN xPlorer Profile
   en-GB: *EN
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const cacheKey = `profile_${userId}`;
         try {
             const data = await fetchDataWithCache(
-                `https://media.maar.world:443/api/users/profile?userId=${userId}`,
+                `https://api.plantasia.space/api/users/profile?userId=${userId}`,
                 cacheKey,
                 5, // Cache for 5 minutes
                 forceRefresh
@@ -334,7 +334,7 @@ async function uploadProfileImage(file) {
     const userId = localStorage.getItem('userId');
 
     console.log("Requesting presigned URL for image upload...");
-    const presignedUrlResponse = await fetch('https://media.maar.world:443/api/users/generate-profile-image-upload-url', {
+    const presignedUrlResponse = await fetch('https://api.plantasia.space/api/users/generate-profile-image-upload-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, fileName: file.name, fileType: file.type })
@@ -378,7 +378,7 @@ async function finalizeUserProfileUpdate(profileImageKey = null) {
         profileData.profileImageKey = profileImageKey;
     }
 
-    const response = await fetch('https://media.maar.world:443/api/users/finalize-profile-image', {
+    const response = await fetch('https://api.plantasia.space/api/users/finalize-profile-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profileData)
@@ -435,7 +435,7 @@ async function finalizeUserProfileUpdate(profileImageKey = null) {
 
     async function checkUsernameUniqueness(username, currentUserId = null) {
         try {
-            const url = new URL('https://media.maar.world:443/api/users/checkUsername');
+            const url = new URL('https://api.plantasia.space/api/users/checkUsername');
             url.searchParams.append('username', username);
             if (currentUserId) {
                 url.searchParams.append('currentUserId', currentUserId);

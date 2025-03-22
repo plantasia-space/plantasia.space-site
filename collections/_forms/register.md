@@ -2,7 +2,8 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /register
+permalink: /register/
+public: true
 titles:
   en: &EN Register
   en-GB: *EN
@@ -10,7 +11,6 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
-public: true
 
 ---
 
@@ -51,7 +51,7 @@ public: true
       }
 
       try {
-        const response = await fetch('https://media.maar.world:443/api/auth/logout', {
+        const response = await fetch('https://api.plantasia.space/api/auth/logout', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -105,11 +105,11 @@ public: true
       console.log('Checking token in localStorage:', token);
 
       // Exclude /register and /login pages from the session check
-      if (!token && currentPage !== '/login' && currentPage !== '/register') {
+      if (!token && currentPage !== '/login' && currentPage !== '/register' && currentPage !== '/register/') {
         console.log('No valid session, redirecting to login...');
-        window.location.href = '/login';  // Redirect to login if no valid session
+        window.location.href = '/login';
       }
-    }
+    }  
 
     // Initialize the page with session and auth link checks
     checkUserSession();  // Verify user session (but exclude register page)
@@ -138,7 +138,7 @@ public: true
 
       // Proceed with registration
       try {
-        const response = await fetch('https://media.maar.world:443/api/auth/register', {
+        const response = await fetch('https://api.plantasia.space/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

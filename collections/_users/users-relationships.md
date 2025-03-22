@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/user-relationships
+permalink: /voyage/user-relationships/
 titles:
   en: &EN User Relationships
   en-GB: *EN
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Form data to be sent:', formData);
 
         try {
-            const response = await fetch('https://media.maar.world:443/api/user-relationships/follow', {
+            const response = await fetch('https://api.plantasia.space/api/user-relationships/follow', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Form data to be sent:', formData);
 
         try {
-            const response = await fetch('https://media.maar.world:443/api/user-relationships/unfollow', {
+            const response = await fetch('https://api.plantasia.space/api/user-relationships/unfollow', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Form data to be sent:', formData);
 
         try {
-            const response = await fetch('https://media.maar.world:443/api/user-relationships/blockUser', {
+            const response = await fetch('https://api.plantasia.space/api/user-relationships/blockUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -251,7 +251,7 @@ function displayFollowingList(followingList) {
         console.log('Form data to be sent:', formData);
 
         try {
-            const response = await fetch('https://media.maar.world:443/api/user-relationships/unblockUser', {
+            const response = await fetch('https://api.plantasia.space/api/user-relationships/unblockUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -284,7 +284,7 @@ function displayFollowingList(followingList) {
         const userId2 = document.getElementById('followingId').value.trim();
 
         try {
-            const response = await fetch(`https://media.maar.world:443/api/user-relationships/mutualFollowers/${userId1}/${userId2}`, {
+            const response = await fetch(`https://api.plantasia.space/api/user-relationships/mutualFollowers/${userId1}/${userId2}`, {
                 method: 'GET'
             });
 

@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /xplorer/interplanetary-player
+permalink: /xplorer/interplanetary-player/
 titles:
   en: &EN Public Interplanetary Player
   en-GB: *EN
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {string} playerId - The ID of the Interplanetary Player
      */
     function loadInterplanetaryPlayerDetails(playerId) {
-        fetch(`https://media.maar.world:443/api/interplanetaryPlayers/${playerId}`)
+        fetch(`https://api.plantasia.space/api/interplanetaryPlayers/${playerId}`)
             .then(response => {
                 console.log('Response status:', response.status);
                 return response.json();
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show or hide Download 3D Model link
         const viewObjFile = document.getElementById('viewObjFile');
         if (player.objURL) {
-            viewObjFile.href = player.objURL.startsWith('http') ? player.objURL : `https://media.maar.world${player.objURL}`;
+            viewObjFile.href = player.objURL.startsWith('http') ? player.objURL : `https://api.plantasia.space${player.objURL}`;
             viewObjFile.textContent = 'Download 3D Model';
             viewObjFile.style.display = 'block';
         } else {
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show or hide Texture Image
         const viewTextureImage = document.getElementById('viewTextureImage');
         if (player.textureURL) {
-            const textureUrl = player.textureURL.startsWith('http') ? player.textureURL : `https://media.maar.world${player.textureURL}`;
+            const textureUrl = player.textureURL.startsWith('http') ? player.textureURL : `https://api.plantasia.space${player.textureURL}`;
             viewTextureImage.src = textureUrl;
             viewTextureImage.alt = `Texture of ${player.sciName || 'Interplanetary Player'}`;
             viewTextureImage.style.display = 'block';
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show or hide Interplanetary Player Image
         if (player.interplanetaryPlayerImage) {
-            interplanetaryPlayerImagePreview.src = `https://media.maar.world${encodeURI(player.interplanetaryPlayerImage)}`;
+            interplanetaryPlayerImagePreview.src = `https://api.plantasia.space${encodeURI(player.interplanetaryPlayerImage)}`;
             interplanetaryPlayerImagePreview.style.display = 'block';
         } else {
             interplanetaryPlayerImagePreview.style.display = 'none';
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
             playerOwnerList.innerHTML = `
                 <li class="user-list-item">
                     <div class="user-profile-pic">
-                        <img src="https://media.maar.world${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
+                        <img src="https://api.plantasia.space${ownerDetails.profileImage || '/default_profile.png'}" alt="${ownerDetails.username}">
                     </div>
                     <div class="user-details">
                         <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>

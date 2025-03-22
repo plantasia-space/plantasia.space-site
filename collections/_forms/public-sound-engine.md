@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /xplorer/sound-engine
+permalink: /xplorer/sound-engine/
 titles:
   en: &EN Create Sound Engine
   en-GB: *EN
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadSoundEngineDetails(soundEngineId) {
     const userId = localStorage.getItem('userId'); // Retrieve the logged-in user's ID
 
-    fetch(`https://media.maar.world:443/api/soundEngines/${soundEngineId}`)
+    fetch(`https://api.plantasia.space/api/soundEngines/${soundEngineId}`)
         .then(response => {
             console.log('Response status:', response.status);
             return response.json();
@@ -129,7 +129,7 @@ function loadSoundEngineDetails(soundEngineId) {
         document.getElementById('displayCredits').innerText = soundEngine.credits || 'No credits provided';
 
         if (soundEngine.soundEngineImage) {
-            soundEngineImagePreview.src = `https://media.maar.world${encodeURI(soundEngine.soundEngineImage)}`;
+            soundEngineImagePreview.src = `https://api.plantasia.space${encodeURI(soundEngine.soundEngineImage)}`;
             soundEngineImagePreview.style.display = 'block';
         } else {
             soundEngineImagePreview.style.display = 'none';
@@ -141,7 +141,7 @@ function loadSoundEngineDetails(soundEngineId) {
             engineOwnerList.innerHTML = `
                 <li class="user-list-item">
                     <div class="user-profile-pic">
-                        <img src="https://media.maar.world${ownerDetails.profileImage || '/https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${ownerDetails.username}">
+                        <img src="https://api.plantasia.space${ownerDetails.profileImage || '/https://api.plantasia.space/uploads/default/default-profile.jpg'}" alt="${ownerDetails.username}">
                     </div>
                     <div class="user-details">
                         <div class="user-display-name">${ownerDetails.displayName || 'Unknown'}</div>

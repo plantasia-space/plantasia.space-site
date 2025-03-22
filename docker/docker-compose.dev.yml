@@ -1,15 +1,17 @@
 version: "3.5"
 
 services:
-  jekyll-text-theme_dev:
-    image: docker_jekyll-text-theme_dev
+  plantasia-space-site:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: plantasia-space-site_dev
+    container_name: plantasia-space-site_dev
     environment:
-      - JEKYLL_ENV
+      - JEKYLL_ENV=development
     ports:
-      - 4000:4000
-    container_name: jekyll-TeXt-theme_dev
+      - "4000:4000"
     volumes:
-      - ..:/usr/src/app
-    stdin_open: true
-    tty: true
-    command: bundle exec jekyll serve -H 0.0.0.0 -t --config ./docs/_config.dev.yml
+      - ..:/usr/src/app  # Mount entire repo correctly
+      - /usr/src/app/_site  # Prevents conflicts with _site
+    command: bundle exec jekyll serve --host 0.0.0.0 --watch --drafts

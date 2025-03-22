@@ -4,18 +4,11 @@ title: Calendar
 show_title: false
 excerpt: <span </span>
 show_date: false
-permalink: /calendar
+permalink: /calendar/
 key: lab
 cover: /img/lab.png
-header:
-  theme: dark
- # background: 'linear-gradient(135deg, rgb(0, 255, 0), rgb(139, 34, 139, .1))'
+public: true
 
-article_header:
-  height: 50%
-  type: overlay
-  background_image:
-    src: /img/lab/franquia-1.jpeg
 
 ---
 

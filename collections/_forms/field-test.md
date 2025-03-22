@@ -2,7 +2,7 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /voyage/field
+permalink: /voyage/field/
 titles:
   # @start locale config
   en      : &EN      Check Username

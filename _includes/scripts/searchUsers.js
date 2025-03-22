@@ -2,7 +2,7 @@
 
 (function() {
     // Configuration
-    const API_ENDPOINT = 'https://media.maar.world:443/api/users/searchUsers'; // Ensure this matches your server's route
+    const API_ENDPOINT = 'https://api.plantasia.space/api/users/searchUsers'; // Ensure this matches your server's route
     const DEBOUNCE_DELAY = 300; // milliseconds
 
     /**

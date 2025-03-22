@@ -2,7 +2,8 @@
 layout: articles
 show_title: false
 show_date: false
-permalink: /login
+permalink: /login/
+public: true
 titles:
   en: &EN Login
   en-GB: *EN
@@ -10,7 +11,6 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
-public: true
 ---
 
 <br><br>
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
-      const response = await fetch('https://media.maar.world:443/api/auth/reset-password', {
+      const response = await fetch('https://api.plantasia.space/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

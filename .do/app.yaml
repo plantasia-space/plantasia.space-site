@@ -1,0 +1,17 @@
+name: plantasia-space-site
+services:
+  - name: plantasia-space-site
+    github:
+      repo: plantasia-space/plantasia.space-site
+      branch: dev
+      deploy_on_push: true
+    dockerfile_path: docker/Dockerfile
+    source_dir: /
+    http_port: 4000
+    routes:
+      - path: /
+    environment_slug: ruby
+    envs:
+      - key: JEKYLL_ENV
+        value: production
+        scope: RUN_AND_BUILD_TIME
