@@ -8,7 +8,7 @@
  */
 async function loginUser(email, password) {
     try {
-        const response = await fetch('https://media.maar.world:443/api/auth/login', {
+        const response = await fetch('https://media.maar.world/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -55,7 +55,7 @@ async function initializeAuth() {
         }
 
         // Perform session validation for protected pages
-        const response = await fetch('https://media.maar.world:443/api/auth/check-session', {
+        const response = await fetch('https://media.maar.world/api/auth/check-session', {
             method: 'GET',
             credentials: 'include', // Include cookies for session
             headers: { 'Content-Type': 'application/json' },
@@ -93,7 +93,7 @@ async function initializeAuth() {
 async function forgotPassword(email) {
     try {
        // const csrfToken = await getCsrfToken(); // If implementing CSRF protection
-        const response = await fetch('https://media.maar.world:443/api/auth/forgot-password', {
+        const response = await fetch('https://media.maar.world/api/auth/forgot-password', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ async function forgotPassword(email) {
 
 async function checkAuth() {
     try {
-        const response = await fetch('https://media.maar.world:443/api/auth/check-session', {
+        const response = await fetch('https://media.maar.world/api/auth/check-session', {
             method: 'GET',
             credentials: 'include', // Include cookies
             headers: {
@@ -158,7 +158,7 @@ async function checkAuth() {
  */
 async function logoutUser() {
     try {
-        const response = await fetch('https://media.maar.world:443/api/auth/logout', {
+        const response = await fetch('https://media.maar.world/api/auth/logout', {
             method: 'POST',
             credentials: 'include', // Include cookies in the request
             headers: {
@@ -206,7 +206,7 @@ function updateAuthLink(isLoggedIn) {
 
 async function getCsrfToken() {
     try {
-        const response = await fetch('https://media.maar.world:443/api/get-csrf-token', {
+        const response = await fetch('https://media.maar.world/api/get-csrf-token', {
             method: 'GET',
             credentials: 'include', // Include cookies in the request
         });
