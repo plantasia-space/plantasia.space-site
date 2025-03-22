@@ -7,6 +7,8 @@ show_date: false
 permalink: /subscribe
 key: lab
 cover: /img/lab.png
+public: true 
+
 header:
   theme: dark
  # background: 'linear-gradient(135deg, rgb(0, 255, 0), rgb(139, 34, 139, .1))'
