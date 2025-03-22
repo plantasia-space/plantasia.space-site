@@ -3,6 +3,7 @@ layout: articles
 show_title: false
 show_date: false
 permalink: /login
+public: true
 titles:
   en: &EN Login
   en-GB: *EN
@@ -10,7 +11,6 @@ titles:
   en-CA: *EN
   en-AU: *EN
 key: IP
-public: true
 ---
 
 <br><br>
