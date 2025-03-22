@@ -168,7 +168,7 @@ public: false
 
 <script>
     // Define the API base URL
-    const API_BASE_URL = 'https://media.maar.world:443/api';
+    const API_BASE_URL = 'https://api.plantasia.space:443/api';
 
     // Define the file category for this form
     const FILE_CATEGORY_UPLOAD = 'interplanetaryPlayers'; // Must match the category in spacesUtils.js
@@ -903,7 +903,7 @@ function populateEditMode(data) {
         
         exoplanetDetails.style.display = 'block'; // Show the details section in edit mode
 
-        const baseUrl = 'https://media.maar.world';
+        const baseUrl = 'https://api.plantasia.space';
 
         // Show existing GLB file link if available
         const existingGlbFileDiv = document.getElementById('existingGlbFile');
@@ -979,7 +979,7 @@ function populateViewMode(data) {
     // Set up the download link
     const viewGlbFile = document.getElementById('viewGlbFile');
     if (glbURL) {
-        viewGlbFile.href = glbURL.startsWith('http') ? glbURL : `https://media.maar.world${glbURL}`;
+        viewGlbFile.href = glbURL.startsWith('http') ? glbURL : `https://api.plantasia.space${glbURL}`;
         viewGlbFile.textContent = 'Download 3D Model';
         viewGlbFile.style.display = 'block';
     } else {

@@ -165,7 +165,7 @@ public: false
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = 'https://media.maar.world:443/api'; // Ensure this matches your backend
+    const API_BASE_URL = 'https://api.plantasia.space:443/api'; // Ensure this matches your backend
     const userId = localStorage.getItem('userId'); 
     const DEFAULT_SE_IMAGE_URL = 'https://mw-storage.fra1.cdn.digitaloceanspaces.com/default/default-soundEngine.jpg'; // Replace with your actual default image URL
 
@@ -523,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             li.innerHTML = `
                 <div class="user-profile-pic">
-                    <img src="${owner.profileImage ? `https://media.maar.world${owner.profileImage}` : 'https://media.maar.world/uploads/default/default-profile.jpg'}" alt="${owner.username}" loading="lazy">
+                    <img src="${owner.profileImage ? `https://api.plantasia.space${owner.profileImage}` : 'https://api.plantasia.space/uploads/default/default-profile.jpg'}" alt="${owner.username}" loading="lazy">
                 </div>
                 <div class="user-details">
                     <div class="user-display-name">${owner.displayName || 'Unknown'}</div>

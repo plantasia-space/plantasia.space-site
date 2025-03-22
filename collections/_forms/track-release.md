@@ -259,7 +259,7 @@ public: false
 <script>
 
 // Define the API base URL
-const API_BASE_URL = 'https://media.maar.world:443/api';
+const API_BASE_URL = 'https://api.plantasia.space:443/api';
 
 // Define the file category for this form
 const FILE_CATEGORY_UPLOAD = 'tracks'; // Must match the category in spacesUtils.js
@@ -571,8 +571,8 @@ function updateSoundEngineDetails() {
     
     if (soundEngine) {
         const imageUrl = soundEngine.soundEngineImage
-            ? `https://media.maar.world${soundEngine.soundEngineImage}`
-            : 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
+            ? `https://api.plantasia.space${soundEngine.soundEngineImage}`
+            : 'https://api.plantasia.space/uploads/default/default-soundEngine.jpg';
     
         const engineElement = document.createElement('li');
         engineElement.classList.add('soundEngine-list-item');
@@ -1076,8 +1076,8 @@ artistEntry.innerHTML = `
 
         if (player) {
             const imageUrl = player.ddd && player.ddd.textureURL
-                ? `https://media.maar.world${player.ddd.textureURL}`
-                : 'https://media.maar.world/uploads/default/default-player.jpg';
+                ? `https://api.plantasia.space${player.ddd.textureURL}`
+                : 'https://api.plantasia.space/uploads/default/default-player.jpg';
 
             playerImageDisplay.src = imageUrl;
             playerImageDisplay.alt = player.artName || 'Interplanetary Player Image';
@@ -1088,7 +1088,7 @@ artistEntry.innerHTML = `
             viewPlayerAvailability.innerHTML = `<strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}`;
         } else {
             // If player data is not available
-            playerImageDisplay.src = 'https://media.maar.world/uploads/default/default-player.jpg';
+            playerImageDisplay.src = 'https://api.plantasia.space/uploads/default/default-player.jpg';
             playerImageDisplay.alt = 'No Interplanetary Player Selected';
 
             viewPlayerName.innerHTML = `<strong>Name:</strong> N/A`;
@@ -1111,8 +1111,8 @@ artistEntry.innerHTML = `
 
         if (soundEngine) {
             const imageUrl = soundEngine.soundEngineImage
-                ? `https://media.maar.world${soundEngine.soundEngineImage}`
-                : 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
+                ? `https://api.plantasia.space${soundEngine.soundEngineImage}`
+                : 'https://api.plantasia.space/uploads/default/default-soundEngine.jpg';
 
             soundEngineImageDisplay.src = imageUrl;
             soundEngineImageDisplay.alt = soundEngine.soundEngineName || 'Sound Engine Image';
@@ -1135,7 +1135,7 @@ artistEntry.innerHTML = `
             viewSoundEngineCredits.innerHTML = `<strong>Credits:</strong> ${soundEngine.credits || 'N/A'}`;
         } else {
             // If sound engine data is not available
-            soundEngineImageDisplay.src = 'https://media.maar.world/uploads/default/default-soundEngine.jpg';
+            soundEngineImageDisplay.src = 'https://api.plantasia.space/uploads/default/default-soundEngine.jpg';
             soundEngineImageDisplay.alt = 'No Sound Engine Selected';
 
             viewSoundEngineName.innerHTML = `<strong>Name:</strong> N/A`;

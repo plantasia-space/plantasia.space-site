@@ -55,7 +55,7 @@ public: false
     // Load a simple OBJ model
     const loader = new OBJLoader();
     loader.load(
-      'http://media.maar.world/uploads/models/4/077899da693f__Design_a_3D_model_.obj',
+      'http://api.plantasia.space/uploads/models/4/077899da693f__Design_a_3D_model_.obj',
       (object) => {
         scene.add(object);
         console.log("Model loaded successfully.");
