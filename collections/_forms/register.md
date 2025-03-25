@@ -3,7 +3,7 @@ layout: articles
 show_title: false
 show_date: false
 permalink: /register/
-public: true
+public: false
 titles:
   en: &EN Register
   en-GB: *EN

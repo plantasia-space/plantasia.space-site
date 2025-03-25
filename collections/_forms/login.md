@@ -13,12 +13,11 @@ titles:
 key: IP
 ---
 
-<br><br>
+<br>Dont walk so fast ;)<br>
 
-<div class="form-container">
+<!-- <div class="form-container">
   <h3 id="loginTitle">plantasia space login</h3>
 
-  <!-- Login Form (shown if no recovery token is present) -->
   <form id="loginForm" class="contact-form">
     <input type="email" id="loginEmail" required placeholder="Enter xPlorer email" />
     <input type="password" id="loginPassword" required placeholder="Enter password" />
@@ -29,21 +28,19 @@ key: IP
     <button type="button" id="createAccountButton" class="btn button--outline-primary button--circle">Create an account</button>
   </form>
 
-  <!-- Reset Password Form (shown if recovery token is present) -->
   <form id="resetPasswordForm" class="contact-form" style="display: none;">
     <input type="password" id="newPassword" required placeholder="Enter your new password" />
     <input type="password" id="confirmNewPassword" required placeholder="Confirm your new password" />
     <button type="submit">Reset Password</button>
   </form>
 
-  <p id="message" style="color: red;"></p> <!-- For displaying server messages -->
+  <p id="message" style="color: red;"></p>  
 
-  <!-- Forgot password link -->
   <p><a href="#" id="forgotPasswordLink">Forgot your password?</a></p>
-</div>
+</div> -->
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+/* document.addEventListener('DOMContentLoaded', function() {
   const messageElement = document.getElementById('message');
   const resetPasswordForm = document.getElementById('resetPasswordForm');
   const loginForm = document.getElementById('loginForm');
@@ -152,5 +149,5 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   initializePage(); // Start page-specific logic
-});
+}); */
 </script>
