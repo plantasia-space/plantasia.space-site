@@ -24,11 +24,11 @@ public: false
                 </button>
             </a>
         </div>
-    <div class="edit-button-container">
-        <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile" data-mode="view">
-            <span class="material-symbols-outlined" id="editButtonIcon">edit</span> 
-        </button>
-    </div>
+        <div class="edit-button-container">
+            <button id="editButton" class="btn button--outline-primary button--circle" title="Edit Profile" data-mode="view">
+                <span class="material-symbols-outlined" id="editButtonIcon">edit</span> 
+            </button>
+        </div>
     </div>
 
     <h3>xPlorer Profile</h3>
@@ -53,8 +53,8 @@ public: false
         </p>
         <p><strong>Email:</strong> <span id="displayEmail"></span></p>
 
-        <p><strong>Gender Identity:</strong> <span id="displayGenderIdentity"></span></p>
-        <p id="customGenderDisplay" style="display: none;"><strong>Custom Gender Identity:</strong> <span id="displayCustomGenderIdentity"></span></p>
+        <!-- Removed Gender Identity display -->
+
         <p><strong>Pronouns:</strong> <span id="displayPronouns"></span></p>
         <p id="otherPronounsDisplay" style="display: none;"><strong>Other Pronouns:</strong> <span id="displayOtherPronouns"></span></p>
         <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
@@ -67,9 +67,9 @@ public: false
         <p><strong>Custom Links:</strong>
         <div id="displayCustomLinks">
             <span id="customLink1Display"></span>
-            <span id="separator1" style="display:none;"> | </span> <!-- Hide separator by default --><br>
+            <span id="separator1" style="display:none;"> | </span><br>
             <span id="customLink2Display"></span>
-            <span id="separator2" style="display:none;"> | </span> <!-- Hide separator by default --><br>
+            <span id="separator2" style="display:none;"> | </span><br>
             <span id="customLink3Display"></span>
         </div>
         </p>
@@ -99,22 +99,7 @@ public: false
         <strong><label for="phone">Phone:</label></strong>
         <input type="tel" id="phone" name="phone"><br><br>
 
-        <!-- Gender Identity -->
-        <strong><label for="genderIdentity">Gender Identity: </label></strong>         
-        <select id="genderIdentity" name="genderIdentity" required>
-            <option value="Prefer not to reply">Prefer not to reply</option>
-            <option value="Woman">Woman</option>
-            <option value="Man">Man</option>
-            <option value="Trans woman">Trans woman</option>
-            <option value="Trans man">Trans man</option>
-            <option value="Non-Binary">Non-Binary</option>
-            <option value="Not Listed">Not Listed</option>
-        </select><br>
-        <small style="color: grey;">This won’t be part of your public profile</small>
-        
-        <!-- Custom Gender Identity (Shown when "Not Listed" is selected) -->
-        <strong><label for="customGenderIdentity" id="customGenderLabel" style="display: none;">Please specify:</label></strong>
-        <input type="text" id="customGenderIdentity" name="customGenderIdentity" style="display: none;"><br><br>
+        <!-- Removed Gender Identity fields entirely -->
 
         <!-- Pronouns -->
         <strong><label for="pronouns">Pronouns:</label></strong>
@@ -191,68 +176,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-function populateUserProfile(data) {
-    console.log("Received profile data:", data); // Log profile data to verify content
+    function populateUserProfile(data) {
+        console.log("Received profile data:", data);
 
-    currentUsername = data.username || '';
+        currentUsername = data.username || '';
+        const defaultImageURL = "https://mw-storage.fra1.digitaloceanspaces.com/default/default-profile_thumbnail_mid.webp";
+        const previewImageURL = data.thumbMidURL || defaultImageURL;
 
-    // Define the default image URL
-    const defaultImageURL = "https://mw-storage.fra1.digitaloceanspaces.com/default/default-profile_thumbnail_mid.webp";
+        const profileImageElement = document.getElementById('profileImagePreview');
+        const profileImageFormElement = document.getElementById('profileImagePreviewForm');
 
-    // Set profile image to thumbMidURL if available, or fallback to the default image
-    const previewImageURL = data.thumbMidURL || defaultImageURL;
-
-    // Assign thumbMidURL or default image URL to the profile image elements
-    const profileImageElement = document.getElementById('profileImagePreview');
-    const profileImageFormElement = document.getElementById('profileImagePreviewForm');
-
-    if (profileImageElement) {
-        profileImageElement.src = previewImageURL;
-        profileImageElement.style.display = 'block';
-    }
-    if (profileImageFormElement) {
-        profileImageFormElement.src = previewImageURL;
-        profileImageFormElement.style.display = 'block';
-    }
-
-    // Populate view mode fields
-    document.getElementById('displayUsername').innerText = data.username || '';
-    document.getElementById('displayUsernameForUrl').innerText = data.username || '';
-    document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username || ''}`;
-    document.getElementById('displayEmail').innerText = data.email || '';
-    document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
-    document.getElementById('displayRole').innerText = data.role || 'Not provided';
-
-    // Populate form fields for edit mode
-    document.getElementById('displayName').value = data.displayName || '';
-    document.getElementById('username').value = data.username || '';
-    document.getElementById('phone').value = data.phone || '';
-
-    // Handle gender identity and pronouns
-    handleCustomFields(data);
-
-    // Populate additional fields
-    document.getElementById('displayDisplayName').innerText = data.displayName || '';
-    document.getElementById('city').value = data.city || '';
-    document.getElementById('displayCity').innerText = data.city || '';
-    document.getElementById('country').value = data.country || '';
-    document.getElementById('displayCountry').innerText = data.country || '';
-    document.getElementById('bio').value = data.bio || '';
-    document.getElementById('displayBio').innerText = data.bio || '';
-    handleCustomLinks(data.customLinks || []);
-}
-
-    function handleCustomFields(data) {
-        // Handle custom gender identity if "Not Listed"
-        if (data.genderIdentity === 'Not Listed') {
-            document.getElementById('displayGenderIdentity').innerText = data.customGenderIdentity;
-            document.getElementById('customGenderDisplay').style.display = 'block';
-        } else {
-            document.getElementById('displayGenderIdentity').innerText = data.genderIdentity || 'Not provided';
-            document.getElementById('customGenderDisplay').style.display = 'none';
+        if (profileImageElement) {
+            profileImageElement.src = previewImageURL;
+            profileImageElement.style.display = 'block';
+        }
+        if (profileImageFormElement) {
+            profileImageFormElement.src = previewImageURL;
+            profileImageFormElement.style.display = 'block';
         }
 
-        // Handle other pronouns if "Other"
+        document.getElementById('displayUsername').innerText = data.username || '';
+        document.getElementById('displayUsernameForUrl').innerText = data.username || '';
+        document.getElementById('profileUrl').href = `https://maar.world/xplorer/?username=${data.username || ''}`;
+        document.getElementById('displayEmail').innerText = data.email || '';
+        document.getElementById('displayPhone').innerText = data.phone || 'Not provided';
+        document.getElementById('displayRole').innerText = data.role || 'Not provided';
+
+        // Populate form fields for edit mode
+        document.getElementById('displayName').value = data.displayName || '';
+        document.getElementById('username').value = data.username || '';
+        document.getElementById('phone').value = data.phone || '';
+
+        handleCustomFields(data);
+
+        document.getElementById('displayDisplayName').innerText = data.displayName || '';
+        document.getElementById('city').value = data.city || '';
+        document.getElementById('displayCity').innerText = data.city || '';
+        document.getElementById('country').value = data.country || '';
+        document.getElementById('displayCountry').innerText = data.country || '';
+        document.getElementById('bio').value = data.bio || '';
+        document.getElementById('displayBio').innerText = data.bio || '';
+        handleCustomLinks(data.customLinks || []);
+    }
+
+    function handleCustomFields(data) {
         if (data.pronouns === 'Other') {
             document.getElementById('displayPronouns').innerText = data.otherPronouns;
             document.getElementById('otherPronounsDisplay').style.display = 'block';
@@ -271,7 +238,6 @@ function populateUserProfile(data) {
         document.getElementById('customLink3Display').innerHTML = links[2] ? `<a href="${links[2]}" target="_blank">${links[2]}</a>` : '';
     }
 
-    // Toggle edit mode or cancel edit
     document.getElementById('editButton').addEventListener('click', toggleEditMode);
     document.getElementById('cancelButton').addEventListener('click', toggleEditMode);
 
@@ -308,7 +274,6 @@ function populateUserProfile(data) {
         document.getElementById('profileImagePreviewForm').src = originalProfileImage;
     }
 
-    // Submit profile form with image upload
     document.getElementById('profileForm').addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -322,6 +287,7 @@ function populateUserProfile(data) {
             try {
                 profileImageKey = await uploadProfileImage(profileImageFile);
             } catch (error) {
+                console.error("Image upload failed:", error);
                 document.getElementById('messageDisplay').innerText = 'Failed to upload profile image. Please try again.';
                 return;
             }
@@ -330,81 +296,81 @@ function populateUserProfile(data) {
         finalizeUserProfileUpdate(profileImageKey);
     });
 
-async function uploadProfileImage(file) {
-    const userId = localStorage.getItem('userId');
+    async function uploadProfileImage(file) {
+        const userId = localStorage.getItem('userId');
+        console.log("Requesting presigned URL for image upload...");
+        const presignedUrlResponse = await fetch('https://api.plantasia.space/api/users/generate-profile-image-upload-url', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, fileName: file.name, fileType: file.type })
+        });
+        const { uploadURL, fileKey } = await presignedUrlResponse.json();
+        console.log("Presigned URL received:", { uploadURL, fileKey });
 
-    console.log("Requesting presigned URL for image upload...");
-    const presignedUrlResponse = await fetch('https://api.plantasia.space/api/users/generate-profile-image-upload-url', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, fileName: file.name, fileType: file.type })
-    });
-    const { uploadURL, fileKey } = await presignedUrlResponse.json();
-    console.log("Presigned URL received:", { uploadURL, fileKey });
-
-    await fetch(uploadURL, { method: 'PUT', body: file });
-    return fileKey;
-}
-
-async function finalizeUserProfileUpdate(profileImageKey = null) {
-    const userId = localStorage.getItem('userId');
-    console.log("Finalizing profile with userId:", userId);
-
-    if (!userId) {
-        document.getElementById('messageDisplay').innerText = 'User ID is missing. Please log in again.';
-        return;
+        try {
+            const uploadResponse = await fetch(uploadURL, { method: 'PUT', body: file });
+            if (![200, 202].includes(uploadResponse.status)) {
+                throw new Error(`Unexpected HTTP status ${uploadResponse.status}`);
+            }
+        } catch (uploadError) {
+            console.error("Error during image upload:", uploadError);
+            // Optionally, you might decide to continue using the fileKey even if the PUT fails,
+            // if that's acceptable for your fallback behavior.
+        }
+        return fileKey;
     }
 
-    const profileData = {
-        userId,
-        username: document.getElementById('username').value.trim().toLowerCase(),
-        displayName: document.getElementById('displayName').value.trim(),
-        phone: document.getElementById('phone').value,
-        genderIdentity: document.getElementById('genderIdentity').value,
-        customGenderIdentity: document.getElementById('customGenderIdentity').value || null,
-        pronouns: document.getElementById('pronouns').value,
-        otherPronouns: document.getElementById('otherPronouns').value || null,
-        city: document.getElementById('city').value.trim(),
-        country: document.getElementById('country').value.trim(),
-        bio: document.getElementById('bio').value.trim(),
-        customLinks: JSON.stringify([
-            document.getElementById('customLink1').value.trim(),
-            document.getElementById('customLink2').value.trim(),
-            document.getElementById('customLink3').value.trim()
-        ])
-    };
+    async function finalizeUserProfileUpdate(profileImageKey = null) {
+        const userId = localStorage.getItem('userId');
+        console.log("Finalizing profile with userId:", userId);
 
-    if (profileImageKey) {
-        profileData.profileImageKey = profileImageKey;
+        if (!userId) {
+            document.getElementById('messageDisplay').innerText = 'User ID is missing. Please log in again.';
+            return;
+        }
+
+        const profileData = {
+            userId,
+            username: document.getElementById('username').value.trim().toLowerCase(),
+            displayName: document.getElementById('displayName').value.trim(),
+            phone: document.getElementById('phone').value,
+            pronouns: document.getElementById('pronouns').value,
+            otherPronouns: document.getElementById('otherPronouns').value || null,
+            city: document.getElementById('city').value.trim(),
+            country: document.getElementById('country').value.trim(),
+            bio: document.getElementById('bio').value.trim(),
+            customLinks: JSON.stringify([
+                document.getElementById('customLink1').value.trim(),
+                document.getElementById('customLink2').value.trim(),
+                document.getElementById('customLink3').value.trim()
+            ])
+        };
+
+        if (profileImageKey) {
+            profileData.profileImageKey = profileImageKey;
+        }
+
+        const response = await fetch('https://api.plantasia.space/api/users/finalize-profile-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(profileData)
+        });
+
+        const result = await response.json();
+        console.log("Response from profile finalization:", result);
+
+        if (result.success) {
+            document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
+            clearCachedData(`profile_${userId}`);
+            // Redirect (or reload) to ensure updated profile data is shown.
+            setTimeout(() => {
+                window.location.href = '/voyage/profile/';
+            }, 1000);
+        } else {
+            document.getElementById('messageDisplay').innerText = 'Failed to update profile. Please try again.';
+        }
     }
 
-    const response = await fetch('https://api.plantasia.space/api/users/finalize-profile-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData)
-    });
-
-    const result = await response.json();
-    console.log("Response from profile finalization:", result);
-
-    if (result.success) {
-        document.getElementById('messageDisplay').innerText = 'Profile updated successfully!';
-        
-        // Clear cache for the updated profile and fetch new data
-        clearCachedData(`profile_${userId}`);
-        
-        // Wait a moment before re-fetching to ensure cache is cleared
-        setTimeout(() => {
-            fetchUserProfile(userId, true).then(() => {
-                toggleEditMode(); // Switch back to view mode after refreshing profile data
-            });
-        }, 200); // Adjust delay if necessary
-    } else {
-        document.getElementById('messageDisplay').innerText = 'Failed to update profile. Please try again.';
-    }
-}
-
-    // Validate username uniqueness
     const usernameInput = document.getElementById('username');
     const feedbackElement = document.getElementById('usernameFeedback');
     const validUsername = /^[a-z0-9_.]{1,30}$/;
@@ -457,7 +423,6 @@ async function finalizeUserProfileUpdate(profileImageKey = null) {
         };
     }
 
-    // Initialize profile view on page load
     fetchUserProfile(userId);
 });
 </script>
