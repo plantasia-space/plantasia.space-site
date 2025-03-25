@@ -2,8 +2,8 @@
 $main-color-1:     #ff33cc;
 $text-color-1:     #33ffff;
 
-$main-color-2:     #ffffff;
-$text-color-2:     rgba(rgb(234, 234, 234), .8);
+$main-color-2:     #33ffff;
+$text-color-2:     #ff33cc;
 
 $main-color-3:     rgba(#000000, 1);
 $text-color-3:     #ffffff;
@@ -37,7 +37,7 @@ $footer-text-color: $text-color-3;
 $footer-background: $main-color-3;
 
 // border and shadow colors
-$border-color:     mix(#fff, $background-color, 20%);
+$border-color:     mix(#fff, $background-color, 20%); // IMPORTANT 
 $border-color-l:   mix(#ffffff, $background-color, 10%);
 $decorate-color:   rgba(#fff, .1);
 $mask-color:       rgba(#000, .9);

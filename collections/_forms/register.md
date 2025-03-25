@@ -16,7 +16,7 @@ key: IP
 
 <br><br>
 
-<div class="form-container">
+<div class="web-container">
     <h3>plantasia space register</h3>
     <form id="registerForm" class="contact-form">
         <input type="email" id="email" required placeholder="Enter xPlorer email" />

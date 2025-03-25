@@ -1,0 +1,7 @@
+{% if site.env.IS_PRODUCTION == "true" %}
+User-agent: *
+Disallow:
+{% else %}
+User-agent: *
+Disallow: /
+{% endif %}

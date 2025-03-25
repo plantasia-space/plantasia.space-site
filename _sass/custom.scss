@@ -59,7 +59,7 @@
   'wght' 300,
   'GRAD' 200,
   'opsz' 40;
-  color: #33ffff;
+  color: $main-color-2;
   font-weight: bold;
   vertical-align: bottom;
 }
@@ -72,7 +72,7 @@
 
 #progress {
   height: 20px;
-  background-color: #33ffff;
+  background-color: $main-color-2;
   width: 0%;
   border-radius: 5px;
 }
@@ -89,7 +89,7 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   width: $profile-w;
   height: $profile-w;
   margin: 0 auto 20px auto; /* Center the container and add margin below */
-  border: 1px solid #ff33cc;
+  border: 1px solid $main-color-1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +132,7 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   width: 100%;
   height: 100%;
   clip-path: inherit; /* Inherits the hexagonal shape */
-  border: 4px solid #ffffff; /* White border around the hexagon */
+  border: 4px solid $border-color; /* White border around the hexagon */
   box-sizing: border-box;
   z-index: 1;
 }
@@ -163,7 +163,7 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
   height: auto;
   display: block;
   margin: 0 auto; /* Center the image horizontally */
-  border: 1px solid #33ffff;
+  border: 1px solid $main-color-2;
 
 }
 
@@ -171,7 +171,7 @@ $profile-w: 16rem; // Define a fixed button size (you can adjust as needed)
 .cover-image-container {
   width: 256px;
   height: 256px;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,7 +225,7 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 
 /* Additional SCSS for Playlist Form */
 .playlist-item {
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -366,12 +366,12 @@ input[type="number"] {
 
 .user-username {
   font-size: 14px;
-  color: #ccc;
+  color: $border-color;
 }
 
 .user-username a {
   text-decoration: none;
-  color: #ccc;
+  color: $border-color;
 }
 
 .user-username a:hover {
@@ -445,7 +445,7 @@ input[type="number"] {
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   background-color: #000;
   color: #fff;
   position: relative;
@@ -469,7 +469,7 @@ input[type="number"] {
   width: 140px;
   height: 140px;
   border-radius: 50%; /* Keep menu images circular */
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   object-fit: cover;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -483,7 +483,7 @@ input[type="number"] {
   width: 140px;
   height: 140px;
   border-radius: 12px; /* Rounded borders for Playlists */
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   object-fit: cover;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -496,7 +496,7 @@ input[type="number"] {
 .track-list-item img {
   width: 140px;
   height: 140px;
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   border-radius: 0; /* Square frame for Tracks */
   object-fit: cover;
   margin-right: 20px;
@@ -525,7 +525,7 @@ input[type="number"] {
       0% 50%,
       10% 10%
   ); /* Define decagon shape */
-  border: 2px solid #ffffff; /* Decagon border */
+  border: 2px solid $border-color; /* Decagon border */
   box-sizing: border-box;
   transition: transform 0.3s ease; /* Smooth hover effect */
 }
@@ -573,7 +573,7 @@ input[type="number"] {
     25% 95%,
     0% 50%
   );
-  border: 2px solid #ffffff; /* Hexagon border */
+  border: 2px solid $border-color; /* Hexagon border */
   box-sizing: border-box;
   pointer-events: none; /* Ensures the border doesn't interfere with image interactions */
 }
@@ -652,7 +652,7 @@ input[type="number"] {
 .playlist-created-on,
 .playlist-description {
   font-size: 1em;
-  color: #ccc;
+  color: $text-color-theme-dark;
   margin-bottom: 3px;
 }
 
@@ -896,13 +896,13 @@ input[type="number"] {
 
 /* Option Button Focus State */
 .option-button:focus {
-  outline: 2px dashed #ffffff;
+  outline: 2px dashed $border-color;
   outline-offset: 4px;
 }
 
 /* More Options Button Focus State */
 .more-options-button:focus {
-  outline: 2px dashed #ffffff;
+  outline: 2px dashed $border-color;
   outline-offset: 4px;
 }
 
@@ -914,7 +914,7 @@ input[type="number"] {
 
 .share-button {
   background-color: #3370ff00; /* Bright color for the share button */
-  border: 2px solid #ffffff; /* Same color as the background by default */
+  border: 2px solid $border-color; /* Same color as the background by default */
   color: #fff;
   border-radius: 6px;
   padding: 5px 10px;
@@ -930,7 +930,7 @@ input[type="number"] {
 
 
 .share-button:hover {
-  background-color: #ffffff; /* Darker shade for hover */
+  background-color: $border-color; /* Darker shade for hover */
   color: #000000;
 }
 
@@ -963,6 +963,23 @@ input[type="number"] {
   .param-range input[type="number"] {
       width: 100%;
   }
+}
+
+
+.web-container {
+  text-align: center; /* Ensures content is centered */
+  margin: 0 auto; /* Centers the container */
+  padding: 0px;
+  padding: 2vw;
+  border-radius: 8px;
+
+  border: 1px solid $text-color-theme-light-l;
+}
+
+.voyage-container{
+  text-align: center; /* Ensures content is centered */
+  margin: 0 auto; /* Centers the container */
+  padding: 0px;
 }
 
 /* ------------------ FORM CONTAINER ----------------------- */
@@ -1001,25 +1018,25 @@ input[type="number"] {
   margin-top: 5px;
   margin-bottom: 20px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   box-sizing: border-box;
   background-color: white; /* Ensure background is white for visibility */
   color: black; /* Set text color to black for visibility */
 }
 
 .contact-form button[type=submit] {
-  background-color: #ff33cc;
+  background-color: $main-color-1;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
-  border: 2px solid #ff33cc; /* Border similar to submit button */
+  border: 2px solid $main-color-1; /* Border similar to submit button */
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
 }
 
 .contact-form button[type=submit]:hover {
-  background-color: #33ffff00;
+  background-color: $main-color-2;
   color: rgb(255, 255, 255);
 
 }
@@ -1029,14 +1046,14 @@ input[type="number"] {
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
-  border: 2px solid #ff33cc; /* Border similar to submit button */
+  border: 2px solid $main-color-1; /* Border similar to submit button */
   border-radius: 4px;
   cursor: pointer;
   width: 100%; /* Match the width of the submit button */
   box-sizing: border-box; /* Ensure padding and border don't affect width */
 }
 .contact-form button[type=button]:not(.toggle-button):hover {
-  background-color: #ff33cc;
+  background-color: $main-color-1;
   color: white;
 }
 /* ------------------ DROPDOWN STYLING ----------------------- */
@@ -1048,7 +1065,7 @@ input[type="number"] {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #ffffff;
+  background-color: $border-color;
   border: 1px solid #000000;
   max-height: 200px;
   overflow-y: auto;
@@ -1068,15 +1085,15 @@ input[type="number"] {
 .user-result {
   padding: 10px;
   cursor: pointer;
-  background-color: #ffffff;
+  background-color: $border-color;
   color: #000000;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $border-color;
   transition: background-color 0.3s ease;
 }
 
 .user-result:hover,
 .user-result.selected {
-  background-color: #33ffff;
+  background-color: $main-color-2;
   font-weight: bold;
   border-radius: 4px;
 }
@@ -1088,7 +1105,7 @@ input[type="number"] {
 
 /* ------------------ INVITE BUTTON ----------------------- */
 .invite-button {
-  background-color: #ff33cc;
+  background-color: $main-color-1;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -1101,7 +1118,7 @@ input[type="number"] {
 }
 
 .invite-button:hover {
-  background-color: #33ffff;
+  background-color: $main-color-2;
   color: #000000;
 }
 
@@ -1153,7 +1170,7 @@ input[type="number"] {
   display: flex;
   justify-content: center;         /* Center horizontally */
   align-items: flex-start;         /* Align items to the top */
-  padding: 60px 20px 80px 20px;    /* Padding with extra bottom padding for the profile image */
+  padding: 0px 0px 80px 0px;    /* Padding with extra bottom padding for the profile image */
   background-color: #000000;       /* Optional: Background color for contrast */
   position: relative;              /* To contain absolutely positioned children if needed */
 }
@@ -1163,13 +1180,13 @@ input[type="number"] {
   display: flex;
   flex-direction: column;          /* Stack content vertically */
   align-items: center;             /* Center content horizontally */
-  padding: 20px;
+  padding: 10px;
   padding-bottom: 100px;            /* Extra bottom padding to accommodate the overlapping image */
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   border-radius: 12px;
   background: url('/img/lab/genesis-lab.jpg') no-repeat center center; /* Background image */
   background-size: cover;          /* Ensure the background covers the card */
-  color: #ffffff;
+  color: $border-color;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
   transition: transform 0.3s ease; /* Smooth hover animation */
   width: 100%;                     /* Full width */
@@ -1211,8 +1228,8 @@ input[type="number"] {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ffffff;
-  background-color: #ffffff; /* Optional: Adds a background if image fails to load */
+  border: 2px solid $text-color-theme-light-l;
+  background-color: $border-color; /* Optional: Adds a background if image fails to load */
 }
 
 /* Details Section */
@@ -1232,7 +1249,7 @@ input[type="number"] {
   font-family: 'Orbit', sans-serif; /* Orbit font */
   font-size: 1.5em;                     /* Resemble h1 */
   font-weight: 700;                     /* Bold */
-  color: #ffffff;                       /* White text */
+  color: $text-color-3;                       /* White text */
   background-color: rgba(0, 0, 0, 0.6);/* Semi-transparent black background */
   padding: 8px 12px;                    /* Padding for spacing */
   letter-spacing: 1.5px;                /* Spacing between letters */
@@ -1245,7 +1262,7 @@ input[type="number"] {
 /* Username */
 .voyage-username {
   font-size: 1em;
-  color: #ffffff;
+  color: $text-color-3;
   background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
   padding: 5px 10px;                    /* Padding for better appearance */
   border-radius: 4px;                   /* Rounded corners */
@@ -1256,20 +1273,20 @@ input[type="number"] {
 .voyage-bio {
   font-size: 1.0em;
   background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
-  color: #ffffff;
+  color: $text-color-theme-dark;
   margin-top: 8px;
 }
 
 /* Role */
 .voyage-role {
   font-size: 1em;
-  color: #cccccc;
+  color: $text-color-3;
   margin-top: 8px;
 }
 
 /* Custom Link */
 .voyage-custom-link a {
-  color: #33ffff;
+  color: $main-color-2;
   text-decoration: none;
   margin-top: 10px;
 }
@@ -1368,7 +1385,7 @@ input[type="number"] {
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(80, 80, 80, 0.85); /* Tooltip background */
-  color: #ffffff;
+  color: $border-color;
   padding: 8px 12px; /* Padding for readability */
   border-radius: 4px;
   font-size: 0.9em; /* Adjust font size */
@@ -1418,7 +1435,7 @@ input[type="number"] {
 /* Additional styles if needed */
 textarea#description {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   border-radius: 4px;
 }
 /* ------------------ MAAR.WORLD  NEUTRAL FORM CONTAINER ----------------------- */
@@ -1442,7 +1459,7 @@ textarea#description {
 .form-box {
   background: rgba(0, 0, 0, 0.95);
   padding: 30px 40px;
-  border: 1px solid #ffffff; /* Subtle accent color */
+  border: 1px solid $text-color-theme-light-l; /* Subtle accent color */
   border-radius: 10px;
   box-shadow: 0 1px 1px rgba(236, 236, 236, 0.824);
   position: relative;
@@ -1455,7 +1472,7 @@ textarea#description {
 .form-box h2 {
   margin-bottom: 20px;
   font-size: 1.5em;
-  color: #ffffff; /* Accent color for titles */
+  color: $border-color; /* Accent color for titles */
   text-align: center;
   font-weight: 700;
 }
@@ -1487,8 +1504,8 @@ textarea#description {
   --collapsible-toggle-button-size: 40px; /* Size for toggle buttons */
   --collapsible-toggle-icon-size: 24px; /* Size for toggle icons */
   --collapsible-header-bg-color: #000000; /* Background color for section headers */
-  --collapsible-header-hover-bg-color: #ffffff; /* Hover background color */
-  --collapsible-title-color: #ffffff; /* Color for section titles */
+  --collapsible-header-hover-bg-color: $border-color; /* Hover background color */
+  --collapsible-title-color: $border-color; /* Color for section titles */
   --collapsible-border-color: #dddddd; /* Border color for sections */
 }
 /* Reset some default styles for consistency */
@@ -1632,7 +1649,7 @@ textarea#description {
   background-color: #00000000;   /* Optional: Background color */
   font-family: 'Orbit', sans-serif; /* Optional font */
   font-size: 1em;              /* Base font size */
-  color: #ffffff;              /* Text color */
+  color: $border-color;              /* Text color */
   margin-top: auto;            /* Push footer to the bottom if using Flexbox in body */
 }
 
@@ -1691,8 +1708,8 @@ textarea#description {
 .checkmark {
   width: 20px;
   height: 20px;
-  background-color: #ffffff; /* Background for unchecked state */
-  border: 2px solid #ff33cc; /* Border color */
+  background-color: $border-color; /* Background for unchecked state */
+  border: 2px solid $main-color-1; /* Border color */
   border-radius: 4px; /* Rounded corners */
   position: relative;
   display: inline-block;
@@ -1701,7 +1718,7 @@ textarea#description {
 
 /* Checked state with background color change */
 .checkbox-container input[type="checkbox"]:checked + .checkmark {
-  background-color: #ff33cc; /* Pink background when checked */
+  background-color: $main-color-1; /* Pink background when checked */
 }
 
 /* Checkmark icon inside the checkbox */
@@ -1724,8 +1741,8 @@ textarea#description {
 
 /* Spinner Styles */
 .spinner {
-  border: 8px solid #ffffff; 
-  border-top: 8px solid #ff33cc; 
+  border: 8px solid $border-color; 
+  border-top: 8px solid $main-color-1; 
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -1763,7 +1780,7 @@ textarea#description {
   object-fit: cover;
   margin-right: 10px;
   cursor: pointer;
-  border: 2px solid #ccc;
+  border: 2px solid $border-color;
   border-radius: 4px;
   transition: border-color 0.3s;
 }
@@ -1810,7 +1827,7 @@ textarea#description {
   position: relative;
   margin: 15px 0;
   padding: 10px;
-  border: 1px solid #ffffff;
+  border: 1px solid #6f6f6f;
   border-radius: 8px;
   background: #000000;
   overflow: visible; /* Ensure dropdown is not clipped */
@@ -1822,7 +1839,7 @@ textarea#description {
   justify-content: flex-start; /* Align to the left */
   position: relative;
   background: transparent;
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid $text-color-theme-light-l;
   z-index: 100; /* Ensure it stays above other content */
   padding: 5px;
 }
@@ -1841,7 +1858,7 @@ textarea#description {
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
-  color: #ffffff;
+  color: $border-color;
   font-size: 18px;
 }
 
@@ -1873,7 +1890,7 @@ textarea#description {
   background: none;
   text-align: left;
   background-color: #000000;
-  color: #ffffff;
+  color: $border-color;
 }
 
 .menu-option:hover {
@@ -1888,9 +1905,9 @@ textarea#description {
   top: 0;
   left: 100%; /* Align to the right of the main menu */
   background: #000000;
-  color: #ffffff;
+  color: $border-color;
   min-width: 150px;
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   border-radius: 8px;
   padding: 10px;
   display: none;
@@ -1911,7 +1928,7 @@ textarea#description {
   text-align: left;
   background: none;
   border: none;
-  color: #ffffff;
+  color: $border-color;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -1949,7 +1966,7 @@ textarea#description {
 }
 
 .more-options-container:hover .more-options-button {
-  color: #ccc;
+  color: $border-color;
 }
 
 .more-options-dropdown {
@@ -1999,7 +2016,7 @@ textarea#description {
   max-width: 300px;
   width: auto;
   background-color: #000000;
-  border: 1px solid #ffffff;
+  border: 1px solid $text-color-theme-light-l;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;

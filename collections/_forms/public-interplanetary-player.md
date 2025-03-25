@@ -14,7 +14,7 @@ public: true
 ---
 
 <!-- Interplanetary Player Form Container -->
-<div class="form-container">
+<div class="web-container">
     <!-- Back Button -->
     <div class="button-container">
         <div class="back-button-container">

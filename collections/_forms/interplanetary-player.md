@@ -13,7 +13,7 @@ key: IP
 public: false
 ---
 
-<div class="form-container">
+<div class="web-container">
     <div class="button-container">
         <div class="back-button-container">
             <a href="/voyage" title="Back to Voyage">

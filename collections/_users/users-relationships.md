@@ -15,7 +15,7 @@ public: false
 
 <div class="p-5"></div>
 
-<div class="form-container">
+<div class="web-container">
     <div class="button-container">
         <div class="back-button-container">
             <a href="/voyage" title="Voyage">

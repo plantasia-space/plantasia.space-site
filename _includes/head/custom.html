@@ -1,19 +1,21 @@
-<!-- start custom head snippets -->
-<!-- <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/8cc5ff1d6fb14f3fdc831c40a/1b3d0a3e52d9f34a059e598f1.js");</script> -->
-
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbit&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 
-<!-- ✅ Add Fullscreen Permissions Policy -->
+<!-- Permissions Policy -->
 <meta http-equiv="Permissions-Policy" content="fullscreen=(self)">
 
-<!-- put this conditional inside of `<head>` element --></head>
+<!-- Robots meta: manual noindex on a page -->
 {% if page.noindex %}
-    <meta name="robots" content="noindex">
+  <meta name="robots" content="noindex">
 {% endif %}
+
+<!-- Robots meta: automatic noindex for non-production -->
+{% if site.env.IS_PRODUCTION != "true" %}
+  <meta name="robots" content="noindex, nofollow">
+{% endif %}
+
 <!-- end custom head snippets -->

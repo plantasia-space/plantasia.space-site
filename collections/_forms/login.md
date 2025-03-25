@@ -15,7 +15,7 @@ key: IP
 
 <br><br>
 
-<div class="form-container">
+<div class="web-container">
   <h3 id="loginTitle">plantasia space login</h3>
 
   <!-- Login Form (shown if no recovery token is present) -->

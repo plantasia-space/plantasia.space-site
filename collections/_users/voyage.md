@@ -2,7 +2,11 @@
 layout: articles
 show_title: false
 show_date: false
+full_width: false
 permalink: /voyage/
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgb(162, 162, 162), rgb(0, 0, 0))' # Removed the extra comma
 titles:
   en: &EN Voyage
   en-GB: *EN
@@ -18,7 +22,7 @@ public: false
 <div id="voyage-content">
     <h1>Voyage</h1>
     <div class="world-form">
-        <div class="form-box">
+        <div class="voyage-container">
             <p id="user-info"></p>
             <ul class="user-list" id="user-profile-list">
                 <!-- User profile will be populated here -->
