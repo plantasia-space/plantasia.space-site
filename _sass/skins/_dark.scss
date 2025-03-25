@@ -1,27 +1,30 @@
-// main colors
+
+// Now define your main colors using these computed hues
 $main-color-1:     #ff33cc;
 $text-color-1:     #33ffff;
+// The rest of your main color variables
+$main-color-2: $text-color-1;
+$text-color-2: $main-color-1;
 
-$main-color-2:     #33ffff;
-$text-color-2:     #ff33cc;
-
-$main-color-3:     rgba(#000000, 1);
-$text-color-3:     #ffffff;
+$main-color-3: rgba(#000000, 1);
+$text-color-3: #ffffff;
 
 $main-color-theme-light: rgba(#000, .8);
-$main-color-theme-dark:  rgba(rgb(234, 234, 234), .8);
+$main-color-theme-dark: rgba(rgb(234, 234, 234), .8);
 
-// page background
+// Page background
 $background-color: #000000;
+$background-color-2: #ffffff;
 
-// text colors 
-$text-color-theme-light-d: #33ffff;
-$text-color-theme-light:   #ffffff;
-$text-color-theme-light-l: #888;
+// Text colors 
+// Here we update the theme colors to reference our computed dynamic values
+$text-color-theme-light-d: $text-color-1; // Using our dynamic text color as the "dark" variant for light theme
+$text-color-theme-light:   #ffffff;       // Keeping this static (or adjust as needed)
+$text-color-theme-light-l: #888;          // Keeping this static
 
-$text-color-theme-dark-d:  #ff33cc;
+$text-color-theme-dark-d:  $main-color-1;  // Using our dynamic main color as the "dark" variant for dark theme
 $text-color-theme-dark:    rgba(#ffffffe6, .9);
-$text-color-theme-dark-l:  rgba(#33ffff, .9);
+$text-color-theme-dark-l:  $text-color-1;  // Using our dynamic text color again
 
 $text-color-d:     $text-color-theme-dark-d;
 $text-color:       $text-color-theme-dark;
@@ -29,41 +32,40 @@ $text-color-l:     $text-color-theme-dark-l;
 
 $text-background-color: rgba(#fff, .05);
 
-// header and footer colors
+// Header and footer colors
 $header-text-color: $text-color-3;
 $header-background: $main-color-3;
 
 $footer-text-color: $text-color-3;
 $footer-background: $main-color-3;
 
-// border and shadow colors
-$border-color:     mix(#fff, $background-color, 20%); // IMPORTANT 
-$border-color-l:   mix(#ffffff, $background-color, 10%);
-$decorate-color:   rgba(#fff, .1);
-$mask-color:       rgba(#000, .9);
-$select-color:     rgba($main-color-1, .5);
+// Border and shadow colors
+$border-color: mix(#fff, $background-color, 20%); // IMPORTANT 
+$border-color-l: mix(#ffffff, $background-color, 10%);
+$decorate-color: rgba(#fff, .1);
+$mask-color: rgba(#000, .9);
+$select-color: rgba($main-color-1, .5);
 
-// function colors
-$green:           #5baa34;
-$blue:            #1c7cd4;
-$yellow:          #c9771f;
-$red:             #da3d45;
+// Function colors
+$green: #5baa34;
+$blue: #1c7cd4;
+$yellow: #c9771f;
+$red: #da3d45;
 $text-color-function: rgba(#fff, .8);
 
-// logo colors
-$mail-color:       #0072c5;
-$facebook-color:   #4267b2;
-$twitter-color:    #1da1f2;
-$weibo-color:      #e6162d;
-$google-plus-color:#ea4335;
-$telegram-color:   #32afed;
-$medium-color:     #000;
-$zhihu-color:      #0084ff;
-$douban-color:     #42bd56;
-$linkedin-color:   #1074af;
-$github-color:     #000;
-$npm-color:        #fff;
+// Logo colors
+$mail-color: #0072c5;
+$facebook-color: #4267b2;
+$twitter-color: #1da1f2;
+$weibo-color: #e6162d;
+$google-plus-color: #ea4335;
+$telegram-color: #32afed;
+$medium-color: #000;
+$zhihu-color: #0084ff;
+$douban-color: #42bd56;
+$linkedin-color: #1074af;
+$github-color: #000;
+$npm-color: #fff;
 
-// highlight colors
+// Highlight colors
 @import "skins/highlight/tomorrow-night";
-//

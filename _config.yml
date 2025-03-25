@@ -232,8 +232,13 @@ defaults:
       type: lab
     values:
       nav_key: lab
-
-
+  ## NO ROBOTS FOR DEV SITE
+  -
+    scope:
+      path: ""
+    values:
+      env:
+        IS_PRODUCTION: "{{ site.env.IS_PRODUCTION }}"
 
 ## => Plugins
 ##############################

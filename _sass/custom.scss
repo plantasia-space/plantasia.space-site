@@ -1373,7 +1373,7 @@ input[type="number"] {
   display: inline-block;
   cursor: pointer;
   margin-left: 5px;
-  color: #33f1ff; /* Icon color */
+  color: $main-color-2; /* Icon color */
   font-size: 18px; /* Icon size */
   vertical-align: middle;
 }
@@ -1507,6 +1507,12 @@ textarea#description {
   --collapsible-header-hover-bg-color: $border-color; /* Hover background color */
   --collapsible-title-color: $border-color; /* Color for section titles */
   --collapsible-border-color: #dddddd; /* Border color for sections */
+
+  --main-color-1-hue: 315;
+  --text-color-1-hue: 180;
+
+  --main-color-1: hsl(var(--main-color-1-hue), 100%, 60%);
+  --text-color-1: hsl(var(--text-color-1-hue), 100%, 60%);
 }
 /* Reset some default styles for consistency */
 * {
@@ -1529,7 +1535,6 @@ textarea#description {
   align-items: center;
   justify-content: space-between;
   border-radius: 8px;                   /* Rounded corners */
-
   background-color: var(--collapsible-header-bg-color);
   padding: 1em;
   cursor: pointer;
@@ -1537,25 +1542,24 @@ textarea#description {
 }
 
 .section-header:hover {
-  background-color: var(--collapsible-header-hover-bg-color);
-  color: #000000; /* Sets the color for direct text within the header */
+  background-color: $background-color-2;
+  color: #000000; /* Set all direct text to black on hover */
 }
 
 .section-header:hover .section-title {
-  color: #000000; /* Specifically target the title to change its color on hover */
+  color: #000000; /* Ensure the section title text becomes black on hover */
 }
 
-/* Trigger toggle-icon hover styles when section-header is hovered */
 .section-header:hover .toggle-icon {
-  color: #000000; /* Sets the color for direct text within the header */
+  color: #000000; /* Ensure the toggle icon also turns black on hover */
 }
 
 .section-title {
   margin: 0;
   font-size: 1.5em;
   color: var(--collapsible-title-color);
-  flex: 1; /* Takes available space */
-  line-height: 1; /* Adjust line-height as needed */
+  flex: 1;
+  line-height: 1;
 }
 .section-content {
   overflow: hidden;
@@ -1771,7 +1775,7 @@ textarea#description {
   display: flex;
   overflow-x: auto;
   padding: 10px;
-  background-color: #f0f0f0;
+  background-color: $background-color-2;
 }
 
 .thumbnails img {
@@ -1890,7 +1894,7 @@ textarea#description {
   background: none;
   text-align: left;
   background-color: #000000;
-  color: $border-color;
+  color: $text-color-3;
 }
 
 .menu-option:hover {
@@ -1905,7 +1909,7 @@ textarea#description {
   top: 0;
   left: 100%; /* Align to the right of the main menu */
   background: #000000;
-  color: $border-color;
+  color: $text-color-3;
   min-width: 150px;
   border: 1px solid $text-color-theme-light-l;
   border-radius: 8px;
@@ -1928,7 +1932,6 @@ textarea#description {
   text-align: left;
   background: none;
   border: none;
-  color: $border-color;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
