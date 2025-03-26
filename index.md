@@ -6,9 +6,6 @@ permalink: /index.html
 full_width: false
 show_excerpt: false
 public: true
-header:
-  theme: dark
-  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgb(162, 162, 162), rgb(0, 0, 0))' # Removed the extra comma
 
 ---
 

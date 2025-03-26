@@ -1,7 +1,7 @@
 
 // Now define your main colors using these computed hues
-$main-color-1:     #ff33cc;
-$text-color-1:     #33ffff;
+$main-color-1:     hsl(0, 0%, 92%);
+$text-color-1:     hsl(180, 0%, 100%);
 // The rest of your main color variables
 $main-color-2: $text-color-1;
 $text-color-2: $main-color-1;

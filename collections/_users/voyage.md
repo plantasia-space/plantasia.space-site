@@ -4,9 +4,6 @@ show_title: false
 show_date: false
 full_width: false
 permalink: /voyage/
-header:
-  theme: dark
-  background: 'linear-gradient(135deg, rgb(0, 0, 0), rgb(162, 162, 162), rgb(0, 0, 0))' # Removed the extra comma
 titles:
   en: &EN Voyage
   en-GB: *EN
