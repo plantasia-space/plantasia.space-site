@@ -18,7 +18,14 @@
   width: 100%;
   height: 100%;
 }
-
+.embedded-player {
+  display: block;         /* Ensure it behaves as a block element */
+  width: 100%;            /* Take the full width of its container */
+  max-width: 800px;       /* Optionally, limit the maximum width */
+  aspect-ratio: 1 / 1;     /* Force a square aspect ratio */
+  border: none;           /* Remove any default borders */
+  margin: 20px auto;      /* Center horizontally and add vertical spacing */
+}
 /* New container for responsive-radio-iframe */
 .new-container {
   position: relative;
@@ -261,9 +268,9 @@ $button-size: 4rem; // Define a fixed button size (you can adjust as needed)
 /* Toast Container Positioned at the Center */
 #toastContainer {
   position: fixed;
-  top: 100%;
+  bottom: 20px;      /* Adjust as needed */
   left: 50%;
-  transform: translate(-50%, -100%);
+  transform: translateX(-50%);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -2044,4 +2051,22 @@ textarea#description {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+.track-details-table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px auto; /* Centers the table horizontally */
+}
+
+.track-details-table th,
+.track-details-table td {
+  padding: 20px 12px;
+  border: 1px solid $border-color;
+}
+
+.track-details-table th {
+  text-align: left;
+  width: 30%;
 }

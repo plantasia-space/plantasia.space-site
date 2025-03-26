@@ -32,32 +32,73 @@ public: false
     </div>
     <h3 id="formTitle">Track Release</h3>
     <!-- View Mode -->
-    <div id="trackReleaseView" style="display: none;">
-        <div id="playerContainer"></div>
-        <!-- Details will be populated here in view mode -->
-        <div id="coverImageView" class="cover-image-container">
-            <img id="coverImageDisplay" src="" alt="Cover Image" style="max-width: 100%; height: auto;" />
-        </div>
-        <p id="viewTrackName"></p>
-        <p id="viewArtists"></p>
-        <p id="viewLicence"></p>
-        <p id="viewDescription"></p>
-        <!-- Additional details can be added here -->
-        <p id="viewType"></p>
-        <p id="viewGenre"></p>
-        <p id="viewMood"></p>
-        <p id="viewAdditionalTags"></p>
-        <p id="viewCredits"></p>
-        <p id="viewPrivacy"></p>
-        <p id="viewReleaseDate"></p>
-        <p id="viewEnableDirectDownloads"></p>
-        <br>        
-        <!-- Interplanetary Player Details -->
-        <!-- Interplanetary Player (View Mode: Only Name) -->
-        <p id="viewPlayerName"><strong>Interplanetary Player Name:</strong> </p>
-        <!-- Sound Engine (View Mode: Only Name) -->
-        <p id="viewSoundEngineName"><strong>Sound Engine Name:</strong> </p>    </div>
-  
+<!-- View Mode -->
+<div id="trackReleaseView" style="display: none;">
+    <div id="playerContainer"></div>
+    <table class="track-details-table">
+        <tr>
+            <td colspan="2">
+                <img id="coverImageDisplay" src="" alt="Cover Image" style="display: block; margin: 0 auto; max-width: 10vh; height: auto;">
+            </td>
+        </tr>
+        <tr>
+            <th>Track Name</th>
+            <td id="viewTrackName"></td>
+        </tr>
+        <tr>
+            <th>Artists</th>
+            <td id="viewArtists"></td>
+        </tr>
+        <tr>
+            <th>License</th>
+            <td id="viewLicence"></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td id="viewDescription"></td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td id="viewType"></td>
+        </tr>
+        <tr>
+            <th>Genre</th>
+            <td id="viewGenre"></td>
+        </tr>
+        <tr>
+            <th>Mood</th>
+            <td id="viewMood"></td>
+        </tr>
+        <tr>
+            <th>Additional Tags</th>
+            <td id="viewAdditionalTags"></td>
+        </tr>
+        <tr>
+            <th>Credits</th>
+            <td id="viewCredits"></td>
+        </tr>
+        <tr>
+            <th>Privacy</th>
+            <td id="viewPrivacy"></td>
+        </tr>
+        <tr>
+            <th>Release Date</th>
+            <td id="viewReleaseDate"></td>
+        </tr>
+        <tr>
+            <th>Direct Downloads Enabled</th>
+            <td id="viewEnableDirectDownloads"></td>
+        </tr>
+        <tr>
+            <th>Interplanetary Player Name</th>
+            <td id="viewPlayerName"></td>
+        </tr>
+        <tr>
+            <th>Sound Engine Name</th>
+            <td id="viewSoundEngineName"></td>
+        </tr>
+    </table>
+    </div>
     <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
         <!-- Hidden ownerId input -->
@@ -973,9 +1014,6 @@ artistEntry.innerHTML = `
 /**
     * Populate View Mode with Track Data
     */
-/**
-    * Populate View Mode with Track Data
-    */
 function populateViewMode(trackData) {
     if (currentMode === 'view') {
         const coverImageDisplay = document.getElementById('coverImageDisplay');
@@ -990,52 +1028,46 @@ function populateViewMode(trackData) {
             coverImageDisplay.style.display = 'none';
         }
         
+        // Remove previous content from the container
+        const playerContainer = document.getElementById('playerContainer');
+        playerContainer.innerHTML = '';
+        // Check that trackData and its _id are valid
+        if (trackData && trackData._id && trackData._id !== "null" && trackData._id !== null && trackData._id !== "") {
+            const iframe = document.createElement('iframe');
+            iframe.className = 'embedded-player';
+            iframe.src = `https://player.plantasia.space/?trackId=${trackData._id}`;
+            playerContainer.appendChild(iframe);
+        } else {
+            playerContainer.innerHTML = '<p>No player available.</p>';
+        }
 
-// Remove previous content from the container
-const playerContainer = document.getElementById('playerContainer');
-playerContainer.innerHTML = '';
-
-// Check that trackData and its _id are valid (and not "null")
-if (trackData && trackData._id && trackData._id !== "null" && trackData._id !== null && trackData._id !== "") {
-    const iframe = document.createElement('iframe');
-    iframe.className = 'embedded-player';
-    iframe.src = `https://player.plantasia.space/?trackId=${trackData._id}`;
-    // The style is handled by the CSS class; no inline height/width needed
-    playerContainer.appendChild(iframe);
-} else {
-    // Fallback if no valid track ID is available
-    playerContainer.innerHTML = '<p>No player available.</p>';
-}
-
-        // Display other track details...
-        document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
+        // Display other track details without duplicate labels
+        document.getElementById('viewTrackName').innerHTML = trackData.trackName || 'N/A';
         const artistNames = trackData.artists.map(artist => artist.username).join(', ');
-        document.getElementById('viewArtists').innerHTML = `<strong>Artists:</strong> ${artistNames || 'N/A'}`;
-        document.getElementById('viewLicence').innerHTML = `<strong>License:</strong> ${trackData.licence || 'N/A'}`;
-        document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${trackData.description || 'N/A'}`;
-        document.getElementById('viewType').innerHTML = `<strong>Type:</strong> ${trackData.type || 'N/A'}`;
-        document.getElementById('viewGenre').innerHTML = `<strong>Genre:</strong> ${trackData.genre || 'N/A'}`;
-        document.getElementById('viewMood').innerHTML = `<strong>Mood:</strong> ${trackData.mood || 'N/A'}`;
-        document.getElementById('viewAdditionalTags').innerHTML = `<strong>Additional Tags:</strong> ${trackData.additionalTags || 'N/A'}`;
-        document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${trackData.credits || 'N/A'}`;
-        document.getElementById('viewPrivacy').innerHTML = `<strong>Privacy:</strong> ${trackData.privacy || 'N/A'}`;
-        document.getElementById('viewReleaseDate').innerHTML = `<strong>Release Date:</strong> ${trackData.releaseDate ? new Date(trackData.releaseDate).toLocaleDateString() : 'N/A'}`;
-        document.getElementById('viewEnableDirectDownloads').innerHTML = `<strong>Direct Downloads Enabled:</strong> ${trackData.enableDirectDownloads ? 'Yes' : 'No'}`;
+        document.getElementById('viewArtists').innerHTML = artistNames || 'N/A';
+        document.getElementById('viewLicence').innerHTML = trackData.licence || 'N/A';
+        document.getElementById('viewDescription').innerHTML = trackData.description || 'N/A';
+        document.getElementById('viewType').innerHTML = trackData.type || 'N/A';
+        document.getElementById('viewGenre').innerHTML = trackData.genre || 'N/A';
+        document.getElementById('viewMood').innerHTML = trackData.mood || 'N/A';
+        document.getElementById('viewAdditionalTags').innerHTML = trackData.additionalTags || 'N/A';
+        document.getElementById('viewCredits').innerHTML = trackData.credits || 'N/A';
+        document.getElementById('viewPrivacy').innerHTML = trackData.privacy || 'N/A';
+        document.getElementById('viewReleaseDate').innerHTML = trackData.releaseDate ? new Date(trackData.releaseDate).toLocaleDateString() : 'N/A';
+        document.getElementById('viewEnableDirectDownloads').innerHTML = trackData.enableDirectDownloads ? 'Yes' : 'No';
     }
     // Populate Interplanetary Player Details
     populateInterplanetaryPlayerDetails(trackData.playerId);
-    console.log("trackData.interplanetaryPlayer",trackData);
     // Populate Sound Engine Details
     populateSoundEngineDetails(trackData.soundEngineId);
 }
 
-
 function populateInterplanetaryPlayerDetails(interplanetaryPlayer) {
   const viewPlayerName = document.getElementById('viewPlayerName');
   if (interplanetaryPlayer) {
-    viewPlayerName.innerHTML = `<strong>Interplanetary Player Name:</strong> ${interplanetaryPlayer.artName || 'N/A'}`;
+    viewPlayerName.innerHTML = `<strong></strong> ${interplanetaryPlayer.artName || 'N/A'}`;
   } else {
-    viewPlayerName.innerHTML = `<strong>Interplanetary Player Name:</strong> N/A`;
+    viewPlayerName.innerHTML = `<strong></strong> N/A`;
   }
 }
 
@@ -1047,9 +1079,9 @@ function populateSoundEngineDetails(soundEngineId) {
   const soundEngine = soundEngineData.find(engine => engine._id === (soundEngineId && soundEngineId._id ? soundEngineId._id : soundEngineId));
   const viewSoundEngineName = document.getElementById('viewSoundEngineName');
   if (soundEngine) {
-      viewSoundEngineName.innerHTML = `<strong>Sound Engine Name:</strong> ${soundEngine.soundEngineName || 'N/A'}`;
+      viewSoundEngineName.innerHTML = `</strong> ${soundEngine.soundEngineName || 'N/A'}`;
   } else {
-      viewSoundEngineName.innerHTML = `<strong>Sound Engine Name:</strong> N/A`;
+      viewSoundEngineName.innerHTML = `</strong> N/A`;
   }
 }
 /**
