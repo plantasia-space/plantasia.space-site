@@ -33,6 +33,7 @@ public: false
     <h3 id="formTitle">Track Release</h3>
     <!-- View Mode -->
     <div id="trackReleaseView" style="display: none;">
+        <div id="playerContainer"></div>
         <!-- Details will be populated here in view mode -->
         <div id="coverImageView" class="cover-image-container">
             <img id="coverImageDisplay" src="" alt="Cover Image" style="max-width: 100%; height: auto;" />
@@ -50,57 +51,12 @@ public: false
         <p id="viewPrivacy"></p>
         <p id="viewReleaseDate"></p>
         <p id="viewEnableDirectDownloads"></p>
-        <br>        <div id="audioPlayerContainer"></div> <!-- Container for Audio Player -->
+        <br>        
         <!-- Interplanetary Player Details -->
-
-        <!-- Interplanetary Player Details -->
-        <h4>Interplanetary Player Details</h4>
-
-        <ul class="interplanetaryPlayer-list" id="interplanetaryPlayerDetailsList">
-            <li class="interplanetaryPlayer-list-item">
-                <div class="interplanetaryPlayer-profile-pic">
-                            <div class="decagon-frame">
-
-                    <img id="playerImageDisplay" src="" alt="Interplanetary Player Image" />
-                </div>
-                                </div>
-
-                <div class="interplanetaryPlayer-details">
-                    <p id="viewPlayerName"><strong>Name:</strong> </p>
-                    <p id="viewPlayerSciName"><strong>Scientific Name:</strong> </p>
-                    <p id="viewPlayerDescription"><strong>Description:</strong> </p>
-                    <p id="viewPlayerAvailability"><strong>Availability:</strong> </p>
-                </div>
-                <div class="interplanetaryPlayer-actions">
-                    <!-- More Options Dropdown (if needed) -->
-                </div>
-            </li>
-        </ul>
-
-        <!-- Sound Engine Details -->
-        <h4>Sound Engine Details</h4>
-
-        <ul class="soundEngine-list" id="soundEngineDetailsList">
-            <li class="soundEngine-list-item">
-                <div class="sound-engine-profile-pic">
-                            <div class="hexagon-frame">
-                    <img id="soundEngineImageDisplay" src="" alt="Sound Engine Image" />
-                </div>                </div>
-
-                <div class="soundEngine-details">
-                    <p id="viewSoundEngineName"><strong>Name:</strong> </p>
-                    <p id="viewSoundEngineDeveloper"><strong>Developer:</strong> </p>
-                    <p id="viewSoundEngineAvailability"><strong>Availability:</strong> </p>
-                    <p id="viewSoundEngineParams"><strong>Parameters:</strong> </p>
-                    <p id="viewSoundEngineCredits"><strong>Credits:</strong> </p>
-                </div>
-                <div class="soundEngine-actions">
-                    <!-- More Options Dropdown (if needed) -->
-                </div>
-                
-            </li>
-        </ul>
-    </div>
+        <!-- Interplanetary Player (View Mode: Only Name) -->
+        <p id="viewPlayerName"><strong>Interplanetary Player Name:</strong> </p>
+        <!-- Sound Engine (View Mode: Only Name) -->
+        <p id="viewSoundEngineName"><strong>Sound Engine Name:</strong> </p>    </div>
   
     <!-- Edit/Create Mode -->
     <form id="articleForm" class="contact-form" style="display: none;" enctype="multipart/form-data">
@@ -697,7 +653,7 @@ interplanetaryPlayerView.innerHTML = playerDetailsHtml;
     document.getElementById('licence').value = player.licence || '';
 
     // Update artists
-    const artistsContainer = document.getElementById('artistsContainer');
+/*     const artistsContainer = document.getElementById('artistsContainer');
     artistsContainer.innerHTML = ''; // Clear previous artists
     if (artistDetails && artistDetails.username) {
         const artistEntry = `
@@ -707,7 +663,7 @@ interplanetaryPlayerView.innerHTML = playerDetailsHtml;
             </div>`;
         artistsContainer.innerHTML += artistEntry;
     }
-
+ */
     // Update sound engine selection
     document.getElementById('soundEngineId').value = player.soundEngineId || '';
 }
@@ -947,7 +903,7 @@ function showProcessingMessage() {
     trackReleaseView.style.display = 'block';
     document.getElementById('articleForm').style.display = 'none';
 }
-
+    
 
 
 /**
@@ -1017,135 +973,85 @@ artistEntry.innerHTML = `
 /**
     * Populate View Mode with Track Data
     */
-    function populateViewMode(trackData) {
-        if (currentMode === 'view') {
-            // Display cover image
-            const coverImageDisplay = document.getElementById('coverImageDisplay');
-            if (trackData.coverImageURL) {
-                console.log('Setting cover image source to:', trackData.coverImageURL); // Debugging
-                coverImageDisplay.src = trackData.coverImageURL; // Use the presigned download URL
-                coverImageDisplay.style.display = 'block'; // Ensure it's displayed
-            } else {
-                console.log('No cover image available.'); // Debugging
-                coverImageDisplay.style.display = 'none';
-            }
-
-            // Handle Audio File Display
-            const audioPlayerContainer = document.getElementById('audioPlayerContainer');
-            audioPlayerContainer.innerHTML = ''; // Clear previous content
-
-            if (trackData.audioFileMP3URL) {
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.src = trackData.audioFileMP3URL;
-                audioPlayerContainer.appendChild(audioElement);
-            } else {
-                audioPlayerContainer.innerHTML = '<p>No audio file available.</p>';
-            }
-
-            // Display other track details
-            document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
-            const artistNames = trackData.artists.map(artist => artist.username).join(', ');
-            document.getElementById('viewArtists').innerHTML = `<strong>Artists:</strong> ${artistNames || 'N/A'}`;
-            document.getElementById('viewLicence').innerHTML = `<strong>License:</strong> ${trackData.licence || 'N/A'}`;
-            document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${trackData.description || 'N/A'}`;
-            document.getElementById('viewType').innerHTML = `<strong>Type:</strong> ${trackData.type || 'N/A'}`;
-            document.getElementById('viewGenre').innerHTML = `<strong>Genre:</strong> ${trackData.genre || 'N/A'}`;
-            document.getElementById('viewMood').innerHTML = `<strong>Mood:</strong> ${trackData.mood || 'N/A'}`;
-            document.getElementById('viewAdditionalTags').innerHTML = `<strong>Additional Tags:</strong> ${trackData.additionalTags || 'N/A'}`;
-            document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${trackData.credits || 'N/A'}`;
-            document.getElementById('viewPrivacy').innerHTML = `<strong>Privacy:</strong> ${trackData.privacy || 'N/A'}`;
-            document.getElementById('viewReleaseDate').innerHTML = `<strong>Release Date:</strong> ${trackData.releaseDate ? new Date(trackData.releaseDate).toLocaleDateString() : 'N/A'}`;
-            document.getElementById('viewEnableDirectDownloads').innerHTML = `<strong>Direct Downloads Enabled:</strong> ${trackData.enableDirectDownloads ? 'Yes' : 'No'}`;
-
-            // Populate Interplanetary Player Details
-            populateInterplanetaryPlayerDetails(trackData.playerId);
-
-            // Populate Sound Engine Details
-            populateSoundEngineDetails(trackData.soundEngineId);
-        }
-    }
-
-
-    function populateInterplanetaryPlayerDetails(player) {
-        const playerImageDisplay = document.getElementById('playerImageDisplay');
-        const viewPlayerName = document.getElementById('viewPlayerName');
-        const viewPlayerSciName = document.getElementById('viewPlayerSciName');
-        const viewPlayerDescription = document.getElementById('viewPlayerDescription');
-        const viewPlayerAvailability = document.getElementById('viewPlayerAvailability');
-
-        if (player) {
-            const imageUrl = player.ddd && player.ddd.textureURL
-                ? `https://api.plantasia.space${player.ddd.textureURL}`
-                : 'https://api.plantasia.space/uploads/default/default-player.jpg';
-
-            playerImageDisplay.src = imageUrl;
-            playerImageDisplay.alt = player.artName || 'Interplanetary Player Image';
-
-            viewPlayerName.innerHTML = `<strong>Name:</strong> ${player.artName || 'N/A'}`;
-            viewPlayerSciName.innerHTML = `<strong>Scientific Name:</strong> ${player.sciName || 'N/A'}`;
-            viewPlayerDescription.innerHTML = `<strong>Description:</strong> ${player.description || 'N/A'}`;
-            viewPlayerAvailability.innerHTML = `<strong>Availability:</strong> ${player.isPublic ? '🌍 Public' : '🔐 Private'}`;
+/**
+    * Populate View Mode with Track Data
+    */
+function populateViewMode(trackData) {
+    if (currentMode === 'view') {
+        const coverImageDisplay = document.getElementById('coverImageDisplay');
+        // Use a small thumbnail if available; otherwise, fallback
+        if (trackData.coverImageSmallURL) {
+            coverImageDisplay.src = trackData.coverImageSmallURL;
+            coverImageDisplay.style.display = 'block';
+        } else if (trackData.coverImageURL) {
+            coverImageDisplay.src = trackData.coverImageURL;
+            coverImageDisplay.style.display = 'block';
         } else {
-            // If player data is not available
-            playerImageDisplay.src = 'https://api.plantasia.space/uploads/default/default-player.jpg';
-            playerImageDisplay.alt = 'No Interplanetary Player Selected';
-
-            viewPlayerName.innerHTML = `<strong>Name:</strong> N/A`;
-            viewPlayerSciName.innerHTML = `<strong>Scientific Name:</strong> N/A`;
-            viewPlayerDescription.innerHTML = `<strong>Description:</strong> N/A`;
-            viewPlayerAvailability.innerHTML = `<strong>Availability:</strong> N/A`;
+            coverImageDisplay.style.display = 'none';
         }
+        
+
+// Remove previous content from the container
+const playerContainer = document.getElementById('playerContainer');
+playerContainer.innerHTML = '';
+
+// Check that trackData and its _id are valid (and not "null")
+if (trackData && trackData._id && trackData._id !== "null" && trackData._id !== null && trackData._id !== "") {
+    const iframe = document.createElement('iframe');
+    iframe.className = 'embedded-player';
+    iframe.src = `https://player.plantasia.space/?trackId=${trackData._id}`;
+    // The style is handled by the CSS class; no inline height/width needed
+    playerContainer.appendChild(iframe);
+} else {
+    // Fallback if no valid track ID is available
+    playerContainer.innerHTML = '<p>No player available.</p>';
+}
+
+        // Display other track details...
+        document.getElementById('viewTrackName').innerHTML = `<strong>Track Name:</strong> ${trackData.trackName || 'N/A'}`;
+        const artistNames = trackData.artists.map(artist => artist.username).join(', ');
+        document.getElementById('viewArtists').innerHTML = `<strong>Artists:</strong> ${artistNames || 'N/A'}`;
+        document.getElementById('viewLicence').innerHTML = `<strong>License:</strong> ${trackData.licence || 'N/A'}`;
+        document.getElementById('viewDescription').innerHTML = `<strong>Description:</strong> ${trackData.description || 'N/A'}`;
+        document.getElementById('viewType').innerHTML = `<strong>Type:</strong> ${trackData.type || 'N/A'}`;
+        document.getElementById('viewGenre').innerHTML = `<strong>Genre:</strong> ${trackData.genre || 'N/A'}`;
+        document.getElementById('viewMood').innerHTML = `<strong>Mood:</strong> ${trackData.mood || 'N/A'}`;
+        document.getElementById('viewAdditionalTags').innerHTML = `<strong>Additional Tags:</strong> ${trackData.additionalTags || 'N/A'}`;
+        document.getElementById('viewCredits').innerHTML = `<strong>Credits:</strong> ${trackData.credits || 'N/A'}`;
+        document.getElementById('viewPrivacy').innerHTML = `<strong>Privacy:</strong> ${trackData.privacy || 'N/A'}`;
+        document.getElementById('viewReleaseDate').innerHTML = `<strong>Release Date:</strong> ${trackData.releaseDate ? new Date(trackData.releaseDate).toLocaleDateString() : 'N/A'}`;
+        document.getElementById('viewEnableDirectDownloads').innerHTML = `<strong>Direct Downloads Enabled:</strong> ${trackData.enableDirectDownloads ? 'Yes' : 'No'}`;
     }
+    // Populate Interplanetary Player Details
+    populateInterplanetaryPlayerDetails(trackData.playerId);
+    console.log("trackData.interplanetaryPlayer",trackData);
+    // Populate Sound Engine Details
+    populateSoundEngineDetails(trackData.soundEngineId);
+}
+
+
+function populateInterplanetaryPlayerDetails(interplanetaryPlayer) {
+  const viewPlayerName = document.getElementById('viewPlayerName');
+  if (interplanetaryPlayer) {
+    viewPlayerName.innerHTML = `<strong>Interplanetary Player Name:</strong> ${interplanetaryPlayer.artName || 'N/A'}`;
+  } else {
+    viewPlayerName.innerHTML = `<strong>Interplanetary Player Name:</strong> N/A`;
+  }
+}
 
 /**
  * Populate Sound Engine Details in View Mode
  */
-    function populateSoundEngineDetails(soundEngine) {
-        const soundEngineImageDisplay = document.getElementById('soundEngineImageDisplay');
-        const viewSoundEngineName = document.getElementById('viewSoundEngineName');
-        const viewSoundEngineDeveloper = document.getElementById('viewSoundEngineDeveloper');
-        const viewSoundEngineAvailability = document.getElementById('viewSoundEngineAvailability');
-        const viewSoundEngineParams = document.getElementById('viewSoundEngineParams');
-        const viewSoundEngineCredits = document.getElementById('viewSoundEngineCredits');
-
-        if (soundEngine) {
-            const imageUrl = soundEngine.soundEngineImage
-                ? `https://api.plantasia.space${soundEngine.soundEngineImage}`
-                : 'https://api.plantasia.space/uploads/default/default-soundEngine.jpg';
-
-            soundEngineImageDisplay.src = imageUrl;
-            soundEngineImageDisplay.alt = soundEngine.soundEngineName || 'Sound Engine Image';
-
-            viewSoundEngineName.innerHTML = `<strong>Name:</strong> ${soundEngine.soundEngineName || 'N/A'}`;
-            viewSoundEngineDeveloper.innerHTML = `<strong>Developer:</strong> ${soundEngine.developerUsername || 'N/A'}`;
-            viewSoundEngineAvailability.innerHTML = `<strong>Availability:</strong> ${soundEngine.isPublic ? '🌍 Shared' : '🔐 Exclusive'}`;
-
-            // Display parameters
-            const xParam = soundEngine.xParam ? `${soundEngine.xParam.label} (Min: ${soundEngine.xParam.min}, Max: ${soundEngine.xParam.max}, Init: ${soundEngine.xParam.initValue})` : 'N/A';
-            const yParam = soundEngine.yParam ? `${soundEngine.yParam.label} (Min: ${soundEngine.yParam.min}, Max: ${soundEngine.yParam.max}, Init: ${soundEngine.yParam.initValue})` : 'N/A';
-            const zParam = soundEngine.zParam ? `${soundEngine.zParam.label} (Min: ${soundEngine.zParam.min}, Max: ${soundEngine.zParam.max}, Init: ${soundEngine.zParam.initValue})` : 'N/A';
-
-            viewSoundEngineParams.innerHTML = `
-                <strong>X Parameter:</strong> ${xParam}<br>
-                <strong>Y Parameter:</strong> ${yParam}<br>
-                <strong>Z Parameter:</strong> ${zParam}
-            `;
-
-            viewSoundEngineCredits.innerHTML = `<strong>Credits:</strong> ${soundEngine.credits || 'N/A'}`;
-        } else {
-            // If sound engine data is not available
-            soundEngineImageDisplay.src = 'https://api.plantasia.space/uploads/default/default-soundEngine.jpg';
-            soundEngineImageDisplay.alt = 'No Sound Engine Selected';
-
-            viewSoundEngineName.innerHTML = `<strong>Name:</strong> N/A`;
-            viewSoundEngineDeveloper.innerHTML = `<strong>Developer:</strong> N/A`;
-            viewSoundEngineAvailability.innerHTML = `<strong>Availability:</strong> N/A`;
-            viewSoundEngineParams.innerHTML = `<strong>Parameters:</strong> N/A`;
-            viewSoundEngineCredits.innerHTML = `<strong>Credits:</strong> N/A`;
-        }
-    }
-
+function populateSoundEngineDetails(soundEngineId) {
+  // Look up the full object using the sound engine ID
+  const soundEngine = soundEngineData.find(engine => engine._id === (soundEngineId && soundEngineId._id ? soundEngineId._id : soundEngineId));
+  const viewSoundEngineName = document.getElementById('viewSoundEngineName');
+  if (soundEngine) {
+      viewSoundEngineName.innerHTML = `<strong>Sound Engine Name:</strong> ${soundEngine.soundEngineName || 'N/A'}`;
+  } else {
+      viewSoundEngineName.innerHTML = `<strong>Sound Engine Name:</strong> N/A`;
+  }
+}
 /**
     * Handle Form Submission
     */
